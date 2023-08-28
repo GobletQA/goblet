@@ -60,37 +60,12 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext
 
+  await startTracing(global.context)
+
   return { browser, context }
 
 }
 
-/**
- * Sets up the global context for the test environment
- *
- * @returns {Object} - Playwright Context object
- */
-export const setupContext = async () => {
-  // const context = await getContext()
-  // const page = await getPage()
-  // const parkin = global.getParkinInstance()
-
-  await startTracing(global.context)
-
-  
-  
-  // import { setBrowserDefaults } from '@gobletqa/repo'
-  // setBrowserDefaults({
-  //   config: { world: parkin.world },
-  //   browserConf: global.browser.__goblet,
-  //   pwComponents: {
-  //     page,
-  //     context,
-  //     browser: global.browser
-  //   }
-  // })
-
-  return global.context as TBrowserContext
-}
 
 /**
  * Gets the storage location from the temp-directory

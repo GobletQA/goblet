@@ -1,6 +1,6 @@
 import { get } from '@keg-hub/jsutils/get'
 import { shouldSaveArtifact } from '@gobletqa/browser'
-import { getTestResult } from '@GTU/Reports/jasmineReporter'
+import { evtReporter } from '@GTU/Exam/feature/EventReporter'
 import { getGeneratedName, ensureRepoArtifactDir } from '@GTU/Playwright/generatedArtifacts'
 
 
@@ -15,7 +15,7 @@ export const copyTestReports = async () => {
   if(!GOBLET_HTML_REPORTER_OUTPUT_PATH) return
 
   const { testPath } = getGeneratedName()
-  const testResult = getTestResult(testPath)
+  const testResult = evtReporter.getResult(testPath)
   const reportSaved = shouldSaveArtifact(
     get(global, `__goblet.options.saveReport`),
     testResult?.status

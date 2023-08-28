@@ -8,7 +8,6 @@ import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
 import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
 import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'
 import {
-  setupContext,
   setupBrowser,
   setLastActivePage,
   getLastActivePage,
@@ -51,8 +50,6 @@ const initErrCloseAll = async () => {
 /**
  * Shutdown the page and context if not configured to be reused per test
  * Browser is not shutdown in this method so it can be reused in other tests
- * Browser shutdown is done in the Jasmine Reporter at `testUtils/src/reports/jasmineReporter.ts`
- * Jest doesn't have an onFinished hook, so seems like the only place it can be done
  */
 const cleanupPageAndContext = async () => {
 
@@ -101,7 +98,6 @@ export const initialize = async () => {
   try {
     await initTestMeta()
     await setupBrowser()
-    await setupContext()
   }
   catch (err) {
     startError = true

@@ -2,6 +2,7 @@
 import {
   TBrowserPage,
   TGobletTestOpts,
+  TGobletTestStatus,
   TGobletGlobalRecordVideo,
   TGobletGlobalBrowserOpts,
   TGobletTestArtifactOption,
@@ -14,15 +15,13 @@ import { pathExists } from '@GTU/Utils/fileSys'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
-import { getTestResult } from '@GTU/Reports/jasmineReporter'
+import { evtReporter } from '@GTU/Exam/feature/EventReporter'
 import {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
 } from '@GTU/Playwright/generatedArtifacts'
 
-
-type TTestStatus = `passed` | `failed`
 
 /**
  * Uses the passed in Playwright page to get the video path
@@ -88,7 +87,7 @@ const getRecordingPath = async (page:TBrowserPage) => {
  * @returns {boolean} - True if the video should be saved
  */
 const shouldSaveVideo = (
-  testStatus:TTestStatus,
+  testStatus:TGobletTestStatus,
   saveVideo:TGobletTestArtifactOption,
   recordDir:string
 ) => {
@@ -138,7 +137,7 @@ export const saveRecordingPath = async (page:TBrowserPage) => {
   // Get the test result, which contains the passed/failed status of the test
   // If failed, then copy over video from temp video dir, to repoVideoDir
   // By default video will not be saved
-  const testResult = getTestResult(testPath)
+  const testResult = evtReporter.getResult(testPath)
   const saveTestVideo = shouldSaveVideo(
     testResult?.status,
     saveVideo,

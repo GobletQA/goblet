@@ -1,4 +1,9 @@
-import type { TFeatureAst, TParkinRunStepOptsMap, TRootTestObj, Parkin, TParkinRunOpts } from '@ltipton/parkin'
+import type {
+  TFeatureAst,
+  TRootTestObj,
+  TParkinRunOpts,
+  TParkinRunStepOptsMap,
+} from '@ltipton/parkin'
 import type {
   TStateObj,
   TExFileModel,
@@ -8,15 +13,14 @@ import type {
 } from '@gobletqa/exam'
 
 import { EResultAction } from '@ltipton/parkin'
+import { FeatureEnvironment } from './Environment'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
-import { FeatureEnvironment } from './FeatureEnvironment'
 import {
   Errors,
-  Logger,
   ExamRunner,
   ExamEvents,
   RootSuiteId,
@@ -24,9 +28,6 @@ import {
   EPlayerTestType,
 } from '@gobletqa/exam'
 
-
-
-const ParkinFilterTagsError = `No tests have been registered`
 
 export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
 export type TFeatureData = {
@@ -40,19 +41,6 @@ export type TRunnerOpts = {
   timeout?: number
   globalTimeout?:number
 }
-
-const callAfterAllOnError = async (testRoot:TRootTestObj, parkin:Parkin) => {
-  try {
-    return await testRoot?.afterAll?.length
-      // @ts-ignore
-      && await Promise.all(testRoot.afterAll.map(fn => fn?.(parkin)))
-  }
-  catch(err){
-    Logger.error(`AfterAll Hooks failed`)
-    Logger.log(err.stack)
-  }
-}
-
 
 const hasValidTags = (
   filter:string[],
@@ -164,9 +152,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
     }
     catch(err){
-      // Ensure the after all callbacks are called
-      await callAfterAllOnError(testRoot, this.environment.parkin)
-
       if(err.name === EExErrorType.TestErr){
         const cleaned = this.clearTestResults(err.result)
         return [cleaned]

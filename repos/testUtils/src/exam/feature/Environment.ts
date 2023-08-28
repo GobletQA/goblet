@@ -5,17 +5,17 @@ import type {
   TEnvironmentCache,
   IExamEnvironment,
 } from '@gobletqa/exam/types'
-import { Parkin, TParkinRunOpts } from '@ltipton/parkin'
-import { ParkinTest } from '@ltipton/parkin/test'
-import type { FeatureRunner } from './FeatureRunner'
+import type { FeatureRunner } from './Runner'
+
 
 /**
  * This is needed so that expect is added to the global context
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
+import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-// import { getParkinInstance } from '../parkin/instance'
+import { Parkin, TParkinRunOpts } from '@ltipton/parkin'
 
 export class FeatureEnvironment implements IExamEnvironment {
 

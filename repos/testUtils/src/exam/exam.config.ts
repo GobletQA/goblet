@@ -13,13 +13,13 @@
 import { aliases } from './setupTestAliases'
 
 import type { TBrowserConf } from '../types'
-import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import type { TExamConfig } from '@gobletqa/exam'
-
+import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 import path from 'path'
-import { ENVS } from '@gobletqa/environment'
+import { isArr } from '@keg-hub/jsutils'
 import { EExTestMode } from '@gobletqa/exam'
+import { ENVS } from '@gobletqa/environment'
 import { getContextOpts } from '@gobletqa/browser'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
@@ -35,9 +35,17 @@ import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
-const RunnerLoc = path.resolve(__dirname, './FeatureRunner.ts')
-const ReporterLoc = path.resolve(__dirname, './FeatureReporter.ts')
-const EnvironmentLoc = path.resolve(__dirname, './FeatureEnvironment.ts')
+const RunnerLoc = path.resolve(__dirname, './feature/Runner.ts')
+const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
+const CliReporterLoc = path.resolve(__dirname, './feature/CliReporter.ts')
+const HtmlReporterLoc = path.resolve(__dirname, './feature/HtmlReporter.ts')
+
+/**
+ * This reporter is always included
+ * It handles dispatching events to registered listeners
+ * Which is how test traces, and videos are handled 
+ */
+const EventReporterLoc = path.resolve(__dirname, './feature/EventReporter.ts')
 
 export type TExamConfOpts = TTestMatch & {
   title?:string
@@ -65,6 +73,9 @@ const ExamConfig = ():TExamConfig => {
 
   // @ts-ignore
   const examConfig = config?.testConfig || emptyObj
+  const reporters = isArr(examConfig.reporters)
+    ? examConfig.reporters
+    : [[CliReporterLoc, {}], [HtmlReporterLoc, {}]]
 
   const rootDir = examConfig?.rootDir
     || config.paths.repoRoot
@@ -77,24 +88,24 @@ const ExamConfig = ():TExamConfig => {
     || emptyArr
 
   return {
+    // debug: true,
+    // esbuild: {},
+    // reporter: {},
+    // verbose: true,
+    // testIgnore: [],
+    // loaderIgnore:[],
+    // globalTimeout: 0,
+    // transformIgnore: [],
     envs: {
       EXAM_ENV: 1,
       // GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
     timeout: 15000,
-    // testIgnore: [],
-    // reporter: {},
-    // loaderIgnore:[],
-    // globalTimeout: 0,
-    // transformIgnore: [],
-    // esbuild: {},
     rootDir,
     testMatch,
     bail: 5,
     workers: 1,
-    // debug: true,
-    // verbose: true,
     colors: false,
     concurrency: 1,
     runInBand: true,
@@ -104,7 +115,6 @@ const ExamConfig = ():TExamConfig => {
     extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
     /** Pass on the browser options defined from the task that started the process */
     globals: {
-      __DEV__: true,
       ...examConfig?.globals,
       __goblet: {
         config,
@@ -116,8 +126,8 @@ const ExamConfig = ():TExamConfig => {
       },
     },
     reporters: [
-      ...ensureArr(examConfig.reporters),
-      [ReporterLoc, {}]
+      ...reporters,
+      [EventReporterLoc, {}]
     ].filter(Boolean) as any,
     transforms: {
       ...examConfig.transforms,

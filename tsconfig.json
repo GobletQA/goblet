@@ -100,6 +100,8 @@
       "@GTU/Constants/*": ["repos/testUtils/src/constants/*"],
       "@GTU/Jest": ["repos/testUtils/src/jest"],
       "@GTU/Jest/*": ["repos/testUtils/src/jest/*"],
+      "@GTU/Exam": ["repos/testUtils/src/exam"],
+      "@GTU/Exam/*": ["repos/testUtils/src/exam/*"],
       "@GTU/Utils": ["repos/testUtils/src/utils"],
       "@GTU/Utils/*": ["repos/testUtils/src/utils/*"],
       "@GTU/Steps": ["repos/testUtils/src/steps"],

@@ -1,7 +1,9 @@
 import {
   TGobletTestOpts,
   TBrowserContext,
-  TGobletGlobalBrowserOpts
+  TGobletTestStatus,
+  TGobletGlobalBrowserOpts,
+  TGobletTestArtifactOption,
 } from '@GTU/Types'
 
 import path from 'path'
@@ -9,13 +11,12 @@ import { get } from '@keg-hub/jsutils/get'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
-import { getTestResult } from '@GTU/Reports/jasmineReporter'
+import { evtReporter } from '@GTU/Exam/feature/EventReporter'
 import {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
 } from '@GTU/Playwright/generatedArtifacts'
-
 
 /**
  * Helper to check is tracing is disabled
@@ -36,7 +37,8 @@ const tracingDisabled = () => {
 export const startTracing = async (context?:TBrowserContext) => {
   if(!context || tracingDisabled()) return
 
-  await context.tracing.start(get(global, `__goblet.options.tracing`, noOpObj))
+  const traceOpts = get(global, `__goblet.options.tracing`, noOpObj)
+  await context.tracing.start(traceOpts)
 
   return true
 }
@@ -58,15 +60,19 @@ export const startTracingChunk = async (context?:TBrowserContext) => {
   return true
 }
 
+
 /**
  * Checks if the context was recording a video
  * Then updates the testMeta with the path to the video
- * @param {string} testStatus - passed || failed
+ * @param {string} testStatus - `passed` || `failed`
  * @param {string|boolean} saveVideo - one of `never` | `always` | `on-fail` | true | false
  *
  * @returns {boolean} - True if the trace should be saved
  */
-const shouldSaveTrace = (testStatus, saveTrace) => {
+const shouldSaveTrace = (
+  testStatus:TGobletTestStatus,
+  saveTrace:TGobletTestArtifactOption
+) => {
   if(!saveTrace || saveTrace === ArtifactSaveOpts.never) return false
 
   return (saveTrace === ArtifactSaveOpts.always) ||
@@ -79,7 +85,7 @@ const shouldSaveTrace = (testStatus, saveTrace) => {
  *
  * @returns {Void}
  */
-export const stopTracingChunk = async (context) => {
+export const stopTracingChunk = async (context?:TBrowserContext) => {
   if(!context || !context?.__goblet?.tracing || tracingDisabled()) return
 
   const {
@@ -104,8 +110,10 @@ export const stopTracingChunk = async (context) => {
   // Get the test result, which contains the passed/failed status of the test
   // If failed, then copy over trace from temp traces dir, to repoTracesDir
   // By default traces will not be saved
-  const testResult = getTestResult(testPath)
-  if(!shouldSaveTrace(testResult?.status, saveTrace)) return
+  const testResult = evtReporter.getResult(testPath)
+  const shouldSave = shouldSaveTrace(testResult?.status, saveTrace)
+
+  if(!shouldSave) return
 
   const {
     // Path to the temp directory where traces are saved by the browser

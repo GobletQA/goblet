@@ -19,9 +19,11 @@ import {
   TestsResultStatus,
 } from "@gobletqa/exam"
 
+import { getRelativeLoc } from '@GTU/Utils/getRelativeLoc'
+
 
 const logFile = (location:string, rootDir?:string) => {
-  const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `./`)
+  const fromRoot = getRelativeLoc(location, rootDir)
   fromRoot && Logger.stdout(`\n${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}\n`)
 }
 
@@ -122,7 +124,7 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
 }
 
 
-export class FeatureReporter implements IExamReporter {
+export class FeatureCliReporter implements IExamReporter {
   config:TExamConfig
   testPath?:string
 
@@ -210,5 +212,5 @@ export class FeatureReporter implements IExamReporter {
 
 }
 
-export default FeatureReporter
+export default FeatureCliReporter
 
