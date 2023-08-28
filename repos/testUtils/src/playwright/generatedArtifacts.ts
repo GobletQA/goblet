@@ -2,9 +2,10 @@ import type { TJasmine } from '@ltipton/parkin'
 
 import fs from 'fs'
 import path from 'path'
-import { mkDir, removeFile } from '@GTU/Utils/fileSys'
-
 import { get } from '@keg-hub/jsutils/get'
+import { nanoid } from '@keg-hub/jsutils/nanoid'
+import { mkDir, removeFile } from '@GTU/Utils/fileSys'
+import { evtReporter } from '@GTU/Exam/feature/EventReporter'
 
 const nameCache = {}
 
@@ -25,7 +26,7 @@ const formatName = (location:string) => {
 
 /**
  * Gets the name of the most recently run test
- * @param {string} override - Override the name pulled from jasmine global object
+ * @param {string} override - Override the name pulled from global object
  *
  * @returns <Object> - Contains the short name and full generated path name
  */
@@ -34,7 +35,7 @@ export const getGeneratedName = (
   type?:string,  // TODO - Update to test type enum
   browserName?:string // TODO - Update to browser type enum
 ) => {
-  const testPath = testLoc || (global?.jasmine as unknown as TJasmine)?.testPath
+  const testPath = testLoc || evtReporter.getTestPath() || nanoid()
   const testType = type || get(global, `__goblet.options.testType`)
   const browser = browserName || get(global, `__goblet.browser.type`, 'browser')
 

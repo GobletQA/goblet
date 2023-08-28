@@ -9,11 +9,6 @@ import type {
 
 
 declare global {
-  interface jasmine {
-    testPath: string;
-    getEnv: () => TJasmineEnv;
-    [key: string]: any;
-  }
   interface __goblet {
     config: TGobletConfig
     options:TGobletTestOpts
@@ -23,5 +18,3 @@ declare global {
 }
 
 export default global;
-
-export { }
