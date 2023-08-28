@@ -90,20 +90,52 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     runOpts:TParkinRunOpts
   ) => {
     const filter = runOpts?.tags?.filter
+    const hasFilters = Boolean(filter?.length)
+    if(!hasFilters) return true
 
-    return Boolean(filter?.length)
+    return hasFilters
       && content.find(feat => hasValidTags(ensureArr(filter), feat?.tags?.tokens))
+  }
+
+  #checkBail = (result:TExEventData) => {
+    let errorMsg = `Spec Failed`
+    if(result.testPath) errorMsg+= ` - ${result.testPath}`
+    const failedErr = Errors.TestFailed(result, new Error(errorMsg))
+
+    this.failed += 1
+    const bailAmt = this.bail
+
+    if(bailAmt && (this.failed >= bailAmt)){
+      this.cancel()
+      Errors.BailedTests(bailAmt, failedErr)
+    }
+
+    return failedErr
+  }
+
+  #onSpecFailed = (result:TExEventData) => {
+    /**
+      * TODO check here for failed state in result metadata
+      * Could allow for test warning, but not failing
+      * Need to add `warnOnFailed` to `result.metaData` in Parkin
+      */
+    // @ts-ignore
+    if(result?.metaData?.warnOnFailed)
+      this.event(ExamEvents.specDone({
+        data: {
+          ...this.clearTestResults(result),
+          failedExpectations: result?.failedExpectations
+        }
+      }))
+
+    const failedErr = this.#checkBail(result)
+    if(failedErr) throw failedErr
   }
 
   /**
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
-    // Tempt fix to make things backwards compatible
-    // @ts-ignore
-    global.jasmine.testPath = model.location
-
-    let testRoot:TRootTestObj = undefined
 
     try {
 
@@ -111,7 +143,8 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       const runOpts = this.#buildRunOpts(state)
       const content = this.environment.parkin.parse.feature(model.content)
       
-      if(!this.#validateRun(content, runOpts)) return emptyArr as TExEventData[]
+      if(!this.#validateRun(content, runOpts))
+        return emptyArr as TExEventData[]
 
       this.event({
         ...ExamEvents.started,
@@ -128,8 +161,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
       await this.environment.parkin.run(content, runOpts)
 
-      testRoot = this.environment.test.getActiveParent()
-
       const results = await this.environment.test.run({
         description: runOpts?.description,
         timeout: runOpts?.globalTimeout || this.globalTimeout
@@ -139,13 +170,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
       this.isRunning = false
 
-      // @ts-ignore
-      global.jasmine.testPath = undefined
-
-      if(!this.canceled){
-        testRoot = undefined
-        return final
-      }
+      if(!this.canceled) return final
 
       await this.cleanup()
       return emptyArr as TExEventData[]
@@ -173,35 +198,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       }
     }))
 
-    if(result.failed){
-      /**
-       * TODO check here for failed state in result metadata
-       * Could allow for test warning, but not failing
-       * Need to add `warnOnFailed` to `result.metaData` in Parkin
-       */
-      // @ts-ignore
-      if(result?.metaData?.warnOnFailed)
-        this.event(ExamEvents.specDone({
-          data: {
-            ...this.clearTestResults(result),
-            failedExpectations: result?.failedExpectations
-          }
-        }))
-
-      let errorMsg = `Spec Failed`
-      if(result.testPath) errorMsg+= ` - ${result.testPath}`
-      const failedErr = Errors.TestFailed(result, new Error(errorMsg))
-
-      this.failed += 1
-      const bailAmt = this.bail
-
-      if(bailAmt && (this.failed >= bailAmt)){
-        this.cancel()
-        Errors.BailedTests(bailAmt, failedErr)
-      }
-      
-      throw failedErr
-    }
+    result.failed && this.#onSpecFailed(result)
   }
 
   onSuiteDone = (result:TExEventData) => {
@@ -239,6 +236,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   cleanup = async () => {
     try {
+      this.isRunning = false
       this.environment?.cleanup?.()
     }
     catch(err){}
