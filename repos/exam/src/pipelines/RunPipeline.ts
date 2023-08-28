@@ -1,4 +1,4 @@
-import type { TPipelineInit } from '@GEX/types'
+import type { TRunResult, TPipelineInit } from '@GEX/types'
 
 import pPipe from 'p-pipe'
 import {
@@ -37,10 +37,10 @@ export const RunPipeline = async (args:TPipelineInit) => {
       pipelineHoc(rewindStep()),
     )
 
-    return await pipeline()
+    return await pipeline() as TRunResult[]
   }
   catch(err){
     Errors.PipelineFailed(err)
-    return []
+    return [] as TRunResult[]
   }
 }

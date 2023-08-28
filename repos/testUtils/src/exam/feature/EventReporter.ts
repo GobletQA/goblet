@@ -13,7 +13,7 @@ import {getRelativeLoc} from "@GTU/Utils/getRelativeLoc"
 
 
 
-type TEvt = TExamEvt<TExEventData>
+type TEvt = TExamEvt<TExEventData & { location?:string }>
 type TEvtCB = ((evt:TEvt) => any) & {
   name?:string
 }
@@ -33,20 +33,23 @@ class EvtReporter {
    */
   #failedSpecMap = {}
 
-  getResult = (loc:string) => this.#failedSpecMap[loc]
+  getTestPath = () => this.#testPath
+
+  getResult = (loc:string) => {
+    return this.#failedSpecMap[loc]
+  }
 
   setConfig = (config:TExamConfig) => {
     this.config = config
   }
-  
-  setTestPath = (testPath:string) => {
-    this.#testPath = testPath
-      ? getRelativeLoc(testPath, this.config?.rootDir)
-      : testPath
-  }
 
   setFailed = (evt:TEvt) => {
-    this.#failedSpecMap[this.#testPath] = evt.data
+    // TODO: Fix this, should not need to store this
+    // Should use the active event data
+    this.#testPath = evt?.data?.location
+
+    evt?.data?.location
+      && (this.#failedSpecMap[evt.data.location] = evt.data)
   }
 
   on = (evt:string, cb:TEvtCB, key?:string) => {
@@ -71,15 +74,11 @@ class EvtReporter {
   }
 
   dispatch = (evt:TEvt) => {
-    const event = {
-      ...evt,
-      // TODO: figure out how to ensure the correct file location
-      location: evt.location || ``,
-    }
+    const event = {...evt, location: evt?.location || evt?.data?.location}
 
     const callbacks = [...this.#listeners[evt.name] || emptyArr]
     callbacks?.length
-      && ife(async () => await Promise.all(callbacks.map(cb => cb(evt))))
+      && ife(async () => await Promise.all(callbacks.map(cb => cb(event))))
   }
 
   onCancel = (evt:any) => {
@@ -114,24 +113,16 @@ export class EventReporter implements IExamReporter {
     evtReporter.setConfig(examCfg)
   }
 
-  onRunStart = (evt:TExamEvt<TExEventData>) => {
-    const testPath = evt?.data?.testPath
-    testPath
-      && evtReporter.setTestPath(evt?.data?.testPath)
-
-    evtReporter.dispatch(evt)
-  }
   onTestFileResult = (evt:TEvt) => {
     evt?.data?.status === EResultStatus.failed
       && evtReporter.setFailed(evt)
 
     evtReporter.dispatch(evt)
   }
-  onRunComplete = (evt:TEvt) => {
-    evtReporter.dispatch(evt)
-    // Once the test finishes, reset the testPath
-    evtReporter.setTestPath(undefined)
-  }
+
+
+  onRunComplete = (evt:TEvt) => evtReporter.dispatch(evt)
+  onRunStart = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
   onTestFileStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestCaseStart = (evt:TEvt) => evtReporter.dispatch(evt)

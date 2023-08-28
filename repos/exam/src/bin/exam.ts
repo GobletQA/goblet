@@ -1,13 +1,11 @@
 import "./init"
 import "@GEX/utils/logger"
-import { ife } from '@keg-hub/jsutils/ife'
-import { isArr } from '@keg-hub/jsutils/isArr'
-
-
 import { getConfig } from './getConfig'
 import { initLocal } from './initLocal'
 import { updateCLIEnvs } from './helpers'
+import { ife } from '@keg-hub/jsutils/ife'
 import { initWorkers } from './initWorkers'
+import { isArr } from '@keg-hub/jsutils/isArr'
 import { printDebugResults } from '@GEX/debug'
 import { removeEmpty, parseArgs } from './helpers'
 
