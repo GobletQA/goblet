@@ -106,7 +106,7 @@
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/esdev": "0.2.1",
-    "@ltipton/parkin": "5.2.1",
+    "@ltipton/parkin": "6.0.0",
     "@types/node": "18.15.13",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
