@@ -5,7 +5,7 @@ import path from 'path'
 import { get } from '@keg-hub/jsutils/get'
 import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { mkDir, removeFile } from '@GTU/Utils/fileSys'
-import { evtReporter } from '@GTU/Exam/feature/EventReporter'
+import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 
 const nameCache = {}
 

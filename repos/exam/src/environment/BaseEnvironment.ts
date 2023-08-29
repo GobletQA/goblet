@@ -63,10 +63,10 @@ export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
     })
 
     this.test.setConfig({
-      specDone: runner.onSpecDone.bind(runner),
-      suiteDone: runner.onSuiteDone.bind(runner),
-      specStarted: runner.onSpecStarted.bind(runner),
-      suiteStarted: runner.onSuiteStarted.bind(runner),
+      onSpecDone: runner.onSpecDone.bind(runner),
+      onSuiteDone: runner.onSuiteDone.bind(runner),
+      onSpecStart: runner.onSpecStarted.bind(runner),
+      onSuiteStart: runner.onSuiteStarted.bind(runner),
       timeout: runner?.timeout || runner?.globalTimeout,
     })
 

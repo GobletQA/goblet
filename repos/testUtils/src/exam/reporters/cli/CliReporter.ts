@@ -21,6 +21,7 @@ import {
 
 import { getRelativeLoc } from '@GTU/Utils/getRelativeLoc'
 
+export type TLocEvt = (TExEventData & { location:string })
 
 const logFile = (location:string, rootDir?:string) => {
   const fromRoot = getRelativeLoc(location, rootDir)
@@ -31,7 +32,7 @@ const logFile = (location:string, rootDir?:string) => {
  * Helper to log the parent meta data - (i.e. describes)
  */
 const logParent = (
-  evt:TExamEvt<TExEventData>,
+  evt:TExamEvt<TLocEvt>,
   isStart:boolean
 ) => {
   const context = evt.data
@@ -40,8 +41,8 @@ const logParent = (
   const isRoot = evt.name === ExamEvtNames.rootSuiteDone
     || evt.name === ExamEvtNames.rootSuiteStart
     || space.length === 4
-    
-  const [first, description] = context.description.split(`>`)
+
+  const [first, description=``] = context.description.split(`>`)
   const type = first.trim()
 
   if(isStart)
@@ -65,7 +66,7 @@ const logParent = (
  * Logs the outcome of each describe and test
  */
 const logResult = (
-  evt:TExamEvt<TExEventData>,
+  evt:TExamEvt<TLocEvt>,
   hasStepErr?:boolean
 ) => {
 
@@ -101,13 +102,13 @@ const logResult = (
   const failed = getFailedMessage(evt)
 
   failed?.message && 
-    (message += `\n${failed?.message}${Logger.colors.gray(`\n -\n`)}`)
+    (message += `\n${failed?.message}\n`)
 
   Logger.stdout(message)
 
 }
 
-const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
+const getFailedMessage = (evt:TExamEvt<TLocEvt>,) => {
   const context = evt.data
 
   if(context.status !== TestsResultStatus.failed) return {}
@@ -125,90 +126,30 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
 
 
 export class FeatureCliReporter implements IExamReporter {
-  config:TExamConfig
-  testPath?:string
+  rootDir:string
 
   constructor(
     examCfg:TExamConfig,
     cfg:TExReporterCfg,
     reporterContext?:TEXInterReporterContext
   ) {
-    this.config = examCfg
+    this.rootDir = examCfg.rootDir
   }
 
-  // Event `PLAY-STARTED`,
-  onRunStart = (evt:TExamEvt<TExEventData>) => {
-    this.testPath = evt?.data?.testPath
-  }
-
-  // Event `PLAY-SUITE-START-ROOT`
-  onTestFileStart = (evt:TExamEvt<TExEventData>) => {
-    if(this.testPath){
-      const rootDir = this.config?.rootDir
-      this.testPath && logFile(this.testPath, rootDir)
-      this.testPath = undefined
-    }
-
+  onTestFileStart = (evt:TExamEvt<TLocEvt>) => {
+    logFile(evt?.data?.location, this?.rootDir)
     logResult(evt)
   }
-
-  // Event `PLAY-SUITE-START`
-  onTestStart = (evt:TExamEvt<TExEventData>) => {
-    logResult(evt)
-  }
-
-  /**
-   * Called before running a spec (prior to `before` hooks)
-   * Not called for `skipped` and `todo` specs
-   */
-  //  Event `PLAY-SPEC-START`
-  onTestCaseStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
-
-
-  // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
-
-
-  // Event `PLAY-SUITE-DONE`
-  onTestResult = (evt:TExamEvt<TExEventData>) => {
-    logResult(evt)
-  }
-
-  // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
-  onTestFileResult = (evt:TExamEvt<TExEventData>) => {
+  onTestFileResult = (evt:TExamEvt<TLocEvt>) => {
     logResult(evt)
     Logger.gray(`\n -\n`)
     Logger.empty()
   }
 
-
-  // Event `PLAY-RESULTS`
-  onRunComplete = () => {
-  }
-
-  onWarning = (evt:any) => {}
-
-  // Event `PLAY-ERROR`
-  onError = (evt:any) => {
-    // console.log(`------- BaseReporter - onError -------`)
-    // console.log(evt.name)
-  }
-
-  // Optionally, reporters can force Jest to exit with non zero code by returning
-  // an `Error` from `getLastError()` method.
-  getLastError = () => {
-    // Error | void;
-  }
-
-  // Event `PLAY-CANCELED`
-  onCancel = (evt:any) => {
-    // console.log(`------- BaseReporter - onCancel -------`)
-    // console.log(evt.name)
-  }
-
-  cleanup = () => {
-    
-  }
+  onTestStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
+  onTestResult = (evt:TExamEvt<TLocEvt>) => logResult(evt)
+  onTestCaseStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
+  onTestCaseResult = (evt:TExamEvt<TLocEvt>) => logResult(evt)
 
 }
 

@@ -9,8 +9,6 @@ import {isStr} from "@keg-hub/jsutils/isStr"
 import {nanoid} from "@keg-hub/jsutils/nanoid"
 import {EResultStatus} from '@ltipton/parkin'
 import {emptyArr} from "@keg-hub/jsutils/emptyArr"
-import {getRelativeLoc} from "@GTU/Utils/getRelativeLoc"
-
 
 
 type TEvt = TExamEvt<TExEventData & { location?:string }>
@@ -120,9 +118,14 @@ export class EventReporter implements IExamReporter {
     evtReporter.dispatch(evt)
   }
 
-
-  onRunComplete = (evt:TEvt) => evtReporter.dispatch(evt)
-  onRunStart = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onRunStart = (evt:TExamEvt<TExEventData>) => {
+    // TODO: Start tracing and video
+    evtReporter.dispatch(evt)
+  }
+  onRunComplete = (evt:TEvt) => {
+    // TODO: Stop tracing and video
+    evtReporter.dispatch(evt)
+  }
   onTestFileStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestCaseStart = (evt:TEvt) => evtReporter.dispatch(evt)

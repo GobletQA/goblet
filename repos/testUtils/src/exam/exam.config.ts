@@ -37,15 +37,15 @@ const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
 const RunnerLoc = path.resolve(__dirname, './feature/Runner.ts')
 const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
-const CliReporterLoc = path.resolve(__dirname, './feature/CliReporter.ts')
-const HtmlReporterLoc = path.resolve(__dirname, './feature/HtmlReporter.ts')
+const CliReporterLoc = path.resolve(__dirname, './reporters/cli/CliReporter.ts')
+const HtmlReporterLoc = path.resolve(__dirname, './reporters/html/HtmlReporter.ts')
 
 /**
  * This reporter is always included
  * It handles dispatching events to registered listeners
  * Which is how test traces, and videos are handled 
  */
-const EventReporterLoc = path.resolve(__dirname, './feature/EventReporter.ts')
+const EventReporterLoc = path.resolve(__dirname, './reporters/event/EventReporter.ts')
 
 export type TExamConfOpts = TTestMatch & {
   title?:string

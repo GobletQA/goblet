@@ -11,7 +11,7 @@ import { get } from '@keg-hub/jsutils/get'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
-import { evtReporter } from '@GTU/Exam/feature/EventReporter'
+import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 import {
   getGeneratedName,
   copyArtifactToRepo,
