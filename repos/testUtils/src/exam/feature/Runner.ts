@@ -17,6 +17,8 @@ import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { splitByKeys } from '@keg-hub/jsutils/splitByKeys'
+
 import {
   Errors,
   ExamRunner,
@@ -55,10 +57,10 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   bail:number=0
   fromAst:string[]=[`feature`]
   omitTestResults:string[] = [
-    `tests`,
-    `describes`,
-    `passedExpectations`,
-    `failedExpectations`,
+    // `tests`,
+    // `describes`,
+    // `passedExpectations`,
+    // `failedExpectations`,
   ]
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
@@ -83,11 +85,19 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       steps: {...data?.steps, shared: {...data?.steps?.shared}},
     })
 
+    const [
+      tOpts,
+      pOpts
+    ] = splitByKeys(parkinOpts, [`retry`, `exitOnFailed`, `skipAfterFailed`, `globalTimeout`])
+
     return {
-      parkin: parkinOpts,
+      parkin: pOpts,
       test: {
-        description: parkinOpts?.description,
-        timeout: parkinOpts?.globalTimeout || this.globalTimeout,
+        retry: tOpts?.retry ?? 0,
+        description: tOpts?.description,
+        exitOnFailed: tOpts?.exitOnFailed ?? false,
+        skipAfterFailed: tOpts?.skipAfterFailed ?? true,
+        timeout: tOpts?.globalTimeout || this.globalTimeout,
 
         onSpecDone: (result:TExEventData) => this.onSpecDone.call(this, {...result, location }),
         onSpecStart: (result:TExEventData) => this.onSpecStarted.call(this, {...result, location }),
@@ -140,11 +150,18 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       const runOpts = this.#buildRunOpts(model, state)
       const content = this.environment.parkin.parse.feature(model.content)
       
+      console.log(`------- runOpts -------`)
+      console.log(runOpts)
+      
       if(!this.#validateRun(content, runOpts.parkin))
         return emptyArr as TExEventData[]
 
       await this.environment.parkin.run(content, runOpts.parkin)
       const results = await this.environment.test.run(runOpts.test) as TExEventData[]
+
+      console.log(`------- run restuls -------`)
+      console.log(require('util').inspect(results, false, null, true))
+
 
       this.isRunning = false
 

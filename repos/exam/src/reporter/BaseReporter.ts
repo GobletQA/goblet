@@ -174,7 +174,7 @@ export class BaseReporter implements IExamReporter {
 
 
   // Event `PLAY-RESULTS`
-  onRunComplete = () => {
+  onRunResult = () => {
     Logger.empty()
   }
 

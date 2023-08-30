@@ -79,7 +79,7 @@ export class SilentReporter implements IExamReporter {
   }
 
   // Event `PLAY-RESULTS`
-  onRunComplete = (
+  onRunResult = (
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => {

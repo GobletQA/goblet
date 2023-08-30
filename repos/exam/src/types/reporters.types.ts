@@ -70,7 +70,7 @@ export interface IExamReporter {
   ) => void|Promise<void>
 
   // Event `PLAY-RESULTS`
-  onRunComplete?: (
+  onRunResult?: (
     ...args:any[]
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,

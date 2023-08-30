@@ -80,6 +80,8 @@ export type TExEventData = TExTestEvent
   | undefined
 
 
+export type TLocEvtData = (TExEventData & { location:string })
+
 export type TExTestSuiteDone<T=TExTestEvent> = TExTestEvent & {
   tests: T[]
 }

@@ -122,7 +122,7 @@ export class EventReporter implements IExamReporter {
     // TODO: Start tracing and video
     evtReporter.dispatch(evt)
   }
-  onRunComplete = (evt:TEvt) => {
+  onRunResult = (evt:TEvt) => {
     // TODO: Stop tracing and video
     evtReporter.dispatch(evt)
   }

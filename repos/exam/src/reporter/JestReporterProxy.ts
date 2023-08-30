@@ -60,7 +60,7 @@ export class JestReporter {
     
   }
 
-  onRunComplete: (
+  onRunResult: (
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => {

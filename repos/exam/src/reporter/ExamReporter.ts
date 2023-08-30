@@ -78,7 +78,7 @@ export class ExamReporter implements IExamReporter {
   }
 
   // Event `PLAY-RESULTS`
-  onRunComplete = (
+  onRunResult = (
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => {

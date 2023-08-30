@@ -31,8 +31,8 @@ const EvtReporterMap = {
   [ExamEvtNames.rootSuiteStart]: `onTestFileStart`,
  
   // Event `PLAY-RESULTS` - Maybe switch this for `PLAY-ENDED` || `PLAY-STOPPED`
-  // onRunComplete
-  [ExamEvtNames.results]: `onRunComplete`,
+  // onRunResult
+  [ExamEvtNames.results]: `onRunResult`,
 
   // Event `PLAY-STARTED`,
   // onRunStart

@@ -17,11 +17,17 @@ import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { Parkin, TParkinRunOpts } from '@ltipton/parkin'
 
+type TRunOpts = TParkinRunOpts & {
+  exitOnFailed?:boolean
+  globalTimeout?:number
+  skipAfterFailed?:boolean
+}
+
 export class FeatureEnvironment implements IExamEnvironment {
 
   parkin:Parkin
   test:ParkinTest
-  runOptions:TParkinRunOpts={}
+  runOptions:TRunOpts={}
   envs:TEnvironmentEnvs={}
   cache:TEnvironmentCache = {
     envs:{},
