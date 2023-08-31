@@ -1,5 +1,3 @@
-import type { TJasmine } from '@ltipton/parkin'
-
 import fs from 'fs'
 import path from 'path'
 import { get } from '@keg-hub/jsutils/get'

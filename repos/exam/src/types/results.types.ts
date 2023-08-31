@@ -7,9 +7,11 @@ export type TRunResultMeta = {
   file?:Partial<TExFileModelDef>
 }
 
-export type TRunResult = Omit<TParkinRunResult, `type`|`metadata`> & {
+export type TRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
   type:EPlayerTestType
   metaData?:TRunResultMeta
+  describes?:TRunResult[]
+  tests?:TRunResult[]
 }
 
 export enum EPlayerTestAction {

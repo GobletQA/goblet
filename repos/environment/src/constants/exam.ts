@@ -33,7 +33,8 @@ export const NoTestsFoundPass = {
 
 export const TestsResultStatus = {
   failed: `failed`,
-  passed: `passed`
+  passed: `passed`,
+  skipped: `skipped`
 }
 
 export const RootSuiteId = `suite-0`

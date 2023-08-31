@@ -57,10 +57,10 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   bail:number=0
   fromAst:string[]=[`feature`]
   omitTestResults:string[] = [
-    // `tests`,
-    // `describes`,
-    // `passedExpectations`,
-    // `failedExpectations`,
+    `tests`,
+    `describes`,
+    `passedExpectations`,
+    `failedExpectations`,
   ]
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
@@ -93,8 +93,11 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     return {
       parkin: pOpts,
       test: {
-        retry: tOpts?.retry ?? 0,
+        // retry: tOpts?.retry ?? 0,
+        retry: 0,
         description: tOpts?.description,
+        // When running a single test from UI
+        // This should be set to true so running stops on the first failed test
         exitOnFailed: tOpts?.exitOnFailed ?? false,
         skipAfterFailed: tOpts?.skipAfterFailed ?? true,
         timeout: tOpts?.globalTimeout || this.globalTimeout,
@@ -124,20 +127,22 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       && content.find(feat => hasValidTags(ensureArr(filter), feat?.tags?.tokens))
   }
 
+  /**
+   * TODO: bail should be moved to Parkin Test Executor
+   * Should not be part of the Runner
+   */
   #checkBail = (result:TExEventData) => {
     let errorMsg = `Spec Failed`
     if(result.testPath) errorMsg+= ` - ${result.testPath}`
-    const failedErr = Errors.TestFailed(result, new Error(errorMsg))
 
     this.failed += 1
     const bailAmt = this.bail
 
     if(bailAmt && (this.failed >= bailAmt)){
       this.cancel()
-      Errors.BailedTests(bailAmt, failedErr)
+      Errors.BailedTests(bailAmt, Errors.TestFailed(result, new Error(errorMsg)))
     }
 
-    return failedErr
   }
 
   /**
@@ -149,19 +154,12 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       this.isRunning = true
       const runOpts = this.#buildRunOpts(model, state)
       const content = this.environment.parkin.parse.feature(model.content)
-      
-      console.log(`------- runOpts -------`)
-      console.log(runOpts)
-      
+
       if(!this.#validateRun(content, runOpts.parkin))
         return emptyArr as TExEventData[]
 
       await this.environment.parkin.run(content, runOpts.parkin)
       const results = await this.environment.test.run(runOpts.test) as TExEventData[]
-
-      console.log(`------- run restuls -------`)
-      console.log(require('util').inspect(results, false, null, true))
-
 
       this.isRunning = false
 
@@ -212,11 +210,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       }
     }))
 
-    if(!result.failed) return
-
-    const failedErr = this.#checkBail(result)
-    if(failedErr) throw failedErr
-
+    result.failed && this.#checkBail(result)
   }
 
   onSuiteDone = (result:TLocEvt) => {
