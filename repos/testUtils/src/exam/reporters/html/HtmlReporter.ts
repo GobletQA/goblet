@@ -6,12 +6,11 @@
   TRunResult,
   TExReporterCfg,
   TEXInterReporterContext,
-  TestsResultStatus,
 } from "@gobletqa/exam"
 
 import path from 'path'
-import { HeadHtml } from './parts/HeadHtml'
-import { BodyHtml } from './parts/BodyHtml'
+import { HeadHtml } from './generator/HeadHtml'
+import { BodyHtml } from './generator/BodyHtml'
 import { mkdir, writeFile } from 'fs/promises'
 
 export type TGenHtmlOpts = {
@@ -62,16 +61,16 @@ const validate = (examCfg:TExamConfig) => {
 }
 
 export class HtmlReporter implements IExamReporter {
-  reportsDir:string
   rootDir:string
+  reportsDir:string
+  snapshotOnError?:boolean
 
   constructor(
     examCfg:TExamConfig,
-    cfg:TExReporterCfg,
+    cfg?:TExReporterCfg,
     reporterContext?:TEXInterReporterContext
   ) {
 
-    
     validate(examCfg)
 
     const gobletCfg = examCfg?.globals?.__goblet?.config
@@ -82,6 +81,8 @@ export class HtmlReporter implements IExamReporter {
     this.reportsDir = workDir
       ? path.join(this.rootDir, workDir, reportsDir)
       : path.join(this.rootDir, reportsDir)
+
+    this.snapshotOnError = cfg?.snapshotOnError || false
   }
 
   #htmlTemplate = ({
