@@ -1,11 +1,31 @@
 import path from 'path'
 import { ife } from '@keg-hub/jsutils/ife'
-import { generateHtml } from '../generateHtml'
+import { HtmlReporter } from '../HtmlReporter'
 import { mockEvent } from '../__mocks__/mockEvent'
 
-const tempDir = path.join(__dirname, `../../../../../../../temp/reports/01--View-My-Apps.html`)
+const rootDir = path.join(__dirname, `../../../../../../../`)
+const tempDir = path.join(rootDir, `temp/reports/01--View-My-Apps.html`)
+
+const examCfg = {
+  rootDir,
+  globals: {
+    __goblet: {
+      config: {
+        paths: {
+          rootDir,
+          workDir: `temp`,
+          reportsDir:  `reports`
+        }
+      }
+    }
+  }
+  
+}
 
 ife(async () => {
-  generateHtml(mockEvent as any,  { location: tempDir })
+  const reporter = new HtmlReporter(examCfg as any, { snapshotOnError: true })
+  
+  reporter.onRunResult(mockEvent as any)
+  // mockEvent as any,  { location: tempDir }
 
 })

@@ -47,7 +47,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
   }
 
-  event = (evt:TExamEvt) => this.eventReporter.event(evt)
+  event = async (evt:TExamEvt) => this.eventReporter.event(evt)
 
   /**
    * Called when a page loads to check if mouse tracker should run

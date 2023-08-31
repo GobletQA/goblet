@@ -38,13 +38,7 @@ const countFailed = (data:TLocEvtData) => {
   }
 }
 
-export const OverviewHtml = (data:TLocEvtData) => {
-  const {
-    failed,
-    passed,
-    skipped,
-  } = countFailed(data)
-
+const overviewStyle = () => {
   return `
     <style>
       .overview-container  {
@@ -96,6 +90,18 @@ export const OverviewHtml = (data:TLocEvtData) => {
       }
 
     </style>
+  `
+}
+
+export const OverviewHtml = (data:TLocEvtData) => {
+  const {
+    failed,
+    passed,
+    skipped,
+  } = countFailed(data)
+
+  return `
+    ${overviewStyle()}
     <div class="overview-container">
       <div class="overview-sections" >
         <div class="overview-section scenarios overview-card" >

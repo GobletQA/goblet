@@ -26,7 +26,7 @@ ife(async () => {
   if(!isArr(results)) process.exit(1)
 
   results?.length
-    ? results.forEach(result => result.failed && process.exit(1))
-    : !exam.passWithNoTests && process.exit(1)
+    ? results.forEach(result => result.failed && (process.exitCode = 1))
+    : !exam.passWithNoTests && (process.exitCode = 1)
 
 })

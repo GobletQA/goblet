@@ -127,10 +127,10 @@ export class EventReporter implements IExamReporter {
     evtReporter.dispatch(evt)
   }
   onTestFileStart = (evt:TEvt) => evtReporter.dispatch(evt)
+  onSuiteStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestStart = (evt:TEvt) => evtReporter.dispatch(evt)
-  onTestCaseStart = (evt:TEvt) => evtReporter.dispatch(evt)
-  onTestCaseResult = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestResult = (evt:TEvt) => evtReporter.dispatch(evt)
+  onSuiteResult = (evt:TEvt) => evtReporter.dispatch(evt)
   cleanup = () => evtReporter.cleanup()
   onError = (evt:any) => evtReporter.dispatch(evt)
   onCancel = (evt:any) => evtReporter.dispatch(evt)

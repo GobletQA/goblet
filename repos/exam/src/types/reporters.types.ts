@@ -4,6 +4,7 @@ import type { IConstructable } from './helpers.types'
 export type TExReporterCfg = {
   type?:string
   jest?:boolean
+  [key:string]:any
 }
 
 export interface IExamReporter {
@@ -16,7 +17,7 @@ export interface IExamReporter {
   // onSuiteDone(result:TExEventData):void|Promise<void>
   
   // Event `PLAY-SUITE-DONE`
-  onTestResult?: (
+  onSuiteResult?: (
     ...args:any[]
     // test: Test,
     // testResult: TestResult,
@@ -36,14 +37,14 @@ export interface IExamReporter {
    * Not called for `skipped` and `todo` specs
    */
   //  Event `PLAY-SPEC-START`
-  onTestCaseStart?: (
+  onTestStart?: (
     ...args:any[]
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => void|Promise<void>
 
   // Event `PLAY-SPEC-DONE`
-  onTestCaseResult?: (
+  onTestResult?: (
     ...args:any[]
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
@@ -57,7 +58,7 @@ export interface IExamReporter {
   ) => void|Promise<void>
 
   // Event `PLAY-SUITE-START`
-  onTestStart?: (
+  onSuiteStart?: (
     ...args:any[]
     // test: Test
   ) => void|Promise<void>

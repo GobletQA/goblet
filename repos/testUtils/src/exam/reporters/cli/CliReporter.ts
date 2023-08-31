@@ -151,9 +151,9 @@ export class FeatureCliReporter implements IExamReporter {
     Logger.empty()
   }
 
+  onSuiteStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
   onTestStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
-  onTestCaseStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
-  onTestCaseResult = (evt:TExamEvt<TLocEvt>) => {
+  onTestResult = (evt:TExamEvt<TLocEvt>) => {
     logResult(evt, this.hasStepErr)
     
     if(evt?.data?.status !== TestsResultStatus.passed){
@@ -161,7 +161,7 @@ export class FeatureCliReporter implements IExamReporter {
       this.hasStepErr = true
     }
   }
-  onTestResult = (evt:TExamEvt<TLocEvt>) => {
+  onSuiteResult = (evt:TExamEvt<TLocEvt>) => {
     logResult(evt)
     // Step errors are scoped to the parent, so we always reset the step error when it finishes
     this.hasStepErr = false

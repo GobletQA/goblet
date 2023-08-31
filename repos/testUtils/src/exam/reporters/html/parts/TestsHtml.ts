@@ -1,3 +1,4 @@
+import type { TReporterOpts } from '../HtmlReporter'
 import type { TLocEvtData, TRunResult } from "@gobletqa/exam"
 
 import { IconsHtml } from './IconsHtml'
@@ -73,24 +74,27 @@ const TitleHtml = (text:string, type:string=``, state:string=``) => {
   `
 }
 
-const FailedList = (test: TRunResult) => {
+const FailedList = (test: TRunResult, opts:TReporterOpts) => {
   return test.failedExpectations.map((expectation: any) => {
     return `
       <li class="list-item failed-item step-failed failed">
-        <pre class="failed-description" >${expectation.description}</pre>
+        <pre class="failed-description" >
+          ${expectation.description}
+          ${opts?.onRenderError?.(test) || ``}
+        </pre>
       </li>
     `
   }).join('')
 }
 
-const StepList = (tests: TRunResult[]) => {
+const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
   return sortByTimestamp(tests)
     .map((test, idx) => {
       const state = status(test)
       const toggleError = test.failedExpectations.length > 0 ? `onclick="toggleError(${idx})"` : ``
 
       const FailedHtml = test?.failedExpectations?.length
-        ? `<ul class="list-parent failed-list" id="error-${idx}" style="visibility:hidden;max-height:0px;">${FailedList(test)}</ul>`
+        ? `<ul class="list-parent failed-list" id="error-${idx}" style="visibility:hidden;max-height:0px;">${FailedList(test, opts)}</ul>`
         : ``
 
       return `
@@ -102,20 +106,21 @@ const StepList = (tests: TRunResult[]) => {
             ${TitleHtml(test.description, `step`, state)}
             <div class="step-time">${test.timestamp}</div>
           </div>
+          ${opts?.onRenderTest?.(test) || ``}
           ${FailedHtml}
         </li>
       `
     }).join('')
 }
 
-const ScenarioList = (scenarios: TRunResult[]) => {
+const ScenarioList = (scenarios: TRunResult[], opts:TReporterOpts) => {
   return scenarios.map((scenario) => {
     const state = status(scenario)
     return `
       <li class="list-item scenario-item scenario-${state} ${state}">
         ${TitleHtml(scenario.description, `scenario`)}
         <ul class="scenario-list list-parent" >
-          ${StepList(scenario.tests)}
+          ${StepList(scenario.tests, opts)}
         </ul>
       </li>
     `
@@ -123,23 +128,21 @@ const ScenarioList = (scenarios: TRunResult[]) => {
 }
 
 
-const FeatureList = (features: TRunResult[]) => {
+const FeatureList = (features: TRunResult[], opts:TReporterOpts) => {
   return features.map((feature) => {
     const state = status(feature)
     return `
       <li class="list-item feature-item feature-${state} ${state}">
         ${TitleHtml(feature.description, `Feature`)}
         <ul class="feature-list list-parent" >
-          ${ScenarioList(feature.describes)}
+          ${ScenarioList(feature.describes, opts)}
         </ul>
       </li>
     `
   }).join('')
 }
 
-
-export const TestsHtml = (data:TLocEvtData) => {
-  const state = status(data as TRunResult)
+const testStyles = () => {
   return `
     <style>
 
@@ -237,8 +240,15 @@ export const TestsHtml = (data:TLocEvtData) => {
       }
 
     </style>
+  `
+}
+
+export const TestsHtml = (data:TLocEvtData, opts:TReporterOpts) => {
+  const state = status(data as TRunResult)
+  return `
+    ${testStyles()}
     <ul class="root-list list-parent root-${state} ${state}">
-      ${FeatureList(data.describes)}
+      ${FeatureList(data.describes, opts)}
     </ul>
   `
 }

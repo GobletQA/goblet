@@ -145,7 +145,7 @@ export class BaseReporter implements IExamReporter {
   }
 
   // Event `PLAY-SUITE-START`
-  onTestStart = (evt:TExamEvt<TExEventData>) => {
+  onSuiteStart = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
   }
 
@@ -154,15 +154,15 @@ export class BaseReporter implements IExamReporter {
    * Not called for `skipped` and `todo` specs
    */
   //  Event `PLAY-SPEC-START`
-  onTestCaseStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
+  onTestStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
 
 
   // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
+  onTestResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
 
 
   // Event `PLAY-SUITE-DONE`
-  onTestResult = (evt:TExamEvt<TExEventData>) => {
+  onSuiteResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
   }
 
