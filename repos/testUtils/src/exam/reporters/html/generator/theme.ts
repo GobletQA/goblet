@@ -10,6 +10,7 @@ const coolOrange = `#D99B01`
 const blueGreen = `#2E869A`
 
 export const scale = {
+  w: `#FFFFFF`,
   w00: `#F9FAFB`,
   w01: `#F6F6F8`,
   c00: `#EFF1F3`,

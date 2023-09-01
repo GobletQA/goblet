@@ -1,17 +1,22 @@
  import {
   TExamEvt,
+  TRunResult,
   TLocEvtData,
   TExamConfig,
   IExamReporter,
-  TRunResult,
   TExReporterCfg,
+  TestsResultStatus,
   TEXInterReporterContext,
 } from "@gobletqa/exam"
 
 import path from 'path'
+import { mkdir, writeFile } from 'fs/promises'
+import { ImgHtml } from './generator/ImgHtml'
 import { HeadHtml } from './generator/HeadHtml'
 import { BodyHtml } from './generator/BodyHtml'
-import { mkdir, writeFile } from 'fs/promises'
+import { takeScreenshot } from './takeScreenshot'
+import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
+import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
 
 export type TGenHtmlOpts = {
   debug?:boolean
@@ -19,14 +24,14 @@ export type TGenHtmlOpts = {
 }
 
 export type THtmlTemplate = {
-  response:TLocEvtData
-  reportTitle?:string
-  currentDate?:string
+  date?:string
+  title?:string
+  data:TLocEvtData
 }
 
 export type TReporterOpts = {
-  onRenderTest: (result:TRunResult) => string
-  onRenderError: (result:TRunResult) => string
+  onRenderTest?: (data:TRunResult) => string
+  onRenderError?: (data:TRunResult) => string
 }
 
 
@@ -61,9 +66,12 @@ const validate = (examCfg:TExamConfig) => {
 }
 
 export class HtmlReporter implements IExamReporter {
+  #page?:any
   rootDir:string
   reportsDir:string
-  snapshotOnError?:boolean
+  #screenshotExt?:string
+  #saveScreenshot?:boolean|string
+  #screenshots: Record<string, string>={}
 
   constructor(
     examCfg:TExamConfig,
@@ -82,21 +90,56 @@ export class HtmlReporter implements IExamReporter {
       ? path.join(this.rootDir, workDir, reportsDir)
       : path.join(this.rootDir, reportsDir)
 
-    this.snapshotOnError = cfg?.snapshotOnError || false
+    this.#screenshotExt = cfg?.screenshotExt || `png`
+    this.#saveScreenshot = cfg?.saveScreenshot || false
+
+  }
+
+  #getPage = () => {
+    if(!this.#saveScreenshot) return
+    this.#page = this.#page || global.getLastActivePage?.() || global?.page
+    !this.#page
+      && console.warn(`Html Reporter "saveScreenshot" is "true", but a Browser Page does not exist`)
+
+    return this.#page
+  }
+
+  #renderImg = (data:TRunResult) => {
+    const uri = this.#screenshots[data.id]
+    return uri
+      ? ImgHtml({
+          uri,
+          alt: data?.fullName,
+          ext: this.#screenshotExt,
+          className: `html-render-screenshot`,
+        })
+      : ``
+  }
+
+  #onRenderTest = (data:TRunResult) => {
+    return data.failed && (this.#saveScreenshot === ArtifactSaveOpts.failed)
+      ? ``
+      : this.#renderImg(data)
   }
 
   #htmlTemplate = ({
-    response,
-    currentDate=new Date().toLocaleString(),
-    reportTitle,
+    data,
+    title,
+    date=new Date().toLocaleString(),
   }:THtmlTemplate) => {
-    const title = buildTitle(response, reportTitle)
+    const built = buildTitle(data, title)
 
     return `
       <!DOCTYPE html>
       <html>
-        ${HeadHtml(response, title)}
-        ${BodyHtml(response, currentDate, title)}
+        ${HeadHtml(data, built)}
+        ${BodyHtml({
+          data,
+          date,
+          title:built,
+          onRenderError: this.#renderImg.bind(this),
+          onRenderTest: this.#onRenderTest.bind(this),
+        })}
       </html>
     `
   }
@@ -116,15 +159,18 @@ export class HtmlReporter implements IExamReporter {
     }
   }
 
-  onTestResult = (evt:TExamEvt<TLocEvtData>) => {
+  onTestResult = async (evt:TExamEvt<TLocEvtData>) => {
+    if(!shouldSaveArtifact(this.#saveScreenshot, evt?.data?.status)) return
 
-    // if(evt?.data?.status !== TestsResultStatus.passed){
-      
-    // }
+    const page = this.#getPage()
+    if(!page) return
+    
+    const resp = await takeScreenshot(evt, { ext: this.#screenshotExt, page })
+    resp && (this.#screenshots[resp.id] = resp.uri)
   }
 
   onRunResult = async (evt:TExamEvt<TLocEvtData>) => {
-    const html = this.#htmlTemplate({ response: evt.data })
+    const html = this.#htmlTemplate({ data: evt.data })
     await this.#saveReport(evt, html)
   }
 

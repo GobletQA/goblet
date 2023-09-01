@@ -1,4 +1,4 @@
-import { ArtifactSaveOpts } from '@GBB/constants'
+import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
@@ -28,6 +28,8 @@ export const shouldSaveArtifact = (
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
+ * Checks if a feature is enabled to know if the feature options should be set
+ * For example, tracing options are only set when tracing is active
  */
 export const artifactSaveActive = (option:string|boolean) => {
   return Boolean(artifactSaveOption(option))

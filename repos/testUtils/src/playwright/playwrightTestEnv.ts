@@ -8,8 +8,9 @@ import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
 import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
 import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'
 import {
+  getPage,
+  closePage,
   setupBrowser,
-  setLastActivePage,
   getLastActivePage,
 } from '@GTU/Playwright/browserContext'
 
@@ -38,7 +39,7 @@ const initErrCloseAll = async () => {
   catch(err){}
   global.context = undefined
   
-  try { global.page && await global.page.close() }
+  try { await closePage(undefined, 3) }
   catch(err){}
   global.page = undefined
 
@@ -58,9 +59,9 @@ const cleanupPageAndContext = async () => {
     reuseContext,
   } = get<TGobletTestOpts>(global, `__goblet.options`, emptyObj)
 
+
   if(!reusePage){
-    global.page && await global?.page?.close?.()
-    global.page = undefined
+    await closePage(undefined, 3)
     delete global.page
   }
 
@@ -105,8 +106,10 @@ export const initialize = async () => {
     forceExit(err)
   }
   finally {
-    return !startError &&
-      await startTracingChunk(global.context)
+    if(startError) return
+
+    await startTracingChunk(global.context)
+    await getPage()
   }
 }
 
@@ -118,6 +121,7 @@ export const initialize = async () => {
 export const cleanup = async (initErr?:boolean) => {
 
   if (!global.browser){
+    await cleanupPageAndContext()
     await commitTestMeta()
     return false
   }
@@ -143,7 +147,6 @@ export const cleanup = async (initErr?:boolean) => {
   )
 
   try {
-    setLastActivePage(undefined)
 
     initErr
       ? await initErrCloseAll()

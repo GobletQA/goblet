@@ -1,5 +1,5 @@
 import { get } from '@keg-hub/jsutils/get'
-import { shouldSaveArtifact } from '@gobletqa/browser'
+import { shouldSaveArtifact } from '../utils/artifactSaveOption'
 import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 import { getGeneratedName, ensureRepoArtifactDir } from '@GTU/Playwright/generatedArtifacts'
 

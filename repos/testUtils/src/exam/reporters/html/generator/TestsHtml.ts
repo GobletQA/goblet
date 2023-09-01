@@ -78,10 +78,12 @@ const FailedList = (test: TRunResult, opts:TReporterOpts) => {
   return test.failedExpectations.map((expectation: any) => {
     return `
       <li class="list-item failed-item step-failed failed">
-        <pre class="failed-description" >
-          ${expectation.description}
+        <div class="failed-description" >
+          <pre>
+            ${expectation.description}
+          </pre>
           ${opts?.onRenderError?.(test) || ``}
-        </pre>
+        </div>
       </li>
     `
   }).join('')
@@ -98,8 +100,8 @@ const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
         : ``
 
       return `
-        <li class="list-item step-item step-${state} ${state}" ${toggleError} >
-          <div class="step-description ${state}">
+        <li class="list-item step-item step-${state} ${state}">
+          <div class="step-description ${state}" ${toggleError}>
             <span class="step-icon-container">
               ${IconsHtml(state as any)}
             </span>
@@ -205,12 +207,27 @@ const testStyles = () => {
         transition: max-height 1s ease;
       }
 
-      .root-list .failed-list pre.failed-description {
+      .root-list .failed-list .failed-description {
         margin-top: 0px;
         color: ${colors.c21};
-        padding: ${padding.px};
+        padding: ${padding.dpx};
         margin-bottom: ${margin.qpx};
         background-color: ${colors.w01};
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .root-list .failed-list .failed-description pre {
+        margin-top: 0px;
+      }
+
+      .root-list .failed-list .test-image-container {
+        width: 100%;
+        text-align: center;
+      }
+      .root-list .failed-list .test-image {
+        width: 60%;
+        border: ${margin.hpx} solid ${colors.w};
       }
 
       .root-list .step-item {
@@ -226,6 +243,7 @@ const testStyles = () => {
       }
 
       .root-list .step-item .step-description.failed {
+        cursor: pointer;
         background-color: ${colors.failBg};
       }
 

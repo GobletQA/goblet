@@ -75,7 +75,7 @@ const ExamConfig = ():TExamConfig => {
   const examConfig = config?.testConfig || emptyObj
   const reporters = isArr(examConfig.reporters)
     ? examConfig.reporters
-    : [[CliReporterLoc, {}], [HtmlReporterLoc, { snapshotOnError: true }]]
+    : [[CliReporterLoc, {}], [HtmlReporterLoc, { saveScreenshot: gobletOpts.saveScreenshot }]]
 
   const rootDir = examConfig?.rootDir
     || config.paths.repoRoot

@@ -18,7 +18,7 @@ export const Script = () => {
         }
       }
       document.addEventListener("DOMContentLoaded", function(event) {
-        Array.from(document.querySelectorAll(".failed-list")).forEach(el => el.click())
+        Array.from(document.querySelectorAll(".step-description.failed")).forEach(el => el.click())
       })
     </script>
   `

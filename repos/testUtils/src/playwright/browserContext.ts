@@ -57,6 +57,9 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
   if(!context)
     throw new Error(`Failed to create ${GOBLET_BROWSER} browser context`)
 
+  context.on(`close`, () => global.context = undefined)
+  browser.on(`disconnected`, () => global.browser = undefined)
+
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext
 
@@ -104,42 +107,77 @@ export const getContext = async () => {
  *
  * @return {Object} - Playwright browser page object
  */
-export const getPage = async (num = 0) => {
+export const getPage = async (num = 0, fromClosePage:boolean=false) => {
   const context = await getContext()
 
   const pages = context.pages() || []
-  const page = pages.length ? pages[num] : await context.newPage()
+  const page = pages.length
+    ? pages[num]
+    : fromClosePage
+      ? undefined
+      : await context.newPage()
+
+  global.page = page
   LAST_ACTIVE_PAGE = page
+  page.on('close', () => {
+    LAST_ACTIVE_PAGE = undefined
+    global.page = undefined
+  })
+  page.on('crash', (data) => {
+    console.error(`ERROR - Browser page crashed`)
+    console.log(data)
+  })
 
   return LAST_ACTIVE_PAGE as TBrowserPage
 }
 
 export const getLastActivePage = () => LAST_ACTIVE_PAGE as TBrowserPage
-export const setLastActivePage = (page:TBrowserPage) => {
-  LAST_ACTIVE_PAGE = page
+global.getLastActivePage = getLastActivePage
+
+export const setLastActivePage = (page:TBrowserPage) => (LAST_ACTIVE_PAGE = page)
+global.setLastActivePage = setLastActivePage
+
+export const closePages = async () => {
+  const context = await getContext()
+  const pages = context.pages() || []
+  return Promise.all(pages.map(async (page) => await page.close()))
 }
 
-export const closePage = async (page:TBrowserPage) => {
-  const pg = page || await getPage()
-  
-  if (!pg) return console.warn(`Could not close browser page, because it does not exist.`)
+export const closePage = async (pg?:TBrowserPage, retry:number=1) => {
+  const page = pg
+    || LAST_ACTIVE_PAGE
+    || global.page
+    || await getPage(0, true)
 
-  await pg.close()
-  LAST_ACTIVE_PAGE = undefined
+  if(!page) return
 
+  /**
+   * This is a hack so we don't close the browser when is busy doing something
+   * By default it will wait a second and then force close the browser
+   * Check the retry arg, to try multiple times before closing the browser
+   */
+  if(page.__GobletBusy && retry > 0)
+    return new Promise(
+      (res) => setTimeout(async () => res(await closePage(page, retry - 1)), 1000)
+    )
+
+  page && await page.close()
+
+  if(page === global.page) global.page = undefined
+  if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
 }
 
 export const closeContext = async () => {
   const context = await getContext()
+  if(!context) return
 
-  await context.close()
-  global.context = undefined
+  await context?.close()
 }
 
 export const closeBrowser = async () => {
   if (!global.browser)
     return console.warn(`Could not close browser, because it does not exist.`)
 
+  await closeContext()
   await global.browser.close()
-  global.browser = undefined
 }

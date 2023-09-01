@@ -13,10 +13,13 @@ import { exists } from '@keg-hub/jsutils/exists'
 import { getPathFromBase } from '@gobletqa/goblet'
 import {
   CanRecordVideo,
-  artifactSaveActive,
-  artifactSaveOption,
   BrowserArtifactTypes,
 } from '@gobletqa/browser'
+
+import {
+  artifactSaveActive,
+  artifactSaveOption,
+} from './artifactSaveOption'
 
 /**
  * Builds the repo paths to artifacts generated at test run
@@ -61,6 +64,7 @@ export const buildTestGobletOpts = (
     reuseContext: ENVS.GOBLET_CONTEXT_REUSE,
     saveTrace: artifactSaveOption(ENVS.GOBLET_TEST_TRACING),
     saveReport: artifactSaveOption(ENVS.GOBLET_TEST_REPORT),
+    saveScreenshot: artifactSaveOption(ENVS.GOBLET_TEST_SCREENSHOT),
     // Only chromium can record video so only turn it on for that browser
     // Should be able to record on others, but not currently working
     saveVideo: CanRecordVideo.includes(browserOpts.type as EBrowserName) &&

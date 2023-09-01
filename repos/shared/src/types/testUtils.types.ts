@@ -19,6 +19,7 @@ export type TGobletTestOpts = {
   saveVideo?:TGobletTestArtifactOption
   saveTrace?:TGobletTestArtifactOption
   saveReport?:TGobletTestArtifactOption
+  saveScreenshot?:TGobletTestArtifactOption
   reusePage?:boolean
   reuseContext?:boolean
 }

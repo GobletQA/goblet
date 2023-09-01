@@ -7,7 +7,7 @@ import type {
   TBrowserContextVideo,
 } from '@GBB/types'
 
-
+import { ArtifactSaveOpts } from '@GBB/constants'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
@@ -16,7 +16,20 @@ import { exists } from '@keg-hub/jsutils/exists'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getScreenDims } from '@GBB/utils/getScreenDims'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
-import { artifactSaveActive } from '@GBB/utils/artifactSaveOption'
+
+/**
+ * Check if video recording is active
+ * This is a duplicate of `artifactSaveOption` from `gobletqa/test-utils/src/utils/artifactSaveOption`
+ * But we don't have access to that method here
+ * It's only a few lines of code, but I would prefer to not duplicate it
+ */
+const shouldRecordVideo = (value:string|boolean) => {
+  return !value || value === ArtifactSaveOpts.never
+    ? false
+    : value === ArtifactSaveOpts.always
+      ? ArtifactSaveOpts.always
+      : ArtifactSaveOpts.failed
+}
 
 /**
  * Parses the GOBLET_CONTEXT_GEO env into an object 
@@ -56,10 +69,10 @@ const parseRecord = (
   config:TGobletConfig,
   opts:Partial<TBrowserContextOpts>,
   screenDims:TScreenDims,
-  shouldRecordVideo:boolean,
+  recordVideoActive:boolean,
   fullScreen:boolean
 ) => {
-  if(!shouldRecordVideo) return opts
+  if(!recordVideoActive) return opts
 
   opts.recordVideo = (opts.recordVideo || {}) as TBrowserContextVideo
   opts.recordVideo.size = isObj(screenDims)
@@ -108,7 +121,7 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     config,
     opts,
     screenDims,
-    artifactSaveActive(GOBLET_TEST_VIDEO_RECORD),
+    shouldRecordVideo(GOBLET_TEST_VIDEO_RECORD),
     toBool(GOBLET_FULL_SCREEN_VIDEO)
   )
 

@@ -1,16 +1,14 @@
 
-import { getPage } from '@GTU/Playwright'
+import { AfterAll, BeforeAll } from '@GTU/Parkin'
 import { initialize, cleanup } from '@GTU/PlaywrightEnv'
 
 /**
  * Add wrap method to ensure no arguments are passed to initialize and cleanup
  */
-beforeAll(async () => {
+BeforeAll(async () => {
   await initialize()
-  global.page = await getPage()
 })
 
-afterAll(async () => {
+AfterAll(async () => {
   await cleanup()
-  global.page = undefined
 })

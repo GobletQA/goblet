@@ -64,6 +64,7 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
 
 export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   locator:(selector: string, options?: TLocatorOpts) => TLocator
+  __GobletBusy?:boolean
   __GobletAutomateInstance?: Automate
 }
 

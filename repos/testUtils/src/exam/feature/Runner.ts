@@ -200,7 +200,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     this.event(ExamEvents.results({ data: result }))
   }
 
-  onSpecDone = (result:TLocEvt) => {
+  onSpecDone = async (result:TLocEvt) => {
     if(this.canceled) return
 
     this.event(ExamEvents.specDone({
@@ -209,7 +209,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
         failedExpectations: result?.failedExpectations
       }
     }))
-
     result.failed && this.#checkBail(result)
   }
 
