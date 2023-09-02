@@ -57,11 +57,7 @@ export const buildScreenshotName = (opts:TBuiltSSName) => {
 
 export const takeScreenshot = async (evt:TExamEvt<TLocEvtData>, opts:TTakeShot) => {
   const { page } = opts
-  // const ssOpts = getNameOpts(evt.data, rest)
-  
-  page.__GobletBusy = true
   const buffer = await page?.screenshot()
-  page.__GobletBusy = false
 
   return {
     id: evt.data.id,

@@ -14,7 +14,15 @@ ENV GB_SUB_REPO=screencast \
     GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT
 
 RUN mkdir -p /etc/supervisor && \
-    rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-*
+    rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-* && \
+    sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    novnc \
+    net-tools \
+    supervisor \
+    tigervnc-standalone-server && \
+    rm -rf /var/lib/apt/lists/*
 # ---- End Stage ---- #
 
 
@@ -39,40 +47,10 @@ WORKDIR /goblet/app
 RUN pnpm add --global dot-json && \
     mkdir -p /goblet/runner
 
-COPY . .
-
 RUN rm -rf /goblet/app/repos/backend && \
-    rm -rf /goblet/app/repos/components && \
-    rm -rf /goblet/app/repos/conductor && \
-    rm -rf /goblet/app/repos/monaco && \
-    rm -rf /goblet/app/repos/race && \
-    rm -rf /goblet/app/repos/vite && \
-    cd /goblet/app/repos/browser && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/environment && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/exam && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/goblet && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/latent && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/logger && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/shared && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/screencast && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/testUtils && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/workflows && \
-    pnpm json:rm && \
-    cd /goblet/app && \
-    pnpm json:rm
+    rm -rf /goblet/app/repos/conductor
 
-RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod && \
-    rm -rf /root/.local/share/pnpm
-
+RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
 WORKDIR /goblet/app/repos/screencast
 RUN pnpm build
 # ---- End Stage ---- #

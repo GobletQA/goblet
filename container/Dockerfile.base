@@ -1,35 +1,43 @@
 ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.37.1-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
+
 # ---- Setup Stage  ---- #
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-
-ARG GB_PNPM_VERSION=8.6.12
+ARG GB_PNPM_VERSION=8.7.1
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
+ENV PNPM_VERSION=$GB_PNPM_VERSION
+ENV NODE_MAJOR=20
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
 # 1. Enable all sources
 # 2. Preinstall any dependecies for settting up the image
-RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && apt-get update
-RUN apt-get install --yes --no-install-recommends \
+RUN npm uninstall -g yarn && \
+    apt remove nodejs -y && \
+    sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    gpg \
+    wget \
     curl \
-    novnc \
-    net-tools \
-    supervisor \
-    openssh-client \
     ca-certificates \
-    tigervnc-standalone-server && \
+    openssh-client && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install nodejs -y && \
     apt-get clean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/lib/apt/lists.d/* && \
+    export SHELL="bash" && \
+    curl -fsSL https://get.pnpm.io/install.sh | bash - && \
     touch $GB_GIT_GLOBAL_IGNORE && \
     echo "goblet/**/**secrets**.env" >> $GB_GIT_GLOBAL_IGNORE && \
-    echo "goblet/**/**values**.env" >> $GB_GIT_GLOBAL_IGNORE && \
-    npm install --global pnpm@$GB_PNPM_VERSION && \
-    npm uninstall -g yarn
+    echo "goblet/**/**values**.env" >> $GB_GIT_GLOBAL_IGNORE
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
@@ -62,20 +70,47 @@ ENV HOME=/root \
     GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION \
-    DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION
 EXPOSE $GB_FE_PORT
 EXPOSE $GB_BE_PORT
 EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT
 EXPOSE $GB_VNC_SERVER_PORT
-# ---- End Stage ---- #
 
-
-# ---- PNPM State  ---- #
-FROM goblet-setup as goblet-base
-WORKDIR /goblet/app
 COPY .npmrc pnpm-*.yaml ./
 RUN CI=1 pnpm fetch --no-optional --ignore-scripts
-COPY package.json ./
+COPY . .
+RUN pnpm add --global jqn && \
+    rm -rf /goblet/app/repos/components && \
+    rm -rf /goblet/app/repos/monaco && \
+    rm -rf /goblet/app/repos/race && \
+    rm -rf /goblet/app/repos/vite && \
+    cd /goblet/app/repos/browser && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/conductor && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/environment && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/goblet && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/exam && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/logger && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/latent && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/screencast && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/shared && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/testUtils && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/workflows && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    echo "$(cat package.json | jqn 'delete $.optionalDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    CI=1 pnpm install --fix-lockfile --prod --prefer-offline && \
+    pnpm remove --global jqn
+
 # ---- End Stage ---- #

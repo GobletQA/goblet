@@ -19,8 +19,6 @@ const shared = {
   target: [`node20`],
   entryNames: `[name]`,
   platform: `node` as const,
-  mainFields: [`module`, `main`],
-  conditions: [`import`, `module`],
   plugins: [aliasPlugin(aliases)],
   tsconfig: path.join(GSCRoot, `tsconfig.json`),
 }

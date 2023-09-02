@@ -203,7 +203,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   onSpecDone = async (result:TLocEvt) => {
     if(this.canceled) return
 
-    this.event(ExamEvents.specDone({
+    await this.event(ExamEvents.specDone({
       data: {
         ...this.clearTestResults(result),
         failedExpectations: result?.failedExpectations

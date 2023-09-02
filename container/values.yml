@@ -92,12 +92,19 @@ env:
   GB_APP_MOUNT_PATH: /goblet/app
 
 
+# ---- Playwright Image ENVs ---- #
+  GB_PW_IMAGE_TAG: latest
+  GB_PW_DEPLOYMENT: goblet-playwright
+  GB_PW_IMAGE: ghcr.io/gobletqa/goblet-playwright
+  GB_PW_IMAGE_FROM: ubuntu:focal
+
 # ---- Base ENVs ---- #
   GB_BS_IMAGE_TAG: latest
   GB_BS_DEPLOYMENT: goblet-base
   GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
   # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
   GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.37.1-focal'
+  # GB_BS_IMAGE_FROM: ubuntu:focal
 
 
 # ---- Backend ENVs ---- #

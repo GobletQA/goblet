@@ -5,7 +5,6 @@
   TExamConfig,
   IExamReporter,
   TExReporterCfg,
-  TestsResultStatus,
   TEXInterReporterContext,
 } from "@gobletqa/exam"
 
@@ -151,10 +150,10 @@ export class HtmlReporter implements IExamReporter {
       const name = path.basename(evt.data.location).split(`.`).slice(0, -1).join(`.`)
       const location = path.join(this.reportsDir, `${name}-${timestamp}.html`)
       await writeFile(location, html)
-      console.log(`  Html report saved to:`, `./${location.replace(this.rootDir, ``)}`)
+      console.log(`  Html report saved to:`, `${location.replace(this.rootDir, ``)}`)
     }
     catch(err){
-      console.error(`  Error saving html report to`, `./${this.reportsDir.replace(this.rootDir, ``)}`)
+      console.error(`  Error saving html report to`, `${this.reportsDir.replace(this.rootDir, ``)}`)
       console.log(err.stack)
     }
   }

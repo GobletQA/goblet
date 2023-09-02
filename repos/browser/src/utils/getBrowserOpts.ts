@@ -40,14 +40,23 @@ const getDefOpts = (config?:TGobletConfig) => {
         `--use-fake-device-for-media-stream`,
         `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
 
+
         // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this
         // `--kiosk`, // -- Use to disable right click
 
         // TODO - Investigate this - may be needed in some context
         // `--deny-permission-prompts`
-        // Investigate this - May allow keeping the browser alive in goblet UI app
-        // Don't want this when running in CI or other environments
-        // `--keep-alive-for-test`
+
+
+        // --disable-web-security
+        // Don't enforce the same-origin policy; meant for website testing only. This switch has no effect unless --user-data-dir (as defined by the content embedder) is also present.
+        // --process-per-site
+        // --site-per-process
+
+        // To allow trace reporting to work
+        // Look into always adding <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+        // Or try using new Browser({ bypassCSP: true }) option in playwright
+
       ],
     } as Partial<TBrowserConf>,
     ci: {

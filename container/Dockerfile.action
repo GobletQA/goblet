@@ -6,29 +6,52 @@ ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
 # ---- Turbo Stage ---- #
 FROM $GB_BASE_IMAGE_FROM as goblet-turbo
-RUN pnpm add --global turbo dot-json
+RUN pnpm add --global turbo && \
+    rm -rf .*ignore && \
+    rm -rf configs/app.pm2.config.js && \
+    rm -rf configs/commit-types.json && \
+    rm -rf configs/commitlint.config.js && \
+    rm -rf configs/eslintrc.config.js && \
+    rm -rf configs/lint-staged.config.js && \
+    rm -rf configs/pm2.config.js && \
+    rm -rf configs/prettier.config.js && \
+    rm -rf /goblet/app/repos/backend && \
+    rm -rf /goblet/app/repos/conductor && \
+    rm -rf /goblet/app/repos/screencast
 # ---- End Stage ---- #
 
 
 # ---- Image Stage ---- #
 FROM $IMAGE_FROM as goblet-image
 ARG DEBUG_FILE=/github/logs/pwlogs.log
-ENV PWDEBUG=0 \
-    DEBUG=pw:* \
-    HOME=/root \
-    LC_ALL=C.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    DEBUG_FILE=$DEBUG_FILE
+ARG GB_PNPM_VERSION=8.7.1
+ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
+ENV PWDEBUG=0
+ENV NODE_MAJOR=20
+ENV PNPM_VERSION=$GB_PNPM_VERSION
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
 
-RUN apt-get update && \
-    apt-get install jq --yes --no-install-recommends && \
-    apt-get clean && \
-    apt-get autoremove --yes && \
+# 1. Enable all sources
+# 2. Preinstall any dependecies for settting up the image
+RUN npm uninstall -g yarn && \
+    apt-get remove nodejs -y && \
+    sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    jq \
+    gpg \
+    wget \
+    curl \
+    ca-certificates \
+    openssh-client && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install nodejs -y && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/lib/apt/lists.d/* && \
-    npm install --global pnpm@8.3.1 && \
-    npm uninstall -g yarn && \
+    curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - && \
     mkdir -p $(dirname "${DEBUG_FILE}") && \
     mkdir -p /github/app/temp && \
     mkdir -p /github/app/.tmp
@@ -38,87 +61,27 @@ RUN apt-get update && \
 # ---- Prune Stage ---- #
 FROM goblet-turbo as goblet-pruner
 WORKDIR /goblet/app
-COPY . .
-RUN <<EOF
-  set -eux;
-
-  rm -rf .*ignore
-  rm -rf configs/app.pm2.config.js
-  rm -rf configs/commit-types.json
-  rm -rf configs/commitlint.config.js
-  rm -rf configs/eslintrc.config.js
-  rm -rf configs/lint-staged.config.js
-  rm -rf configs/pm2.config.js
-  rm -rf configs/prettier.config.js
-
-  rm -rf /goblet/app/repos/backend
-  rm -rf /goblet/app/repos/components
-  rm -rf /goblet/app/repos/conductor
-  rm -rf /goblet/app/repos/monaco
-  rm -rf /goblet/app/repos/race
-  rm -rf /goblet/app/repos/screencast
-  rm -rf /goblet/app/repos/vite
-
-  cd /goblet/app/repos/browser
-  pnpm json:rm
-
-  cd /goblet/app/repos/environment
-  pnpm json:rm
-
-  cd /goblet/app/repos/goblet
-  pnpm json:rm
-
-  cd /goblet/app/repos/exam
-  pnpm json:rm
-
-  cd /goblet/app/repos/logger
-  pnpm json:rm
-
-  cd /goblet/app/repos/latent
-  pnpm json:rm
-
-  cd /goblet/app/repos/shared
-  pnpm json:rm
-
-  cd /goblet/app/repos/testUtils
-  pnpm json:rm
-
-  cd /goblet/app/repos/workflows
-  pnpm json:rm
-
-  cd /goblet/app
-  pnpm json:rm
-
-EOF
 
 RUN turbo prune --docker --scope=@gobletqa/test-utils
-RUN <<EOF
-  set -eux;
-  cp .nvmrc out/json/.nvmrc
-  cp pnpm-lock.yaml out/json/pnpm-lock.yaml
-
-  cp -r tasks out/full/tasks
-  cp -r configs out/full/configs
-  cp gobletRoot.js out/full/gobletRoot.js
-  cp tsconfig.json out/full/tsconfig.json
-  mkdir -p out/full/logs
-  mkdir -p out/full/.tmp
-  mkdir -p out/full/temp
-
-  rm -rf out/full/.turbo
-  rm -rf out/full/pnpm-lock.yaml
-  rm -rf out/full/.turbo.json
-
-  # Remove unused tasks in the container
-  # Then replace the default tasks with the sc-entry tasks
-  rm -rf out/full/tasks/definitions/index.ts
-  rm -rf out/full/tasks/definitions/kube
-  rm -rf out/full/tasks/definitions/deploy
-  rm -rf out/full/tasks/definitions/docker
-  rm -rf out/full/tasks/definitions/devspace
-  mv out/full/tasks/definitions/sc-entry.ts out/full/tasks/definitions/index.ts
-
-EOF
+RUN cp .nvmrc out/json/.nvmrc && \
+    cp pnpm-lock.yaml out/json/pnpm-lock.yaml && \
+    cp -r tasks out/full/tasks && \
+    cp -r configs out/full/configs && \
+    cp gobletRoot.js out/full/gobletRoot.js && \
+    cp tsconfig.json out/full/tsconfig.json && \
+    mkdir -p out/full/logs && \
+    mkdir -p out/full/.tmp && \
+    mkdir -p out/full/temp && \
+    rm -rf out/full/.turbo && \
+    rm -rf out/full/pnpm-lock.yaml && \
+    rm -rf out/full/.turbo.json && \
+    rm -rf out/full/tasks/definitions/index.ts && \
+    rm -rf out/full/tasks/definitions/kube && \
+    rm -rf out/full/tasks/definitions/deploy && \
+    rm -rf out/full/tasks/definitions/docker && \
+    rm -rf out/full/tasks/definitions/devspace && \
+    mv out/full/tasks/definitions/sc-entry.ts out/full/tasks/definitions/index.ts && \
+    rm -rf `find . -type d -name node_modules`
 # ---- End Stage ---- #
 
 
@@ -126,7 +89,7 @@ EOF
 FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN CI=1 pnpm install --fix-lockfile --prod
+RUN CI=1 pnpm install --fix-lockfile --prod --prefer-offline --no-optional
 # ---- End Stage ---- #
 
 
@@ -142,7 +105,7 @@ RUN ln -s /github /goblet && \
     ln -s /github/app/node_modules /github/node_modules
 
 WORKDIR /github/app/repos/exam
-RUN pnpm build:cli
-
+# Enable this, once it's actually being used
+# RUN pnpm build:cli
 ENV GOBLET_RUN_FROM_CI=1
 # ---- End Stage ---- #

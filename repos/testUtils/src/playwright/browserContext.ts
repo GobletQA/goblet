@@ -151,16 +151,6 @@ export const closePage = async (pg?:TBrowserPage, retry:number=1) => {
 
   if(!page) return
 
-  /**
-   * This is a hack so we don't close the browser when is busy doing something
-   * By default it will wait a second and then force close the browser
-   * Check the retry arg, to try multiple times before closing the browser
-   */
-  if(page.__GobletBusy && retry > 0)
-    return new Promise(
-      (res) => setTimeout(async () => res(await closePage(page, retry - 1)), 1000)
-    )
-
   page && await page.close()
 
   if(page === global.page) global.page = undefined

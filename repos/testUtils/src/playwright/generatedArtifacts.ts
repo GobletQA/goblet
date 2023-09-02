@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import { get } from '@keg-hub/jsutils/get'
-import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { mkDir, removeFile } from '@GTU/Utils/fileSys'
 import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 
@@ -33,7 +32,9 @@ export const getGeneratedName = (
   type?:string,  // TODO - Update to test type enum
   browserName?:string // TODO - Update to browser type enum
 ) => {
-  const testPath = testLoc || evtReporter.getTestPath() || nanoid()
+  const testPath = testLoc || evtReporter.getTestPath()
+  if(!testPath) throw new Error(`Could not resolve test path location`)
+
   const testType = type || get(global, `__goblet.options.testType`)
   const browser = browserName || get(global, `__goblet.browser.type`, 'browser')
 

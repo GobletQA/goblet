@@ -301,5 +301,8 @@ module.exports = {
         ]
       }
     },
+    playwright: {
+      contexts: [`playwright`, `pw`],
+    },
   },
 }

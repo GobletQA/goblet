@@ -41,8 +41,6 @@
     "format:pretty": "pnpm pretty .",
     "imgs": "node -r ./configs/aliases.js tasks/entry.ts docker images",
     "kube": "node -r ./configs/aliases.js tasks/entry.ts kube",
-    "json:rm": "dot-json package.json devDependencies -d",
-    "json:rm-all": "pnpm json:rm && pnpm -r json:rm",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
     "mkcert": "GB_ROOT_DIR=$(pwd) ./scripts/shell/mkcert/mkcert.sh",
@@ -96,34 +94,34 @@
   "dependencies": {
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/parse-config": ">=2.1.0",
     "esbuild": "0.19.2",
     "esbuild-register": "3.4.2",
     "module-alias": "2.2.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.1.0",
-    "@commitlint/config-conventional": "16.0.0",
-    "@keg-hub/parse-config": ">=2.1.0",
-    "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/esdev": "0.2.1",
     "@ltipton/parkin": "6.1.1",
+    "esbuild-jest": "0.5.0",
+    "playwright": "1.37.1",
+    "typescript": "5.0.4"
+  },
+  "optionalDependencies": {
+    "@commitlint/cli": "16.1.0",
+    "@commitlint/config-conventional": "16.0.0",
     "@types/node": "18.15.13",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
-    "dot-json": "1.2.2",
-    "esbuild-jest": "0.5.0",
     "eslint": "8.7.0",
     "husky": "7.0.4",
     "lint-staged": "12.3.4",
-    "module-alias": "2.2.2",
-    "nodemon": "2.0.22",
-    "playwright": "1.37.1",
-    "prettier": "2.5.1",
     "semver": "7.3.7",
     "syncpack": "11.2.1",
-    "typescript": "5.0.4"
+    "nodemon": "2.0.22",
+    "module-alias": "2.2.2",
+    "prettier": "2.5.1"
   },
   "config": {
     "commitizen": {
