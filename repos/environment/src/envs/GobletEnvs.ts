@@ -5,6 +5,7 @@ import test from './test'
 import repo from './repo'
 import general from './general'
 import backend from './backend'
+import browser from './browser'
 import screencast from './screencast'
 import { exists } from '../utils/helpers'
 
@@ -17,6 +18,7 @@ const buildEnvs = () => {
     ...repo(generalEnvs),
     ...test(generalEnvs),
     ...backend(generalEnvs),
+    ...browser(generalEnvs),
     ...screencast(generalEnvs),
   }
 }

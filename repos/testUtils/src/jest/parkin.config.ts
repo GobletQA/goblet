@@ -131,7 +131,7 @@ export const parkinConfig =  async () => {
     transform: {
       ...defConf.transform,
       // Add the custom parkin transformer for feature files
-      '^.*\\.feature': `${testUtilsDir}/src/parkin/transformer.ts`,
+      '^.*\\.feature': `${testUtilsDir}/src/jest/transformer.ts`,
     },
   }
 }

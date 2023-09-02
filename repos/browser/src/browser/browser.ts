@@ -175,7 +175,7 @@ export class Browser {
       }
       else {
         context = await browser.newContext(options) as TBrowserContext
-        context.__goblet = { options }
+        context.__contextGoblet = { options }
 
         !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
 

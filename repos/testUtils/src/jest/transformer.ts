@@ -1,4 +1,7 @@
-import { default as createCacheKey} from '@jest/create-cache-key-function'
+// import { default as createCacheKey} from '@jest/create-cache-key-function'
+const createCacheKey = (...args:any[]) => {
+  return ``
+}
 
 
 /**

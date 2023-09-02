@@ -3,7 +3,6 @@ import type { TGobletTestOpts } from '@gobletqa/shared/types'
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { copyTestReports } from '@GTU/Playwright/testReport'
 import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
 import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
 import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'
@@ -131,15 +130,11 @@ export const cleanup = async (initErr?:boolean) => {
     `Failed attempt to stop Tracing...`,
   )
 
-  await tryLogCleanupCB(
-    async () => await saveRecordingPath(getLastActivePage()),
-    `Failed attempt to save Recording...`,
-  )
-
-  await tryLogCleanupCB(
-    copyTestReports,
-    `Failed attempt to save Test Reports...`,
-  )
+  // TODO: Add video recording
+  // await tryLogCleanupCB(
+  //   async () => await saveRecordingPath(getLastActivePage()),
+  //   `Failed attempt to save Recording...`,
+  // )
 
   await tryLogCleanupCB(
     commitTestMeta,

@@ -23,6 +23,9 @@ type TRunOpts = TParkinRunOpts & {
   skipAfterFailed?:boolean
 }
 
+
+type TFeatureEnvironment = TExEnvironmentCfg<{ parkin?: Record<string, any> }>
+
 export class FeatureEnvironment implements IExamEnvironment {
 
   parkin:Parkin
@@ -47,7 +50,7 @@ export class FeatureEnvironment implements IExamEnvironment {
     `beforeEach`,
   ]
 
-  constructor(cfg:TExEnvironmentCfg=emptyObj){
+  constructor(cfg:TFeatureEnvironment=emptyObj){
 
     Object.entries(cfg.globals)?.forEach(([key, item]) => {
       this.cache.globals[key] = global[key]
@@ -61,7 +64,7 @@ export class FeatureEnvironment implements IExamEnvironment {
 
     this.parkin = global.getParkinInstance(cfg.globals?.__goblet?.config)
     this.test = new ParkinTest()
-    this.runOptions = cfg.globals?.__goblet?.parkin?.run
+    this.runOptions = cfg?.parkin?.run
 
   }
 

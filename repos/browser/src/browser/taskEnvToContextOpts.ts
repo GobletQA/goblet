@@ -7,12 +7,12 @@ import type {
   TBrowserContextVideo,
 } from '@GBB/types'
 
-import { ArtifactSaveOpts } from '@GBB/constants'
+import { ENVS } from '@gobletqa/environment'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
-import { toBool } from '@keg-hub/jsutils/toBool'
 import { exists } from '@keg-hub/jsutils/exists'
+import { ArtifactSaveOpts } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getScreenDims } from '@GBB/utils/getScreenDims'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
@@ -94,26 +94,16 @@ const parseRecord = (
  * This allows passing values into the test environment
  */
 export const taskEnvToContextOpts = (config:TGobletConfig) => {
-  const {
-    GOBLET_CONTEXT_TZ, // string
-    GOBLET_CONTEXT_GEO, // JSON array
-    GOBLET_CONTEXT_TOUCH, // boolean
-    GOBLET_CONTEXT_MOBILE, // boolean
-    GOBLET_CONTEXT_DOWNLOADS, // boolean
-    GOBLET_CONTEXT_PERMISSIONS,  // JSON array
-    GOBLET_FULL_SCREEN_VIDEO, // boolean
-    GOBLET_TEST_VIDEO_RECORD, // boolean || string
-  } = process.env
 
   const opts = {
-    ...parseJsonEnvArr('permissions', GOBLET_CONTEXT_PERMISSIONS),
-    ...parseGeo(GOBLET_CONTEXT_GEO),
+    ...parseJsonEnvArr('permissions', ENVS.GOBLET_CONTEXT_PERMISSIONS),
+    ...parseGeo(ENVS.GOBLET_CONTEXT_GEO),
   } as Partial<TBrowserContextOpts>
 
-  addEnvToOpts(opts, 'timezoneId', GOBLET_CONTEXT_TZ)
-  addEnvToOpts(opts, 'hasTouch', toBool(GOBLET_CONTEXT_TOUCH))
-  addEnvToOpts(opts, 'isMobile', toBool(GOBLET_CONTEXT_MOBILE))
-  addEnvToOpts(opts, 'acceptDownloads', toBool(GOBLET_CONTEXT_DOWNLOADS))
+  addEnvToOpts(opts, 'timezoneId', ENVS.GOBLET_CONTEXT_TZ)
+  addEnvToOpts(opts, 'hasTouch', ENVS.GOBLET_CONTEXT_TOUCH)
+  addEnvToOpts(opts, 'isMobile', ENVS.GOBLET_CONTEXT_MOBILE)
+  addEnvToOpts(opts, 'acceptDownloads', ENVS.GOBLET_CONTEXT_DOWNLOADS)
 
   const screenDims = getScreenDims()
 
@@ -121,8 +111,8 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     config,
     opts,
     screenDims,
-    shouldRecordVideo(GOBLET_TEST_VIDEO_RECORD),
-    toBool(GOBLET_FULL_SCREEN_VIDEO)
+    shouldRecordVideo(ENVS.GOBLET_TEST_VIDEO_RECORD),
+    ENVS.GOBLET_FULL_SCREEN_VIDEO
   )
 
   if(screenDims.height || screenDims.width){

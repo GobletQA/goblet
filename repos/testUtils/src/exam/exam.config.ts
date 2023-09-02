@@ -30,6 +30,7 @@ import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
+import { getTimeouts } from '@GTU/Utils/getTimeouts'
 import { taskEnvToBrowserOpts } from '@gobletqa/browser'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 
@@ -68,7 +69,7 @@ const ExamConfig = ():TExamConfig => {
   const browserConf = browserOpts as TBrowserConf
 
   const contextOpts = getContextOpts({ config })
-  const parkinRunOpts = getParkinOptions()
+  
   const gobletOpts = buildTestGobletOpts(config, browserConf)
 
   // @ts-ignore
@@ -87,6 +88,12 @@ const ExamConfig = ():TExamConfig => {
     || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
     || emptyArr
 
+  const timeouts = getTimeouts({
+    gobletOpts,
+    examConfig,
+    defs: {timeout: 5000, globalTimeout:60000},
+  })
+
   return {
     // debug: true,
     // esbuild: {},
@@ -101,7 +108,6 @@ const ExamConfig = ():TExamConfig => {
       // GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
-    timeout: 15000,
     rootDir,
     testMatch,
     bail: 5,
@@ -111,6 +117,7 @@ const ExamConfig = ():TExamConfig => {
     runInBand: true,
     passWithNoTests: false,
     mode: EExTestMode.serial,
+    timeout: timeouts.timeout,
     aliases: {...aliases, ...examConfig?.aliases},
     extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
     /** Pass on the browser options defined from the task that started the process */
@@ -120,9 +127,7 @@ const ExamConfig = ():TExamConfig => {
         config,
         options: gobletOpts,
         browser: browserOpts,
-        paths: {...config.paths},
-        parkin: { run: parkinRunOpts },
-        context: { options: contextOpts },
+        context: { options: contextOpts }
       },
     },
     reporters: [
@@ -136,7 +141,9 @@ const ExamConfig = ():TExamConfig => {
       ...ensureArr(examConfig.preEnvironment),
       ...getParkinTestInit(config),
     ]),
-    environment: [EnvironmentLoc, {}],
+    environment: [EnvironmentLoc, {
+      parkin: getParkinOptions(timeouts)
+    }],
     /** Add all support and step files and ensure they are loaded before running the tests */
     postEnvironment: flatUnion([
       ...ensureArr(examConfig.postEnvironment),
@@ -149,10 +156,9 @@ const ExamConfig = ():TExamConfig => {
       [`.feature`]: [RunnerLoc, {
         slowMo: 100,
         debug: false,
-        timeout:15000,
         verbose: true,
-        globalTimeout:60000,
         omitTestResults: [],
+        globalTimeout: timeouts.globalTimeout,
       }]
     },
     onStartup: [

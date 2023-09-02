@@ -26,7 +26,7 @@ import type {
  */
 export type TWithGuid = {
   _guid?:string
-  __goblet?:TBrowserConf
+  __browserGoblet?:TBrowserConf
 }
 
 export type TLocatorOpts = {
@@ -54,7 +54,7 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
   pages: () => Array<TBrowserPage>
   newPage: () => Promise<TBrowserPage>
   __GobletAutomateInstance?: Automate
-  __goblet?: {
+  __contextGoblet?: {
     cookie?:string
     tracing?:Boolean
     extraHTTPHeaders?:Record<string, string>

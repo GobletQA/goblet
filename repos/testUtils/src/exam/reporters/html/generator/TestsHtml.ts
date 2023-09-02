@@ -116,13 +116,13 @@ const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
 }
 
 const ScenarioList = (scenarios: TRunResult[], opts:TReporterOpts) => {
-  return scenarios.map((scenario) => {
+  return scenarios?.map((scenario) => {
     const state = status(scenario)
     return `
       <li class="list-item scenario-item scenario-${state} ${state}">
-        ${TitleHtml(scenario.description, `scenario`)}
+        ${TitleHtml(scenario.description || ``, `scenario`)}
         <ul class="scenario-list list-parent" >
-          ${StepList(scenario.tests, opts)}
+          ${StepList(scenario?.tests || [], opts)}
         </ul>
       </li>
     `
@@ -135,9 +135,9 @@ const FeatureList = (features: TRunResult[], opts:TReporterOpts) => {
     const state = status(feature)
     return `
       <li class="list-item feature-item feature-${state} ${state}">
-        ${TitleHtml(feature.description, `Feature`)}
+        ${TitleHtml(feature?.description || ``, `Feature`)}
         <ul class="feature-list list-parent" >
-          ${ScenarioList(feature.describes, opts)}
+          ${ScenarioList(feature?.describes || [], opts)}
         </ul>
       </li>
     `

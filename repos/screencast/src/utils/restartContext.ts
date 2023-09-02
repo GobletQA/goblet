@@ -63,7 +63,7 @@ const getCtxOptions = async (
     {
       extraHTTPHeaders: deepMerge(
         ctxOpts?.extraHTTPHeaders,
-        context?.__goblet?.extraHTTPHeaders,
+        context?.__contextGoblet?.extraHTTPHeaders,
         world?.$context?.extraHTTPHeaders,
         world?.$headers
       )

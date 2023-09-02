@@ -182,7 +182,7 @@ export class PWBrowsers {
       return this.#browsers
     }
 
-    browser.__goblet = {...browser?.__goblet, ...browserConf}
+    browser.__browserGoblet = {...browser?.__browserGoblet, ...browserConf}
 
     const bType = browser.browserType().name()
 
