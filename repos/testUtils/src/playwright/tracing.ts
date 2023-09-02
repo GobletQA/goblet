@@ -50,12 +50,12 @@ export const startTracing = async (context?:TBrowserContext) => {
  * @returns <boolean|void>
  */
 export const startTracingChunk = async (context?:TBrowserContext) => {
-  if(!context || context?.__goblet?.tracing || tracingDisabled()) return
+  if(!context || context?.__contextGoblet?.tracing || tracingDisabled()) return
 
   await context.tracing.startChunk()
 
-  context.__goblet = context.__goblet || {}
-  context.__goblet.tracing = true
+  context.__contextGoblet = context.__contextGoblet || {}
+  context.__contextGoblet.tracing = true
 
   return true
 }
@@ -86,7 +86,7 @@ const shouldSaveTrace = (
  * @returns {Void}
  */
 export const stopTracingChunk = async (context?:TBrowserContext) => {
-  if(!context || !context?.__goblet?.tracing || tracingDisabled()) return
+  if(!context || !context?.__contextGoblet?.tracing || tracingDisabled()) return
 
   const {
     testType,
@@ -134,8 +134,8 @@ export const stopTracingChunk = async (context?:TBrowserContext) => {
   testType &&
     await appendToLatest(`${testType}.traces.${browser}.${name}`, {path: savePath}, true)
 
-  context.__goblet = context.__goblet || {}
-  context.__goblet.tracing = false
+  context.__contextGoblet = context.__contextGoblet || {}
+  context.__contextGoblet.tracing = false
 
   return true
 }

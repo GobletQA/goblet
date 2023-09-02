@@ -42,7 +42,7 @@ const logInputParams = (params:TTaskParams) => {
  * Run parkin tests in container
  */
 const runBdd = async (args:TTaskActionArgs) => {
-  const { params, goblet, task } = args
+  const { params, task } = args
 
   ;(params.testVerbose || params.debug || process.env.GOBLET_TEST_DEBUG)
     && logInputParams(params)
@@ -61,10 +61,8 @@ const runBdd = async (args:TTaskActionArgs) => {
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
-    goblet,
-    type: ETestType.bdd,
     cmdArgs: buildTestArgs(params, testConfig, ETestType.bdd),
-    envsHelper: (browser, reportPath) => buildBddEnvs(browser, params, reportPath, ETestType.feature)
+    envsHelper: (browser) => buildBddEnvs(browser, params, ETestType.feature)
   })
 
   process.exit(exitCode)

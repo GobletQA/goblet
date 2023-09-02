@@ -70,7 +70,6 @@ const taskOptions = {
     },
     testTimeout: {
       type: `number`,
-      default: 15000, // 15 seconds
       env: `GOBLET_TEST_TIMEOUT`,
       example: `--timeout 15000`,
       description: `Test timeout in seconds. Defaults to 15000 milliseconds (15 seconds).`,
@@ -257,7 +256,6 @@ const taskOptions = {
     },
     browserTimeout: {
       type: `number`,
-      default: 15000, // 15 seconds
       env: `GOBLET_BROWSER_TIMEOUT`,
       example: `--browserTimeout 15000`, // 15 seconds
       description: `Amount of time until a browser request will timeout should be less the timeout option`,

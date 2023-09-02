@@ -421,12 +421,12 @@ export const getLocatorTimeout = (ctx?:TStepCtx, percent:number=99) => {
  * Gets the configured timeout for a step based on the possible timeout locations
  */
 export const getStepTimeout = (ctx?:TStepCtx) => {
-  const globalTimeout = global?.getParkinOptions?.()?.timeout
+  const gobletOpts = (global?.__goblet || {})
 
   const timeout = ctx?.options?.timeout
     || ENVS.GOBLET_TEST_TIMEOUT
-    || global.__goblet?.browser?.timeout
-    || globalTimeout
+    || gobletOpts?.browser?.timeout
+    || gobletOpts?.options?.timeout
     || 15000
 
   return isNum(timeout) ? timeout : parseInt(timeout, 10)

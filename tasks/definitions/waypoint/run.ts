@@ -24,14 +24,11 @@ const runWp = async (args:TTaskActionArgs) => {
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
-    goblet,
-    type: testTypes.waypoint,
     cmdArgs: buildTestArgs(params, testConfig, ETestType.waypoint),
-    envsHelper: (browser, reportPath) => buildWaypointEnvs(
+    envsHelper: (browser) => buildWaypointEnvs(
       browser,
       goblet,
       params,
-      reportPath,
       testTypes.waypoint
     )
   })
