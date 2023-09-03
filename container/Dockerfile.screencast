@@ -57,6 +57,7 @@ COPY repos/goblet/src repos/goblet/src
 COPY repos/logger/src repos/logger/src
 COPY repos/environment/src repos/environment/src
 COPY repos/workflows/src repos/workflows/src
+COPY repos/browser/src repos/browser/src
 COPY repos/shared/src repos/shared/src
 COPY repos/exam/src repos/exam/src
 COPY repos/testUtils/src repos/testUtils/src

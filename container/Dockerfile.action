@@ -70,7 +70,7 @@ COPY repos/shared/src repos/shared/src
 COPY repos/workflows/src repos/workflows/src
 COPY repos/environment/src repos/environment/src
 COPY repos/exam/src repos/exam/src
-COPY repos/exam/src repos/testUtils/src
+COPY repos/testUtils/src repos/testUtils/src
 
 RUN turbo prune --docker --scope=@gobletqa/test-utils
 RUN cp .nvmrc out/json/.nvmrc && \
