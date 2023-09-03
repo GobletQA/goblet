@@ -4,11 +4,11 @@ import type { Request as JWTRequest } from 'express-jwt'
 
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 import {
   GBrowser,
   actionBrowser,

@@ -3,11 +3,11 @@ import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
 import { setBrowserDefaults } from '@gobletqa/browser'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { Repo, loadRepoContent } from '@gobletqa/workflows'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
 
 /**

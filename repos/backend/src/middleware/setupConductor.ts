@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 
 import { Conductor } from '@gobletqa/conductor'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export const setupConductor = async (app:Express) => {

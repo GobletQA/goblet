@@ -2,10 +2,10 @@ import type { TBrowserConf } from '@GSC/types'
 import type { Response, Request, RequestHandler } from 'express'
 
 import { parseJSON } from '@keg-hub/jsutils/parseJSON'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { statusScreencast } from '@GSC/utils/statusScreencast'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 
 export type TStatusSCParams = {
   browser?:TBrowserConf|string

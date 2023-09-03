@@ -1,2 +1,2 @@
-export * from './getOrigin'
-export * from './generateOrigins'
+export * from './origin'
+export * from './middleware'

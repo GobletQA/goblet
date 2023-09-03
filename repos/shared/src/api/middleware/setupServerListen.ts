@@ -3,9 +3,8 @@ import type { Express } from 'express'
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import { getApp } from '@GSH/express/app'
+import { getApp } from '@GSH/api/express/app'
 import { ApiLogger as Logger } from '@gobletqa/logger'
-import {findProc} from '@GSH/libs/proc'
 
 type TCredentials = {
   ca?: string

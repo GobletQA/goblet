@@ -3,11 +3,11 @@ import type { Repo } from '@gobletqa/workflows'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 
 /**
  * Starts a Playwright Browser using the passed in params as launch options

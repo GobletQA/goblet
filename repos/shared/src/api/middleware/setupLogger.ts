@@ -1,7 +1,7 @@
 import type { Handler } from 'express'
 
 import { Express } from 'express'
-import { TLogOpts } from '../types'
+import { TLogOpts } from '@GSH/types'
 import expressWinston from 'express-winston'
 import { buildLogger, npmLevels } from '@gobletqa/logger'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'

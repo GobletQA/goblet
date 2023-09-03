@@ -3,10 +3,10 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
 import { Logger } from '@GSC/utils/logger'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { Repo, loadRepoContent } from '@gobletqa/workflows'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export type TCreateBody = {

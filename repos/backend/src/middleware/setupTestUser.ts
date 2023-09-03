@@ -1,8 +1,8 @@
 import type { Request as JWTRequest } from 'express-jwt'
 import type { Express, Response, NextFunction } from 'express'
 
-import { getApp } from '@gobletqa/shared/express/app'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { getApp } from '@gobletqa/shared/api/express/app'
+import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * Gets both app routes

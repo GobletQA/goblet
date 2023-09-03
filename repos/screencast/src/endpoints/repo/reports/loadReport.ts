@@ -1,10 +1,10 @@
 import { Request, RequestHandler, Response } from 'express'
-import { htmlErr }from '@gobletqa/shared/express/htmlErr'
-import { htmlRes }from '@gobletqa/shared/express/htmlRes'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { getTestReportHtml }from '@GSC/utils/getTestReportHtml'
 import { loadTemplate }from '@gobletqa/shared/templates/loadTemplate'
+import { htmlErr } from '@gobletqa/shared/api/express/htmlErr'
+import { htmlRes } from '@gobletqa/shared/api/express/htmlRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 
 /**
  * Loads reports from the passed in params

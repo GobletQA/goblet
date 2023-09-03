@@ -4,10 +4,10 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { TWFGobletConfig } from '@gobletqa/workflows'
 
 import { Repo } from '@gobletqa/workflows'
-import { asyncWrap } from '@gobletqa/shared/express'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 
 /**
  * Gets the git keys off the request for all request types

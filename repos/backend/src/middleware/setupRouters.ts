@@ -1,14 +1,14 @@
 import type { Express } from 'express'
 
-import { getApp } from '@gobletqa/shared/express/app'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { getApp } from '@gobletqa/shared/api/express/app'
+import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
- * Gets both app routes
- * Adds the main AppRouter on a subdomain
- * Because that's where the proxy will be applied
+ * Adds teh AsyncRouter to the express application
  */
-export const setupRouters = (app?:Express) => {
+export const setupAsyncRouter = (app?:Express) => {
   app = app || getApp() as Express
   app.use(AsyncRouter)
+
+  return AsyncRouter
 }

@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-import { getOrigin }from '../api/getOrigin'
+import { getOrigin }from '../origin/getOrigin'
 
 const allowedHeaders = [
   `X-PINGOTHER`,

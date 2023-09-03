@@ -63,16 +63,3 @@ export const AsyncRouter = Object.assign(ExpRouter, {
  * @public
  */
 export const AppRouter = express.Router()
-
-/**
- * Helper method to get the correct Express router based on passed in argument
- */
-export const getRouter = (expressRouter?:Router|boolean|string) => {
-  return expressRouter === false
-    ? undefined
-    : expressRouter === undefined || expressRouter === true
-      ? AppRouter
-      : typeof expressRouter !== 'string'
-        ? expressRouter
-        : expressRouter === 'async' && AsyncRouter
-}

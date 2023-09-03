@@ -1,7 +1,7 @@
 import { Response } from 'express'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import type { Request as JWTRequest } from 'express-jwt'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * Gets the state of a connected repo

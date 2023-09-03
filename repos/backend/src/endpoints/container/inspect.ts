@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import type { Conductor } from '@gobletqa/conductor/conductor'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
 
 export const inspect = async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor as Conductor

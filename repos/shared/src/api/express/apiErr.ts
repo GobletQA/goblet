@@ -1,4 +1,4 @@
-import type { TError } from '../types'
+import type { TError } from '../../types'
 import type { Response } from 'express'
 
 import { ApiLogger } from '@gobletqa/logger'

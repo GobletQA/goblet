@@ -9,7 +9,7 @@ import { toBool } from '@keg-hub/jsutils/toBool'
 import { socketCmds } from './socketCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { generateOrigins } from '@gobletqa/shared/api/generateOrigins'
+import { generateOrigins } from '@gobletqa/shared/api/origin/generateOrigins'
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({

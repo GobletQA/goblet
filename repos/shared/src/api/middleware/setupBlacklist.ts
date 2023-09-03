@@ -2,7 +2,7 @@ import type { Express } from 'express'
 
 import fs from 'fs'
 import path from 'path'
-import { getApp } from '@GSH/express/app'
+import { getApp } from '@GSH/api/express/app'
 import blacklist from 'express-blacklist'
 import expressDefend from 'express-defend'
 import { noOp } from '@keg-hub/jsutils/noOp'

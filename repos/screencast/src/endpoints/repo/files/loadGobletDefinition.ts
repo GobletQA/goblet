@@ -1,9 +1,9 @@
 import type { Response, Request, RequestHandler } from 'express'
 import type { TDefGobletConfig } from '@gobletqa/shared/types'
 
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { getGobletDefaultFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
 
 /**

@@ -1,15 +1,14 @@
 import type { Request as JWTRequest } from 'express-jwt'
 import type { Response, NextFunction, Router } from 'express'
 
-import { resError } from '../express/resError'
-import { getRouter } from '../express/appRouter'
-import { asyncWrap } from '../express/asyncWrap'
+import { resError } from '@GSH/api/express/resError'
+import { asyncWrap } from '@GSH/api/express/asyncWrap'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 export type TMValidateUser = {
+  router?:Router
   route:string|RegExp,
   bypassRoutes?: string[]
-  expressRouter?:Router|boolean|string
 }
 
 /**
@@ -31,10 +30,9 @@ const checkUserInRequest = (bypassRoutes:string[]) => {
  */
 export const validateUser = ({
   route,
-  expressRouter,
+  router,
   bypassRoutes=emptyArr,
 }:TMValidateUser) => {
-  const router = getRouter(expressRouter)
   router && router.use(route, checkUserInRequest(bypassRoutes))
 }
 

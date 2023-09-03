@@ -1,7 +1,7 @@
 import type { Response, Request, RequestHandler } from 'express'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { loadFeatures } from '@gobletqa/shared/libs/features/features'
 
 export const getFeatures:RequestHandler = asyncWrap(async (req:Request, res:Response) => {

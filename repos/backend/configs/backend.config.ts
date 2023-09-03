@@ -8,7 +8,7 @@ import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getKindHost } from '@gobletqa/conductor/utils/getKindHost'
 import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
-import { generateOrigins } from '@gobletqa/shared/api/generateOrigins'
+import { generateOrigins } from '@gobletqa/shared/api/origin/generateOrigins'
 
 const nodeEnv = ENVS.NODE_ENV || `local`
 loadEnvs({
