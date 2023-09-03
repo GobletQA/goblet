@@ -37,7 +37,6 @@ export type TFeatureData = {
 export type TLocEvt = (TExEventData & { location:string })
 
 export type TRunnerOpts = {
-  bail?:number
   debug?: boolean
   slowMo?: number
   timeout?: number
@@ -54,7 +53,6 @@ const hasValidTags = (
 
 export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
-  bail:number=0
   fromAst:string[]=[`feature`]
   omitTestResults:string[] = [
     `tests`,
@@ -66,7 +64,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
     super(cfg, state)
 
-    this.bail = cfg.bail
     this.isRunning = false
     this.environment.setup(this)
 
@@ -78,6 +75,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     const { data } = state
     const { location } = model
 
+    // TODO: include bail in the run options
     const parkinOpts = deepMerge(this.environment.runOptions, {
       ...data,
       tags: {...data?.tags},
@@ -128,24 +126,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   }
 
   /**
-   * TODO: bail should be moved to Parkin Test Executor
-   * Should not be part of the Runner
-   */
-  #checkBail = (result:TExEventData) => {
-    let errorMsg = `Spec Failed`
-    if(result.testPath) errorMsg+= ` - ${result.testPath}`
-
-    this.failed += 1
-    const bailAmt = this.bail
-
-    if(bailAmt && (this.failed >= bailAmt)){
-      this.cancel()
-      Errors.BailedTests(bailAmt, Errors.TestFailed(result, new Error(errorMsg)))
-    }
-
-  }
-
-  /**
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
@@ -160,7 +140,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
       await this.environment.parkin.run(content, runOpts.parkin)
       const results = await this.environment.test.run(runOpts.test) as TExEventData[]
-
       this.isRunning = false
 
       if(this.canceled){
@@ -172,6 +151,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
     }
     catch(err){
+
       if(err.name === EExErrorType.TestErr){
         if(!err.result) return []
         return [this.clearTestResults(err.result)]
@@ -209,7 +189,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
         failedExpectations: result?.failedExpectations
       }
     }))
-    result.failed && this.#checkBail(result)
   }
 
   onSuiteDone = (result:TLocEvt) => {
@@ -241,8 +220,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   cancel = async () => {
     this.canceled = true
     this.environment?.test?.abort?.()
-
-    await this.cleanup?.()
+    this.cleanup?.()
   }
 
   cleanup = async () => {
@@ -251,7 +229,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       this.environment?.cleanup?.()
     }
     catch(err){}
-
   }
 
   /**
