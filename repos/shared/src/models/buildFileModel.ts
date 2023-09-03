@@ -5,7 +5,7 @@ import path from 'path'
 import mime from 'mime'
 import { fileModel } from '@GSH/models'
 import { limboify } from '@keg-hub/jsutils/limbo'
-import { resolveFileType } from './resolveFileType'
+import { resolveFileType } from '@GSH/models/resolveFileType'
 
 /**
  * getType seemed to stop working, the owner of the package is doing odd things
@@ -18,13 +18,14 @@ const getMime = (location:string) => {
 }
 
 /**
+ * **IMPORTANT** - exported only for tests, not for other methods to use
  * Gets the meta data for a file or folder based on the passed in filePath
  * @function
  * @param {string} fromPath - Path to get the content from
  *
  * @returns {Promise|Object} - Meta data of the passed in path
  */
-export const getLastModified = async (filePath:string) => {
+export const __getLastModified = async (filePath:string) => {
   const [__, metaData] = await limboify(
     fs.stat,
     filePath
@@ -72,7 +73,7 @@ export const buildFileModel = async (
     location: finalLoc,
     mime: getMime(location),
     ext: path.extname(location).replace('.', ''),
-    lastModified: await getLastModified(location),
+    lastModified: await __getLastModified(location),
     relative: location.replace(repo.paths.repoRoot, ''),
   })
 }

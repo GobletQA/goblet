@@ -6,9 +6,9 @@ import { ENVS } from '@gobletqa/environment'
 import { conductorConfig } from './conductor.config'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
-import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
-import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
+import { getKindHost } from '@gobletqa/conductor/utils/getKindHost'
+import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
+import { generateOrigins } from '@gobletqa/shared/api/generateOrigins'
 
 const nodeEnv = ENVS.NODE_ENV || `local`
 loadEnvs({

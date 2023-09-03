@@ -12,8 +12,8 @@ import { toBool } from '@keg-hub/jsutils/toBool'
 import { exists } from '@keg-hub/jsutils/exists'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
-import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
+import { getKindHost } from '@gobletqa/conductor/utils/getKindHost'
+import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
 
 const {
   NODE_ENV=`local`,

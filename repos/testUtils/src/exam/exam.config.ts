@@ -14,7 +14,7 @@ import { aliases } from './setupTestAliases'
 
 import type { TBrowserConf } from '../types'
 import type { TExamConfig } from '@gobletqa/exam'
-import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
+import type { TTestMatch } from '@GTU/Utils/buildTestMatchFiles'
 
 import path from 'path'
 import { isArr } from '@keg-hub/jsutils'
@@ -27,7 +27,7 @@ import { flatUnion} from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { getParkinOptions } from '@GTU/Parkin/parkinTestInit'
 import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
-import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
+import { buildTestMatchFiles } from '@GTU/Utils/buildTestMatchFiles'
 import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
 import { getTimeouts } from '@GTU/Utils/getTimeouts'
@@ -112,9 +112,10 @@ const ExamConfig = ():TExamConfig => {
       // GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
+    bail: 1,
+    retry: 0,
     rootDir,
     testMatch,
-    bail: 5,
     workers: 1,
     colors: false,
     concurrency: 1,

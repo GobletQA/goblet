@@ -67,7 +67,7 @@ COPY repos/latent/src repos/latent/src
 COPY repos/logger/src repos/logger/src
 COPY repos/browser/src repos/browser/src
 COPY repos/shared/src repos/shared/src
-COPY repos/exam/src repos/workflows/src
+COPY repos/workflows/src repos/workflows/src
 COPY repos/environment/src repos/environment/src
 COPY repos/exam/src repos/exam/src
 COPY repos/exam/src repos/testUtils/src

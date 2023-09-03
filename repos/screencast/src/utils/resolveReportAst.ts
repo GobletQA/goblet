@@ -1,6 +1,9 @@
 import path from 'path'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { getMountRootDir } from '@gobletqa/shared/utils/getMountRootDir'
+import { getMountRootDir } from './getMountRootDir'
+
+
+
 /**
  * Checks if a path is in the reports folder
  * If it is, then build an ast object with the fileType

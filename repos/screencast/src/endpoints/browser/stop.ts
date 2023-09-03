@@ -3,9 +3,9 @@ import type { Response, Request, RequestHandler } from 'express'
 
 import { GBrowser } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
  * Stops a Browser if its running

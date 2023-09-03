@@ -1,3 +1,6 @@
+### Keeping this as a reference, but it's not being used
+
+```ts
 const vm = require('vm')
 const fs = require('fs')
 const path = require('path')
@@ -115,3 +118,4 @@ safeRequire.safeRequire = safeRequire
 safeRequire.SafeRequireModule = SafeRequireModule
 
 module.exports = safeRequire
+```

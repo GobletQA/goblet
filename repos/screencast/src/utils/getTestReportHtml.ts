@@ -1,7 +1,17 @@
 import path from 'path'
-import { getFileContent } from '@gobletqa/shared/utils/getFileContent'
-import { getMountRootDir } from '@gobletqa/shared/utils/getMountRootDir'
+import { fileSys } from '@keg-hub/cli-utils'
+import { getMountRootDir } from './getMountRootDir'
 import { reportHeight } from '@gobletqa/shared/templates/reportHeight.template'
+
+const { pathExists, readFile } = fileSys
+
+const getHtmlContent = async (location:string) => {
+  const [err, exists] = await pathExists(location)
+  if (!exists || err) return undefined
+
+  const [__, content] = await readFile(location)
+  return content
+}
 
 /**
  * Loads a report by it's name and fileType
@@ -22,7 +32,7 @@ export const getTestReportHtml = async (reportPath:string) => {
 
   // Then load the html content for the location
   // For a 404 page if it does not
-  const content = await getFileContent(location)
+  const content = await getHtmlContent(location)
 
   // Add the inject reportHeight template to the content
   // It allows setting the height of the IFramed report in the UI

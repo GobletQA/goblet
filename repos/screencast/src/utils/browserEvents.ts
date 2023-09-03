@@ -1,5 +1,5 @@
 import type { TBrowserEventArgs } from '@GSC/types'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import {
   Events,
   GBrowser,

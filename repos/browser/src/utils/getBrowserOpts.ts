@@ -1,5 +1,4 @@
 import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
-import type playwright from 'playwright'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'

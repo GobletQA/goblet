@@ -5,9 +5,9 @@ import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
  * Starts a Playwright Browser using the passed in params as launch options

@@ -1,9 +1,9 @@
 import type { TRepo } from '@GSH/types'
 import path from 'path'
+import { ENVS } from '@gobletqa/environment'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { getRepoGobletDir } from '@gobletqa/goblet'
-import { buildFileModel } from '@GSH/utils/buildFileModel'
-import { getMountRootDir } from '@GSH/utils/getMountRootDir'
+import { buildFileModel } from '@GSH/models/buildFileModel'
 
 /**
  * Checks if a path is in the reports folder
@@ -26,7 +26,7 @@ const resolveReportAst = (
           fileType: fullPath.split(`${reportsDir}/`).pop().split('/').shift(),
           // Generate the full url for resolving the report file, not including the domain
           reportUrl: `/repo/${repo.name}/reports${fullPath.replace(
-            getMountRootDir(),
+            path.resolve(ENVS.GOBLET_MOUNT_ROOT),
             ''
           )}`,
         },

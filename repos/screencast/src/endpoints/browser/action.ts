@@ -6,9 +6,9 @@ import { limbo } from '@keg-hub/jsutils/limbo'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import {
   GBrowser,
   actionBrowser,

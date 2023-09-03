@@ -3,8 +3,6 @@ export interface IConstructable<T> {
   new(...args: any) : T
 }
 
-export type TAnyCB = ()=> void
-
 type TAnyCls = {
   [key:string]:any
 }

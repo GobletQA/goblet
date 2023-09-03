@@ -11,7 +11,7 @@ import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { browserEvents } from '@GSC/utils/browserEvents'
 import { SocketManager } from '@GSC/libs/websocket/manager/manager'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 import {
   GBrowser,

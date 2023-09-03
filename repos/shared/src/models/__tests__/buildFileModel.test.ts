@@ -2,12 +2,12 @@ import fs from 'fs'
 import path from 'path'
 import mime from 'mime'
 import {Repo} from '@gobletqa/workflows/repo/repo'
-import { getLastModified, buildFileModel } from '../buildFileModel'
+import { __getLastModified, buildFileModel } from '../buildFileModel'
 
 jest.mock('fs')
 jest.mock('mime')
 
-describe('getLastModified', () => {
+describe('__getLastModified', () => {
   beforeEach(() => {
     jest.resetAllMocks()
   })
@@ -18,7 +18,7 @@ describe('getLastModified', () => {
     // @ts-ignore
     fs.stat.mockImplementation((_, cb) => cb(null, statResult))
 
-    const result = await getLastModified(filePath)
+    const result = await __getLastModified(filePath)
 
     expect(fs.stat).toHaveBeenCalledWith(filePath, expect.any(Function))
     expect(result).toEqual(statResult.mtimeMs)
@@ -29,7 +29,7 @@ describe('getLastModified', () => {
     // @ts-ignore
     fs.stat.mockImplementation((_, cb) => cb(new Error('File not found')))
 
-    const result = await getLastModified(filePath)
+    const result = await __getLastModified(filePath)
 
     expect(fs.stat).toHaveBeenCalledWith(filePath, expect.any(Function))
     expect(result).toEqual(expect.any(Number))
@@ -68,13 +68,13 @@ describe('buildFileModel', () => {
     mime.types = { txt: 'text/plain' }
     path.extname = jest.fn(() => '.txt')
     // @ts-ignore
-    getLastModified.mockResolvedValue(expectedFileModel.lastModified)
+    __getLastModified.mockResolvedValue(expectedFileModel.lastModified)
 
     const result = await buildFileModel(data, mockRepo)
 
     expect(result).toEqual(expectedFileModel)
     expect(path.extname).toHaveBeenCalledWith(data.location)
-    expect(getLastModified).toHaveBeenCalledWith(data.location)
+    expect(__getLastModified).toHaveBeenCalledWith(data.location)
   })
 
   it('should build a fileModel for a folder', async () => {
@@ -97,12 +97,12 @@ describe('buildFileModel', () => {
     mime.types = { '': 'text/plain' }
     path.extname = jest.fn(() => '')
     // @ts-ignore
-    getLastModified.mockResolvedValue(expectedFileModel.lastModified)
+    __getLastModified.mockResolvedValue(expectedFileModel.lastModified)
 
     const result = await buildFileModel(data, mockRepo)
 
     expect(result).toEqual(expectedFileModel)
     expect(path.extname).toHaveBeenCalledWith(data.location)
-    expect(getLastModified).toHaveBeenCalledWith(data.location)
+    expect(__getLastModified).toHaveBeenCalledWith(data.location)
   })
 })

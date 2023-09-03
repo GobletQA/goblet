@@ -1,19 +1,21 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
 import type {
+  TExEventData,
   SocketManager,
   TPlayerTestEvent,
   TSocketEvtCBProps,
   TPlayerTestEventMeta
 } from '@GSC/types'
 
+
 import { PWPlay } from '@GSC/constants'
 import { Repo } from '@gobletqa/workflows'
 import { Logger } from '@GSC/utils/logger'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { PWEventErrorLogFilter, playBrowser } from '@gobletqa/browser'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 // Temporary until updates to use only exam for test execution
 import { filterErrMessage } from '../../../../../exam/src/utils/filterErrMessage'
@@ -35,7 +37,7 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
   const lines = []
   const message = !evtData.failed || evtData.eventParent !== `step`
     ? ``
-    : filterErrMessage(evtData, PWEventErrorLogFilter)
+    : filterErrMessage(evtData as TExEventData, PWEventErrorLogFilter)
 
   return `${capitalize(evtData.eventParent)} - ${status}${message}`
 }
@@ -77,7 +79,7 @@ const handleStartPlaying = async (
       if(evtData.failedExpectations) delete evtData.failedExpectations
 
       if(event.name === PWPlay.playError && event.message)
-        event.message = filterErrMessage(evtData, PWEventErrorLogFilter)
+        event.message = filterErrMessage(evtData as TExEventData, PWEventErrorLogFilter)
 
       const emitEvt = {...event, data: evtData, group: socket.id}
 

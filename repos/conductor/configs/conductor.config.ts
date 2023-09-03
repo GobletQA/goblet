@@ -1,9 +1,10 @@
 import type { DockerOptions } from 'dockerode'
+import type { TDockerConfig, TConductorConfig, TRouteMeta } from '@GCD/types'
+
 import { inDocker } from '@keg-hub/cli-utils'
 import { toNum } from '@keg-hub/jsutils/toNum'
+import { getDindHost } from '@GCD/utils/getDindHost'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { TDockerConfig, TConductorConfig, TRouteMeta } from '@gobletqa/conductor/types'
-import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { conductorHeaders } from './conductor.headers.config'
 const isDocker = inDocker()
 

@@ -4,7 +4,7 @@ import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { getFeatures } from '@gobletqa/workflows/repo/getFeatures'
-import { fileModelArrayToObj } from '@gobletqa/shared/utils/fileModelArrayToObj'
+import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj'
 
 export const loadBddFiles:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const { definitions, features } = await getFeatures(
