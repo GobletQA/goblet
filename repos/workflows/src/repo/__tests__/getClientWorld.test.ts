@@ -1,43 +1,70 @@
 
+jest.resetModules()
+jest.resetAllMocks()
+jest.clearAllMocks()
+const setMox = jest.setMock.bind(jest)
 
-import { deepMerge } from '@keg-hub/jsutils/src/node'
-import { getGobletConfig, loaderSearch, getRepoGobletDir } from '@gobletqa/goblet'
+const worldMock = {
+  app: { url: `world-mock.com` },
+  data: { some: `data` },
+  $merge: [],
+  $alias: {},
+  $headers: {},
+  context: {},
+}
 
-import { DefWorld } from '@gobletqa/environment/constants'
-import { getClientWorld, loadClientWorld, setGobletEnv } from '../getClientWorld'
+const loaderSearchMock = jest.fn(() => (worldMock))
+const getGobletConfigMock = jest.fn()
+const getRepoGobletDirMock = jest.fn(() => `/test-repo`)
 
-jest.mock('@gobletqa/goblet')
-jest.mock('@keg-hub/jsutils/src/node')
+setMox('@gobletqa/goblet', {
+  getGobletConfig: getGobletConfigMock,
+  loaderSearch: loaderSearchMock,
+  getRepoGobletDir: getRepoGobletDirMock,
+})
+
+const DefWorld = {
+  app: {},
+  data: {},
+  $merge: [],
+  $alias: {},
+  $headers: {},
+  context: {},
+}
+
+
+process.env.GOBLET_ENV = `test-env`
+process.env.GOBLET_CONFIG_BASE = `/test/base/repo`
+process.env.GB_GIT_REPO_REMOTE = `test-repo-remote`
+process.env.GB_REPO_CONFIG_REF = `some-test-ref`
+let orgGobletEnv:string
+let orgGobletBase:string
+
+const {
+  getClientWorld,
+  loadClientWorld,
+  setGobletEnv,
+} = require('../getClientWorld')
+
 
 describe('setGobletEnv', () => {
-  let orgGobletEnv: string | undefined
-  let orgGobletBase: string | undefined
-
   beforeEach(() => {
-    orgGobletEnv = process.env.GOBLET_ENV
-    orgGobletBase = process.env.GOBLET_CONFIG_BASE
     jest.resetAllMocks()
-    jest.resetModules()
-  })
-
-  afterEach(() => {
-    if (orgGobletEnv) process.env.GOBLET_ENV = orgGobletEnv
-    if (orgGobletBase) process.env.GOBLET_CONFIG_BASE = orgGobletBase
+    orgGobletEnv = `test-env`
+    orgGobletBase = `/test/base/repo`
   })
 
   it('should overwrite GOBLET_ENV and GOBLET_CONFIG_BASE with values from the passed config', () => {
     const config = {
-      environment: 'test',
+      environment: `changed`,
       paths: {
-        repoRoot: '/path/to/repo',
+        repoRoot: `/path/to/repo`,
       },
     }
 
-    // @ts-ignore
     const resetEnvs = setGobletEnv(config)
-
-    expect(process.env.GOBLET_ENV).toBe('test')
-    expect(process.env.GOBLET_CONFIG_BASE).toBe('/path/to/repo')
+    expect(process.env.GOBLET_ENV).toBe(`changed`)
+    expect(process.env.GOBLET_CONFIG_BASE).toBe(`/path/to/repo`)
 
     resetEnvs()
 
@@ -46,7 +73,6 @@ describe('setGobletEnv', () => {
   })
 
   it('should not modify GOBLET_ENV and GOBLET_CONFIG_BASE if config does not have environment and paths', () => {
-    // @ts-ignore
     const resetEnvs = setGobletEnv({})
 
     expect(process.env.GOBLET_ENV).toBe(orgGobletEnv)
@@ -61,8 +87,7 @@ describe('setGobletEnv', () => {
 
 describe('loadClientWorld', () => {
   let mockConfig: any
-  let mockWorldJson: any
-  let mockResetEnvs: jest.Mock
+  let worldMock: any
 
   beforeEach(() => {
     mockConfig = {
@@ -70,98 +95,79 @@ describe('loadClientWorld', () => {
         world: '/path/to/world.json',
       },
     }
-    mockWorldJson = { /* mock world.json content */ }
-    mockResetEnvs = jest.fn()
-    // @ts-ignore
-    setGobletEnv.mockReturnValue(mockResetEnvs)
-    // @ts-ignore
-    loaderSearch.mockReturnValue(mockWorldJson)
-    jest.resetAllMocks()
-    jest.resetModules()
+    loaderSearchMock.mockClear()
+    getGobletConfigMock.mockClear()
+    getRepoGobletDirMock.mockClear()
   })
 
   it('should return the default world if worldPath is not defined', () => {
-    const config = {
-      paths: {},
-    }
+    const config = { paths: {}}
 
-    // @ts-ignore
     const result = loadClientWorld(config)
 
     expect(result).toEqual(DefWorld)
-    expect(setGobletEnv).not.toHaveBeenCalled()
-    expect(loaderSearch).not.toHaveBeenCalled()
-    expect(mockResetEnvs).not.toHaveBeenCalled()
+    expect(getRepoGobletDirMock).not.toHaveBeenCalled()
   })
 
   it('should load and merge the world file from the specified path', () => {
     const result = loadClientWorld(mockConfig)
 
-    expect(result).toEqual(deepMerge(DefWorld, mockWorldJson))
-    expect(setGobletEnv).toHaveBeenCalledWith(mockConfig)
-    expect(getRepoGobletDir).toHaveBeenCalledWith(mockConfig)
-    expect(loaderSearch).toHaveBeenCalledWith({
-      basePath: getRepoGobletDir(mockConfig),
+    expect(result).toEqual({...DefWorld, ...worldMock})
+    expect(getRepoGobletDirMock).toHaveBeenCalledWith(mockConfig)
+    expect(loaderSearchMock).toHaveBeenCalledWith({
+      basePath: getRepoGobletDirMock(),
       clearCache: true,
       file: 'world.json',
       location: '/path/to/world.json',
     })
-    expect(mockResetEnvs).toHaveBeenCalled()
   })
 
   it('should handle errors during world file loading', () => {
+    const orgLog = console.log
+    const orgWarn = console.warn
+    console.log = jest.fn()
+    console.warn = jest.fn()
+    
     // @ts-ignore
-    loaderSearch.mockImplementation(() => {
+    loaderSearchMock.mockImplementation(() => {
       throw new Error('Failed to load world file')
     })
 
     const result = loadClientWorld(mockConfig)
 
-    expect(result).toEqual(deepMerge(DefWorld, mockWorldJson))
-    expect(setGobletEnv).toHaveBeenCalledWith(mockConfig)
-    expect(getRepoGobletDir).toHaveBeenCalledWith(mockConfig)
-    expect(loaderSearch).toHaveBeenCalledWith({
-      basePath: getRepoGobletDir(mockConfig),
+    expect(result).toEqual({...DefWorld, ...worldMock})
+    expect(getRepoGobletDirMock).toHaveBeenCalledWith(mockConfig)
+    expect(loaderSearchMock).toHaveBeenCalledWith({
+      basePath: getRepoGobletDirMock(),
       clearCache: true,
       file: 'world.json',
       location: '/path/to/world.json',
     })
-    expect(mockResetEnvs).toHaveBeenCalled()
+
     // Expect additional error handling logic
     expect(console.log).toHaveBeenCalled()
+    console.log = orgLog
+    console.warn = orgWarn
   })
 })
 
 describe('getClientWorld', () => {
-  let mockGobletConfig: any
-  let mockRepoGobletConfig: any
-  let mockLoadClientWorld: jest.Mock
 
   beforeEach(() => {
-    mockGobletConfig = { /* mock goblet config */ }
-    mockRepoGobletConfig = { /* mock repo goblet config */ }
-    // @ts-ignore
-    getGobletConfig.mockReturnValue(mockGobletConfig)
-    // @ts-ignore
-    loadClientWorld.mockReturnValue(mockRepoGobletConfig)
-    mockLoadClientWorld = loadClientWorld as jest.Mock
-    jest.resetAllMocks()
-    jest.resetModules()
+    getGobletConfigMock.mockClear()
+    getRepoGobletDirMock.mockClear()
+    loaderSearchMock.mockClear()
+    loaderSearchMock.mockImplementation(() => (worldMock))
   })
 
   it('should call loadClientWorld with the default goblet config', () => {
     const result = getClientWorld()
-
-    expect(result).toBe(mockRepoGobletConfig)
-    expect(getGobletConfig).toHaveBeenCalled()
-    expect(mockLoadClientWorld).toHaveBeenCalledWith(mockGobletConfig)
+    expect(result).toEqual({...DefWorld})
   })
 
   it('should call loadClientWorld with the passed repo goblet config', () => {
-    const result = getClientWorld(mockGobletConfig)
-
-    expect(result).toBe(mockRepoGobletConfig)
-    expect(getGobletConfig).not.toHaveBeenCalled()
-    expect(mockLoadClientWorld).toHaveBeenCalledWith(mockGobletConfig)
+    const customMockCfg = { custom: `value`, paths: { world: `some-loc` } }
+    const result = getClientWorld(customMockCfg)
+    expect(result).toEqual({...DefWorld, ...worldMock})
   })
 })

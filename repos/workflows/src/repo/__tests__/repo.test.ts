@@ -10,14 +10,48 @@ import {
   disconnectGoblet,
 } from '@gobletqa/workflows'
 import { Repo } from '../repo'
+const setMox = jest.setMock.bind(jest)
 
-jest.mock('@ltipton/parkin')
+const ParkinMock = jest.fn(() => {
+  return {}
+})
+setMox('@ltipton/parkin', {
+  Parkin: ParkinMock
+})
+
+const getWorldMock = jest.fn(() => {
+  return {
+    app: {},
+    $merge: {},
+    $alias: {},
+  }
+})
+setMox('../world', {getWorld: getWorldMock,})
+
+const mockConfig = {
+  name: ``,
+  world: {},
+  fileTypes: {},
+  paths: {
+    repoRoot: ``,
+  },
+  git: {
+    name: `test-repo`,
+    repoId: `test-repo`,
+    branch: `test-branch`,
+    local: `/goblet/repos/user/`,
+    remote: `git.com/org/test-repo`,
+    provider: `github.com` as const,
+    username: `test-user`,
+    repoName: `test-repo`,
+  },
+}
+
 jest.mock('../world')
 jest.mock('@gobletqa/goblet')
 jest.mock('@gobletqa/workflows')
 
 describe('Repo', () => {
-  let mockConfig: any
   let mockWorld: any
   let mockParkin: any
   let mockFileTypes: any
@@ -28,35 +62,35 @@ describe('Repo', () => {
   let mockUrl: any
 
   beforeEach(() => {
-    mockConfig = { /* mock repo configuration object */ }
-    mockWorld = { /* mock world object */ }
-    mockParkin = { /* mock parkin instance */ }
-    mockFileTypes = { /* mock file types object */ }
-    mockRepoData = { /* mock repo data object */ }
-    mockStatus = { /* mock goblet status object */ }
-    mockRepo = { /* mock repo instance */ }
-    mockOpts = { /* mock options object */ }
-    mockUrl = { /* mock URL object */ }
-    // @ts-ignore
-    Parkin.mockImplementation(() => mockParkin)
-    // @ts-ignore
-    getWorld.mockReturnValue(mockWorld)
-    // @ts-ignore
-    getFileTypes.mockReturnValue(mockFileTypes)
-    // @ts-ignore
-    createGoblet.mockResolvedValue({ repo: mockRepo, status: mockStatus })
-    // @ts-ignore
-    statusGoblet.mockResolvedValue({ repo: mockRepo, status: mockStatus })
-    // @ts-ignore
-    initializeGoblet.mockResolvedValue({ repo: mockRepo, status: mockStatus })
-    // @ts-ignore
-    disconnectGoblet.mockResolvedValue(undefined)
-    jest.resetAllMocks()
-    jest.resetModules()
+    // mockConfig = { /* mock repo configuration object */ }
+    // mockWorld = { /* mock world object */ }
+    // mockParkin = { /* mock parkin instance */ }
+    // mockFileTypes = { /* mock file types object */ }
+    // mockRepoData = { /* mock repo data object */ }
+    // mockStatus = { /* mock goblet status object */ }
+    // mockRepo = { /* mock repo instance */ }
+    // mockOpts = { /* mock options object */ }
+    // mockUrl = { /* mock URL object */ }
+    // // @ts-ignore
+    // Parkin.mockImplementation(() => mockParkin)
+    // // @ts-ignore
+    // getWorld.mockReturnValue(mockWorld)
+    // // @ts-ignore
+    // getFileTypes.mockReturnValue(mockFileTypes)
+    // // @ts-ignore
+    // createGoblet.mockResolvedValue({ repo: mockRepo, status: mockStatus })
+    // // @ts-ignore
+    // statusGoblet.mockResolvedValue({ repo: mockRepo, status: mockStatus })
+    // // @ts-ignore
+    // initializeGoblet.mockResolvedValue({ repo: mockRepo, status: mockStatus })
+    // // @ts-ignore
+    // disconnectGoblet.mockResolvedValue(undefined)
+    // jest.resetAllMocks()
+    // jest.resetModules()
   })
 
   it('should create a Repo instance', () => {
-    const repo = new Repo(mockConfig)
+    const repo = new Repo(mockConfig as any)
 
     expect(repo.git).toEqual(mockConfig.git)
     expect(repo.name).toEqual(mockConfig.name)

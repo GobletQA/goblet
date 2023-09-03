@@ -1,6 +1,6 @@
 const Module = require('module')
-const { GobletRoot } = sharedPaths
 const { aliases } = require('@GConfigs/aliases.config')
+const { GobletRoot } = aliases
 
 const overrideNoOp = (request) => true
 const resolveNoOp = () => ({})

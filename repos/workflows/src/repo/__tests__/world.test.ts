@@ -1,14 +1,19 @@
-import { deepMerge } from '@keg-hub/jsutils'
-import { getClientWorld } from '../getClientWorld'
-import { getWorld } from '../world'
 
-jest.mock('@keg-hub/jsutils', () => ({
-  deepMerge: jest.fn((obj1, obj2) => ({ ...obj1, ...obj2 })),
-}))
+jest.resetModules()
+jest.resetAllMocks()
+jest.clearAllMocks()
+const setMox = jest.setMock.bind(jest)
+const dmMock = jest.fn((obj1, obj2) => ({ ...obj1, ...obj2 }))
+setMox('@keg-hub/jsutils/deepMerge', {
+  deepMerge: dmMock,
+})
 
-jest.mock('./getClientWorld', () => ({
-  getClientWorld: jest.fn(() => ({ clientData: 'mockedClientData' })),
-}))
+const getCWorldMock = jest.fn(() => ({ clientData: 'mockedClientData' }))
+setMox('../getClientWorld', {
+  getClientWorld: getCWorldMock
+})
+
+const { getWorld } = require('../world')
 
 describe('getWorld', () => {
   afterEach(() => {
@@ -28,8 +33,10 @@ describe('getWorld', () => {
     // @ts-ignore
     const result = getWorld(repo)
 
-    expect(deepMerge).toHaveBeenCalledWith(expectedDefaultWorld, expectedClientWorld)
-    expect(getClientWorld).toHaveBeenCalledWith(repo)
+    expect(dmMock).toHaveBeenCalledWith(expectedDefaultWorld, expectedClientWorld)
+    expect(getCWorldMock).toHaveBeenCalledWith(repo)
     expect(result).toEqual(expectedMergedWorld)
   })
 })
+
+export {}

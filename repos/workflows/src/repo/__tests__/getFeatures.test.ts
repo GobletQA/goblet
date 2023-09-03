@@ -1,36 +1,43 @@
-import { Repo } from '../repo'
-import { getFeatures } from '../getFeatures'
-import { getDefinitions } from '../getDefinitions'
-import { loadFeatures } from '@GSH/libs/features/features'
+jest.resetModules()
+jest.resetAllMocks()
+jest.clearAllMocks()
+const setMox = jest.setMock.bind(jest)
 
-jest.mock('@GSH/libs/features/features')
-jest.mock('@GSH/repo/getDefinitions')
+const featuresMock = {}
+const loadFeaturesMock = jest.fn(() => (featuresMock))
+setMox('@gobletqa/shared/libs/features/features', {
+  loadFeatures: loadFeaturesMock
+})
+
+const definitionsMock = {}
+const getDefinitionsMock = jest.fn(() => ({ definitions: definitionsMock}))
+setMox('@GWF/repo/getDefinitions', {
+  getDefinitions: getDefinitionsMock
+})
+
+const mockRepo:any = {
+  refreshWorld: jest.fn(),
+  paths: {
+    stepsDir: ``,
+  },
+  parkin: {
+    steps: {
+      clear: jest.fn()
+    }
+  }
+}
+const mockConfig = {} 
+
+const { getFeatures } = require('../getFeatures')
 
 describe('getFeatures', () => {
-  let mockRepo: Repo
-  let mockConfig: any
-  let mockDefinitions: any
-  let mockFeatures: any
-
-  beforeEach(() => {
-    // @ts-ignore
-    mockRepo = { /* mock repo object */ }
-    mockConfig = { /* mock goblet config */ }
-    mockDefinitions = { /* mock definitions object */ }
-    mockFeatures = { /* mock features object */ }
-    // @ts-ignore
-    getDefinitions.mockResolvedValue({ definitions: mockDefinitions })
-    // @ts-ignore
-    loadFeatures.mockResolvedValue(mockFeatures)
-    jest.resetAllMocks()
-    jest.resetModules()
-  })
 
   it('should call getDefinitions and loadFeatures with the provided repo and config', async () => {
     const result = await getFeatures(mockRepo, mockConfig)
-
-    expect(result).toEqual({ features: mockFeatures, definitions: mockDefinitions })
-    expect(getDefinitions).toHaveBeenCalledWith(mockRepo, mockConfig)
-    expect(loadFeatures).toHaveBeenCalledWith(mockRepo)
+    expect(result).toEqual({ features: featuresMock, definitions: definitionsMock })
+    expect(getDefinitionsMock).toHaveBeenCalledWith(mockRepo, mockConfig)
+    expect(loadFeaturesMock).toHaveBeenCalledWith(mockRepo)
   })
 })
+
+export {}

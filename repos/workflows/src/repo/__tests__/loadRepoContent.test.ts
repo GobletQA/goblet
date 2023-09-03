@@ -1,10 +1,9 @@
-import { Repo } from '../repo'
 import { Logger } from '@keg-hub/cli-utils'
 
 import { loadFeatures } from '@GSH/libs/features/features'
 import { buildFileTree } from '@GSH/libs/fileSys/fileTree'
 import { loadDefinitions } from '@GSH/libs/definitions/definitions'
-import { fileModelArrayToObj } from '@GSH/utils/fileModelArrayToObj'
+import { fileModelArrayToObj } from '@GSH/models/fileModelArrayToObj'
 import { loadRepoContent } from '../loadRepoContent'
 
 jest.mock('@GSH/libs/features/features')
@@ -14,7 +13,7 @@ jest.mock('@GSH/utils/fileModelArrayToObj')
 jest.mock('@keg-hub/cli-utils')
 
 describe('loadRepoContent', () => {
-  let mockRepo: Repo
+  let mockRepo: any
   let mockConfig: any
   let mockStatus: any
   let mockContent: any

@@ -47,10 +47,10 @@ const processENVs = {
  */
 const setTestGlobals = (Runner:CodeRunner, timeout?:number) => {
   const opts:TParkinTestConfig = {
-    specDone: Runner.onSpecDone,
-    suiteDone: Runner.onSuiteDone,
-    specStarted: Runner.onSpecStarted,
-    suiteStarted: Runner.onSuiteStarted,
+    onSpecDone: Runner.onSpecDone,
+    onSuiteDone: Runner.onSuiteDone,
+    onSpecStart: Runner.onSpecStarted,
+    onSuiteStart: Runner.onSuiteStarted,
   }
 
   const tOut = timeout || Runner.globalTimeout

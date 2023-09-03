@@ -203,8 +203,6 @@
     "docs",
     "logs",
     "scripts",
-    "temp",
-    "**.test.ts",
-    "test.**.ts"
+    "temp"
   ]
 }
