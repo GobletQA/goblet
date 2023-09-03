@@ -1,4 +1,4 @@
-import type { TExecRunners, TPipelineArgs, TStateManager } from '@GEX/types'
+import type { IExamRunner, TPipelineArgs, TStateManager } from '@GEX/types'
 
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { exists } from '@keg-hub/jsutils/exists'
@@ -12,7 +12,8 @@ export const preRunnerStep = async (args:TPipelineArgs, manager?:TStateManager) 
 
   if(!exists(config.runners)) return args
 
-  const runners = await loadFilesTask<Record<string, TExecRunners>>(args, config.runners)
+  const runners = await loadFilesTask<Record<string, IExamRunner<any>>>(args, config.runners)
+
   manager.setValue(`RunnerClasses`, runners)
 
 }

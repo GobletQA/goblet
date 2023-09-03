@@ -51,6 +51,17 @@ RUN rm -rf /goblet/app/repos/backend && \
     rm -rf /goblet/app/repos/conductor
 
 RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
+WORKDIR /goblet/app
+COPY repos/latent/src repos/latent/src
+COPY repos/goblet/src repos/goblet/src
+COPY repos/logger/src repos/logger/src
+COPY repos/environment/src repos/environment/src
+COPY repos/workflows/src repos/workflows/src
+COPY repos/shared/src repos/shared/src
+COPY repos/exam/src repos/exam/src
+COPY repos/testUtils/src repos/testUtils/src
+COPY repos/screencast/src repos/screencast/src
+
 WORKDIR /goblet/app/repos/screencast
 RUN pnpm build
 # ---- End Stage ---- #

@@ -97,11 +97,11 @@ export class FeatureEnvironment implements IExamEnvironment {
   }
 
   cleanup = () => {
+    this.reset()
+
     this.cache.globals = {}
     this.cache.envs = {}
     this?.test?.clean?.()
-
-    return undefined
   }
 
 }

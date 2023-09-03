@@ -85,6 +85,9 @@ export const buildExamCfg = (config:TExamConfig):TExamConfig => {
     rootDir: resolveRootDir(config)
   } as TExamConfig
 
+  // TODO: add some validation checks
+  // I.E. if running tests in parallel, reuseRunner it forced to false
+
   return Object.assign(
     built,
     replaceRootDir(built)

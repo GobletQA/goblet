@@ -91,7 +91,12 @@ const ExamConfig = ():TExamConfig => {
   const timeouts = getTimeouts({
     gobletOpts,
     examConfig,
-    defs: {timeout: 5000, globalTimeout:60000},
+    defs: {
+      // Default to 15 seconds test timeout
+      timeout: 5000,
+      // Default to 1hr global test timeout
+      globalTimeout: 60000 * 60
+    },
   })
 
   return {
@@ -101,7 +106,6 @@ const ExamConfig = ():TExamConfig => {
     // verbose: true,
     // testIgnore: [],
     // loaderIgnore:[],
-    // globalTimeout: 0,
     // transformIgnore: [],
     envs: {
       EXAM_ENV: 1,
@@ -115,9 +119,11 @@ const ExamConfig = ():TExamConfig => {
     colors: false,
     concurrency: 1,
     runInBand: true,
+    reuseRunner: true,
     passWithNoTests: false,
     mode: EExTestMode.serial,
     timeout: timeouts.timeout,
+    globalTimeout: timeouts.globalTimeout,
     aliases: {...aliases, ...examConfig?.aliases},
     extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
     /** Pass on the browser options defined from the task that started the process */
@@ -158,7 +164,6 @@ const ExamConfig = ():TExamConfig => {
         debug: false,
         verbose: true,
         omitTestResults: [],
-        globalTimeout: timeouts.globalTimeout,
       }]
     },
     onStartup: [

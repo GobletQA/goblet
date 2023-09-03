@@ -11,6 +11,7 @@ export type TExRunnerCfg = {
   debug?: boolean
   timeout?: number
   verbose?:boolean
+  reuseRunner?:boolean
   globalTimeout?:number
   omitTestResults?:string[]
 }
@@ -58,5 +59,5 @@ export type IExRunner<
 > = R & IExamRunner<E>
 export type TRunnerCls<
   E extends IExamEnvironment,
-  R extends IExamRunner<E>
+  R extends IExamRunner<E>=IExamRunner<E>
 > = IConstructable<IExRunner<E, R>>

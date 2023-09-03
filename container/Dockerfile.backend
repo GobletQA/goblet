@@ -52,6 +52,16 @@ RUN cp -R tsconfig.json package.json gobletRoot.js /goblet/runner/. && \
 
 RUN CI=1 pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline
 
+WORKDIR /goblet/app
+COPY repos/latent/src repos/latent/src
+COPY repos/goblet/src repos/goblet/src
+COPY repos/logger/src repos/logger/src
+COPY repos/conductor/src repos/conductor/src
+COPY repos/environment/src repos/environment/src
+COPY repos/workflows/src repos/workflows/src
+COPY repos/shared/src repos/shared/src
+COPY repos/backend/src repos/backend/src
+
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build
 RUN cp -R dist/goblet.default.config.js /goblet/runner/configs/goblet.default.config.js

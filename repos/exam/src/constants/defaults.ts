@@ -50,7 +50,12 @@ export const RunnerCfg:TExRunnerCfg = {
    * The result object will not include `failedExpectations` for any `tests`
    * I.E. `results` === `{ describes: { tests: [{ failedExpectations: undefined }] } }`
    */
-  omitTestResults: []
+  omitTestResults: [],
+  
+  /**
+   * By default a new Runner class instance it created for each test
+   */
+   reuseRunner: false
 }
 
 export const LoaderCfg = {

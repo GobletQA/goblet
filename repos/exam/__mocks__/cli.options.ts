@@ -15,11 +15,14 @@ export const cliOpts = {
   testMatch: [],
   testIgnore: [],
   runInBand: false,
+  reuseRunner:true,
   transformIgnore: [],
   loaderIgnore: [],
-  timeout: 15000,
   passWithNoTests: false,
-  globalTimeout: 1200000,
+  // 15 second test timeout
+  timeout: 15000,
+  // 1hr global test timeout
+  globalTimeout: 60000 * 60,
   extensions: [
     `.js`,  `.jsx`,
     `.cjs`, `.mjs`,

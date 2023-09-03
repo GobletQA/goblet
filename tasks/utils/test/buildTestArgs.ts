@@ -1,7 +1,5 @@
 import type { TTaskParams } from '../../types'
 
-import path from 'path'
-import { appRoot } from '../../paths'
 import { ETestType } from '../../types'
 import { addFlag, addParam } from '@keg-hub/cli-utils'
 import { exists, uniqArr, noPropArr, toBool } from '@keg-hub/jsutils'
@@ -58,8 +56,6 @@ export const buildTestArgs = (
      `esbuild-register`,
     //  `./repos/exam/.bin/exam.js`,
     `./repos/exam/src/bin/exam.ts`,
-    // Convert to milliseconds
-    `--timeout=${(parseInt(testTimeout, 10) || 20000)}`,
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))
@@ -75,6 +71,9 @@ export const buildTestArgs = (
 
   exists(testBail)
     && cmdArgs.push(addParam(`bail`, toBool(testBail)))
+
+  exists(testTimeout)
+    && cmdArgs.push(addFlag(`timeout`, parseInt(testTimeout, 10)))
 
   // Only set runInBand if testWorkers not set.
   // They can not both be passed, and runInBand has a default
