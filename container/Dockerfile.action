@@ -62,6 +62,7 @@ RUN npm uninstall -g yarn && \
 FROM goblet-turbo as goblet-pruner
 WORKDIR /goblet/app
 
+COPY tasks tasks
 COPY repos/goblet/src repos/goblet/src
 COPY repos/latent/src repos/latent/src
 COPY repos/logger/src repos/logger/src
