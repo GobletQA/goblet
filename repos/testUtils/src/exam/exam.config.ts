@@ -12,7 +12,7 @@
 // Must load this first because it loads the alias
 import { aliases } from './setupTestAliases'
 
-import type { TBrowserConf } from '../types'
+import type { TBrowserConf, TGobletTestOpts } from '../types'
 import type { TExamConfig } from '@gobletqa/exam'
 import type { TTestMatch } from '@GTU/Utils/buildTestMatchFiles'
 
@@ -34,6 +34,9 @@ import { getTimeouts } from '@GTU/Utils/getTimeouts'
 import { taskEnvToBrowserOpts } from '@gobletqa/browser'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 
+// Default to 20 seconds test timeout
+// Default to 1hr global suite timeout
+const defTimeouts = {testTimeout: 20000, suiteTimeout: 60000 * 60}
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
 const RunnerLoc = path.resolve(__dirname, './feature/Runner.ts')
@@ -57,6 +60,23 @@ export type TExamConfOpts = TTestMatch & {
   globals?:Record<any, any>
 }
 
+const builtReporters = (
+  examConfig:Partial<TExamConfig>,
+  gobletOpts:TGobletTestOpts
+) => {
+  const built = isArr(examConfig.reporters)
+    ? examConfig.reporters
+    : [
+        [CliReporterLoc, {}],
+        [HtmlReporterLoc, {
+          saveReport: gobletOpts.saveReport,
+          saveScreenshot: gobletOpts.saveScreenshot
+        }]
+      ]
+
+  return ([...built, [EventReporterLoc, {}]]).filter(Boolean)
+}
+
 const ExamConfig = ():TExamConfig => {
 
   const config = getGobletConfig()
@@ -67,71 +87,49 @@ const ExamConfig = ():TExamConfig => {
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
   const browserConf = browserOpts as TBrowserConf
-
   const contextOpts = getContextOpts({ config })
-  
-  const gobletOpts = buildTestGobletOpts(config, browserConf)
 
   // @ts-ignore
   const examConfig = config?.testConfig || emptyObj
-  const reporters = isArr(examConfig.reporters)
-    ? examConfig.reporters
-    : [
-        [CliReporterLoc, {}],
-        [HtmlReporterLoc, {
-          saveReport: gobletOpts.saveReport,
-          saveScreenshot: gobletOpts.saveScreenshot
-        }]
-      ]
-
-  const rootDir = examConfig?.rootDir
-    || config.paths.repoRoot
-    || ENVS.GOBLET_CONFIG_BASE
-    || ENVS.GOBLET_MOUNT_ROOT
-    || `/goblet`
-
-  const testMatch = examConfig.testMatch
-    || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
-    || emptyArr
-
-  const timeouts = getTimeouts({
-    examConfig,
-    defs: {
-      // Default to 15 seconds test timeout
-      testTimeout: 5000,
-      // Default to 1hr global suite timeout
-      suiteTimeout: 60000 * 60
-    },
-  })
+  const gobletOpts = buildTestGobletOpts(config, browserConf)
 
   return {
     // debug: true,
     // esbuild: {},
-    // reporter: {},
     // verbose: true,
     // testIgnore: [],
     // loaderIgnore:[],
     // transformIgnore: [],
-    ...timeouts,
-    bail: 1,
-    rootDir,
-    testMatch,
+    // exitOnFail: false,
+    // skipAfterFailed: true,
+    bail: 5,
     workers: 1,
-    testRetry: 4,
-    suiteRetry: 4,
+    testRetry: 1,
+    suiteRetry: 0,
     colors: false,
     concurrency: 1,
     runInBand: true,
     reuseRunner: true,
     passWithNoTests: false,
     mode: EExTestMode.serial,
+    transforms: {...examConfig.transforms},
     aliases: {...aliases, ...examConfig?.aliases},
+    ...getTimeouts({examConfig, defs: defTimeouts }),
+    reporters: builtReporters(examConfig, gobletOpts),
+    extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
+    rootDir: examConfig?.rootDir
+      || config.paths.repoRoot
+      || ENVS.GOBLET_CONFIG_BASE
+      || ENVS.GOBLET_MOUNT_ROOT
+      || `/goblet`,
+    testMatch: examConfig.testMatch
+      || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
+      || emptyArr,
     envs: {
       EXAM_ENV: 1,
       // GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
-    extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
     /** Pass on the browser options defined from the task that started the process */
     globals: {
       ...examConfig?.globals,
@@ -141,13 +139,6 @@ const ExamConfig = ():TExamConfig => {
         browser: browserOpts,
         context: { options: contextOpts }
       },
-    },
-    reporters: [
-      ...reporters,
-      [EventReporterLoc, {}]
-    ].filter(Boolean) as any,
-    transforms: {
-      ...examConfig.transforms,
     },
     preEnvironment:flatUnion([
       ...ensureArr(examConfig.preEnvironment),

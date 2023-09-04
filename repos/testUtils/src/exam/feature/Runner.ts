@@ -17,10 +17,8 @@ import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
-import { splitByKeys } from '@keg-hub/jsutils/splitByKeys'
 
 import {
-  Errors,
   ExamRunner,
   ExamEvents,
   RootSuiteId,
@@ -105,7 +103,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     return {
       parkin: parkinOpts,
       test: {
-        // description: tOpts?.description,
         bail: this.bail,
         testRetry: this.testRetry,
         suiteRetry: this.suiteRetry,
@@ -152,8 +149,13 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       if(!this.#validateRun(content, runOpts.parkin))
         return emptyArr as TExEventData[]
 
+      // This must come before the parkin run
+      // Otherwise the steps will have the default timeout
+      // Which is too short for some steps
+      this.environment.test.setConfig(runOpts.test)
       await this.environment.parkin.run(content, runOpts.parkin)
-      const results = await this.environment.test.run(runOpts.test) as TExEventData[]
+
+      const results = await this.environment.test.run() as TExEventData[]
       this.isRunning = false
 
       if(this.canceled){
@@ -174,7 +176,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       await this.cleanup()
       throw err
     }
-
   }
 
   onRunStart = (result:TLocEvt, model:TExFileModel) => {

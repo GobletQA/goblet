@@ -28,10 +28,18 @@ export type THtmlTemplate = {
   data:TLocEvtData
 }
 
+export type TTestTimeCache = {
+  start:number
+  end?:number
+  length?:number|string
+}
+
 export type TReporterOpts = {
+  testTimes:Record<string, TTestTimeCache>
   onRenderTest?: (data:TRunResult) => string
   onRenderError?: (data:TRunResult) => string
 }
+
 
 
 const buildTitle = (response:TLocEvtData, reportTitle?:string) => {
@@ -64,24 +72,48 @@ const validate = (examCfg:TExamConfig) => {
     throw new Error(`HTML Reporter can not run. Missing Goblet Config - reports directory!`)
 }
 
+const getTestLength = ({start, end}:TTestTimeCache, testTimeout:number) => {
+  if(!start || !end) return
+
+  const time = Math.abs(end - start)
+  const length = time > testTimeout ? testTimeout : time
+
+  return (length / 1000).toFixed(2)
+}
+
 export class HtmlReporter implements IExamReporter {
+
   #page?:any
   rootDir:string
   reportsDir:string
+  disabled?:boolean
   #screenshotExt?:string
+  #testTimeout?:number
+  #suiteTimeout?:number
+  #saveReport?:boolean|string
   #saveScreenshot?:boolean|string
   #screenshots: Record<string, string>={}
+  #testTimes:Record<string, TTestTimeCache> = {}
+
 
   constructor(
     examCfg:TExamConfig,
     cfg?:TExReporterCfg,
     reporterContext?:TEXInterReporterContext
   ) {
+    this.#saveReport = cfg?.saveReport || false
+
+    if(!this.#saveReport){
+      this.#disable()
+      return this
+    }
 
     validate(examCfg)
 
     const gobletCfg = examCfg?.globals?.__goblet?.config
     this.rootDir = examCfg.rootDir
+    this.#testTimeout = examCfg.testTimeout
+    this.#suiteTimeout = examCfg.suiteTimeout
     const workDir = gobletCfg?.paths?.workDir
     const reportsDir = gobletCfg?.paths?.reportsDir
 
@@ -92,6 +124,17 @@ export class HtmlReporter implements IExamReporter {
     this.#screenshotExt = cfg?.screenshotExt || `png`
     this.#saveScreenshot = cfg?.saveScreenshot || false
 
+  }
+
+  /**
+   * This effectively disables the reporter by removing the event listener methods
+   * This way we can ensure the report is never generated when it's disabled
+   */
+  #disable = () => {
+    this.disabled = true
+    this.onTestStart = undefined
+    this.onTestResult = undefined
+    this.onRunResult = undefined
   }
 
   #getPage = () => {
@@ -127,6 +170,10 @@ export class HtmlReporter implements IExamReporter {
     date=new Date().toLocaleString(),
   }:THtmlTemplate) => {
     const built = buildTitle(data, title)
+    const totalTime = getTestLength(
+      { start: data?.stats?.runStart, end: data?.stats?.runEnd,  },
+      this.#suiteTimeout
+    )
 
     return `
       <!DOCTYPE html>
@@ -135,7 +182,9 @@ export class HtmlReporter implements IExamReporter {
         ${BodyHtml({
           data,
           date,
+          totalTime,
           title:built,
+          testTimes: this.#testTimes,
           onRenderError: this.#renderImg.bind(this),
           onRenderTest: this.#onRenderTest.bind(this),
         })}
@@ -143,7 +192,7 @@ export class HtmlReporter implements IExamReporter {
     `
   }
 
-  #saveReport = async (evt:TExamEvt<TLocEvtData>, html:string) => {
+  #saveFile = async (evt:TExamEvt<TLocEvtData>, html:string) => {
     try {
       await mkdir(this.reportsDir, { recursive: true })
       const timestamp = evt.data.timestamp || new Date().getTime()
@@ -158,19 +207,38 @@ export class HtmlReporter implements IExamReporter {
     }
   }
 
+  onTestStart = (evt:TExamEvt<TLocEvtData>) => {
+    const { id, timestamp } = evt?.data
+    this.#testTimes[id] = {start: timestamp}
+  }
+
   onTestResult = async (evt:TExamEvt<TLocEvtData>) => {
-    if(!shouldSaveArtifact(this.#saveScreenshot, evt?.data?.status)) return
+    const { id, timestamp, status } = evt?.data
+
+    if(this.#testTimes[id]){
+      this.#testTimes[id].end = timestamp
+      const length = getTestLength(this.#testTimes[id], this.#testTimeout)
+      length && (this.#testTimes[id].length = length)
+    }
+
+    if(!shouldSaveArtifact(this.#saveScreenshot, status)) return
 
     const page = this.#getPage()
     if(!page) return
-    
+
     const resp = await takeScreenshot(evt, { ext: this.#screenshotExt, page })
     resp && (this.#screenshots[resp.id] = resp.uri)
   }
 
   onRunResult = async (evt:TExamEvt<TLocEvtData>) => {
+    const { status } = evt?.data
+
+    if(!shouldSaveArtifact(this.#saveReport, status))
+      return console.log(`Skipping html report`, {report: this.#saveReport, test: status})
+
     const html = this.#htmlTemplate({ data: evt.data })
-    await this.#saveReport(evt, html)
+    await this.#saveFile(evt, html)
+    this.#testTimes = {}
   }
 
 }

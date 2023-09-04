@@ -1,15 +1,30 @@
 import { getParkinInstance } from './instance'
 import { wait } from '@keg-hub/jsutils/wait'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+
+/**
+ * Still debating on if this is a good idea or not.
+ * It wraps the step method with a 1 second buffer before and after
+ * May help will web inconsistencies.
+ */
+const waitBuffer = false
 
 const getStepHandler = (name:string) => {
-  return async (...args:any[]) => {
-    const parkin = getParkinInstance()
+  return (...args:any[]) => {
+    const PK = getParkinInstance()
+    const [match, action, meta] = args
 
-    await wait(1000)
-    const resp = parkin[name].apply(parkin, args)
-    await wait(1000)
+    const method = !isFunc(action)
+      ? action
+      : async (...args:any[]) => {
+          waitBuffer && await wait(1000)
+          const resp = await action(...args)
+          waitBuffer && await wait(1000)
 
-    return resp
+          return resp
+        }
+
+    return PK[name].apply(PK, [match, method, meta])
   }
 }
 

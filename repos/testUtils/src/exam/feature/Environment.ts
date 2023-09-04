@@ -1,12 +1,10 @@
 import type {
-  TExCtx,
   TEnvironmentEnvs,
   TExEnvironmentCfg,
   TEnvironmentCache,
   IExamEnvironment,
 } from '@gobletqa/exam/types'
 import type { FeatureRunner } from './Runner'
-
 
 /**
  * This is needed so that expect is added to the global context

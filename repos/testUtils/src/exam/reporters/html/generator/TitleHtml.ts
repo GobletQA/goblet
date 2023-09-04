@@ -1,3 +1,5 @@
+import type { TLocEvtData } from "@gobletqa/exam"
+
 import {
   colors,
   margin,
@@ -5,7 +7,11 @@ import {
 } from './theme'
 import { GobletIcon } from './IconsHtml'
 
-export const TitleHtml = (reportTitle:string, currentDate:string) => {
+export const TitleHtml = (
+  reportTitle:string,
+  currentDate:string,
+  totalTime?:string|number
+) => {
   return `
     <div class="report-title">
       <style>
@@ -42,11 +48,19 @@ export const TitleHtml = (reportTitle:string, currentDate:string) => {
         }
 
         .report-title .report-date {
-          font-size: 14px;
           margin: 0px;
           padding: 0px;
+          font-size: 14px;
           color: ${colors.c10};
         }
+        .report-title .report-time {
+          margin: 0px;
+          padding: 0px;
+          font-size: 14px;
+          color: ${colors.c10};
+          padding-top: ${padding.qpx};
+        }
+        
 
       </style>
       <div class="report-title-header" >
@@ -54,6 +68,7 @@ export const TitleHtml = (reportTitle:string, currentDate:string) => {
         <h1 class="report-title-text">${reportTitle}</h1>
       </div>
       <h3 class="report-sub-title">Test Results</h3>
+      <p class="report-time" >Total Time: ${totalTime} seconds</p>
       <p class="report-date" >Generated: ${currentDate}</p>
     </div>
   `

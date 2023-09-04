@@ -93,6 +93,12 @@ const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
   return sortByTimestamp(tests)
     .map((test, idx) => {
       const state = status(test)
+      let testTime = opts?.testTimes?.[test?.id]?.length
+      if(!testTime) testTime = state === `skipped` ? state : `unknown`
+      else testTime = `${testTime}s`
+      
+        
+      
       const toggleError = test.failedExpectations.length > 0 ? `onclick="toggleError(${idx})"` : ``
 
       const FailedHtml = test?.failedExpectations?.length
@@ -106,7 +112,7 @@ const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
               ${IconsHtml(state as any)}
             </span>
             ${TitleHtml(test.description, `step`, state)}
-            <div class="step-time">${test.timestamp}</div>
+            <div class="step-time">${testTime}</div>
           </div>
           ${opts?.onRenderTest?.(test) || ``}
           ${FailedHtml}

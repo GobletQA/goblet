@@ -1,39 +1,84 @@
-import type { TLocEvtData } from "@gobletqa/exam"
+import type { TLocEvtData, TRunResult } from "@gobletqa/exam"
 import {
   colors,
   margin,
   padding,
 } from './theme'
 
-type TOverviewType = `passed`|`failed`|`skipped`
-type TOverviewStats = {
-  steps:number
-  scenarios:number
+type TStatsObj = {
+  failedFeatures?:number
+  passedFeatures?:number
+  skippedFeatures?:number
+  failedParents?:number
+  passedParents?:number
+  failedSteps?:number
+  passedSteps?:number
+  skippedSteps?:number
+  skippedParents?:number
 }
 
-const countFailedScenarios = (describes: any[]):number => {
-  return describes.filter(scenario => scenario.failed).length
+const loopParent = (parent:TRunResult, stats:TStatsObj) => {
+  parent?.tests?.length
+    && parent?.tests?.forEach((test:TRunResult) => {
+        if(test.status === `skipped`) stats.skippedSteps += 1
+        else if(test.passed) stats.passedSteps += 1
+        else stats.failedSteps += 1
+      })
+
+  parent?.describes?.length
+    && parent.describes.forEach((describe:TRunResult) => {
+      if(describe.status === `skipped`) stats.skippedParents += 1
+      else if(describe.passed) stats.passedParents += 1
+      else stats.failedParents += 1
+
+      loopParent(describe, stats)
+    })
+
+  return stats
 }
 
-const countFailedTests = (describes: any[]): number => {
-  return describes.reduce((scenarioTotal, scenario) => {
-    return scenarioTotal + (scenario?.tests?.filter?.(test => test.failed).length || 0)
-  }, 0)
+const countStats = (features: any[]): any => {
+  const stats = {
+    failedFeatures: 0,
+    passedFeatures: 0,
+    skippedFeatures: 0,
+    failedParents: 0,
+    passedParents: 0,
+    skippedParents: 0,
+    failedSteps: 0,
+    passedSteps: 0,
+    skippedSteps: 0,
+  }
+
+  features.forEach((feature) => {
+    if(feature.status === `skipped`) stats.skippedFeatures += 1
+    else if(feature.passed) stats.passedFeatures += 1
+    else stats.failedFeatures += 1
+
+    loopParent(feature, stats)
+  })
+
+  return stats
 }
 
-const countFailed = (data:TLocEvtData) => {
+
+const getStats = (data:TLocEvtData) => {
+  const stats = countStats(data.describes)
   return {
     failed: {
-      steps: countFailedTests(data.describes),
-      scenarios: countFailedScenarios(data.describes),
+      steps: stats.failedSteps,
+      parents: stats.failedParents,
+      features: stats.failedFeatures,
     },
     passed: {
-      steps: 0,
-      scenarios: 0,
+      steps: stats.passedSteps,
+      parents: stats.passedParents,
+      features: stats.passedFeatures,
     },
     skipped: {
-      steps: 0,
-      scenarios: 0,
+      steps: stats.skippedSteps,
+      parents: stats.skippedParents,
+      features: stats.skippedFeatures,
     }
   }
 }
@@ -98,22 +143,36 @@ export const OverviewHtml = (data:TLocEvtData) => {
     failed,
     passed,
     skipped,
-  } = countFailed(data)
+  } = getStats(data)
 
   return `
     ${overviewStyle()}
     <div class="overview-container">
       <div class="overview-sections" >
+
         <div class="overview-section scenarios overview-card" >
-          <h4 class="overview-section-header" >Scenarios</h4>
+          <h4 class="overview-section-header" >Features</h4>
           <div class="overview-text overview-failed" >
-            ${failed.scenarios} failed
+            ${failed.features} failed
           </div>
           <div class="overview-text overview-passed" >
-            ${passed.scenarios} passed
+            ${passed.features} passed
           </div>
           <div class="overview-text overview-skipped" >
-            ${skipped.scenarios} skipped
+            ${skipped.features} skipped
+          </div>
+        </div>
+
+        <div class="overview-section scenarios overview-card" >
+          <h4 class="overview-section-header" >Parents</h4>
+          <div class="overview-text overview-failed" >
+            ${failed.parents} failed
+          </div>
+          <div class="overview-text overview-passed" >
+            ${passed.parents} passed
+          </div>
+          <div class="overview-text overview-skipped" >
+            ${skipped.parents} skipped
           </div>
         </div>
 
@@ -129,6 +188,7 @@ export const OverviewHtml = (data:TLocEvtData) => {
             ${skipped.steps} skipped
           </div>
         </div>
+
       </div>
     </div>
   `

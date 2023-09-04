@@ -70,7 +70,7 @@ const taskOptions = {
     testTimeout: {
       alias: [`timeout`],
       env: `GOBLET_TEST_TIMEOUT`,
-      example: `--timeout 15000`,
+      example: `--timeout 20000`,
       description: `Test timeout in milliseconds`,
     },
     testDebug: {
@@ -100,6 +100,7 @@ const taskOptions = {
     },
     testReport: {
       alias: [`report`],
+      default: `failed`,
       example: `--testReport`,
       env: `GOBLET_TEST_REPORT`,
       allowed: artifactSaveOpts,
@@ -309,6 +310,7 @@ const taskOptions = {
       description: `Open devtools automatically when the browser opens. The debug option must also be set true`,
     },
     tracing: {
+      default: `failed`,
       allowed: artifactSaveOpts,
       env: `GOBLET_TEST_TRACING`,
       example: `--tracing failed`,

@@ -10,6 +10,7 @@ type TBodyHtml = TReporterOpts & {
   title?:string
   date?:string
   data:TLocEvtData
+  totalTime?:string|number
 }
 
 export const BodyHtml = (args:TBodyHtml) => {
@@ -17,12 +18,13 @@ export const BodyHtml = (args:TBodyHtml) => {
     data,
     date,
     title,
+    totalTime,
     ...opts
   } = args
 
   return `
     <body>
-      ${TitleHtml(title, date)}
+      ${TitleHtml(title, date, totalTime)}
       ${OverviewHtml(data)}
       ${TestsHtml(data, opts)}
       ${Script()}
