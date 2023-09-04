@@ -21,6 +21,7 @@
     "repos/*"
   ],
   "scripts": {
+    "bai": "/bin/bash scripts/shell/buildActionImgs.sh",
     "build": "pnpm -r build",
     "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r ./configs/aliases.js tasks/entry.ts deploy build -- frontend=true",
