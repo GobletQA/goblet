@@ -42,6 +42,22 @@ export const options = {
   },
 
   /**
+   * Number of times to retry a test when it fails
+   */
+  testRetry: {
+    alias: [`tr`, `retry`],
+    description: `Number of times to retry a test when it fails`,
+  },
+
+  /**
+   * Number of times to retry a test suite when a test in the suite fails
+   */
+  suiteRetry: {
+    alias: [`sr`, `sretry`],
+    description: `Number of times to retry a test suite when a test in the suite fails`,
+  },
+
+  /**
    * Glob pattern of test files to ignore by transforms
    * Each items must be a file path relative to the rootDir
    * Any matching test files with paths that match will be ignored
@@ -110,17 +126,17 @@ export const options = {
   /**
    * Timeout per test
    */
-  timeout: {
-    alias: [`time`, `to`],
+  testTimeout: {
+    alias: [`ttimeout`, `tt`, `timeout`],
     description: `Timeout for each individual test in milliseconds`
   },
 
   /**
-   * Global timeout for test run per file
+   * Timeout pre suite (i.e. per file)
    */
-  globalTimeout: {
-    alias: [`gt`, `time`, `to`],
-    description: `Global timeout for each test file in milliseconds`
+  suiteTimeout: {
+    alias: [`st`, `stimeout`],
+    description: `Suite timeout for each test file in milliseconds`
   },
 
   /**
@@ -275,6 +291,22 @@ export const options = {
     allowed: [`error`,`warn`,`info`,`http`,`verbose`,`debug`,`silly`],
   },
 
+  exitOnFailed: {
+    default: false,
+    type: `boolean`,
+    alias: [`eof`, `exit`],
+    example: `--exitOnFailed`,
+    description: `Stop running test and exit the process is a test fails`,
+  },
+
+  skipAfterFailed: {
+    default: true,
+    type: `boolean`,
+    alias: [`saf`, `skip`],
+    example: `--skipAfterFailed`,
+    description: `When a test fails, skip all future tests within in the same suite`,
+  },
+
   /**
    * The node environment the tests should be run in
    * Same as setting the NODE_ENV=<environment>
@@ -373,24 +405,6 @@ export const options = {
   silent: {
     type: `boolean`,
     description: `Prevent logging output to command line`
-  },
-
-  /**
-   * Number of times to retry a test when it fails
-   */
-  testRetry: {
-    default: 0,
-    alias: [`tr`],
-    description: `Number of times to retry a test when it fails`,
-  },
-
-  /**
-   * Number of times to retry a test suite when a test in the suite fails
-   */
-  suiteRetry: {
-    default: 0,
-    alias: [`sr`],
-    description: `Number of times to retry a test suite when a test in the suite fails`,
   },
 
 }

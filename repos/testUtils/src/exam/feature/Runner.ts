@@ -39,8 +39,8 @@ export type TLocEvt = (TExEventData & { location:string })
 export type TRunnerOpts = {
   debug?: boolean
   slowMo?: number
-  timeout?: number
-  globalTimeout?:number
+  testTimeout?: number
+  suiteTimeout?:number
 }
 
 const hasValidTags = (
@@ -69,45 +69,59 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
     cfg.omitTestResults
       && (this.omitTestResults = flatUnion(this.omitTestResults, cfg.omitTestResults))
+
+  }
+
+  #bindEvents = (model:TExFileModel) => {
+    return ([
+      `onRunDone`,
+      `onRunStart`,
+      `onSpecDone`,
+      `onSpecStart`,
+      `onSuiteDone`,
+      `onSuiteStart`,
+    ].reduce((acc, cb) => {
+      acc[cb] = (result:TExEventData) => this?.[cb].call(
+        this,
+        {...result, location: model.location},
+        model
+      )
+
+      return acc
+    }, {}))
   }
 
   #buildRunOpts = (model:TExFileModel, state:TStateObj) => {
     const { data } = state
-    const { location } = model
 
     // TODO: include bail in the run options
     const parkinOpts = deepMerge(this.environment.runOptions, {
       ...data,
       tags: {...data?.tags},
-      timeout: data?.timeout || this.timeout,
+      timeout: data?.testTimeout || this.testTimeout,
       steps: {...data?.steps, shared: {...data?.steps?.shared}},
     })
 
-    const [
-      tOpts,
-      pOpts
-    ] = splitByKeys(parkinOpts, [`retry`, `exitOnFailed`, `skipAfterFailed`, `globalTimeout`])
-
     return {
-      parkin: pOpts,
+      parkin: parkinOpts,
       test: {
-        // retry: tOpts?.retry ?? 0,
-        retry: 0,
-        description: tOpts?.description,
-        // When running a single test from UI
-        // This should be set to true so running stops on the first failed test
-        exitOnFailed: tOpts?.exitOnFailed ?? false,
-        skipAfterFailed: tOpts?.skipAfterFailed ?? true,
-        timeout: tOpts?.globalTimeout || this.globalTimeout,
-
-        onSpecDone: (result:TExEventData) => this.onSpecDone.call(this, {...result, location }),
-        onSpecStart: (result:TExEventData) => this.onSpecStarted.call(this, {...result, location }),
-
-        onSuiteDone: (result:TExEventData) => this.onSuiteDone.call(this, {...result, location }),
-        onSuiteStart: (result:TExEventData) => this.onSuiteStarted.call(this, {...result, location }),
-
-        onRunDone: (result:TExEventData) => this.onRunDone.call(this, {...result, location }),
-        onRunStart: (result:TExEventData) => this.onRunStart.call(this, {...result, location }, model),
+        // description: tOpts?.description,
+        bail: this.bail,
+        testRetry: this.testRetry,
+        suiteRetry: this.suiteRetry,
+        testTimeout: this.testTimeout,
+        suiteTimeout: this.suiteTimeout,
+        /**
+         * When running a single test from UI
+         * This should be set to true so running stops on the first failed test
+         */
+        exitOnFailed: this.exitOnFailed,
+        skipAfterFailed: this.skipAfterFailed,
+        /**
+         * Bind Runner event listeners to the currently running model
+         * Ensures we can keep track of the test that called the event callback
+         */
+        ...this.#bindEvents(model),
       }
     }
 
@@ -200,7 +214,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       : this.event(ExamEvents.suiteDone({ data }))
   }
 
-  onSpecStarted = (result:TLocEvt) => {
+  onSpecStart = (result:TLocEvt) => {
     if(this.canceled) return
 
     this.event(ExamEvents.specStart({
@@ -208,7 +222,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     }))
   }
 
-  onSuiteStarted = (result:TLocEvt) => {
+  onSuiteStart = (result:TLocEvt) => {
     if(this.canceled) return
 
     const data = this.clearTestResults(result)

@@ -82,13 +82,17 @@ export const run:TTask = {
       `testDebug`,
       `testCache`,
       `testReport`,
-      `testReportName`,
+      `testRetry`,
+      `suiteRetry`,
       `testColors`,
       `testTimeout`,
       `testVerbose`,
       `testWorkers`,
+      `suiteTimeout`,
       `testOpenHandles`,
       `artifactsDebug`,
+      `exitOnFailed`,
+      `skipAfterFailed`,
     ]
   ),
 }

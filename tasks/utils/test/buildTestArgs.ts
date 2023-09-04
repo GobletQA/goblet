@@ -41,11 +41,16 @@ export const buildTestArgs = (
     testBail,
     testSync,
     testDebug,
+    testRetry,
+    suiteRetry,
     testCache,
     testColors,
     testVerbose,
     testWorkers,
     testTimeout,
+    suiteTimeout,
+    exitOnFailed,
+    skipAfterFailed
   } = params
 
   // node ./repos/exam/.bin/exam.js --config ../../app/repos/testUtils/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
@@ -65,15 +70,23 @@ export const buildTestArgs = (
   // Use the inverse of because testCache default to true
   cmdArgs.push(addFlag(`no-cache`, !testCache))
   cmdArgs.push(addFlag(`debug`, testDebug))
-  cmdArgs.push(addFlag(`passWithNoTests`, noTests))
   cmdArgs.push(addParam(`config`, testConfig))
+  cmdArgs.push(addParam(`testRetry`, testRetry))
+  cmdArgs.push(addParam(`suiteRetry`, suiteRetry))
+  cmdArgs.push(addFlag(`passWithNoTests`, noTests))
+  cmdArgs.push(addFlag(`exitOnFailed`, exitOnFailed))
+  cmdArgs.push(addFlag(`skipAfterFailed`, skipAfterFailed))
+
   cmdArgs.push(addParam(`root`, base))
 
   exists(testBail)
-    && cmdArgs.push(addParam(`bail`, toBool(testBail)))
+    && cmdArgs.push(addParam(`bail`, testBail))
+
+  exists(suiteTimeout)
+    && cmdArgs.push(addParam(`timeout`, suiteTimeout))
 
   exists(testTimeout)
-    && cmdArgs.push(addFlag(`timeout`, parseInt(testTimeout, 10)))
+    && cmdArgs.push(addParam(`timeout`, testTimeout))
 
   // Only set runInBand if testWorkers not set.
   // They can not both be passed, and runInBand has a default

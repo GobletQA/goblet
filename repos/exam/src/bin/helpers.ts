@@ -61,6 +61,17 @@ export const removeEmpty = <T extends Record<any, any>>(opts:T) => {
 
 
 /**
+ * Special handling for arguments that can be a boolean or number
+ */
+const booleanToNum = (opts:TExamCliOpts, key:keyof TExamCliOpts) => {
+  const value = opts[key]
+  if(!exists(value)) return
+
+  if(isBool(value)) opts[key] = value ? 1 : 0
+  else opts[key] = toNum(value)
+}
+ 
+/**
  * Parse the cmd line args and clean out empty properties
  */
 export const parseArgs = async () => {
@@ -68,15 +79,17 @@ export const parseArgs = async () => {
   const last = args[args.length - 1]
 
   const opts = await argsParse({ args, task: { options }})
+  /**
+   * Convert any options that ban be a boolean or number to a number
+   * IF false, will be 0; if true, will be 1, or converted into a number
+   */
+  booleanToNum(opts, `bail`)
+  booleanToNum(opts, `testRetry`)
+  booleanToNum(opts, `suiteRetry`)
+
   const cleaned = removeEmpty<TExamCliOpts>(opts)
 
   updateLoggerLevel(opts, opts.logLevel)
-
-  /**
-   * Special handling for bail as it can be a boolean or number
-   */
-  if(exists(opts.bail) && !isBool(opts.bail) && !isNum(opts.bail))
-    opts.bail = toNum(opts.bail)
 
   if(isDevCLI && last.startsWith(`test-file`))
     cleaned.testMatch = [last]

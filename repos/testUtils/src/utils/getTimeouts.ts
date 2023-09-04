@@ -2,24 +2,22 @@ import type { TGobletTestOpts } from '../types'
 import type { TExamConfig } from '@gobletqa/exam'
 
 export type TGetTimeouts = {
-  gobletOpts:TGobletTestOpts
   examConfig?:TExamConfig
-  defs:{timeout:number, globalTimeout:number},
+  defs:{testTimeout:number, suiteTimeout:number},
 }
 
 /**
- * Normalize getting test timeouts
+ * Normalize getting test and suite timeouts
  * Need to update other refs to use this method
  */
 export const getTimeouts = (opts:TGetTimeouts) => {
   const {
     defs,
-    gobletOpts,
     examConfig,
   } = opts
 
   return {
-    globalTimeout: examConfig?.globalTimeout || defs?.globalTimeout,
-    timeout: gobletOpts?.timeout || examConfig?.timeout || defs?.timeout,
+    suiteTimeout: examConfig?.suiteTimeout || defs?.suiteTimeout,
+    testTimeout: examConfig?.testTimeout || defs?.testTimeout,
   }
 }

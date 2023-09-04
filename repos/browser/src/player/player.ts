@@ -154,7 +154,7 @@ export class Player {
       })
 
       const timeout = this.options?.playOptions?.testTimeout as number
-      const globalTimeout = this.options?.playOptions?.globalTimeout as number
+      const suiteTimeout = this.options?.playOptions?.suiteTimeout as number
       this.page.setDefaultTimeout(timeout || 15000)
 
       const extraHTTPHeaders = this.repo?.world?.$headers
@@ -163,7 +163,7 @@ export class Player {
 
       this.codeRunner = new CodeRunner(this, {
         timeout,
-        globalTimeout,
+        suiteTimeout,
         debug: this.options?.playOptions?.debug as boolean,
         slowMo: this.options?.playOptions?.slowMo as number,
       })

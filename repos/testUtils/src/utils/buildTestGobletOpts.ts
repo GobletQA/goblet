@@ -69,8 +69,6 @@ export const buildTestGobletOpts = (
     // Should be able to record on others, but not currently working
     saveVideo: CanRecordVideo.includes(browserOpts.type as EBrowserName) &&
       artifactSaveOption(ENVS.GOBLET_TEST_VIDEO_RECORD),
-    ...(ENVS.GOBLET_TEST_TIMEOUT && { timeout: ENVS.GOBLET_TEST_TIMEOUT }),
-    ...(exists(ENVS.GOBLET_TEST_RETRY) && { retry: ENVS.GOBLET_TEST_RETRY }),
   }
 
   if(ENVS.GOBLET_TEST_TYPE) options.testType = ENVS.GOBLET_TEST_TYPE

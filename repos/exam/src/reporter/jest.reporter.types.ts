@@ -9,7 +9,7 @@ type GlobalConfig = {
   maxConcurrency: number // => examCfg.concurrency
   globalSetup?: string // => examCfg.preRunner
   globalTeardown?: string // => examCfg.postRunner
-  testTimeout?: number // => examCfg.timeout
+  testTimeout?: number // => examCfg.testTimeout
 
   // ---- These options should be easy to implement ---- //
   // ci: boolean;

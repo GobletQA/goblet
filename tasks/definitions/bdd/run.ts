@@ -98,9 +98,9 @@ export const run:TTask = {
       `testSync`,
       `testDebug`,
       `testRetry`,
+      `suiteRetry`,
       `testCache`,
       `testReport`,
-      `testReportName`,
       `testColors`,
       `testTimeout`,
       `testVerbose`,
@@ -126,7 +126,10 @@ export const run:TTask = {
       `record`,
       `storageState`,
       `timezone`,
+      `suiteTimeout`,
       `artifactsDebug`,
+      `exitOnFailed`,
+      `skipAfterFailed`,
     ]
   ),
 }

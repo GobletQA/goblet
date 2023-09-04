@@ -63,11 +63,12 @@ export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
     })
 
     this.test.setConfig({
+      testTimeout: runner?.testTimeout,
+      suiteTimeout: runner?.suiteTimeout,
       onSpecDone: runner.onSpecDone.bind(runner),
       onSuiteDone: runner.onSuiteDone.bind(runner),
       onSpecStart: runner.onSpecStarted.bind(runner),
       onSuiteStart: runner.onSuiteStarted.bind(runner),
-      timeout: runner?.timeout || runner?.globalTimeout,
     })
 
   }

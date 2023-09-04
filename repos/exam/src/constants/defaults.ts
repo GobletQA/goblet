@@ -20,9 +20,23 @@ export const DefaultReporters = {
   default: `default`,
 }
 
-
-
 export const RunnerCfg:TExRunnerCfg = {
+
+  /**
+   * Number of test that can fail before exiting, 0 means it's disabled
+   */
+  bail: 0,
+
+  /**
+   * Number of times to retry a test if it fails, 0 means it's disabled
+   */
+  testRetry: 0,
+
+  /**
+   * Number of times to retry a suite if it fails, 0 means it's disabled
+   */
+  suiteRetry: 0,
+
   /**
    * Debug logging output
    */
@@ -36,12 +50,12 @@ export const RunnerCfg:TExRunnerCfg = {
   /**
    * Timeout per test - 15 seconds (default)
    */
-  timeout: 15000,
+  testTimeout: 15000,
 
   /**
-   * Global timeout for test run per file - 20min (default)
+   * Timeout per suite (i.e. file) - 20min (default)
    */
-  globalTimeout: 60000 * 20,
+  suiteTimeout: 60000 * 20,
 
   /**
    * Removes specific fields from the test result response
@@ -55,10 +69,20 @@ export const RunnerCfg:TExRunnerCfg = {
   /**
    * By default a new Runner class instance it created for each test
    */
-   reuseRunner: false
+  reuseRunner: false,
+
+  /**
+   * Stop running tests and exit as soon as a test fails
+   */
+  exitOnFailed: false,
+
+  /**
+   * If a test fails, skip all future tests in the suite
+   */
+  skipAfterFailed: true,
 }
 
-export const LoaderCfg = {
+const LoaderCfg = {
   /**
    * Default to the current working directory
    * It's expected that this will be overwritten
@@ -115,7 +139,7 @@ export const TransformCfg:TExTransformCfg = {
   transformIgnore: globFileIgnore
 }
 
-export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
+const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
   runners:{},
   transforms:{},
   passthrough:{},
@@ -124,18 +148,15 @@ export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
   // environment: undefined,
 }
 
-export const ExCfg:Partial<TExamConfig> = {
+const ExCfg:Partial<TExamConfig> = {
   /**
    * ----- TODO: Need to implement these ----- *
    */
-  testRetry: 0,
-  suiteRetry: 0,
   silent: false,
 
   /**
    * ----- Implemented ----- *
    */
-  bail: 0,
   workers: 1,
   reporter: {},
   colors: true,

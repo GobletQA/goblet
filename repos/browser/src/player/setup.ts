@@ -53,7 +53,7 @@ const setTestGlobals = (Runner:CodeRunner, timeout?:number) => {
     onSuiteStart: Runner.onSuiteStarted,
   }
 
-  const tOut = timeout || Runner.globalTimeout
+  const tOut = timeout || Runner.suiteTimeout
   tOut && (opts.timeout = tOut)
 
   const PTE = new ParkinTest(opts)

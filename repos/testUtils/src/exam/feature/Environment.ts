@@ -17,12 +17,6 @@ import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { Parkin, TParkinRunOpts } from '@ltipton/parkin'
 
-type TRunOpts = TParkinRunOpts & {
-  exitOnFailed?:boolean
-  globalTimeout?:number
-  skipAfterFailed?:boolean
-}
-
 
 type TFeatureEnvironment = TExEnvironmentCfg<{ parkin?: Record<string, any> }>
 
@@ -30,7 +24,7 @@ export class FeatureEnvironment implements IExamEnvironment {
 
   parkin:Parkin
   test:ParkinTest
-  runOptions:TRunOpts={}
+  runOptions:TParkinRunOpts={}
   envs:TEnvironmentEnvs={}
   cache:TEnvironmentCache = {
     envs:{},
@@ -75,14 +69,6 @@ export class FeatureEnvironment implements IExamEnvironment {
     this.globals?.forEach((item) => {
       this.cache.globals[item] = global[item]
       global[item] = this.test[item]
-    })
-
-    this.test.setConfig({
-      specDone: runner.onSpecDone.bind(runner),
-      suiteDone: runner.onSuiteDone.bind(runner),
-      specStarted: runner.onSpecStarted.bind(runner),
-      suiteStarted: runner.onSuiteStarted.bind(runner),
-      timeout: runner?.timeout || runner?.globalTimeout,
     })
   }
 

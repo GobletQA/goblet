@@ -102,15 +102,17 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     suiteRetry: bSuiteRetry,
     concurrency: bConcurrency,
     reuseRunner: bReuseRunner,
+    exitOnFailed: bExitOnFailed,
+    skipAfterFailed: bSkipAfterFailed,
 
     rootDir: bRootDir,
     testDir: bTestDir,
 
     debug:bDebug,
     verbose: bVerbose,
-    timeout: bTimeout,
     extensions: bExtensions,
-    globalTimeout: bGlobalTimeout,
+    testTimeout: bTestTimeout,
+    suiteTimeout: bSuiteTimeout,
     
     
     ...baseRest
@@ -167,15 +169,17 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     suiteRetry,
     concurrency,
     reuseRunner,
+    exitOnFailed,
+    skipAfterFailed,
 
     rootDir,
     testDir,
 
     debug,
     verbose,
-    timeout,
     extensions,
-    globalTimeout,
+    testTimeout,
+    suiteTimeout,
 
   } = override
 
@@ -194,15 +198,17 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     colors: toBool(colors ?? bColors),
 
     silent: toBool(silent ?? bSilent),
-    timeout: toNum(timeout ?? bTimeout),
     workers: toNum(workers ?? bWorkers),
     verbose: toBool(verbose ?? bVerbose),
     testRetry: toNum(testRetry ?? bTestRetry),
     suiteRetry: toNum(suiteRetry ?? bSuiteRetry),
+    testTimeout: toNum(testTimeout ?? bTestTimeout),
     concurrency: toNum(concurrency ?? bConcurrency),
     reuseRunner: toBool(reuseRunner ?? bReuseRunner),
-    globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
+    suiteTimeout: toNum(suiteTimeout ?? bSuiteTimeout),
+    exitOnFailed: toBool(exitOnFailed ?? bExitOnFailed),
     bail: isBool(bail) ? bail : isNum(bail) ? bail : bBail,
+    skipAfterFailed: toBool(skipAfterFailed ?? bSkipAfterFailed),
     extensions: flatUnion([...(bExtensions||emptyArr), ...(extensions||emptyArr)]),
     ...mergeCfgArrays(base, override),
   } as TExamConfig

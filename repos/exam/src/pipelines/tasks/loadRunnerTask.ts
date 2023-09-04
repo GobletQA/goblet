@@ -40,15 +40,7 @@ export const loadRunnerTask = async (args:TPipelineArgs) => {
   const { config, state, testMatch } = args
   let CacheRunners = {} as Record<string, IExamRunner<any>>
 
-  const looper = getTestRunner(args, {
-    bail: config.bail,
-    debug: config.debug,
-    omitTestResults: [],
-    verbose: config.verbose,
-    timeout: config.timeout,
-    globalTimeout: config.globalTimeout,
-    ...state?.passthrough?.runner,
-  }, CacheRunners)
+  const looper = getTestRunner(args, {...state?.passthrough?.runner}, CacheRunners)
 
   const withRunners = await pMapSeries(ensureArr(testMatch), looper)
   // Clear the cache after loading all runners

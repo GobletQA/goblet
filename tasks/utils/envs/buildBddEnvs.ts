@@ -26,7 +26,6 @@ export const buildBddEnvs = (
   addEnv(env, `GOBLET_CONFIG_BASE`, params.base)
   addEnv(env, `GOBLET_FEATURE_TAGS`, params.tags)
   addEnv(env, `GOBLET_FEATURE_NAME`, params.filter)
-  addEnv(env, `GOBLET_TEST_RETRY`, params.testRetry)
   addEnv(env, `GOBLET_TEST_TYPE`, type === `feature` ? `bdd` : type)
 
   return { env, cwd: appRoot }

@@ -57,7 +57,6 @@ const taskOptions = {
       description: `Run all tests sequentially`,
     },
     testBail: {
-      type: `boolean`,
       alias: [`bail`],
       example: `--testBail`,
       env: `GOBLET_TEST_BAIL`,
@@ -69,10 +68,10 @@ const taskOptions = {
       description: `Absolute path to a test config relative to the root directory`,
     },
     testTimeout: {
-      type: `number`,
+      alias: [`timeout`],
       env: `GOBLET_TEST_TIMEOUT`,
       example: `--timeout 15000`,
-      description: `Test timeout in seconds. Defaults to 15000 milliseconds (15 seconds).`,
+      description: `Test timeout in milliseconds`,
     },
     testDebug: {
       default: false,
@@ -82,23 +81,29 @@ const taskOptions = {
       description: `Pass the --debug flag to the test command`,
     },
     testRetry: {
-      type: `number`,
       example: `--testRetry 3`,
+      alias: [`retry`, `tr`],
       env: `GOBLET_TEST_RETRY`,
       description: `Amount of times to retry the test if it fails`,
+    },
+    suiteRetry: {
+      example: `--suiteRetry 3`,
+      alias: [`sretry`, `sr`],
+      env: `GOBLET_SUITE_RETRY`,
+      description: `Amount of times to retry the suite when a child test fails`,
+    },
+    suiteTimeout: {
+      alias: [`st`, `stimeout`],
+      env: `GOBLET_SUITE_TIMEOUT`,
+      example: `--suiteTimeout 36000`,
+      description: `Suite timeout in milliseconds.`,
     },
     testReport: {
       alias: [`report`],
       example: `--testReport`,
       env: `GOBLET_TEST_REPORT`,
       allowed: artifactSaveOpts,
-      description: `Context in which the html test report should be saved`,
-    },
-    testReportName: {
-      alias: [`reportName`],
-      example: `--testReportName`,
-      env: `GOBLET_TEST_REPORT_NAME`,
-      description: `Name of the generated HTML test report file`,
+      description: `Generate an html report for a test suite based on the test state`,
     },
     testCache: {
       default: true,
@@ -140,7 +145,22 @@ const taskOptions = {
       example: `--testCI`,
       env: `GOBLET_RUN_FROM_CI`,
       description: `Run the tests in CI mode when running in a CI environment`,
-    }
+    },
+    exitOnFailed: {
+      default: false,
+      type: `boolean`,
+      alias: [`eof`, `exit`],
+      example: `--exitOnFailed`,
+      env: `GOBLET_EXIT_ON_FAILED`,
+      description: `Stop running test and exit the process is a test fails`,
+    },
+    skipAfterFailed: {
+      default: true,
+      type: `boolean`,
+      alias: [`saf`, `skip`],
+      example: `--skipAfterFailed`,
+      description: `When a test fails, skip all future tests within in the same suite`,
+    },
   },
   docker: {
     container: {
@@ -228,16 +248,16 @@ const taskOptions = {
       example: `--chrome`,
     },
     firefox: {
-      alias: [`fire`, `fox`, `ff`],
-      description: `Launch Firefox browser through Playwright`,
       type: `bool`,
       example: `--firefox`,
+      alias: [`fire`, `fox`, `ff`],
+      description: `Launch Firefox browser through Playwright`,
     },
     webkit: {
+      type: `bool`,
+      example: `--webkit`,
       alias: [`webkit`, `safari`, `sa`],
       description: `Launch Safari browser through Playwright`,
-      type: 'bool',
-      example: `--webkit`,
     },
     headless: {
       type: `bool`,
@@ -256,6 +276,7 @@ const taskOptions = {
     },
     browserTimeout: {
       type: `number`,
+      alias: [`bt`, `btimeout`],
       env: `GOBLET_BROWSER_TIMEOUT`,
       example: `--browserTimeout 15000`, // 15 seconds
       description: `Amount of time until a browser request will timeout should be less the timeout option`,

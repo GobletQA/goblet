@@ -85,8 +85,8 @@ Timeout per test - 30 seconds (default).
 - **Alias:** `time`, `to`
 - **Description:** Timeout for each individual test - 30 seconds (default)
 
-### `globalTimeout`
-Global timeout for test run per file - 20 minutes (default).
+### `suiteTimeout`
+Suite timeout for test run per file - 20 minutes (default).
 
 - **Type:** `number`
 - **Alias:** `gt`, `time`, `to`

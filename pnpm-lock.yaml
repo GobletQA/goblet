@@ -79,8 +79,8 @@ importers:
         specifier: 0.2.1
         version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.4.2)(esbuild@0.19.2)
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       '@types/jest':
         specifier: 29.1.2
         version: 29.1.2
@@ -198,8 +198,8 @@ importers:
         specifier: '>=0.3.2'
         version: 0.3.2
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       expect:
         specifier: 29.6.1
         version: 29.6.1
@@ -388,8 +388,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       esbuild:
         specifier: 0.19.2
         version: 0.19.2
@@ -612,8 +612,8 @@ importers:
         specifier: 9.8.3
         version: 9.8.3
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       '@mui/icons-material':
         specifier: 5.11.16
         version: 5.11.16(@mui/material@5.12.3)(@types/react@18.0.21)(react@18.2.0)
@@ -758,8 +758,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       express:
         specifier: 4.18.2
         version: 4.18.2
@@ -840,8 +840,8 @@ importers:
         specifier: 9.8.3
         version: 9.8.3
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       esbuild:
         specifier: 0.19.2
         version: 0.19.2
@@ -1028,8 +1028,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 6.2.0
-        version: 6.2.0
+        specifier: 6.3.0
+        version: 6.3.0
       axios:
         specifier: 1.4.0
         version: 1.4.0
@@ -3609,8 +3609,8 @@ packages:
     optionalDependencies:
       nodemon: 3.0.1
 
-  /@ltipton/parkin@6.2.0:
-    resolution: {integrity: sha512-2VDpteuqFN5lZiU//SDQkqIKyFtqMbhn7b0lvh9Z3PKd1iO21Er/C6QgVnUkudYBaBNkQOFcK/UA6u4Xyptwrg==}
+  /@ltipton/parkin@6.3.0:
+    resolution: {integrity: sha512-qvkJnmPzd7ty4v+fU6LS/qpRMGvyANokUrdIvRusPTu5GSdXuwd+nxmGvR+ivZJ4273SRJlS6fxZ9Leyf6Pt6A==}
     engines: {node: '>= 16.0.0'}
     optionalDependencies:
       esbuild: 0.19.2
