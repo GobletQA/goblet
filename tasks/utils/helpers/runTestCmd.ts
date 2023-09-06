@@ -4,10 +4,9 @@ import type {
   TTaskParams,
 } from '../../types'
 
-
-import { EBrowserType } from '../../types'
 import { runCmd } from '@keg-hub/cli-utils'
-import { toBool } from '@keg-hub/jsutils'
+import { EBrowserType } from '../../types'
+import { toBool } from '@keg-hub/jsutils/toBool'
 import { runCommands } from '@GTasks/utils/helpers/runCommands'
 import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
 import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
@@ -85,12 +84,11 @@ export const runTestCmd = async (args:TRunTestCmd) => {
   const browsers = [EBrowserType.chromium]
 
   const commands = browsers.map((browser) => {
-      return buildBrowserCmd({
-        cmdArgs: [...cmdArgs],
-        cmdOpts: envsHelper(browser),
-      })
-    }
-  )
+    return buildBrowserCmd({
+      cmdArgs: [...cmdArgs],
+      cmdOpts: envsHelper(browser),
+    })
+  })
 
   // Run each of the test command and capture the exit-codes
   const codes = await runCommands(commands, params)
