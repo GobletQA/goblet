@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import { get } from '@keg-hub/jsutils/get'
 import { mkDir, removeFile } from '@GTU/Utils/fileSys'
-import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 
 const nameCache = {}
 
@@ -28,11 +27,10 @@ const formatName = (location:string) => {
  * @returns <Object> - Contains the short name and full generated path name
  */
 export const getGeneratedName = (
-  testLoc?:string,
+  testPath?:string,
   type?:string,  // TODO - Update to test type enum
   browserName?:string // TODO - Update to browser type enum
 ) => {
-  const testPath = testLoc || evtReporter.getTestPath()
   if(!testPath) throw new Error(`Could not resolve test path location`)
 
   const testType = type || get(global, `__goblet.options.testType`)

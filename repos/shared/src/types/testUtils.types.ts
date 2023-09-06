@@ -3,6 +3,7 @@ export type TGobletTestArtifactOption = `never` | `always` | `on-fail` | true | 
 export type TGobletTestStatus = `passed` | `failed`
 
 export type TGobletTestTracingOpts = {
+  sources?:boolean
   snapshots?:boolean
   screenshots?:boolean
 }

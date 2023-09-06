@@ -1,9 +1,11 @@
+import type { TGobletTestArtifactOption } from '@GTU/Types'
 import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
+
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
  */
-export const artifactSaveOption = (option:string|boolean) => {
+export const artifactSaveOption = (option:TGobletTestArtifactOption) => {
   return !option || option === ArtifactSaveOpts.never
     ? false
     : option === ArtifactSaveOpts.always
@@ -15,7 +17,7 @@ export const artifactSaveOption = (option:string|boolean) => {
  * Checks if the passed in option should be saved or not
  */
 export const shouldSaveArtifact = (
-  option:string|boolean,
+  option:TGobletTestArtifactOption,
   testStatus:string|boolean
 ) => {
   const status = artifactSaveOption(option)
@@ -31,6 +33,6 @@ export const shouldSaveArtifact = (
  * Checks if a feature is enabled to know if the feature options should be set
  * For example, tracing options are only set when tracing is active
  */
-export const artifactSaveActive = (option:string|boolean) => {
+export const artifactSaveActive = (option:TGobletTestArtifactOption) => {
   return Boolean(artifactSaveOption(option))
 }

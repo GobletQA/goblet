@@ -9,7 +9,6 @@ import type {
 
 import os from 'os'
 import path from 'path'
-import { startTracing } from './tracing'
 import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
@@ -62,8 +61,6 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
 
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext
-
-  await startTracing(global.context)
 
   return { browser, context }
 
@@ -159,8 +156,6 @@ export const closePage = async (pg?:TBrowserPage, retry:number=1) => {
 
 export const closeContext = async () => {
   const context = await getContext()
-  if(!context) return
-
   await context?.close()
 }
 

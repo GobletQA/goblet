@@ -12,9 +12,13 @@ import {emptyArr} from "@keg-hub/jsutils/emptyArr"
 
 
 type TEvt = TExamEvt<TExEventData & { location?:string }>
-type TEvtCB = ((evt:TEvt) => any) & {
+export type TEvtCB = ((evt:TEvt) => any) & {
   name?:string
 }
+export type TRmCB = (() => any) & {
+  name?:string
+}
+
 type TListeners = Record<string, TEvtCB[]>
 
 class EvtReporter {
@@ -50,7 +54,7 @@ class EvtReporter {
       && (this.#failedSpecMap[evt.data.location] = evt.data)
   }
 
-  on = (evt:string, cb:TEvtCB, key?:string) => {
+  on = (evt:string, cb:TEvtCB, key?:string):TRmCB => {
     if(!cb.name) cb.name = key || nanoid()
     
     this.#listeners[evt] = this.#listeners[evt] || []

@@ -56,7 +56,8 @@ export const buildTestGobletOpts = (
     // Currently can be set by ENV only
     // GOBLET_PAGE_REUSE, // PW_TEST_REUSE_PAGE
     // GOBLET_CONTEXT_REUSE, // PW_TEST_REUSE_CONTEXT
-    // GOBLET_TEST_TRACING_SNAPSHOTS=true,
+    // GOBLET_TEST_TRACING_SOURCES=true
+    // GOBLET_TEST_TRACING_SNAPSHOTS=true
     // GOBLET_TEST_TRACING_SCREENSHOTS=true
 
   const options:TGobletTestOpts = {
@@ -75,6 +76,7 @@ export const buildTestGobletOpts = (
 
   if(artifactSaveActive(ENVS.GOBLET_TEST_TRACING))
     options.tracing = {
+      sources: toBool(ENVS.GOBLET_TEST_TRACING_SOURCES),
       snapshots: toBool(ENVS.GOBLET_TEST_TRACING_SNAPSHOTS),
       screenshots: toBool(ENVS.GOBLET_TEST_TRACING_SCREENSHOTS),
     }

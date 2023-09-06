@@ -100,10 +100,10 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     ...parseGeo(ENVS.GOBLET_CONTEXT_GEO),
   } as Partial<TBrowserContextOpts>
 
-  addEnvToOpts(opts, 'timezoneId', ENVS.GOBLET_CONTEXT_TZ)
-  addEnvToOpts(opts, 'hasTouch', ENVS.GOBLET_CONTEXT_TOUCH)
-  addEnvToOpts(opts, 'isMobile', ENVS.GOBLET_CONTEXT_MOBILE)
-  addEnvToOpts(opts, 'acceptDownloads', ENVS.GOBLET_CONTEXT_DOWNLOADS)
+  addEnvToOpts(opts, `timezoneId`, ENVS.GOBLET_CONTEXT_TZ)
+  addEnvToOpts(opts, `hasTouch`, ENVS.GOBLET_CONTEXT_TOUCH)
+  addEnvToOpts(opts, `isMobile`, ENVS.GOBLET_CONTEXT_MOBILE)
+  addEnvToOpts(opts, `acceptDownloads`, ENVS.GOBLET_CONTEXT_DOWNLOADS)
 
   const screenDims = getScreenDims()
 
@@ -116,8 +116,8 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
   )
 
   if(screenDims.height || screenDims.width){
-    addEnvToOpts(opts, 'viewport', screenDims)
-    addEnvToOpts(opts, 'screen', screenDims)
+    addEnvToOpts(opts, `viewport`, screenDims)
+    addEnvToOpts(opts, `screen`, screenDims)
   }
 
   return opts as TBrowserContextOpts

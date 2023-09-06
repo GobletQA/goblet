@@ -1,16 +1,16 @@
+import type {
+  TBrowser,
+  TBrowserContext,
+} from '@GTU/Types'
 import type { TGobletTestOpts } from '@gobletqa/shared/types'
 
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
-import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
-import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'
 import {
   getPage,
   closePage,
   setupBrowser,
-  getLastActivePage,
 } from '@GTU/Playwright/browserContext'
 
 /**
@@ -58,31 +58,21 @@ const cleanupPageAndContext = async () => {
     reuseContext,
   } = get<TGobletTestOpts>(global, `__goblet.options`, emptyObj)
 
-
   if(!reusePage){
     await closePage(undefined, 3)
     delete global.page
   }
 
+  /**
+   * Don't call closeContext method because it throws an error when the context can't be found
+   * Instead we manually close the context and remove it from the global scope
+   */
   if(!reuseContext){
     global.context && await global?.context?.close?.()
     global.context = undefined
     delete global.context
   }
 
-}
-
-/**
- * Helper to wrap a cleanup method in a try catch and log any errors that are thrown
- */
-const tryLogCleanupCB = async (cb:(...args:any[]) => any, message:string) => {
-  try {
-    return await cb()
-  }
-  catch(err){
-    Logger.stderr(`${Logger.colors.red(`[Goblet Cleanup Error]`)} ${message}`)
-    err && Logger.stderr(`\n${err.stack}\n`)
-  }
 }
 
 /**
@@ -94,10 +84,13 @@ const tryLogCleanupCB = async (cb:(...args:any[]) => any, message:string) => {
 export const initialize = async () => {
 
   let startError:boolean
+  let browser:TBrowser
+  let context:TBrowserContext
 
   try {
-    await initTestMeta()
-    await setupBrowser()
+    const resp = await setupBrowser()
+    browser = resp.browser
+    context = resp.context
   }
   catch (err) {
     startError = true
@@ -105,10 +98,15 @@ export const initialize = async () => {
     forceExit(err)
   }
   finally {
-    if(startError) return
+    if(startError) return {}
 
-    await startTracingChunk(global.context)
-    await getPage()
+    const page = await getPage()
+
+    return {
+      page,
+      browser,
+      context,
+    }
   }
 }
 
@@ -121,25 +119,8 @@ export const cleanup = async (initErr?:boolean) => {
 
   if (!global.browser){
     await cleanupPageAndContext()
-    await commitTestMeta()
     return false
   }
-
-  await tryLogCleanupCB(
-    async () => await stopTracingChunk(global.context),
-    `Failed attempt to stop Tracing...`,
-  )
-
-  // TODO: Add video recording
-  // await tryLogCleanupCB(
-  //   async () => await saveRecordingPath(getLastActivePage()),
-  //   `Failed attempt to save Recording...`,
-  // )
-
-  await tryLogCleanupCB(
-    commitTestMeta,
-    `Failed attempt to commit test meta...`,
-  )
 
   try {
 
