@@ -5,16 +5,19 @@ const config = {
   },
   paths: {
     repoRoot: ``,
-    workDir: `goblet`,
-    artifactsDir: `artifacts`,
-    environmentsDir: `environments`,
-    reportsDir: `artifacts/reports`,
-    featuresDir: `bdd/features`,
-    supportDir: `bdd/support`,
-    stepsDir: `bdd/steps`,
     unitDir: `unit`,
+    workDir: `goblet`,
+    world: `world.json`,
+    stepsDir: `bdd/steps`,
     waypointDir: `waypoint`,
-    world: `world.json`
+    artifactsDir: `artifacts`,
+    supportDir: `bdd/support`,
+    featuresDir: `bdd/features`,
+    tracesDir: `artifacts/reports`,
+    videosDir: `artifacts/reports`,
+    reportsDir: `artifacts/reports`,
+    environmentsDir: `environments`,
+    downloadsDir: `artifacts/downloads`,
   }
 }
 

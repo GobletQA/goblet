@@ -1,7 +1,7 @@
  import type { TExamEvt, TLocEvtData } from "@gobletqa/exam"
 import type { TRmCB } from '@GTU/Exam/reporters/event/EventReporter'
-
 import type {
+  ETestType,
   TBrowserPage,
   TGobletTestOpts,
   TGobletTestStatus,
@@ -163,7 +163,7 @@ export class VideoRecorder {
     if(!evt.data)
       return Logger.warn(`Can not chunk tracing, missing event data`)
 
-    const { location, status } = evt.data
+    const { location, status, timestamp } = evt.data
 
 
     const recordVideo = get<TGobletGlobalRecordVideo>(
@@ -177,7 +177,6 @@ export class VideoRecorder {
     }
 
     const {
-      testType,
       saveVideo,
       videosDir:repoVideoDir
     } = get<TGobletTestOpts>(
@@ -186,16 +185,16 @@ export class VideoRecorder {
       emptyObj as TGobletTestOpts
     )
 
+    if(!recordVideo.dir || !shouldSaveArtifact(saveVideo, status)) return
+
     const {
       dir,
       name,
-      testPath,
+      testLoc,
       nameTimestamp,
-    } = getGeneratedName(location, testType || undefined)
+    } = getGeneratedName({ location, timestamp })
 
-    if(!testPath) return false
-
-    if(!recordVideo.dir || !shouldSaveArtifact(saveVideo, status)) return
+    if(!testLoc) return false
 
     const recordPath = await await this.pathFromPage(undefined, 0, this.page)
     if(!recordPath)
@@ -204,8 +203,11 @@ export class VideoRecorder {
       )
 
     const saveDir = await ensureRepoArtifactDir(repoVideoDir, dir)
+    const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, recordPath)
 
-    return await copyArtifactToRepo(saveDir, nameTimestamp, recordPath)
+    Logger.pair(`Video Recording saved to`, savedLoc.replace(global?.__goblet?.repoDir || ``, ``))
+
+    return savedLoc
   }
 
   clean = (page:TBrowserPage=this.page || global.page) => {

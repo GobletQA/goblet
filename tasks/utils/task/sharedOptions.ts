@@ -363,7 +363,8 @@ const taskOptions = {
       example: `--permissions gyroscope,notifications`,
       description: `A list of permissions to grant to all browser pages, seperated by comma`
     },
-    record: {
+    video: {
+      default: `failed`,
       allowed: artifactSaveOpts,
       example: `--record failed`,
       env: `GOBLET_TEST_VIDEO_RECORD`,

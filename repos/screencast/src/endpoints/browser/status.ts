@@ -27,6 +27,7 @@ type TStatusQuery = {
    */
   // headless?:boolean
   // tracesDir?:string
+  // This `downloadsPath` should be mapped from downloadsDir of the goblet.config#paths object
   // downloadsPath?:string
 
   /**

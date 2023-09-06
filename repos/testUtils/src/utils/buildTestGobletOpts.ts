@@ -29,12 +29,18 @@ const buildArtifactsPaths = (
   options
 ) => {
   const { artifactsDir } = config.paths
-  BrowserArtifactTypes.map(type => {
-    // Check for a custom location set as an ENV
-    // If set, use that env, otherwise use the relative path from the config artifactsDir
-    const baseDir = process.env[`GOBLET_${type.toUpperCase()}_DIR`] || artifactsDir
+  BrowserArtifactTypes.map((type:string) => {
+    const key = `${type}Dir`
+    let artifactDir = config.paths[key] as string
 
-    options[`${type}Dir`] = getPathFromBase(path.join(baseDir, `${type}/`), config)
+    if(!artifactDir){
+      // Check for a custom location set as an ENV
+      // If set, use that env, otherwise use the relative path from the config artifactsDir
+      const baseDir = process.env[`GOBLET_${type.toUpperCase()}_DIR`] || artifactsDir
+      artifactDir = path.join(baseDir, `${type}/`)
+    }
+
+    options[key] = getPathFromBase(artifactDir, config)
   })
 }
 
@@ -49,7 +55,6 @@ const buildArtifactsPaths = (
 export const buildTestGobletOpts = (
   config:TGobletConfig,
   browserOpts:TBrowserConf,
-  contextOpts?:TBrowserContextOpts
 ) => {
 
     // TODO: add cli options for these

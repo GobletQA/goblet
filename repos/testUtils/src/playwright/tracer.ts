@@ -1,6 +1,7 @@
  import type { TExamEvt, TLocEvtData } from "@gobletqa/exam"
  import type { TRmCB } from '@GTU/Exam/reporters/event/EventReporter'
 import type {
+  ETestType,
   TGobletTestOpts,
   TBrowserContext,
   TGobletGlobalBrowserOpts,
@@ -65,13 +66,8 @@ export class TraceRecorder {
     }
 
     this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.started,
-      async (evt:TExamEvt<TLocEvtData>) => await this.startChunk(evt, this.context)
-    ))
-
-    this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.results,
-      async (evt:TExamEvt<TLocEvtData>) => await this.stopChunk(evt, this.context)
+      ExamEvtNames.rootSuiteDone,
+      async (evt:TExamEvt<TLocEvtData>) => await this.stop(evt, this.context)
     ))
   }
 
@@ -83,41 +79,17 @@ export class TraceRecorder {
    * @returns <boolean|void>
    */
   start = async (context:TBrowserContext=this.context || global.context) => {
-    if(this.disabled || !context) return
-
     if(context && !this.context) this.context = context
+    if(this.disabled || !this.context) return
+
     const traceOpts = get(global, `__goblet.options.tracing`, emptyObj)
-    await context.tracing.start(traceOpts)
+    await this.context.tracing.start(traceOpts)
+
+    await this.context.tracing.startChunk()
+    set(this.context, [`__contextGoblet`, `tracing`], true)
 
     return true
   }
-
-  /**
-   * Starts tracing on the browser context
-   * @param {Object} [context] - Browser context to start a tracing chunk
-   *
-   * @returns <boolean|void>
-   */
-  startChunk = async (
-    evt?:TExamEvt<TLocEvtData>,
-    context:TBrowserContext=this.context || global.context,
-  ) => {
-
-    console.log(`------- STARTING chunk tracing -------`)
-    console.log(evt)
-
-    /**
-     * Need to check if the tracing has already started on the browser context
-     * So there's an additional check of `context?.__contextGoblet?.tracing`
-     */
-    if(this.disabled || !context || context?.__contextGoblet?.tracing) return
-
-    await context.tracing.startChunk()
-    set(context, [`__contextGoblet`, `tracing`], true)
-
-    return true
-  }
-
 
   /**
    * Starts tracing on the browser context
@@ -125,7 +97,7 @@ export class TraceRecorder {
    *
    * @returns {Void}
    */
-  stopChunk = async (
+  stop = async (
     evt?:TExamEvt<TLocEvtData>,
     context:TBrowserContext=this.context || global.context,
   ) => {
@@ -133,7 +105,7 @@ export class TraceRecorder {
     if(!evt.data)
       return Logger.warn(`Can not chunk tracing, missing event data`)
 
-    const { location, status } = evt.data
+    const { location, status, timestamp } = evt.data
 
     /**
      * Need to check if the tracing has already stopped on the browser context
@@ -142,7 +114,6 @@ export class TraceRecorder {
     if(this.disabled || !context || !context?.__contextGoblet?.tracing) return
 
     const {
-      testType,
       saveTrace,
       // Path to the mounted repo where traces should be saved
       tracesDir:repoTracesDir,
@@ -152,34 +123,27 @@ export class TraceRecorder {
       emptyObj as TGobletTestOpts
     )
 
-    const {
-      dir,
-      full,
-      testPath,
-      nameTimestamp,
-    } = getGeneratedName(location, testType || undefined)
-
-    if(!testPath){
-      set(context, [`__contextGoblet`, `tracing`], false)
-      return false
-    }
-
-    const shouldSave = shouldSaveArtifact(saveTrace, status)
-
-    if(!shouldSave){
+    if(!shouldSaveArtifact(saveTrace, status)){
       set(context, [`__contextGoblet`, `tracing`], false)
       return
     }
 
     const {
-      // Path to the temp directory where traces are saved by the browser
-      tracesDir,
-      type:browser=`browser`
-    } = get<TGobletGlobalBrowserOpts>(
-      global,
-      `__goblet.browser`,
-      emptyObj as TGobletGlobalBrowserOpts
-    )
+      dir,
+      full,
+      testLoc,
+      nameTimestamp,
+    } = getGeneratedName({ location, timestamp })
+
+    if(!testLoc){
+      set(context, [`__contextGoblet`, `tracing`], false)
+      return false
+    }
+
+    // Path to the temp directory where traces are saved by the browser
+    const tracesDir = global?.__goblet?.browser?.tracesDir || ``
+    if(!tracesDir)
+      return Logger.warn(`Can not save Trace Report, browser trace directory is not defined`)
 
     const traceLoc = path.join(tracesDir, `${full}.zip`)
     await context.tracing.stopChunk({ path: traceLoc })
@@ -187,23 +151,15 @@ export class TraceRecorder {
     const saveDir = await ensureRepoArtifactDir(repoTracesDir, dir)
     set(context, [`__contextGoblet`, `tracing`], false)
 
-    return await copyArtifactToRepo(saveDir, nameTimestamp, traceLoc)
+    const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, traceLoc)
+    Logger.pair(`Trace Report saved to`, savedLoc.replace(global?.__goblet?.repoDir || ``, ``))
+    
+    return savedLoc
   }
-
-  /**
-   * Helper to check is tracing is disabled
-   *
-   * @returns boolean
-   */
-  isDisabled = () => {
-    const tracing = get(global, `__goblet.options.tracing`)
-    return Boolean(!tracing)
-  }
-
 
   clean = (context:TBrowserContext=this.context || global.context) => {
     if(this.disabled) return
-    
+
     try { this.evtHandlers.forEach(cb => cb?.()) }
     catch(err){}
     this.evtHandlers = []

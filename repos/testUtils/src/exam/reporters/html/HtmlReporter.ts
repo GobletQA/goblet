@@ -1,3 +1,4 @@
+import type { TGobletTestArtifactOption } from '@GTU/Types'
  import {
   TExamEvt,
   TRunResult,
@@ -9,13 +10,18 @@
 } from "@gobletqa/exam"
 
 import path from 'path'
-import { mkdir, writeFile } from 'fs/promises'
+import { writeFile } from 'fs/promises'
+import { Logger } from "@gobletqa/logger"
 import { ImgHtml } from './generator/ImgHtml'
 import { HeadHtml } from './generator/HeadHtml'
 import { BodyHtml } from './generator/BodyHtml'
 import { takeScreenshot } from './takeScreenshot'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
+import {
+  getGeneratedName,
+  ensureRepoArtifactDir,
+} from '@GTU/Playwright/generatedArtifacts'
 
 export type TGenHtmlOpts = {
   debug?:boolean
@@ -90,11 +96,10 @@ export class HtmlReporter implements IExamReporter {
   #screenshotExt?:string
   #testTimeout?:number
   #suiteTimeout?:number
-  #saveReport?:boolean|string
-  #saveScreenshot?:boolean|string
   #screenshots: Record<string, string>={}
+  #saveReport?:TGobletTestArtifactOption
+  #saveScreenshot?:TGobletTestArtifactOption
   #testTimes:Record<string, TTestTimeCache> = {}
-
 
   constructor(
     examCfg:TExamConfig,
@@ -194,16 +199,17 @@ export class HtmlReporter implements IExamReporter {
 
   #saveFile = async (evt:TExamEvt<TLocEvtData>, html:string) => {
     try {
-      await mkdir(this.reportsDir, { recursive: true })
-      const timestamp = evt.data.timestamp || new Date().getTime()
-      const name = path.basename(evt.data.location).split(`.`).slice(0, -1).join(`.`)
-      const location = path.join(this.reportsDir, `${name}-${timestamp}.html`)
-      await writeFile(location, html)
-      console.log(`  Html report saved to:`, `${location.replace(this.rootDir, ``)}`)
+      const { location, timestamp } = evt.data
+      const { dir, nameTimestamp } = getGeneratedName({ location, timestamp })
+      const saveDir = await ensureRepoArtifactDir(this.reportsDir, dir)
+      const reportLoc = path.join(saveDir, `${nameTimestamp}.html`)
+
+      await writeFile(reportLoc, html)
+      Logger.pair(`Html Report saved to`, `${reportLoc.replace(this.rootDir, ``)}`)
     }
     catch(err){
-      console.error(`  Error saving html report to`, `${this.reportsDir.replace(this.rootDir, ``)}`)
-      console.log(err.stack)
+      Logger.error(`Error saving html report to`, `${this.reportsDir.replace(this.rootDir, ``)}`)
+      Logger.log(err.stack)
     }
   }
 

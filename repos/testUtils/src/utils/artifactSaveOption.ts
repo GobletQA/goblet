@@ -5,7 +5,7 @@ import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
  */
-export const artifactSaveOption = (option:TGobletTestArtifactOption) => {
+export const artifactSaveOption = (option:TGobletTestArtifactOption|string) => {
   return !option || option === ArtifactSaveOpts.never
     ? false
     : option === ArtifactSaveOpts.always
@@ -33,6 +33,6 @@ export const shouldSaveArtifact = (
  * Checks if a feature is enabled to know if the feature options should be set
  * For example, tracing options are only set when tracing is active
  */
-export const artifactSaveActive = (option:TGobletTestArtifactOption) => {
+export const artifactSaveActive = (option:TGobletTestArtifactOption|string) => {
   return Boolean(artifactSaveOption(option))
 }

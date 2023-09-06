@@ -4,7 +4,6 @@
   TExEventData,
   IExamReporter,
 } from "@gobletqa/exam"
-import {ife} from "@keg-hub/jsutils/ife"
 import {isStr} from "@keg-hub/jsutils/isStr"
 import {nanoid} from "@keg-hub/jsutils/nanoid"
 import {EResultStatus} from '@ltipton/parkin'
@@ -13,10 +12,10 @@ import {emptyArr} from "@keg-hub/jsutils/emptyArr"
 
 type TEvt = TExamEvt<TExEventData & { location?:string }>
 export type TEvtCB = ((evt:TEvt) => any) & {
-  name?:string
+  displayName?:string
 }
 export type TRmCB = (() => any) & {
-  name?:string
+  displayName?:string
 }
 
 type TListeners = Record<string, TEvtCB[]>
@@ -55,13 +54,12 @@ class EvtReporter {
   }
 
   on = (evt:string, cb:TEvtCB, key?:string):TRmCB => {
-    if(!cb.name) cb.name = key || nanoid()
-    
+    if(!cb.displayName) cb.displayName = key || nanoid()
     this.#listeners[evt] = this.#listeners[evt] || []
     this.#listeners[evt].push(cb)
 
-    const remove =  () => this.off(evt, cb, cb.name)
-    remove.name = cb.name
+    const remove =  () => this.off(evt, cb, cb.displayName)
+    remove.displayName = cb.displayName
 
     return remove
   }
@@ -72,26 +70,27 @@ class EvtReporter {
 
     if(isStr(callback) && !key) key = callback
 
-    this.#listeners[evt] = this.#listeners[evt].filter(cb => key ? cb.name !== key : cb !== callback)
+    this.#listeners[evt] = this.#listeners[evt].filter(cb => key ? cb.displayName !== key : cb !== callback)
   }
 
-  dispatch = (evt:TEvt) => {
+  dispatch = async (evt:TEvt) => {
     const event = {...evt, location: evt?.location || evt?.data?.location}
+    // console.log(`Dispatching Evt:`, event.name)
 
     const callbacks = [...this.#listeners[evt.name] || emptyArr]
-    callbacks?.length
-      && ife(async () => await Promise.all(callbacks.map(cb => cb(event))))
+    return callbacks?.length
+      && await Promise.all(callbacks.map(cb => cb(event)))
   }
 
   onCancel = (evt:any) => {
-    this.dispatch({
+    return this.dispatch({
       name:`onCancel`,
       isRunning:false
     })
   }
 
   cleanup = () => {
-    this.dispatch({
+    const resp = this.dispatch({
       name:`cleanup`,
       isRunning:false
     })
@@ -99,6 +98,8 @@ class EvtReporter {
     this.#listeners = undefined
     this.#listeners = {}
     this.#testPath = undefined
+
+    return resp
   }
 }
 

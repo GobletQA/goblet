@@ -92,6 +92,11 @@ const ExamConfig = ():TExamConfig => {
   // @ts-ignore
   const examConfig = config?.testConfig || emptyObj
   const gobletOpts = buildTestGobletOpts(config, browserConf)
+  const rootDir = examConfig?.rootDir
+    || config.paths.repoRoot
+    || ENVS.GOBLET_CONFIG_BASE
+    || ENVS.GOBLET_MOUNT_ROOT
+    || `/goblet`
 
   return {
     // debug: true,
@@ -102,6 +107,7 @@ const ExamConfig = ():TExamConfig => {
     // transformIgnore: [],
     // exitOnFail: false,
     // skipAfterFailed: true,
+    rootDir,
     bail: 5,
     workers: 1,
     testRetry: 1,
@@ -117,11 +123,6 @@ const ExamConfig = ():TExamConfig => {
     ...getTimeouts({examConfig, defs: defTimeouts }),
     reporters: builtReporters(examConfig, gobletOpts),
     extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
-    rootDir: examConfig?.rootDir
-      || config.paths.repoRoot
-      || ENVS.GOBLET_CONFIG_BASE
-      || ENVS.GOBLET_MOUNT_ROOT
-      || `/goblet`,
     testMatch: examConfig.testMatch
       || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
       || emptyArr,
@@ -135,6 +136,7 @@ const ExamConfig = ():TExamConfig => {
       ...examConfig?.globals,
       __goblet: {
         config,
+        repoDir: rootDir,
         options: gobletOpts,
         browser: browserOpts,
         context: { options: contextOpts }

@@ -8,13 +8,13 @@ export type TExReporterCfg = {
 }
 
 export interface IExamReporter {
-  cleanup?: () => void|Promise<void>
+  cleanup?: () => unknown|Promise<unknown>
 
-  // onSpecStarted(result:TExEventData):void|Promise<void>
-  // onSpecDone(result:TExEventData):void|Promise<void>
+  // onSpecStarted(result:TExEventData):unknown|Promise<unknown>
+  // onSpecDone(result:TExEventData):unknown|Promise<unknown>
 
-  // onSuiteStarted(result:TExEventData):void|Promise<void>
-  // onSuiteDone(result:TExEventData):void|Promise<void>
+  // onSuiteStarted(result:TExEventData):unknown|Promise<unknown>
+  // onSuiteDone(result:TExEventData):unknown|Promise<unknown>
   
   // Event `PLAY-SUITE-DONE`
   onSuiteResult?: (
@@ -22,7 +22,7 @@ export interface IExamReporter {
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-SUITE-DONE` - Top level suite-0 only
   onTestFileResult?: (
@@ -30,7 +30,7 @@ export interface IExamReporter {
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   /**
    * Called before running a spec (prior to `before` hooks)
@@ -41,56 +41,56 @@ export interface IExamReporter {
     ...args:any[]
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-SPEC-DONE`
   onTestResult?: (
     ...args:any[]
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-STARTED`,
   onRunStart?: (
     ...args:any[]
     // results: AggregatedResult,
     // options: ReporterOnStartOptions,
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-SUITE-START`
   onSuiteStart?: (
     ...args:any[]
     // test: Test
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
 
   // Event `PLAY-STARTED`
   onTestFileStart?: (
     ...args:any[]
     // test: Test
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-RESULTS`
   onRunResult?: (
     ...args:any[]
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-ERROR`
   onError?: (
     ...args:any[]
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-CANCELED`
   onCancel?: (
     ...args:any[]
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Event `PLAY-WARNING`
   onWarning?: (
     ...args:any[]
-  ) => void|Promise<void>
+  ) => unknown|Promise<unknown>
 
   // Optionally, reporters can force Jest to exit with non zero code by returning
   // an `Error` from `getLastError()` method.

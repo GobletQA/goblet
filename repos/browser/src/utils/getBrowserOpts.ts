@@ -90,7 +90,7 @@ const fromBaseDir = (config:TGobletConfig) => {
 
 const getConfigOpts = (config:TGobletConfig) => {
   const {
-    tracesDir = `artifacts/traces`,
+    tracesDir = `artifacts/reports`,
     downloadsDir = `artifacts/downloads`,
   } = config.paths
 
