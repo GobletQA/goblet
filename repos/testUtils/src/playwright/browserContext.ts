@@ -44,7 +44,6 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
         extraHTTPHeaders: {
           ...gCtx?.extraHTTPHeaders,
           ...parkin?.world?.$context?.extraHTTPHeaders,
-          ...parkin?.world?.$headers
         }
       }
     }
@@ -116,11 +115,11 @@ export const getPage = async (num = 0, fromClosePage:boolean=false) => {
 
   global.page = page
   LAST_ACTIVE_PAGE = page
-  page.on('close', () => {
-    LAST_ACTIVE_PAGE = undefined
-    global.page = undefined
+  page.on(`close`, () => {
+    if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
+    if(page === global.page) global.page = undefined
   })
-  page.on('crash', (data) => {
+  page.on(`crash`, (data) => {
     console.error(`ERROR - Browser page crashed`)
     console.log(data)
   })

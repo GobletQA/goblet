@@ -55,6 +55,7 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
   newPage: () => Promise<TBrowserPage>
   __GobletAutomateInstance?: Automate
   __contextGoblet?: {
+    tracer?:any
     cookie?:string
     tracing?:Boolean
     extraHTTPHeaders?:Record<string, string>
@@ -65,6 +66,9 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
 export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   locator:(selector: string, options?: TLocatorOpts) => TLocator
   __GobletAutomateInstance?: Automate
+  __pageGoblet?: {
+    video?:any
+  }
 }
 
 export type TScreenDims = ViewportSize

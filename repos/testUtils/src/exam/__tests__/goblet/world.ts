@@ -1,8 +1,9 @@
 const world = {
   app: {},
   data: {},
-  context: {},
   $alias: {},
+  $context: {},
+  $browser: {},
 }
 
 export default world

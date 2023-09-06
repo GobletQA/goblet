@@ -78,7 +78,6 @@ const setContextSettings = async ({
     await setContextHeaders(context, {
       ...context?.__contextGoblet?.extraHTTPHeaders,
       ...config?.world?.$context?.extraHTTPHeaders,
-      ...config?.world?.$headers
     })
 
   const contextSettings = config?.world?.$context

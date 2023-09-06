@@ -65,7 +65,6 @@ const getCtxOptions = async (
         ctxOpts?.extraHTTPHeaders,
         context?.__contextGoblet?.extraHTTPHeaders,
         world?.$context?.extraHTTPHeaders,
-        world?.$headers
       )
     }
   )

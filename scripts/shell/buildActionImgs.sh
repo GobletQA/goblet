@@ -16,7 +16,7 @@ gb_success(){
 # Then pushes it to th Github container registry
 buildBaseImg(){
   echo ""
-  gb_log "---- Building Goblet Base Image ---- "
+  gb_log "Building Goblet Base Image"
   echo ""
 
   pnpm doc build base push
@@ -27,7 +27,7 @@ buildBaseImg(){
 # Then pushes it to th Github container registry
 buildGobletAction(){
   echo ""
-  gb_log "---- Building Goblet Action Image ----"
+  gb_log "Building Goblet Action Image"
   echo ""
 
   pnpm doc build act push
@@ -38,7 +38,7 @@ buildGobletAction(){
 # Does **NOT** push the image to a remote repository
 buildTestAction(){
   echo ""
-  gb_log "---- Building Goblet Test Action Image ----"
+  gb_log "Building Goblet Test Action Image"
   echo ""
 
   keg gta
@@ -52,7 +52,7 @@ __main__(){
   buildTestAction
 
   echo ""
-  gb_success "---- Finished building Images ----"
+  gb_success "Finished building Images"
   echo ""
 }
 

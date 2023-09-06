@@ -20,6 +20,7 @@ export const newServer = async (
   Logger.info(`Starting playwright server ${browser}...`)
 
   // Launch the playwright server
+  // TODO: add context and world object to this
   const launchOpts = getBrowserOpts(browserConf)
   Logger.info(`Creating Browser Server with launchOpts`, launchOpts)
 

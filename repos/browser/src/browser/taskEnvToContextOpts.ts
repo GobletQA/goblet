@@ -9,13 +9,33 @@ import type {
 
 import { ENVS } from '@gobletqa/environment'
 import { isArr } from '@keg-hub/jsutils/isArr'
+import { toNum } from '@keg-hub/jsutils/toNum'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { exists } from '@keg-hub/jsutils/exists'
 import { ArtifactSaveOpts } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { getScreenDims } from '@GBB/utils/getScreenDims'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
+
+
+/**
+ * Gets the screen dimensions from the current ENV
+ * Uses GOBLET_CONTEXT_WIDTH && GOBLET_CONTEXT_HEIGHT envs first
+ * 
+ * @returns {Object} - Screen Dims Object
+ */
+export const getScreenDims = () => {
+  if(!ENVS.GOBLET_CONTEXT_WIDTH && !ENVS.GOBLET_CONTEXT_HEIGHT) return
+
+  const width = ENVS.GOBLET_CONTEXT_WIDTH
+  const height = ENVS.GOBLET_CONTEXT_HEIGHT
+
+  return {
+    width: width || height,
+    height: height || width,
+  }
+}
+
 
 /**
  * Check if video recording is active
@@ -75,11 +95,10 @@ const parseRecord = (
   if(!recordVideoActive) return opts
 
   opts.recordVideo = (opts.recordVideo || {}) as TBrowserContextVideo
-  opts.recordVideo.size = isObj(screenDims)
-    ? !fullScreen
-      ? {height: screenDims.height / 2, width: screenDims.width / 2}
-      : screenDims
-    : {} as TScreenDims
+  if(isObj(screenDims))
+    opts.recordVideo.size = !fullScreen
+        ? {height: screenDims.height / 2, width: screenDims.width / 2}
+        : screenDims
 
   // Save videos to the temp dir, and copy them to the repo dir as needed
   // I.E. a test fails
@@ -115,7 +134,7 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     ENVS.GOBLET_FULL_SCREEN_VIDEO
   )
 
-  if(screenDims.height || screenDims.width){
+  if(screenDims?.height || screenDims?.width){
     addEnvToOpts(opts, `viewport`, screenDims)
     addEnvToOpts(opts, `screen`, screenDims)
   }

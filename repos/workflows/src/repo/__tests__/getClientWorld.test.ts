@@ -9,8 +9,7 @@ const worldMock = {
   data: { some: `data` },
   $merge: [],
   $alias: {},
-  $headers: {},
-  context: {},
+  $context: {},
 }
 
 const loaderSearchMock = jest.fn(() => (worldMock))
@@ -28,8 +27,7 @@ const DefWorld = {
   data: {},
   $merge: [],
   $alias: {},
-  $headers: {},
-  context: {},
+  $context: {},
 }
 
 

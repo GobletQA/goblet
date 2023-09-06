@@ -1,12 +1,16 @@
-import type { TStartBrowser } from './PWBrowsers'
 import type {
   TBrowser,
+  TGetCtx,
+  TGetPage,
+  TGetPageCB,
   TBrowserPage,
   TBrowserConf,
   EBrowserType,
-  TGobletConfig,
+  TBrowserOnly,
   TPWComponents,
+  TStartBrowser,
   TBrowserContext,
+  TGetPWComponents,
 } from '@GBB/types'
 
 import { Automate } from '../automate'
@@ -20,30 +24,6 @@ import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
 import { checkInternalPWContext } from './checkInternalPWContext'
 
-export type TGetPWComponents = {
-  initialUrl?:string
-  config?:TGobletConfig
-  browserConf?:TBrowserConf,
-}
-
-export type TBrowserOnly = {
-  config?:TGobletConfig
-  browserServer?:boolean
-  browserConf?:TBrowserConf
-}
-
-export type TGetPage = TGetPWComponents & {
-  overrides?:Partial<TBrowserConf>
-}
-export type TGetPageCB = ((props:TGetPage) => Promise<TPWComponents>) & {
-  creatingPage:boolean
-}
-
-export type TGetCtx = {
-  config?:TGobletConfig
-  browserConf:TBrowserConf
-  overrides?:Partial<TBrowserConf>
-}
 
 export class Browser {
 
@@ -58,6 +38,7 @@ export class Browser {
   }
 
   #getPage = async ({
+    world,
     config,
     browserConf,
     initialUrl=GobletQAUrl,
@@ -67,6 +48,7 @@ export class Browser {
     try {
 
       const { context, browser } = await this.#getContext({
+        world,
         config,
         overrides,
         browserConf,
@@ -140,13 +122,14 @@ export class Browser {
 
   #getContext = async (args:TGetCtx) => {
     const {
+      world,
       config,
       browserConf,
       overrides=emptyObj as TBrowserConf,
     } = args
 
 
-    const resp = await pwBrowsers.getBrowser({ config, browserConf })
+    const resp = await pwBrowsers.getBrowser({ world, config, browserConf })
 
     let context = resp.context
     const browser = resp.browser
@@ -162,6 +145,7 @@ export class Browser {
       }
 
       const options = getContextOpts({
+        world,
         config,
         overrides: overrides.context,
         contextOpts: browserConf.context,
@@ -192,9 +176,10 @@ export class Browser {
   }
 
   #getBrowser = async (args:TBrowserOnly) => {
-    const { config, browserServer } = args
+    const { world, config, browserServer } = args
 
     const resp = await pwBrowsers.getBrowser({
+      world,
       config,
       opts: { browserServer },
       browserConf: buildBrowserConf(args),
@@ -205,12 +190,13 @@ export class Browser {
 
   server = async (args:TBrowserOnly) => this.#getBrowser(args)
 
-  start = async (props:TStartBrowser):Promise<TPWComponents> => {
-    return await pwBrowsers.startBrowser(props, this.#getPage as TGetPageCB)
+  start = async (args:TStartBrowser):Promise<TPWComponents> => {
+    return await pwBrowsers.startBrowser(args, this.#getPage as TGetPageCB)
   }
 
   get = async (args:TGetPWComponents) => {
     const {
+      world,
       config,
       initialUrl=GobletQAUrl,
       browserConf=emptyObj as TBrowserConf,
@@ -221,6 +207,7 @@ export class Browser {
     return pwComponents?.page
       ? pwComponents
       : await this.#getPage({
+          world,
           config,
           initialUrl,
           browserConf,

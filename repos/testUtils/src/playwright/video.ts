@@ -9,6 +9,7 @@ import type {
   TGobletTestArtifactOption,
 } from '@GTU/Types'
 
+import path from 'node:path'
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { wait } from '@keg-hub/jsutils/wait'
@@ -26,26 +27,16 @@ import {
 
 
 export class VideoRecorder {
-  static recorder:VideoRecorder
 
-  /**
-   * VideoRecorder is a singleton
-   * There should only ever be on instance
-   * So use `VideoRecorder.get()` Instead of `new VideoRecorder()`
-   */
-  static get = () => {
-    if (this.recorder) return this.recorder
-    this.recorder = new VideoRecorder()
-
-    return this.recorder
-  }
-  
   disabled?:boolean
   page:TBrowserPage
   evtHandlers:TRmCB[] = []
-  
+
+  name?:string
+  saveDir?:string
+  recordPath?:string
+
   constructor(page?:TBrowserPage){
-    if(VideoRecorder.recorder) return VideoRecorder.recorder
     this.disabled = Boolean(!get(global, `__goblet.context.options.recordVideo`))
     if(this.disabled) return this
 
@@ -70,7 +61,7 @@ export class VideoRecorder {
     }
 
     this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.results,
+      ExamEvtNames.rootSuiteDone,
       async (evt:TExamEvt<TLocEvtData>) => await this.saveVideo(evt, this.page)
     ))
 
@@ -159,12 +150,10 @@ export class VideoRecorder {
 
     if(page && !this.page) this.page = page
 
-
     if(!evt.data)
       return Logger.warn(`Can not chunk tracing, missing event data`)
 
     const { location, status, timestamp } = evt.data
-
 
     const recordVideo = get<TGobletGlobalRecordVideo>(
       global,
@@ -196,21 +185,28 @@ export class VideoRecorder {
 
     if(!testLoc) return false
 
-    const recordPath = await await this.pathFromPage(undefined, 0, this.page)
-    if(!recordPath)
+    this.recordPath = await this.pathFromPage(undefined, 0, this.page)
+    this.name = nameTimestamp
+
+    if(!this.recordPath)
       return Logger.warn(
         `The video record path for test ${name} does not exist in directory ${recordVideo.dir}`
       )
 
-    const saveDir = await ensureRepoArtifactDir(repoVideoDir, dir)
-    const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, recordPath)
+    this.saveDir = await ensureRepoArtifactDir(repoVideoDir, dir)
 
-    Logger.pair(`Video Recording saved to`, savedLoc.replace(global?.__goblet?.repoDir || ``, ``))
-
-    return savedLoc
+    return path.join(this.saveDir, this.name)
   }
 
-  clean = (page:TBrowserPage=this.page || global.page) => {
+  copyToRepo = async () => {
+    if(this.disabled || !this.saveDir || !this.name || !this.recordPath)
+      return
+
+    const savedLoc = await copyArtifactToRepo(this.saveDir, this.name, this.recordPath)
+    Logger.pair(`Video Recording saved to`, savedLoc.replace(global?.__goblet?.repoDir || ``, ``))
+  }
+
+  clean = () => {
     if(this.disabled) return
     
     try { this.evtHandlers.forEach(cb => cb?.()) }
@@ -218,12 +214,8 @@ export class VideoRecorder {
     this.evtHandlers = []
 
     this.page = undefined
+    this.name = undefined
+    this.saveDir = undefined
+    this.recordPath = undefined
   }
 }
-
-/**
- * Is a side-effect that a new video instance will be created when the file is imported
- * The constructor call the register method, which registers events with the Event Reporter
- * So as soon as this file is imported, the events are auto-registered
- */
-export const Video = VideoRecorder.get()

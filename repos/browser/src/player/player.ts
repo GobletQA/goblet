@@ -157,7 +157,7 @@ export class Player {
       const suiteTimeout = this.options?.playOptions?.suiteTimeout as number
       this.page.setDefaultTimeout(timeout || 15000)
 
-      const extraHTTPHeaders = this.repo?.world?.$headers
+      const extraHTTPHeaders = this.repo?.world?.$context?.extraHTTPHeaders
       extraHTTPHeaders &&
         await this.page.setExtraHTTPHeaders({...extraHTTPHeaders})
 

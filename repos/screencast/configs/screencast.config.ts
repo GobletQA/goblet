@@ -1,9 +1,8 @@
-import type { TCmdGroups, TBrowserConf } from '@GSC/types'
-import type { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/types'
-import { ENVS } from '@gobletqa/environment'
+import type { TCmdGroups, TGScreencastConfig } from '@GSC/types'
 
 import '../resolveRoot'
 import path from 'path'
+import { ENVS } from '@gobletqa/environment'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { toBool } from '@keg-hub/jsutils/toBool'
 import { socketCmds } from './socketCmds.config'
@@ -19,6 +18,7 @@ loadEnvs({
   override: nodeEnv === 'local'
 })
 
+// TODO: convert this to use ENVS
 const {
   DEBUG_FILE,
   PW_DEBUG_FILE,
@@ -61,12 +61,6 @@ const {
 
 } = process.env
 
-
-const screenDims:TScreenDims = {
-  width: parseInt(GB_VNC_VIEW_WIDTH as string, 10),
-  height: parseInt(GB_VNC_VIEW_HEIGHT as string, 10),
-}
-
 export const screencastConfig:TGScreencastConfig = {
   // Uses to start separate screencast API
   server: {
@@ -96,14 +90,6 @@ export const screencastConfig:TGScreencastConfig = {
   screencast: {
     // Set if the screencast is active or not
     active: toBool(GB_VNC_ACTIVE),
-    // Default playwright browser launch settings
-    // TODO: add defaults here for Screencast
-    browser: {} as TBrowserConf,
-    // Default playwright context settings
-    context: {
-      screen: screenDims,
-      viewport: screenDims,
-    },
     novnc: {
       host: GB_NO_VNC_HOST,
       port: GB_NO_VNC_PORT,
@@ -126,6 +112,6 @@ export const screencastConfig:TGScreencastConfig = {
       debug: Boolean(GB_LOG_LEVEL == 'debug'),
       script: path.join(aliases[`@GSC/Scripts`], 'socket.cmd.sh'),
     },
-  },
+  }
 }
 

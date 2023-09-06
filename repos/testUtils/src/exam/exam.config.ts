@@ -25,6 +25,7 @@ import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { flatUnion} from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { getWorld } from '@gobletqa/workflows/repo/world'
 import { getParkinOptions } from '@GTU/Parkin/parkinTestInit'
 import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
 import { buildTestMatchFiles } from '@GTU/Utils/buildTestMatchFiles'
@@ -80,23 +81,21 @@ const builtReporters = (
 const ExamConfig = ():TExamConfig => {
 
   const config = getGobletConfig()
+  // @ts-ignore
+  const examConfig = config?.testConfig || emptyObj
+  const world = getWorld(config)
 
   ENVS.GOBLET_TEST_DEBUG &&
     process.stdout.write(`\n[Goblet] Loaded Config:\n${JSON.stringify(config, null, 2)}\n`)
 
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
-  const browserConf = browserOpts as TBrowserConf
-  const contextOpts = getContextOpts({ config })
+  // Any options passed from the task should override options in the world config
+  const browserConf = {...world?.$browser, ...browserOpts} as TBrowserConf
+  const contextOpts = getContextOpts({ config, world })
 
-  // @ts-ignore
-  const examConfig = config?.testConfig || emptyObj
   const gobletOpts = buildTestGobletOpts(config, browserConf)
-  const rootDir = examConfig?.rootDir
-    || config.paths.repoRoot
-    || ENVS.GOBLET_CONFIG_BASE
-    || ENVS.GOBLET_MOUNT_ROOT
-    || `/goblet`
+  const rootDir = examConfig?.rootDir || config.paths.repoRoot
 
   return {
     // debug: true,
@@ -129,7 +128,8 @@ const ExamConfig = ():TExamConfig => {
     envs: {
       EXAM_ENV: 1,
       // GB_REPO_NO_SECRETS: 1,
-      GOBLET_CONFIG_BASE: baseDir
+      GOBLET_CONFIG_BASE: baseDir,
+      GOBLET_FULL_SCREEN_VIDEO: 1,
     },
     /** Pass on the browser options defined from the task that started the process */
     globals: {
@@ -138,7 +138,7 @@ const ExamConfig = ():TExamConfig => {
         config,
         repoDir: rootDir,
         options: gobletOpts,
-        browser: browserOpts,
+        browser: browserConf,
         context: { options: contextOpts }
       },
     },

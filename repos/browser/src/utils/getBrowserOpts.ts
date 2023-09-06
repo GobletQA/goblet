@@ -1,3 +1,4 @@
+import type { TWorldConfig } from '@ltipton/parkin'
 import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
 
 import path from 'path'
@@ -97,17 +98,6 @@ const getConfigOpts = (config:TGobletConfig) => {
   const baseDir = fromBaseDir(config)
 
   return {
-
-    // TODO: FIX THIS - should not set the context config from screencast config
-    ...config?.screencast?.screencast?.browser,
-    // TODO: FIX THIS - should not set the context config from screencast config
-
-    // TODO: look at add $world.browser
-
-    /**
-     * The config options from the repos goblet config
-     */
-    ...config?.playwright?.context,
     ...(baseDir && {
       tracesDir: path.join(baseDir, tracesDir),
       downloadsPath: path.join(baseDir, downloadsDir),
@@ -121,6 +111,7 @@ const getConfigOpts = (config:TGobletConfig) => {
 export const getBrowserOpts = (
   browserConf:TBrowserConf=emptyObj as TBrowserConf,
   config?:TGobletConfig,
+  world?:TWorldConfig
 ) => {
   const {
     ws,
@@ -170,6 +161,13 @@ export const getBrowserOpts = (
       ...(exists(channel) && { channel }),
       colorScheme: colorScheme || `no-preference`,
     },
+
+    /**
+     * Custom config options defined in the repos world object
+     * Should not override passed in options, or task env options
+     */
+    world?.$browser,
+
     /**
      * Options passed to this function as the first argument
      * Should override all except for options set by a task via ENVs
@@ -182,7 +180,7 @@ export const getBrowserOpts = (
      * Also, excludes the devices list from the returned Object
      */
      config ? omitKeys(taskEnvToBrowserOpts(config), ['devices']) : emptyObj,
-     
+
     {
       /**
        * By default envs from process.env are passed to the browser

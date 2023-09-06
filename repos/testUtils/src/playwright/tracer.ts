@@ -23,27 +23,12 @@ import {
 
 
 export class TraceRecorder {
-  static tracer:TraceRecorder
 
-  /**
-   * TraceRecorder is a singleton
-   * There should only ever be on instance
-   * So use `TraceRecorder.get()` Instead of `new TraceRecorder()`
-   */
-  static get = () => {
-    if (this.tracer) return this.tracer
-    this.tracer = new TraceRecorder()
-
-    return this.tracer
-  }
-  
   disabled?:boolean
   evtHandlers:TRmCB[] = []
   context:TBrowserContext
   
   constructor(context?:TBrowserContext){
-    if(TraceRecorder.tracer) return TraceRecorder.tracer
-
     this.context = context || global.context
     this.disabled = Boolean(!get(global, `__goblet.options.tracing`))
     this.register()
@@ -169,10 +154,3 @@ export class TraceRecorder {
   }
 
 }
-
-/**
- * Is a side-effect that a new Tracer instance will be created when the file is imported
- * The constructor call the register method, which registers events with the Event Reporter
- * So as soon as this file is imported, the events are auto-registered
- */
-export const Tracer = TraceRecorder.get()

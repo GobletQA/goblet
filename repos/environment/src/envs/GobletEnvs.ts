@@ -11,15 +11,16 @@ import { exists } from '../utils/helpers'
 
 const buildEnvs = () => {
   const generalEnvs = general()
+  const scEnvs = screencast(generalEnvs)
   
   return {
     ...generalEnvs,
+    ...scEnvs,
     ...git(generalEnvs),
     ...repo(generalEnvs),
     ...test(generalEnvs),
     ...backend(generalEnvs),
-    ...browser(generalEnvs),
-    ...screencast(generalEnvs),
+    ...browser(generalEnvs, scEnvs),
   }
 }
 

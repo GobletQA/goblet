@@ -11,11 +11,11 @@ import {emptyArr} from "@keg-hub/jsutils/emptyArr"
 
 
 type TEvt = TExamEvt<TExEventData & { location?:string }>
-export type TEvtCB = ((evt:TEvt) => any) & {
-  displayName?:string
+export type TEvtCB = ((evt:TEvt, config:TExamConfig) => any) & {
+  callbackId?:string
 }
 export type TRmCB = (() => any) & {
-  displayName?:string
+  callbackId?:string
 }
 
 type TListeners = Record<string, TEvtCB[]>
@@ -24,42 +24,18 @@ class EvtReporter {
   config:TExamConfig
   #listeners:TListeners={}
 
-  /**
-   * Path location of the current test file being run 
-   */
-  #testPath?:string
-
-  /**
-   * Holds the path of a test mapped to its current run results
-   */
-  #failedSpecMap = {}
-
-  getTestPath = () => this.#testPath
-
-  getResult = (loc:string) => {
-    return this.#failedSpecMap[loc]
-  }
-
   setConfig = (config:TExamConfig) => {
     this.config = config
   }
 
-  setFailed = (evt:TEvt) => {
-    // TODO: Fix this, should not need to store this
-    // Should use the active event data
-    this.#testPath = evt?.data?.location
-
-    evt?.data?.location
-      && (this.#failedSpecMap[evt.data.location] = evt.data)
-  }
 
   on = (evt:string, cb:TEvtCB, key?:string):TRmCB => {
-    if(!cb.displayName) cb.displayName = key || nanoid()
+    if(!cb.callbackId) cb.callbackId = key || nanoid()
     this.#listeners[evt] = this.#listeners[evt] || []
     this.#listeners[evt].push(cb)
 
-    const remove =  () => this.off(evt, cb, cb.displayName)
-    remove.displayName = cb.displayName
+    const remove = () => this.off(evt, cb, cb.callbackId)
+    remove.callbackId = cb.callbackId
 
     return remove
   }
@@ -70,7 +46,11 @@ class EvtReporter {
 
     if(isStr(callback) && !key) key = callback
 
-    this.#listeners[evt] = this.#listeners[evt].filter(cb => key ? cb.displayName !== key : cb !== callback)
+    this.#listeners[evt] = this.#listeners[evt].filter(
+      cb => key
+        ? cb.callbackId !== key
+        : cb !== callback
+    )
   }
 
   dispatch = async (evt:TEvt) => {
@@ -79,7 +59,7 @@ class EvtReporter {
 
     const callbacks = [...this.#listeners[evt.name] || emptyArr]
     return callbacks?.length
-      && await Promise.all(callbacks.map(cb => cb(event)))
+      && await Promise.all(callbacks.map(cb => cb(event, this.config)))
   }
 
   onCancel = (evt:any) => {
@@ -97,7 +77,6 @@ class EvtReporter {
 
     this.#listeners = undefined
     this.#listeners = {}
-    this.#testPath = undefined
 
     return resp
   }
@@ -116,21 +95,9 @@ export class EventReporter implements IExamReporter {
     evtReporter.setConfig(examCfg)
   }
 
-  onTestFileResult = (evt:TEvt) => {
-    evt?.data?.status === EResultStatus.failed
-      && evtReporter.setFailed(evt)
-
-    evtReporter.dispatch(evt)
-  }
-
-  onRunStart = (evt:TExamEvt<TExEventData>) => {
-    // TODO: Start tracing and video
-    evtReporter.dispatch(evt)
-  }
-  onRunResult = (evt:TEvt) => {
-    // TODO: Stop tracing and video
-    evtReporter.dispatch(evt)
-  }
+  onTestFileResult = (evt:TEvt) => evtReporter.dispatch(evt)
+  onRunStart = (evt:TEvt) => evtReporter.dispatch(evt)
+  onRunResult = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestFileStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onSuiteStart = (evt:TEvt) => evtReporter.dispatch(evt)
   onTestStart = (evt:TEvt) => evtReporter.dispatch(evt)

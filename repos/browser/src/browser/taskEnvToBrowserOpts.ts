@@ -2,6 +2,8 @@ import type { TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
 
 import { ENVS } from '@gobletqa/environment'
 import { isStr } from '@keg-hub/jsutils/isStr'
+import { cleanColl } from '@keg-hub/jsutils/cleanColl'
+
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
 
@@ -15,13 +17,15 @@ const buildDeviceList = (envVal:string) => {
   const { devices } = parseJsonEnvArr('devices', envVal)
   if(!devices) return emptyObj
 
-  return devices.reduce((acc, device) => {
+  const built = devices.reduce((acc, device) => {
     device &&
       isStr(device) &&
       acc.devices.push(device.replace(/-/g, ' '))
 
     return acc
   }, {devices: []})
+  
+  return built?.devices?.length ? built : emptyObj
 }
 
 /**
@@ -32,7 +36,7 @@ export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
   // Save videos to the temp dir, and copy them to the repo dir as needed, I.E. if a test fails
   const { tracesTempDir, downloadsTempDir } = config.internalPaths
 
-  return {
+  return cleanColl<Partial<TBrowserLaunchOpts & { devices?: string[], type?: string }>>({
     tracesDir: tracesTempDir,
     type: ENVS.GOBLET_BROWSER,
     downloadsPath: downloadsTempDir,
@@ -41,5 +45,5 @@ export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
     slowMo: ENVS.GOBLET_BROWSER_SLOW_MO,
     timeout: ENVS.GOBLET_BROWSER_TIMEOUT,
     ...buildDeviceList(ENVS.GOBLET_BROWSER_DEVICES),
-  } as Partial<TBrowserLaunchOpts & { devices: string[] }>
+  })
 }
