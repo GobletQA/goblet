@@ -123,7 +123,7 @@ export const run:TTask = {
       `hasTouch`,
       `isMobile`,
       `permissions`,
-      `record`,
+      `video`,
       `storageState`,
       `timezone`,
       `suiteTimeout`,

@@ -75,7 +75,7 @@ export const run:TTask = {
       `isMobile`,
       `permissions`,
       `tracing`,
-      `record`,
+      `video`,
       `storageState`,
       `timezone`,
       `testCI`,
