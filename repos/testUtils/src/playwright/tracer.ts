@@ -137,7 +137,8 @@ export class TraceRecorder {
     set(context, [`__contextGoblet`, `tracing`], false)
 
     const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, traceLoc)
-    Logger.info(`Trace Report saved for failed test`)
+    Logger.log(Logger.colors.gray(` - Trace Report saved for failed test`))
+    
     
     return savedLoc
   }

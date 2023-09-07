@@ -233,15 +233,15 @@ export const compareValues = (
  */
 export const callLocatorMethod = async (
   selector:string,
-  prop:string,
+  method:string,
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
   const element = locator || getLocator(selector)
-  if(!element[prop])
-    throw new Error(`Selected Element ${selector} missing prop method "${prop}".`)
+  if(!element[method])
+    throw new Error(`Selected Element ${selector} missing method "${method}".`)
 
-  return await element[prop]()
+  return await element[method]()
 }
 
 export const getLocatorAttribute = async (

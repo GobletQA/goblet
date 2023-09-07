@@ -203,7 +203,7 @@ export class VideoRecorder {
       return
 
     await copyArtifactToRepo(this.saveDir, this.name, this.recordPath)
-    Logger.info(`Video Recording saved for failed test`)
+    Logger.log(Logger.colors.gray(` - Video Recording saved for failed test`))
   }
 
   clean = () => {
