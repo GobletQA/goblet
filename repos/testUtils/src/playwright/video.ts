@@ -202,8 +202,8 @@ export class VideoRecorder {
     if(this.disabled || !this.saveDir || !this.name || !this.recordPath)
       return
 
-    const savedLoc = await copyArtifactToRepo(this.saveDir, this.name, this.recordPath)
-    Logger.pair(`Video Recording saved to`, savedLoc.replace(global?.__goblet?.repoDir || ``, ``))
+    await copyArtifactToRepo(this.saveDir, this.name, this.recordPath)
+    Logger.info(`Video Recording saved for failed test`)
   }
 
   clean = () => {

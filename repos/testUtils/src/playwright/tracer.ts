@@ -137,7 +137,7 @@ export class TraceRecorder {
     set(context, [`__contextGoblet`, `tracing`], false)
 
     const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, traceLoc)
-    Logger.pair(`Trace Report saved to`, savedLoc.replace(global?.__goblet?.repoDir || ``, ``))
+    Logger.info(`Trace Report saved for failed test`)
     
     return savedLoc
   }

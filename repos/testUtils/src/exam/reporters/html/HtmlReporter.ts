@@ -205,7 +205,7 @@ export class HtmlReporter implements IExamReporter {
       const reportLoc = path.join(saveDir, `${nameTimestamp}.html`)
 
       await writeFile(reportLoc, html)
-      Logger.pair(`Html Report saved to`, `${reportLoc.replace(this.rootDir, ``)}`)
+      Logger.info(`Html Report saved for failed test`)
     }
     catch(err){
       Logger.error(`Error saving html report to`, `${this.reportsDir.replace(this.rootDir, ``)}`)
