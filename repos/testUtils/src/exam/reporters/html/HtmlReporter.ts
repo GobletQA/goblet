@@ -238,9 +238,7 @@ export class HtmlReporter implements IExamReporter {
 
   onRunResult = async (evt:TExamEvt<TLocEvtData>) => {
     const { status } = evt?.data
-
-    if(!shouldSaveArtifact(this.#saveReport, status))
-      return console.log(`Skipping html report`, {report: this.#saveReport, test: status})
+    if(!shouldSaveArtifact(this.#saveReport, status)) return
 
     const html = this.#htmlTemplate({ data: evt.data })
     await this.#saveFile(evt, html)
