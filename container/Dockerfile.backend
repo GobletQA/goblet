@@ -9,8 +9,10 @@ FROM bitnami/kubectl:latest as kubectl
 FROM ubuntu:focal as goblet-setup
 WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
+ARG GB_PNPM_VERSION=8.7.4
+ARG GB_NODE_VERSION=20
 ENV PNPM_VERSION=$GB_PNPM_VERSION
-ENV NODE_MAJOR=20
+ENV NODE_MAJOR=$GB_NODE_VERSION
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 

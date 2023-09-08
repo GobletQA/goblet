@@ -97,5 +97,7 @@ On every page load
   * If it is a duplicate, try to regenerate the selector so that it properly passes
 
 
-
-For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
+### Mocks
+  * For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
+  * Also look at the new `node:test` module that provides mocking functionality 
+  * `import { mock, test } from 'node:test'`

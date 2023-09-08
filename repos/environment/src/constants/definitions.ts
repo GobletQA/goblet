@@ -36,6 +36,7 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>({
   selector: `selector`,
   element: `element`,
   select: `select`,
+  file: `file`,
   media: `media`, // - video || audio element
   className: `className`, // - element style rule
   style: `style`, // - element style rule

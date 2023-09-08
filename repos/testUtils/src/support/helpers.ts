@@ -10,11 +10,11 @@ import type {
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { set } from '@keg-hub/jsutils/set'
+import { getLocator } from '@GTU/Playwright'
 import { ENVS } from '@gobletqa/environment'
 import { unset } from '@keg-hub/jsutils/unset'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { getPage, getLocator } from '@GTU/Playwright'
 import {
   SavedDataWorldPath,
   SavedLocatorWorldPath,

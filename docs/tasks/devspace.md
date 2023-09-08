@@ -1,3 +1,7 @@
+> **IMPORTANT**
+> Requires `devspace` npm package to be installed globally **WITH NPM**
+> I.E. `npm install -g devspace`
+
 # Tasks - Devspace
 * Requires [devspace](https://devspace.sh/docs/getting-started/introduction)
 * Runs tasks that shell out to the `devspace` executable

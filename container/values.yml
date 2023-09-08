@@ -37,9 +37,10 @@ env:
   DISPLAY: ":0.0"
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
-  GB_NODE_VERSION: 20.3.0
+  GB_NODE_VERSION: 20
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
   PLAYWRIGHT_BROWSERS_VERSION: 1.37.1
+  GB_PNPM_VERSION: 8.7.4
   GB_GIT_GLOBAL_IGNORE: /goblet/.gitignore
 
   # Log file for all playwright logs

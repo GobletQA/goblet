@@ -56,7 +56,7 @@ COPY repos/testUtils/package.json repos/testUtils/
 COPY repos/exam/package.json repos/exam/
 COPY repos/shared/package.json repos/shared/
 COPY repos/environment/package.json repos/environment/
-RUN CI=1 pnpm install --offline --frozen-lockfile
+RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
 # ---- End Stage ---- #
 
 

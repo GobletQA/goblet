@@ -5,17 +5,18 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 # ---- Setup Stage  ---- #
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-ARG GB_PNPM_VERSION=8.7.1
+ARG GB_PNPM_VERSION=8.7.4
+ARG GB_NODE_VERSION=20
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
 ENV PNPM_VERSION=$GB_PNPM_VERSION
-ENV NODE_MAJOR=20
+ENV NODE_MAJOR=$GB_NODE_VERSION
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
 # 1. Enable all sources
 # 2. Preinstall any dependecies for settting up the image
 RUN npm uninstall -g yarn && \
-    apt remove nodejs -y && \
+    apt-get remove nodejs -y && \
     sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \

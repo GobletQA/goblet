@@ -2,7 +2,7 @@ import type { TLocator, TBrowserPage } from '@GTU/Types'
 import { getPage } from '@GTU/Playwright'
 
 export type TRunInBrowser = {
-  opts?:any
+  opts?:Record<string, any>
   selector?:string
   locator?:TLocator
   cb?:(...args:any[]) => any,
