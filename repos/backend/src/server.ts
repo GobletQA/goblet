@@ -6,9 +6,9 @@ import { getApp } from '@gobletqa/shared/api/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import {
   setupServer,
+  setupRouter,
   setupEndpoints,
   setupConductor,
-  setupAsyncRouter,
 } from '@GBE/middleware'
 import {
   setupJWT,
@@ -35,8 +35,8 @@ export const initApi = async () => {
   setupCors(app)
   setupJWT(app, BEAuthBypassRoutes)
   setupServer(app)
+  setupRouter(app)
   validateUser({
-    router: setupAsyncRouter(app),
     bypassRoutes: BEAuthBypassRoutes,
     route: /(\/repo\/*|\/auth\/claims\/*)/,
   })

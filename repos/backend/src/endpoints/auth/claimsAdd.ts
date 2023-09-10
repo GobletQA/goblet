@@ -5,7 +5,7 @@ import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { updateToken } from '@GBE/utils/updateToken'
 import { authService } from '@GBE/services/firebase'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 /**
@@ -30,4 +30,4 @@ export const claimsAdd = async (req:JWTRequest, res:Response) => {
 }
 
 
-AsyncRouter.post(`/auth/claims/add`, claimsAdd)
+AppRouter.post(`/auth/claims/add`, claimsAdd)

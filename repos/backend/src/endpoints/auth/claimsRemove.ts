@@ -4,7 +4,7 @@ import type { Request as JWTRequest } from 'express-jwt'
 import { authService } from '@GBE/services/firebase'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { resError } from '@gobletqa/shared/api/express/resError'
-import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * Remove claims from the user Oauth idToken
@@ -24,4 +24,4 @@ export const claimsRemove = async (req:JWTRequest, res:Response) => {
 }
 
 
-AsyncRouter.post(`/auth/claims/remove`, claimsRemove)
+AppRouter.post(`/auth/claims/remove`, claimsRemove)

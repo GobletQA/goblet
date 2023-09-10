@@ -4,7 +4,7 @@ import type { TRepoGraphRepos } from '@GBE/types'
 
 import { Repo } from '@gobletqa/workflows'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * **IMPORTANT** - Only repo endpoints that DO NOT interact with repo content are allowed in backend
@@ -21,4 +21,4 @@ export const allRepos = async (req:JWTRequest, res:Response) => {
   return apiRes(res, {repos}, 200)
 }
 
-AsyncRouter.get(`/repo/all`, allRepos)
+AppRouter.get(`/repo/all`, allRepos)

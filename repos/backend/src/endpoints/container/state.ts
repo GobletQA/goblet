@@ -1,7 +1,8 @@
-import { Response } from 'express'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
+
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * Gets the state of a connected repo
@@ -23,5 +24,5 @@ export const stateContainer = async (req:JWTRequest, res:Response) => {
   return apiRes(res, status)
 }
 
-AsyncRouter.get(`/container/state`, stateContainer)
-AsyncRouter.get(`/container/state/:imageRef`, stateContainer)
+AppRouter.get(`/container/state`, stateContainer)
+AppRouter.get(`/container/state/:imageRef`, stateContainer)

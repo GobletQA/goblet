@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 
 import { Conductor } from '@gobletqa/conductor'
-import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export const setupConductor = async (app:Express) => {
@@ -21,8 +21,8 @@ export const setupConductor = async (app:Express) => {
   } = app.locals.conductor.createProxy(app)
 
   // TODO: make this one use call instead of two
-  AsyncRouter.use(/^\/repo\/(?!(all)).*/, apiProxy?.middleware)
-  AsyncRouter.use('/screencast/*', apiProxy?.middleware)
+  AppRouter.use(/^\/repo\/(?!(all)).*/, apiProxy?.middleware)
+  AppRouter.use('/screencast/*', apiProxy?.middleware)
 
   return {
     wsProxy,

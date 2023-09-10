@@ -2,7 +2,7 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { Express, Response, NextFunction } from 'express'
 
 import { getApp } from '@gobletqa/shared/api/express/app'
-import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * Gets both app routes
@@ -12,7 +12,7 @@ import { AsyncRouter } from '@gobletqa/shared/api/express/appRouter'
 export const setupTestUser = (app?:Express) => {
 
   app = app || getApp() as Express
-  AsyncRouter.use((req:JWTRequest, res:Response, next:NextFunction) => {
+  AppRouter.use((req:JWTRequest, res:Response, next:NextFunction) => {
     req.auth = {}
     req.auth.userId = `21`
     req.auth.token = `123456`

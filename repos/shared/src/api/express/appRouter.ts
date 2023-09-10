@@ -46,7 +46,7 @@ const wrapInAsync = (
  * Extends the express Router, and overrides the main HTTP verb methods
  * It wraps the methods with asyncWrap so it's added by default to those methods
  */
-export const AsyncRouter = Object.assign(ExpRouter, {
+export const AppRouter = Object.assign(ExpRouter, {
   all: (...args: Array<any>) => wrapInAsync(boundAll, ...args),
   get: (...args: Array<any>) => wrapInAsync(boundGet, ...args),
   put: (...args: Array<any>) => wrapInAsync(boundPut, ...args),
@@ -56,13 +56,3 @@ export const AsyncRouter = Object.assign(ExpRouter, {
   delete: (...args: Array<any>) => wrapInAsync(boundDelete, ...args),
   options: (...args: Array<any>) => wrapInAsync(boundOptions, ...args),
 }) as Router
-
-
-
-/**
- * AppRouter - Express router
- * @public
- */
-export {
-  AsyncRouter as AppRouter
-}

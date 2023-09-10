@@ -1,5 +1,5 @@
 export * from './setupServer'
-export * from './setupRouters'
+export * from './setupRouter'
 export * from './setupTestUser'
 export * from './setupEndpoints'
 export * from './setupConductor'
