@@ -10,5 +10,7 @@ import {LatentError} from "./error"
  *  - Then delete the file from disk
  */
 export const getLTToken = () => {
-  return process.env.GB_LT_TOKEN_SECRET
+  const token = process.env.GB_LT_TOKEN_SECRET
+
+  return token
 }

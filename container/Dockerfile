@@ -6,6 +6,22 @@ FROM bitnami/kubectl:latest as kubectl
 # ---- End Stage ---- #
 
 
+# ---- Setup Stage ---- #
+FROM $IMAGE_FROM as goblet-setup
+WORKDIR /goblet/app
+RUN mkdir -p /etc/supervisor && \
+    sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    novnc \
+    net-tools \
+    supervisor \
+    tigervnc-standalone-server && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists.d/*
+# ---- End Stage ---- #
+
+
 # ---- Build files Stage ---- #
 FROM $IMAGE_FROM as goblet-build-files
 WORKDIR /goblet/app
@@ -39,6 +55,7 @@ COPY repos/testUtils repos/testUtils/
 COPY repos/exam repos/exam/
 COPY repos/shared repos/shared/
 COPY repos/environment repos/environment/
+# ---- End Stage ---- #
 
 
 # ---- Workflows Stage  ---- #
@@ -73,7 +90,7 @@ RUN pnpm build:docker
 
 
 # ---- Run Stage  ---- #
-FROM $IMAGE_FROM as goblet-runner
+FROM goblet-setup as goblet-runner
 WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 
