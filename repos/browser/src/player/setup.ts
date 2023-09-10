@@ -35,6 +35,7 @@ const testGlobals = [
 
 let TestGlobalsCache = {}
 let ProcessEnvCache = {}
+const GobletGlobalCache = { __goblet: undefined }
 
 const processENVs = {
   GOBLET_RUN_FROM_UI: `1`
@@ -74,6 +75,34 @@ const setTestGlobals = (Runner:CodeRunner, timeout?:number) => {
 }
 
 /**
+ * Temp method until Code Runner is migrated to use Exam Runner
+ */
+const setGlobalOpts = (Runner:CodeRunner) => {
+  GobletGlobalCache.__goblet = global.__goblet
+
+  const repo = Runner?.player?.repo
+
+  global.__goblet = {
+    config: {
+      $ref: repo?.$ref,
+      paths: repo?.paths,
+      fileTypes: repo?.fileTypes,
+    },
+    options: {
+      reusePage: true,
+      reuseContext: true,
+      saveTrace: false,
+      saveVideo: false,
+      saveReport: false,
+      saveScreenshot: false,
+    },
+    repoDir: repo?.paths?.repoRoot,
+    browser: Runner?.player?.browser?.__browserGoblet,
+    context: { options: Runner?.player?.context?.__contextGoblet }
+  }
+}
+
+/**
  * Sets up the global variables so they can be accesses in step definitions
  * Caches any existing globals so they can be reset after the test run
  * This ensures it doesn't clobber what ever already exists
@@ -83,6 +112,8 @@ export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
   ;(TestGlobalsCache as any).page = (global as any).page
   ;(TestGlobalsCache as any).context = (global as any).context
   ;(TestGlobalsCache as any).browser = (global as any).browser
+
+  setGlobalOpts(Runner)
 
   ;(global as any).expect = expect
   global.page = Runner.player.page
@@ -96,11 +127,13 @@ export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
  * This ensures it doesn't clobber what ever already exists
  */
 export const resetTestGlobals = () => {
+
   ;(global as any).expect = (TestGlobalsCache as any).expect
   ;(global as any).page = (TestGlobalsCache as any).page
   ;(global as any).context = (TestGlobalsCache as any).context
   ;(global as any).browser = (TestGlobalsCache as any).browser
 
+  global.__goblet = GobletGlobalCache.__goblet
   testGlobals.forEach((item) => global[item] = TestGlobalsCache[item])
   
   // TODO: investigate overwriting all envs

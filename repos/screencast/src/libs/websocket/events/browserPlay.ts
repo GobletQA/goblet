@@ -15,6 +15,7 @@ import { Logger } from '@GSC/utils/logger'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+import { loadRepoFromSocket } from '@GSC/utils/loadRepoFromSocket'
 import { PWEventErrorLogFilter, playBrowser } from '@gobletqa/browser'
 
 // Temporary until updates to use only exam for test execution
@@ -87,6 +88,10 @@ const handleStartPlaying = async (
       Manager.emit(socket, event.name, emitEvt)
 
     },
+    /**
+     * onCleanup callback event is always called after the Player stops playing
+     * Both when finished or if playing is canceled
+     */
     onCleanup: async (browserClose:boolean) => {
       socket?.id
         && Manager?.cache[socket.id]?.player
@@ -101,9 +106,10 @@ const handleStartPlaying = async (
 
 export const browserPlay = (app:Express) => {
   return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
-
-    const { repo } = await Repo.status(app.locals.config, { ...data.repo, ...user })
-    await repo.refreshWorld()
+    const { repo } = await loadRepoFromSocket({
+      user,
+      repo: data?.repo,
+    })
 
     await handleStartPlaying(data, repo, socket, Manager, app)
   }

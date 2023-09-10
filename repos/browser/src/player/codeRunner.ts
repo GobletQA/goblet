@@ -80,7 +80,7 @@ export class CodeRunner {
 
     // This is a hack for a bug in Parkin
     // The root element doesn't have an action,
-    // So it throws an error when accssing the metadata property
+    // So it throws an error when accessing the metadata property
     const root = this.PTE.getActiveParent()
     const rootAction = () => {}
     rootAction.metaData = { description: `Root describe meta-data` }

@@ -271,10 +271,12 @@ export class Player {
     }
 
     this.page = undefined
+    this.repo = undefined
     this.context = undefined
     this.browser = undefined
     this.codeRunner = undefined
     delete this.page
+    delete this.repo
     delete this.context
     delete this.browser
     delete this.codeRunner
