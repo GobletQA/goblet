@@ -38,8 +38,8 @@ const initApi = async () => {
   setupCors(app)
   setupJWT(app, SCAuthBypassRoutes)
   setupServer(app)
+  setupRouter(app)
   validateUser({
-    router: setupRouter(app),
     route: `/screencast\/*`,
     bypassRoutes: SCAuthBypassRoutes
   })
