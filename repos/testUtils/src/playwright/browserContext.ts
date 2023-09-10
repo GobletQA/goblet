@@ -90,7 +90,7 @@ export const saveContextState = async (
  * Gets the browser context instance, or else creates a new one
  *
  */
-export const getContext = async () => {
+export const getContext = () => {
   if(!global.context)
     throw new Error(`Failed to find browser context. Did it one get created?`)
 
@@ -104,7 +104,7 @@ export const getContext = async () => {
  * @return {Object} - Playwright browser page object
  */
 export const getPage = async (num = 0, fromClosePage:boolean=false) => {
-  const context = await getContext()
+  const context = getContext()
 
   const pages = context.pages() || []
   const page = pages.length
@@ -134,9 +134,9 @@ export const setLastActivePage = (page:TBrowserPage) => (LAST_ACTIVE_PAGE = page
 global.setLastActivePage = setLastActivePage
 
 export const closePages = async () => {
-  const context = await getContext()
+  const context = getContext()
   const pages = context.pages() || []
-  return Promise.all(pages.map(async (page) => await page.close()))
+  return await Promise.all(pages.map(async (page) => await page.close()))
 }
 
 export const closePage = async (pg?:TBrowserPage, retry:number=1) => {

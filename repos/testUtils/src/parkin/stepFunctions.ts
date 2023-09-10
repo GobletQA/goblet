@@ -1,6 +1,23 @@
+import type { TStepCtx } from '@GTU/Types'
+
+// import { getPage, getContext } from '@GTU/Playwright'
 import { getParkinInstance } from './instance'
 import { wait } from '@keg-hub/jsutils/wait'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
+
+const augmentCtx = async (ctx:TStepCtx) => {
+  if(!ctx) return ctx
+
+  const goblet = global.__goblet
+  return {...ctx, goblet }
+
+  // No sure if we should inject the page and context into the step ctx object
+  // Could cause memory leaks and other issues
+  // const context = getContext()
+  // const page = await getPage()
+  // return {...ctx, goblet, page, context }
+}
+
 
 /**
  * Still debating on if this is a good idea or not.
@@ -18,7 +35,10 @@ const getStepHandler = (name:string) => {
       ? action
       : async (...args:any[]) => {
           waitBuffer && await wait(1000)
-          const resp = await action(...args)
+          const ctx = args.pop() as TStepCtx
+          const augmented = await augmentCtx(ctx)
+
+          const resp = await action(...args, augmented)
           waitBuffer && await wait(1000)
 
           return resp

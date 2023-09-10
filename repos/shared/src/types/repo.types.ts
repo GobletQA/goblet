@@ -27,6 +27,7 @@ export type TRepoPaths = {
   environmentsDir:string
   tracesDir?:string
   videosDir?:string
+  uploadsDir?:string
   downloadsDir?:string
 }
 

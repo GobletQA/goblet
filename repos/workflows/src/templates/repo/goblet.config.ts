@@ -17,6 +17,7 @@ const config = {
     videosDir: `artifacts/reports`,
     reportsDir: `artifacts/reports`,
     environmentsDir: `environments`,
+    uploadsDir: `artifacts/uploads`,
     downloadsDir: `artifacts/downloads`,
   }
 }

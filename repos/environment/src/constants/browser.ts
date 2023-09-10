@@ -26,8 +26,9 @@ export const DefaultStorageFile = `browser-storage-state`
 export const BrowserArtifactTypes = deepFreeze([
   `traces`,
   `videos`,
+  `uploads`,
+  `downloads`,
   `snapshots`,
-  `downloads`
 ])
 
 export const ArtifactSaveOpts = deepFreeze({

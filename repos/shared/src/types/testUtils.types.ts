@@ -11,6 +11,7 @@ export type TGobletTestTracingOpts = {
 export type TGobletTestOpts = {
   tracesDir?:string
   videosDir?:string
+  uploadsDir?:string
   downloadsDir?:string
   reusePage?:boolean
   snapshotsDir?:string
