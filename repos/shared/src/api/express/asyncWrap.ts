@@ -23,7 +23,7 @@ export const asyncWrap = (
   }
   catch (err) {
     // @ts-ignore
-    const wrapErrHandler = asyncWrap?.errHandler
+    const wrapErrHandler = handler?.errHandler || asyncWrap?.errHandler
     const errMethod = wrapErrHandler || errHandler || args[2]
 
     isFunc(errMethod) &&

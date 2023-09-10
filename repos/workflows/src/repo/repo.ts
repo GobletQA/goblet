@@ -262,11 +262,21 @@ export class Repo {
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
     this.latent = latentRepo
 
-    this.$ref = $ref || git?.remote.replace(/\.git$/, ``)
+    if($ref) this.$ref = $ref
+    else if(git?.remote) {
+      const url = new URL(git?.remote)
+      this.$ref = url.pathname.replace(/\.git$/, ``)
+    }
   }
 
   get world(){
-    // this.#world = this.#world || getWorld(this)
+    /**
+     * This forces every call to `repo.world` to reload the world
+     * It's much slower, but ensure it gets an up-to-date world
+     * There seem to be some cases when the world is not being properly updated
+     * At some point would be nice to switch to something like this
+     * `this.#world = this.#world || getWorld(this)`
+     */
     this.#world = getWorld(this as TGobletConfig)
     return this.#world
   }

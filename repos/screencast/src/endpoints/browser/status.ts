@@ -1,14 +1,14 @@
 import type { Repo } from '@gobletqa/workflows'
 import type * as core from "express-serve-static-core"
-import type { Response, Request, RequestHandler } from 'express'
+import type { Response, Request } from 'express'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
+import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
+
 
 type TStatusQuery = {
   slowMo:number
@@ -44,7 +44,7 @@ type TStatusQuery = {
  * Gets the current status of the browser
  *
  */
-export const browserStatus:RequestHandler = asyncWrap(async (
+export const browserStatus = async (
   req:Request<core.ParamsDictionary, any, any, TStatusQuery>,
   res:Response
 ) => {
@@ -55,6 +55,6 @@ export const browserStatus:RequestHandler = asyncWrap(async (
   const { status } = await GBrowser.start({ config, browserConf: joinBrowserConf(query)})
 
   return apiRes(res, status, 200)
-})
+}
 
-AppRouter.get('/screencast/browser/status', browserStatus)
+AppRouter.get(`/screencast/browser/status`, browserStatus)

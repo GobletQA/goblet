@@ -1,12 +1,11 @@
+import type { Response } from 'express'
 import type { TGitOpts } from '@gobletqa/workflows'
-import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
 import { setBrowserDefaults } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { Repo, loadRepoContent } from '@gobletqa/workflows'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
 
@@ -14,7 +13,7 @@ import { Exception } from '@gobletqa/shared/exceptions/Exception'
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
+export const statusRepo = async (req:JWTRequest, res:Response) => {
 
   const { query } = req
   const { token, username, provider } = req.auth
@@ -50,7 +49,7 @@ export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Re
   }
 
   return apiRes(res, repoContent)
-})
+}
 
 
 AppRouter.get(`/repo/status`, statusRepo)

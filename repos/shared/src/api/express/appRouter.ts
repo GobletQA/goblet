@@ -1,4 +1,5 @@
 import type { Router, RequestHandler } from 'express'
+
 import express from 'express'
 import { asyncWrap } from './asyncWrap'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
@@ -62,4 +63,6 @@ export const AsyncRouter = Object.assign(ExpRouter, {
  * AppRouter - Express router
  * @public
  */
-export const AppRouter = express.Router()
+export {
+  AsyncRouter as AppRouter
+}

@@ -1,10 +1,9 @@
-import type { Response, RequestHandler } from 'express'
+import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { Repo, loadRepoContent } from '@gobletqa/workflows'
-import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
@@ -19,7 +18,7 @@ export type TConnectBody = {
 /**
  * Runs the initializeGoblet workflow to setup a new repository
  */
-export const connectRepo:RequestHandler = asyncWrap(async (
+export const connectRepo = async (
   req:JWTRequest,
   res:Response
 ) => {
@@ -46,6 +45,6 @@ export const connectRepo:RequestHandler = asyncWrap(async (
 
 
   return apiRes(res, content, 200)
-})
+}
 
-AppRouter.post('/repo/connect', connectRepo)
+AppRouter.post(`/repo/connect`, connectRepo)

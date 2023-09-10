@@ -1,10 +1,9 @@
-import type { Response, Request, RequestHandler } from 'express'
+import type { Response, Request } from 'express'
 
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { asyncWrap } from '@gobletqa/shared/api/express/asyncWrap'
 
-export const apiRoot:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+export const apiRoot = async (req:Request, res:Response) => {
   const config = req.app.locals.config
 
   return apiRes(
@@ -15,6 +14,6 @@ export const apiRoot:RequestHandler = asyncWrap(async (req:Request, res:Response
     },
     200
   )
-})
+}
 
-AppRouter.get('/', apiRoot)
+AppRouter.get(`/`, apiRoot)
