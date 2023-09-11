@@ -10,6 +10,7 @@ import type {
 import axios, { AxiosRequestConfig } from 'axios'
 import { ApiCache } from './apiCache'
 import { get } from '@keg-hub/jsutils/get'
+import { Logger } from '@gobletqa/logger'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
@@ -17,9 +18,9 @@ import { hashObj } from '@keg-hub/jsutils/hashObj'
 import { buildHeaders } from '../utils/buildHeaders'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { hashString } from '@keg-hub/jsutils/hashString'
 
 const defPageInfo:TGraphPageInfo = emptyObj as TGraphPageInfo
-let cacheRequests = false
 
 export class BaseGraphApi {
 
@@ -68,13 +69,20 @@ export class BaseGraphApi {
 
     const variables = this.cache.buildVars(args, endpointKey)
 
+    const userCachekey = args.userId
+      || args.username && hashString(args.username)
+      || args.subdomain
 
     // Disable cache for now until I can figure out why is failing
-    const cacheKey = `${endpointKey}-${hashObj(variables)}`
+    const cacheKey = args.cacheKey || (userCachekey && `${endpointKey}-${userCachekey}-${hashObj(variables)}`)
 
-    if(cacheRequests){
+    if(cacheKey){
       const res = this.cache.checkResponse(cacheKey)
-      if(res) return res as T[]
+      if(res){
+        Logger.log(`Found ${res?.length} cached repos`)
+        return res as T[]
+      }
+      else Logger.log(`No cached repos found, making api call...`)
     }
 
     const opts = {
@@ -98,13 +106,14 @@ export class BaseGraphApi {
       this.cache.set(endpointKey, { after: pageInfo.endCursor })
       const moreNodes = await this.callApi<T>({
         ...args,
+        cacheKey,
       }) as T[]
 
       return nodes.concat(moreNodes)
     }
 
     this.cache.reset(endpointKey)
-    if(cacheRequests) this.cache.cacheResponse(cacheKey, nodes)
+    if(cacheKey) this.cache.cacheResponse(cacheKey, nodes)
 
     return nodes as T[]
   }

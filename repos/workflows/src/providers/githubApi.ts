@@ -60,7 +60,7 @@ export class GithubApi extends BaseRestApi {
     const { url, token, ...params } = args
 
     const createParams = deepMerge(createOpts.override, params, createOpts.force)
-    Logger.log(`Creating repo ${args.name} with params`, createParams)
+    Logger.log(`Creating repo ${args.name} with params`, {...createParams, url})
 
     const config = deepMerge<AxiosRequestConfig>({
       url,
@@ -129,14 +129,21 @@ export class GithubApi extends BaseRestApi {
     // The repo name is not passed because it already exists in this.baseUrl
     // So it's not needed here
     const [err, resp] = await this._callApi<TRepoResp>(``)
-    return resp.data as TRepoData
+
+    if(err){
+      const error = err?.response?.data as Error
+      this.throwError(error, this.baseUrl, err?.message || `${err}`)
+    }
+
+    return resp?.data as TRepoData
   }
 
   defaultBranch = async (repoName:string) => {
     Logger.log(`Getting repo ${repoName} default branch...`)
     const repo = await this.getRepo(repoName)
+    if(!repo) this.throwError(new Error(`Could not get default branch for repo`), this.baseUrl)
 
-    return repo.default_branch
+    return repo?.default_branch
   }
 
   getBranch = async (branch:string) => {

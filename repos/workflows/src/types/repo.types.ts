@@ -24,6 +24,7 @@ export type TGraphApiEndpoint = {
 export type TGetData = <T>(data:any) => TGraphApiResp<T>
 
 export type TGraphApiVars = TRepoGraphRepos & {
+  cacheKey?:string
   getData?:TGetData
   endpoint: TGraphApiEndpoint
 }
@@ -88,9 +89,11 @@ export type TRepoGraphRepos = {
   first?: number
   after?: string
   offset?:number
+  userId?:string
   username?:string
   fullPath?:string
   provider?:string
+  subdomain?:string
   searchPattern?:string
   sortDirection?: string
   affiliations?: string[]
