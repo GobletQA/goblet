@@ -3,6 +3,13 @@ import { throwErr } from './throwErr'
 import { wait } from '@keg-hub/jsutils/wait'
 import { limbo } from '@keg-hub/jsutils/limbo'
 
+/**
+ * May be better to switch to the cmd line option instead
+ * the fs.cp is experimental, and is slower
+ */
+// import { exec } from 'node:child_process'
+// const resp = exec(`cp -R ${src}/* ${dest}`)
+
 type TCopyArgs = {
   src:string
   dest:string

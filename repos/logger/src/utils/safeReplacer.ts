@@ -43,7 +43,7 @@ const unsafeValues = [
   /token/i,
   /api[-._]?key/i,
   /session[-._]?id/i,
-  /\*\*\*\*[^,]*/i,
+  /\*\*\*\*[^,}\n\t]*/i,
   /^\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}$/ // credit card number
 ]
 
@@ -110,7 +110,10 @@ export const replaceUnsafe = (str:string) => {
     const resp = safeReplacer(str, str)
     return resp !== HIDDEN
       ? str
-      : unsafeValues.reduce((final, unsafe) => final.replaceAll(new RegExp(unsafe, "gi"), HIDDEN), str)
+      : unsafeValues.reduce(
+          (final, unsafe) => final.replaceAll(new RegExp(unsafe, "gi"), HIDDEN),
+          str
+        ) + `\n`
   }
   catch(err){
     // Use set timeout because we are already in a stdout / stderr call and don't want to cause recursive call

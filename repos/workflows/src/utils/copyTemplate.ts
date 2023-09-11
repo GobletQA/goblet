@@ -25,7 +25,7 @@ export const copyTemplate = async (gitData:TGitData, template:string) => {
   }
 
   Logger.info(`Creating goblet setup from template...`)
-  const src = template || path.join(aliases[`@GWF`], `templates/repo/*`)
+  const src = template || path.join(aliases[`@GWF`], `templates/repo`)
 
   return await copyContent({ src, dest: local })
     .then(() => replaceGobletConfigRef(gitData))
