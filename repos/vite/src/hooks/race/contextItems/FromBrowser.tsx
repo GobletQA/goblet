@@ -65,4 +65,11 @@ export const FromBrowser:TRaceMenuItem = {
   Icon: CursorClickIcon,
   type: EAstObject.expression,
   id: `expression-from-browser`,
+  filter: [
+    ExpressionKinds.url,
+    ExpressionKinds.text,
+    ExpressionKinds.check,
+    ExpressionKinds.select,
+    ExpressionKinds.element,
+  ],
 }

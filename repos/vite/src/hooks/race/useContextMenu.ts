@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { FromAlias, FromBrowser, FromStep } from './contextItems'
+import { FromAlias, FromBrowser, FromStep, FromFile } from './contextItems'
 
 export const useContextMenu = () => {
   return useMemo(() => {
@@ -7,7 +7,8 @@ export const useContextMenu = () => {
       expression: [
         FromBrowser,
         FromAlias,
-        FromStep
+        FromStep,
+        FromFile
       ]
     }
   }, [])

@@ -36,8 +36,7 @@ export const uploadFile = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-
-  if(!file || file?.trim?.()) throw new Error(`A valid file name is required`)
+  if(!file || !file?.trim?.()) throw new Error(`A valid file name is required`)
 
   if(file.includes(`..`)) throw new Error(`File must exist in the uploads directory`)
 

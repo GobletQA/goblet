@@ -1,7 +1,7 @@
 import type { TStepDefsList } from '@ltipton/parkin'
 import type { TSetSteps } from '../types'
 
-import { MemoChildren } from '@gobletqa/components'
+import { MemoChildren, TAutoOpt, useInline } from '@gobletqa/components'
 import {
   useMemo,
   useState,
@@ -15,34 +15,68 @@ export type TStepDefsProvider = {
 }
 
 export type TStepDefsCtx = {
-  defs:TStepDefsList
   setDefs:TSetSteps
+  defs:TStepDefsList
+  options:TAutoOpt[]
 }
 
 export const StepDefsContext = createContext<TStepDefsCtx>({} as TStepDefsCtx)
 export const useStepDefs = () => useContext(StepDefsContext)
 
-const useRaceStepDefs = (defs:TStepDefsList={}) => {
-  return useMemo(() => {
-    return Object.entries(defs).reduce((acc, [key, data]) => {
-      data?.meta?.race && (acc[key] = data)
+const loopDefs = (defs:TStepDefsList={}) => {
+  const opts:TAutoOpt[] = []
+  
+  const list = Object.entries(defs).reduce((acc, [key, data]) => {
+    if(!data?.meta?.race) return acc
 
-      return acc
-    }, {} as TStepDefsList)
-  }, [defs])
+    const {
+      info,
+      name,
+      alias,
+      description,
+    } = data?.meta
+
+    acc[key] = data
+    if(!name) return acc
+
+    opts.push({
+      alias,
+      id: key,
+      label: name,
+      type: data.type,
+      uuid: data.uuid,
+      info: info || description,
+    })
+
+    return acc
+  }, {} as TStepDefsList)
+
+  return {
+    list,
+    opts: opts.sort((a, b) => a.label.localeCompare(b.label)),
+  }
 }
+
 
 export const StepDefsProvider = (props:TStepDefsProvider) => {
   const {
     children,
   } = props
 
-  const stepDefs = useRaceStepDefs(props.defs)
-  const [defs, setDefs] = useState<TStepDefsList>(stepDefs)
+  const { list, opts } = useMemo(() => loopDefs(props.defs), [props.defs])
+  const [defs, _setDefs] = useState<TStepDefsList>(list)
+  const [options, setOpts] = useState<TAutoOpt[]>(opts)
+  
+  const setDefs = useInline((update:TStepDefsList) => {
+    const { list, opts } = loopDefs(update)
+    _setDefs(list)
+    setOpts(opts)
+  })
 
   const defsCtx:TStepDefsCtx = useMemo(() => ({
     defs,
-    setDefs
+    setDefs,
+    options,
   }), [defs])
 
   return (

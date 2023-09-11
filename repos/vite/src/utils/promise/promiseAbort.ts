@@ -1,3 +1,5 @@
+import { TAbortError } from '@types'
+
 type TRes<T> = (result:T) => void
 type TRej = (reason?:any)=>void
 
@@ -41,7 +43,3 @@ const PromiseWrap = <T=any>(
 } 
 
 export const PromiseAbort = PromiseWrap as TPromiseAbort
-
-export type TAbortError = Error & {
-  canceled:boolean
-}
