@@ -65,7 +65,9 @@ COPY repos/shared/src repos/shared/src
 COPY repos/backend/src repos/backend/src
 
 WORKDIR /goblet/app/repos/backend
-RUN pnpm build
+RUN mkdir -p /goblet/app/repos/exam/src/types && \
+    echo "export {}" > /goblet/app/repos/exam/src/types/index.ts && \
+    pnpm build
 RUN cp -R dist/goblet.default.config.js /goblet/runner/configs/goblet.default.config.js
 RUN pnpm --filter=@gobletqa/backend --prod --no-optional deploy pruned
 
