@@ -1,7 +1,5 @@
 import type { TTaskParams } from '../../types'
 
-import path from 'path'
-import { appRoot } from '../../paths'
 import { ETestType } from '../../types'
 import { addFlag, addParam } from '@keg-hub/cli-utils'
 import { exists, uniqArr, noPropArr, toBool } from '@keg-hub/jsutils'
@@ -43,11 +41,16 @@ export const buildTestArgs = (
     testBail,
     testSync,
     testDebug,
+    testRetry,
+    suiteRetry,
     testCache,
     testColors,
     testVerbose,
     testWorkers,
     testTimeout,
+    suiteTimeout,
+    exitOnFailed,
+    skipAfterFailed
   } = params
 
   // node ./repos/exam/.bin/exam.js --config ../../app/repos/testUtils/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
@@ -58,8 +61,6 @@ export const buildTestArgs = (
      `esbuild-register`,
     //  `./repos/exam/.bin/exam.js`,
     `./repos/exam/src/bin/exam.ts`,
-    // Convert to milliseconds
-    `--timeout=${(parseInt(testTimeout, 10) || 20000)}`,
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))
@@ -69,12 +70,23 @@ export const buildTestArgs = (
   // Use the inverse of because testCache default to true
   cmdArgs.push(addFlag(`no-cache`, !testCache))
   cmdArgs.push(addFlag(`debug`, testDebug))
-  cmdArgs.push(addFlag(`passWithNoTests`, noTests))
   cmdArgs.push(addParam(`config`, testConfig))
+  cmdArgs.push(addParam(`testRetry`, testRetry))
+  cmdArgs.push(addParam(`suiteRetry`, suiteRetry))
+  cmdArgs.push(addFlag(`passWithNoTests`, noTests))
+  cmdArgs.push(addFlag(`exitOnFailed`, exitOnFailed))
+  cmdArgs.push(addFlag(`skipAfterFailed`, skipAfterFailed))
+
   cmdArgs.push(addParam(`root`, base))
 
   exists(testBail)
-    && cmdArgs.push(addParam(`bail`, toBool(testBail)))
+    && cmdArgs.push(addParam(`bail`, testBail))
+
+  exists(suiteTimeout)
+    && cmdArgs.push(addParam(`timeout`, suiteTimeout))
+
+  exists(testTimeout)
+    && cmdArgs.push(addParam(`timeout`, testTimeout))
 
   // Only set runInBand if testWorkers not set.
   // They can not both be passed, and runInBand has a default

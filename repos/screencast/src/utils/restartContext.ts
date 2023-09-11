@@ -1,5 +1,4 @@
 import type { Socket } from 'socket.io'
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
   TBrowserConf,
   TBrowserContext,
@@ -12,7 +11,7 @@ import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { browserEvents } from '@GSC/utils/browserEvents'
 import { SocketManager } from '@GSC/libs/websocket/manager/manager'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 import {
   GBrowser,
@@ -29,6 +28,17 @@ type TRestartWSocket = {
   socketId?:never
 }
 type TRestartSocket = TRestartWId|TRestartWSocket
+
+type TWorldConfig = {
+    url?: string
+    app?: Record<string, any>
+    merge?: string[]
+    environment?: string
+    data?: Record<string, any>
+    $alias: Record<string, any>
+    context?: Record<string, any>
+    [key: string]: any
+};
 
 export type TRestartContext = TRestartSocket & {
   url?:string
@@ -53,9 +63,8 @@ const getCtxOptions = async (
     {
       extraHTTPHeaders: deepMerge(
         ctxOpts?.extraHTTPHeaders,
-        context?.__goblet?.extraHTTPHeaders,
+        context?.__contextGoblet?.extraHTTPHeaders,
         world?.$context?.extraHTTPHeaders,
-        world?.$headers
       )
     }
   )

@@ -2,7 +2,7 @@ import type { TDefinitionFileModelList } from '@types'
 
 import { defsDispatch } from '@dispatchers'
 import { noOpObj } from '@keg-hub/jsutils'
-import { definitionsByType } from '@utils/shared'
+import { definitionsByType } from '@utils/definitions/definitionsByType'
 
 /**
  * Dispatches the passed in step definitions to the Store

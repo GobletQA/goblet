@@ -1,32 +1,33 @@
-import {
-  TExFileModel,
-  TExArrClsOptMap,
-  TTypeFromFileMap,
-} from "@GEX/types"
+import { TExFileModel } from "@GEX/types"
 
 import path from 'path'
 import { findGlobMatch } from "./globMatch"
 
+export type TClassFromLoc<T=any> = {
+  type?:string
+  found?: T
+}
+
 const typeChecks = <T>(
   val:string,
   typeKeys:string[],
-  typeMap:TTypeFromFileMap<T>
-):TExArrClsOptMap<T> => {
+  typeMap:Record<string, T>
+):{ found?: T, type?:string } => {
 
-  if(!val) return undefined
-  if(typeMap[val]) return typeMap[val]
+  if(!val) return {}
+  if(typeMap[val]) return { found: typeMap[val], type: val}
 
   const found = findGlobMatch(val, typeKeys)
 
-  if(found && typeMap[found]) return typeMap[found]
+  if(found && typeMap[found]) return { found: typeMap[found], type: found }
 
-  return undefined
+  return {}
 }
 
 export const typeClassFromLoc = <T>(
   file:TExFileModel,
-  typeMap:TTypeFromFileMap<T>
-):TExArrClsOptMap<T> => {
+  typeMap:Record<string, T>
+):TClassFromLoc<T> => {
 
   const { ext, location, fileType } = file
   const typeKeys = Object.keys(typeMap)
@@ -34,21 +35,20 @@ export const typeClassFromLoc = <T>(
   const fileExt = (ext || (location && path.extname(location))).replace(/^\./, ``)
 
   const extFound = typeChecks(fileExt, typeKeys, typeMap)
-  if(extFound) return extFound
+  if(extFound.found) return extFound
 
   const extDotFound = typeChecks(`.${fileExt}`, typeKeys, typeMap)
-  if(extDotFound) return extDotFound
+  if(extDotFound.found) return extDotFound
 
   const typeFound = typeChecks(fileType, typeKeys, typeMap)
-  if(typeFound) return typeFound
+  if(typeFound.found) return typeFound
 
   const locFound = typeChecks(location, typeKeys, typeMap)
-  if(locFound) return locFound
+  if(locFound.found) return locFound
 
   const name = path.basename(location, fileExt)
   const nameFound = typeChecks(name, typeKeys, typeMap)
-  if(nameFound) return nameFound
-
+  if(nameFound.found) return nameFound
 
   return undefined
 

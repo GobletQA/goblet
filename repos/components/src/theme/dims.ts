@@ -114,8 +114,9 @@ export const dims = {
     }
   },
   trans: {
-    fastest: `50ms`, 
     avg: `300ms`,
+    fastest: `50ms`,
+    halfAvg: `150ms`,
     avgEase: `300ms ease`
   }
 }

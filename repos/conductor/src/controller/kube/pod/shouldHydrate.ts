@@ -6,6 +6,11 @@ export const shouldHydrate = (
   deletionTimestamp:string|Date,
 ) => {
 
+  if(state === `Failed`){
+    Logger.info(`Can not hydrate failed pod!`)
+    return false
+  }
+
   if(eventType === `MODIFIED` && deletionTimestamp){
     Logger.info(`Skipping pod hydrate, pod scheduled for termination`)
     return false

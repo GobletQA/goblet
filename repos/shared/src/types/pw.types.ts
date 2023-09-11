@@ -26,7 +26,7 @@ import type {
  */
 export type TWithGuid = {
   _guid?:string
-  __goblet?:TBrowserConf
+  __browserGoblet?:TBrowserConf
 }
 
 export type TLocatorOpts = {
@@ -42,7 +42,7 @@ export type TLocatorClickOpts = Parameters<Locator[`click`]>[`0`] & {
 
 export type TLocator = Locator & {
   // Click handler for ghost cursor, which is currently disabled
-  ghClick: (options:TLocatorClickOpts) => Promise<void>
+  // ghClick: (options:TLocatorClickOpts) => Promise<void>
 }
 
 export type TBrowser = Omit<Browser, `newContext`> & TWithGuid & {
@@ -54,7 +54,8 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
   pages: () => Array<TBrowserPage>
   newPage: () => Promise<TBrowserPage>
   __GobletAutomateInstance?: Automate
-  __goblet?: {
+  __contextGoblet?: {
+    tracer?:any
     cookie?:string
     tracing?:Boolean
     extraHTTPHeaders?:Record<string, string>
@@ -65,6 +66,9 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
 export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   locator:(selector: string, options?: TLocatorOpts) => TLocator
   __GobletAutomateInstance?: Automate
+  __pageGoblet?: {
+    video?:any
+  }
 }
 
 export type TScreenDims = ViewportSize

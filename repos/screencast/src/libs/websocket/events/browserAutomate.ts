@@ -8,7 +8,7 @@ import type {
 
 import { ExpressionKinds } from '@GSC/constants'
 import { GBrowser, Automate } from '@gobletqa/browser'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 const onBrowserAutomate = async (
   data:TUserAutomateOpts,

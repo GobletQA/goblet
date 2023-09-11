@@ -1,3 +1,4 @@
+import type { TWorldConfig } from '@ltipton/parkin'
 import type {
   EBrowserType,
   TBrowserConf,
@@ -12,6 +13,7 @@ import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 
 export type TBuildBrowserCfg = {
+  world?:TWorldConfig
   config?:TGobletConfig
   browserServer?:boolean
   browserConf?:TBrowserConf,
@@ -19,14 +21,15 @@ export type TBuildBrowserCfg = {
 
 export const buildBrowserConf = (args:TBuildBrowserCfg):TBrowserConf => {
   const {
+    world,
     config,
     browserServer,
     browserConf=emptyObj as TBrowserConf,
   } = args
 
   return deepMerge(browserConf, {
-    type: getBrowserType(browserConf.type as EBrowserType),
+    type: getBrowserType(browserConf?.type as EBrowserType),
     ws: toBool(browserConf?.ws || browserServer || socketActive()),
-    context: getContextOpts({ config, contextOpts: browserConf?.context }),
-  })
+    context: getContextOpts({ config, contextOpts: browserConf?.context, world }),
+  }, world?.$browser)
 }

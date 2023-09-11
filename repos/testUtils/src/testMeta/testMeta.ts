@@ -53,7 +53,7 @@ const getArtifactsDir = () => {
 
   const config = getGobletConfig()
 
-  const { artifactsDir } = (global?.__goblet?.paths ?? config?.paths)
+  const { artifactsDir } = (global?.__goblet?.config?.paths ?? config?.paths)
 
   return getPathFromBase(artifactsDir, config)
 }

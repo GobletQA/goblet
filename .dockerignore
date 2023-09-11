@@ -33,7 +33,7 @@ temp
 .temp
 
 # Ignore DevSpace cache and log folder
-.devspace/
+.devspace/ 
 
 container/chart
 container/devspace.yaml

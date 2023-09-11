@@ -12,8 +12,9 @@ import { ScreencastBrowserSelector } from '@constants'
 import { useVncRefs } from '@hooks/screencast/useVncRefs'
 import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
 import { useVncSetup } from '@hooks/screencast/useVncSetup'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { useVncHandlers } from '@hooks/screencast/useVncHandlers'
-import { useBrowserState } from '@hooks/screencast/useBrowserState'
+import { useBrowserCover } from '@hooks/screencast/useBrowserCover'
 import {
   BrowserView,
   BrowserContainer,
@@ -126,43 +127,52 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
   }))
 
   const {
+    clickHidden,
     browserState,
-    setBrowserState
-  } = useBrowserState()
+    clickAwayProps,
+    setClickHidden,
+    setBrowserState,
+    intentClickSetting,
+  } = useBrowserCover()
 
   return (
-    <BrowserContainer className={cls('gb-browser-container', browserState)}>
-      <BrowserNav
-        rfbRef={rfb}
-        loading={loading}
-        initialUrl={displayUrl}
-      />
-      <BrowserViewContainer className='gb-browser-view-container'>
-        <BrowserView
-          style={style}
-          {...elementAttrs}
-          ref={onScreenNode}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          id={ScreencastBrowserSelector}
-          className={cls(ScreencastBrowserSelector, `gb-browser`)}
+      <BrowserContainer className={cls('gb-browser-container', browserState)}>
+        <BrowserNav
+          rfbRef={rfb}
+          loading={loading}
+          initialUrl={displayUrl}
         />
-        
-        <BrowserLoading
-          speed={1}
-          fadeOut={isLoaded}
-          styles={loadingStyles}
-          {...loadingProps}
-        />
+        <ClickAwayListener {...clickAwayProps}>
+          <BrowserViewContainer className='gb-browser-view-container'>
+            <BrowserView
+              style={style}
+              {...elementAttrs}
+              ref={onScreenNode}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
+              id={ScreencastBrowserSelector}
+              className={cls(ScreencastBrowserSelector, `gb-browser`)}
+            />
+            
+            <BrowserLoading
+              speed={1}
+              fadeOut={isLoaded}
+              styles={loadingStyles}
+              {...loadingProps}
+            />
 
-      </BrowserViewContainer>
-      <BrowserCover
-        browserState={browserState}
-        setBrowserState={setBrowserState}
-      />
-      <BrowserShadowTop className={cls('gb-browser-top-shadow', browserState)} />
-      <BrowserShadowBottom className={cls('gb-browser-top-shadow', browserState)} />
-    </BrowserContainer>
+          </BrowserViewContainer>
+        </ClickAwayListener>
+        <BrowserCover
+          clickHidden={clickHidden}
+          browserState={browserState}
+          setClickHidden={setClickHidden}
+          setBrowserState={setBrowserState}
+          intentClickSetting={intentClickSetting}
+        />
+        <BrowserShadowTop className={cls('gb-browser-top-shadow', browserState)} />
+        <BrowserShadowBottom className={cls('gb-browser-top-shadow', browserState)} />
+      </BrowserContainer>
   )
 }
 

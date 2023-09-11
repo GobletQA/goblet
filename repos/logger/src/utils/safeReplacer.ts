@@ -1,3 +1,5 @@
+const orgStdOut = process.stdout.write.bind(process.stdout)
+
 // Taken from here
 // https://github.com/watson/is-secret/blob/master/index.js
 
@@ -20,16 +22,8 @@ const VALUES = [
 ]
 
 const isSecret = {
-  key: (str:string) => {
-    return KEYS.some((regex) => {
-      return regex.test(str)
-    })
-  },
-  value: (str:string) => {
-    return VALUES.some((regex) => {
-      return regex.test(str)
-    })
-  }
+  key: (str:string) => KEYS.some((regex) => regex.test(str)),
+  value: (str:string) => VALUES.some((regex) => regex.test(str))
 }
 
 const escapeStrForRegEx = (str:string) => {
@@ -49,6 +43,7 @@ const unsafeValues = [
   /token/i,
   /api[-._]?key/i,
   /session[-._]?id/i,
+  /\*\*\*\*[^,]*/i,
   /^\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}$/ // credit card number
 ]
 
@@ -79,25 +74,13 @@ export const injectUnsafe = (items:string[]) => {
 const possibleArrayKeys = [`stack`, `message`]
 const HIDDEN = `****`
 
-export const replaceUnsafe = (str:string) => {
-  try {
-    const resp = safeReplacer(str, str)
-    return resp !== HIDDEN
-      ? str
-      : unsafeValues.reduce((final, unsafe) => final.replaceAll(new RegExp(unsafe, "gi"), HIDDEN), str)
-  }
-  catch(err){
-    // Use set timeout because we are already in a stdout / stderr call and don't want to cause recursive call
-    setTimeout(() => console.error(`[ERROR: replaceUnsafe] Could not replace unsafe values from string`), 100)
-    return ``
-  }
-}
-
 const shouldHideUnsafe = (value:string) => {
   return unsafeValues.some((regexp) => regexp.test(value))
 }
 
-export const safeReplacer = (key:string|number, value:any) => {
+const safeReplacer = (key:string|number, value:any) => {
+  if(key === HIDDEN || value === HIDDEN) return HIDDEN
+
   if (value instanceof Buffer) return value.toString('base64')
   if (value instanceof Date) return value.toString()
 
@@ -120,4 +103,18 @@ export const safeReplacer = (key:string|number, value:any) => {
     return value.split('\n').map((x) => x.trim())
 
   return value
+}
+
+export const replaceUnsafe = (str:string) => {
+  try {
+    const resp = safeReplacer(str, str)
+    return resp !== HIDDEN
+      ? str
+      : unsafeValues.reduce((final, unsafe) => final.replaceAll(new RegExp(unsafe, "gi"), HIDDEN), str)
+  }
+  catch(err){
+    // Use set timeout because we are already in a stdout / stderr call and don't want to cause recursive call
+    setTimeout(() => console.error(`[ERROR: replaceUnsafe] Could not replace unsafe values from string`), 100)
+    return ``
+  }
 }

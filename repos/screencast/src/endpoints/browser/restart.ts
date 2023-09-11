@@ -4,17 +4,17 @@ import type { Response, Request, RequestHandler } from 'express'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
 
 /**
  * Restarts a Browser by killing the browser context, and starting it again
  *
  */
-const browserRestart:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+const browserRestart:RequestHandler = async (req:Request, res:Response) => {
   const { body } = req
 
   const [__, config] = await limbo<Repo>(loadRepoFromReq(req))
@@ -45,6 +45,6 @@ const browserRestart:RequestHandler = asyncWrap(async (req:Request, res:Response
         // await page.keyboard.press('Cmd+Shift+F')
         // await page.keyboard.press('Control+Shift+F')
   return apiRes(res, status, 200)
-})
+}
 
 AppRouter.post('/screencast/browser/restart', browserRestart)

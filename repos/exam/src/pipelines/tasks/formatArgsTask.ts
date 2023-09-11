@@ -3,7 +3,6 @@ import {
   TPipelineInit,
   TPipelineArgs,
 } from '@GEX/types'
-import { JasmineCompat } from '@GEX/utils/jasmineCompat'
 
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { exists } from '@keg-hub/jsutils/exists'
@@ -42,11 +41,6 @@ export const formatArgsTask = (args:TPipelineInit|TPipelineArgs) => {
       ...config,
       bail,
       passWithNoTests,
-      globals: {
-        ...config.globals,
-        // Remove this once the other testUtils methods are updated
-        ...JasmineCompat
-      }
     },
   }
   

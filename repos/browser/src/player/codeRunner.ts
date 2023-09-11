@@ -20,7 +20,7 @@ export type TCodeRunnerOpts = {
   debug?: boolean
   slowMo?: number
   timeout?: number
-  globalTimeout?:number
+  suiteTimeout?:number
 }
 
 // const util = require('util')
@@ -57,7 +57,7 @@ export class CodeRunner {
   debug?: boolean
   slowMo?: number
   timeout?: number
-  globalTimeout?: number
+  suiteTimeout?: number
 
   constructor(player:Player, opts?:TCodeRunnerOpts) {
     this.player = player
@@ -67,7 +67,7 @@ export class CodeRunner {
     
     // Global Timeout gets passed to Parkin Test as the overall test timeout
     // So all tests must finish before this timeout
-    if(opts?.globalTimeout) this.globalTimeout = opts.globalTimeout
+    if(opts?.suiteTimeout) this.suiteTimeout = opts.suiteTimeout
 
   }
 
@@ -80,7 +80,7 @@ export class CodeRunner {
 
     // This is a hack for a bug in Parkin
     // The root element doesn't have an action,
-    // So it throws an error when accssing the metadata property
+    // So it throws an error when accessing the metadata property
     const root = this.PTE.getActiveParent()
     const rootAction = () => {}
     rootAction.metaData = { description: `Root describe meta-data` }

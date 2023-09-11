@@ -10,7 +10,6 @@ import { ExamRunner } from './ExamRunner'
 import { set } from '@keg-hub/jsutils/set'
 import { get } from '@keg-hub/jsutils/get'
 import { RootSuiteId } from '@GEX/constants'
-import { Errors } from '@GEX/constants/errors'
 import { ExamEvents } from '@GEX/events/Events'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
@@ -19,7 +18,6 @@ import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
 
 export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
-  bail:number=0
   omitTestResults:string[] = []
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
@@ -67,7 +65,8 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
     const results = await this.environment.test.run({
       description: data?.description,
-      timeout: data?.globalTimeout || this.globalTimeout
+      testTimeout: data?.testTimeout || this.testTimeout,
+      suiteTimeout: data?.suiteTimeout || this.suiteTimeout,
     }) as TExEventData[]
 
     const final = results.map(result => this.clearTestResults(result))
@@ -105,18 +104,6 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
             failedExpectations: result?.failedExpectations
           }
         }))
-
-      let errorMsg = `Spec Failed`
-      if(result.testPath) errorMsg+= ` - ${result.testPath}`
-      const failedErr = Errors.TestFailed(result, new Error(errorMsg))
-
-      this.failed += 1
-      const bailAmt = this.bail
-
-      if(bailAmt && (this.failed >= bailAmt)){
-        this.cancel()
-        Errors.BailedTests(bailAmt, failedErr)
-      }
     }
   }
 

@@ -1,17 +1,16 @@
+import type {
+  TBrowser,
+  TBrowserContext,
+} from '@GTU/Types'
 import type { TGobletTestOpts } from '@gobletqa/shared/types'
 
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { copyTestReports } from '@GTU/Playwright/testReport'
-import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
-import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
-import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'
 import {
-  setupContext,
+  getPage,
+  closePage,
   setupBrowser,
-  setLastActivePage,
-  getLastActivePage,
 } from '@GTU/Playwright/browserContext'
 
 /**
@@ -39,7 +38,7 @@ const initErrCloseAll = async () => {
   catch(err){}
   global.context = undefined
   
-  try { global.page && await global.page.close() }
+  try { await closePage(undefined, 3) }
   catch(err){}
   global.page = undefined
 
@@ -51,8 +50,6 @@ const initErrCloseAll = async () => {
 /**
  * Shutdown the page and context if not configured to be reused per test
  * Browser is not shutdown in this method so it can be reused in other tests
- * Browser shutdown is done in the Jasmine Reporter at `testUtils/src/reports/jasmineReporter.ts`
- * Jest doesn't have an onFinished hook, so seems like the only place it can be done
  */
 const cleanupPageAndContext = async () => {
 
@@ -62,30 +59,20 @@ const cleanupPageAndContext = async () => {
   } = get<TGobletTestOpts>(global, `__goblet.options`, emptyObj)
 
   if(!reusePage){
-    global.page && await global?.page?.close?.()
-    global.page = undefined
+    await closePage(undefined, 3)
     delete global.page
   }
 
+  /**
+   * Don't call closeContext method because it throws an error when the context can't be found
+   * Instead we manually close the context and remove it from the global scope
+   */
   if(!reuseContext){
     global.context && await global?.context?.close?.()
     global.context = undefined
     delete global.context
   }
 
-}
-
-/**
- * Helper to wrap a cleanup method in a try catch and log any errors that are thrown
- */
-const tryLogCleanupCB = async (cb:(...args:any[]) => any, message:string) => {
-  try {
-    return await cb()
-  }
-  catch(err){
-    Logger.stderr(`${Logger.colors.red(`[Goblet Cleanup Error]`)} ${message}`)
-    err && Logger.stderr(`\n${err.stack}\n`)
-  }
 }
 
 /**
@@ -97,11 +84,13 @@ const tryLogCleanupCB = async (cb:(...args:any[]) => any, message:string) => {
 export const initialize = async () => {
 
   let startError:boolean
+  let browser:TBrowser
+  let context:TBrowserContext
 
   try {
-    await initTestMeta()
-    await setupBrowser()
-    await setupContext()
+    const resp = await setupBrowser()
+    browser = resp.browser
+    context = resp.context
   }
   catch (err) {
     startError = true
@@ -109,8 +98,15 @@ export const initialize = async () => {
     forceExit(err)
   }
   finally {
-    return !startError &&
-      await startTracingChunk(global.context)
+    if(startError) return {}
+
+    const page = await getPage()
+
+    return {
+      page,
+      browser,
+      context,
+    }
   }
 }
 
@@ -122,32 +118,11 @@ export const initialize = async () => {
 export const cleanup = async (initErr?:boolean) => {
 
   if (!global.browser){
-    await commitTestMeta()
+    await cleanupPageAndContext()
     return false
   }
 
-  await tryLogCleanupCB(
-    async () => await stopTracingChunk(global.context),
-    `Failed attempt to stop Tracing...`,
-  )
-
-  await tryLogCleanupCB(
-    async () => await saveRecordingPath(getLastActivePage()),
-    `Failed attempt to save Recording...`,
-  )
-
-  await tryLogCleanupCB(
-    copyTestReports,
-    `Failed attempt to save Test Reports...`,
-  )
-
-  await tryLogCleanupCB(
-    commitTestMeta,
-    `Failed attempt to commit test meta...`,
-  )
-
   try {
-    setLastActivePage(undefined)
 
     initErr
       ? await initErrCloseAll()

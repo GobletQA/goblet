@@ -7,17 +7,18 @@
     "module": "esnext",
     "baseUrl": ".",
     "outDir": "./dist",
-    "noEmit": false,
+    "noEmit": true,
     "allowJs": true,
     "sourceMap": true,
-    "declaration": true,
+    "declaration": false,
     "skipLibCheck": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
-    "declarationMap": true,
+    "declarationMap": false,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -99,6 +100,8 @@
       "@GTU/Constants/*": ["repos/testUtils/src/constants/*"],
       "@GTU/Jest": ["repos/testUtils/src/jest"],
       "@GTU/Jest/*": ["repos/testUtils/src/jest/*"],
+      "@GTU/Exam": ["repos/testUtils/src/exam"],
+      "@GTU/Exam/*": ["repos/testUtils/src/exam/*"],
       "@GTU/Utils": ["repos/testUtils/src/utils"],
       "@GTU/Utils/*": ["repos/testUtils/src/utils/*"],
       "@GTU/Steps": ["repos/testUtils/src/steps"],
@@ -181,7 +184,9 @@
       "@gobletqa/test-utils/*": [ "repos/testUtils/src/*" ],
 
       "@gobletqa/workflows": ["repos/workflows/src"],
-      "@gobletqa/workflows/*": ["repos/workflows/src/*"]
+      "@gobletqa/workflows/*": ["repos/workflows/src/*"],
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
     }
   },
   "exclude": [
@@ -198,8 +203,6 @@
     "docs",
     "logs",
     "scripts",
-    "temp",
-    "**.test.ts",
-    "test.**.ts"
+    "temp"
   ]
 }

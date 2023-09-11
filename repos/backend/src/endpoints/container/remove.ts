@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export const remove = async (req:Request, res:Response) => {
@@ -20,4 +20,4 @@ export const remove = async (req:Request, res:Response) => {
   res.status(200).json(status || container)
 }
 
-AsyncRouter.post(`/container/remove/:containerRef`, remove)
+AppRouter.post(`/container/remove/:containerRef`, remove)

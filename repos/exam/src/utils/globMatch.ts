@@ -8,14 +8,17 @@ import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 
 import { GlobFilesCfg } from "@GEX/constants/defaults"
+import {TExamConfig} from '@GEX/types'
 
 export const globMatchFiles = async (
+  exam:TExamConfig,
   match:string|string[],
-  opts?:GlobOptions
+  opts?:GlobOptions,
 ) => {
-  const config = {...GlobFilesCfg, ...opts}
 
   const globs = []
+  const config = {...GlobFilesCfg, ...opts}
+  const exts = `{${(exam?.extensions || []).join(`,`)}}`
 
   ensureArr<string>(match).forEach(item => {
     /**
@@ -29,18 +32,16 @@ export const globMatchFiles = async (
     item = item.startsWith(`/`) ? item.replace(/^\//, ``) : item
 
     globs.push(
-      `**/+(${item})**`,
-      `**/+(${item})*`,
-      `**/${item}/**`,
-      `**/?(${item}|*${item}*|**${item}**)`,
-      item.includes(`.`) ? `**/+(${item})` : `**/+(${item})*`
+      `**/+(${item})*${exts}`,
+      `**/${item}/**${exts}`,
+      `**/*${item}*/**/*${exts}`,
+      `**/?(${item}|*${item}*|**${item}**)${exts}`,
     )
   })
 
   const found = await globFiles(globs, config)
 
   return naturalSort<string[]>(found)
-  
 }
 
 

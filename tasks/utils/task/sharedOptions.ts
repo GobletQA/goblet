@@ -57,7 +57,6 @@ const taskOptions = {
       description: `Run all tests sequentially`,
     },
     testBail: {
-      type: `boolean`,
       alias: [`bail`],
       example: `--testBail`,
       env: `GOBLET_TEST_BAIL`,
@@ -69,11 +68,10 @@ const taskOptions = {
       description: `Absolute path to a test config relative to the root directory`,
     },
     testTimeout: {
-      type: `number`,
-      default: 15000, // 15 seconds
+      alias: [`timeout`],
       env: `GOBLET_TEST_TIMEOUT`,
-      example: `--timeout 15000`,
-      description: `Test timeout in seconds. Defaults to 15000 milliseconds (15 seconds).`,
+      example: `--timeout 20000`,
+      description: `Test timeout in milliseconds`,
     },
     testDebug: {
       default: false,
@@ -83,23 +81,30 @@ const taskOptions = {
       description: `Pass the --debug flag to the test command`,
     },
     testRetry: {
-      type: `number`,
       example: `--testRetry 3`,
+      alias: [`retry`, `tr`],
       env: `GOBLET_TEST_RETRY`,
       description: `Amount of times to retry the test if it fails`,
     },
+    suiteRetry: {
+      example: `--suiteRetry 3`,
+      alias: [`sretry`, `sr`],
+      env: `GOBLET_SUITE_RETRY`,
+      description: `Amount of times to retry the suite when a child test fails`,
+    },
+    suiteTimeout: {
+      alias: [`st`, `stimeout`],
+      env: `GOBLET_SUITE_TIMEOUT`,
+      example: `--suiteTimeout 36000`,
+      description: `Suite timeout in milliseconds.`,
+    },
     testReport: {
       alias: [`report`],
+      default: `failed`,
       example: `--testReport`,
       env: `GOBLET_TEST_REPORT`,
       allowed: artifactSaveOpts,
-      description: `Context in which the html test report should be saved`,
-    },
-    testReportName: {
-      alias: [`reportName`],
-      example: `--testReportName`,
-      env: `GOBLET_TEST_REPORT_NAME`,
-      description: `Name of the generated HTML test report file`,
+      description: `Generate an html report for a test suite based on the test state`,
     },
     testCache: {
       default: true,
@@ -123,6 +128,7 @@ const taskOptions = {
     testVerbose: {
       default: false,
       type: `boolean`,
+      alias: [`verbose`],
       example: `--testVerbose`,
       env: `GOBLET_TEST_VERBOSE`,
       description: `Output verbose test results as the tests run`,
@@ -140,7 +146,22 @@ const taskOptions = {
       example: `--testCI`,
       env: `GOBLET_RUN_FROM_CI`,
       description: `Run the tests in CI mode when running in a CI environment`,
-    }
+    },
+    exitOnFailed: {
+      default: false,
+      type: `boolean`,
+      alias: [`eof`, `exit`],
+      example: `--exitOnFailed`,
+      env: `GOBLET_EXIT_ON_FAILED`,
+      description: `Stop running test and exit the process is a test fails`,
+    },
+    skipAfterFailed: {
+      default: true,
+      type: `boolean`,
+      alias: [`saf`, `skip`],
+      example: `--skipAfterFailed`,
+      description: `When a test fails, skip all future tests within in the same suite`,
+    },
   },
   docker: {
     container: {
@@ -228,16 +249,16 @@ const taskOptions = {
       example: `--chrome`,
     },
     firefox: {
-      alias: [`fire`, `fox`, `ff`],
-      description: `Launch Firefox browser through Playwright`,
       type: `bool`,
       example: `--firefox`,
+      alias: [`fire`, `fox`, `ff`],
+      description: `Launch Firefox browser through Playwright`,
     },
     webkit: {
+      type: `bool`,
+      example: `--webkit`,
       alias: [`webkit`, `safari`, `sa`],
       description: `Launch Safari browser through Playwright`,
-      type: 'bool',
-      example: `--webkit`,
     },
     headless: {
       type: `bool`,
@@ -256,7 +277,7 @@ const taskOptions = {
     },
     browserTimeout: {
       type: `number`,
-      default: 15000, // 15 seconds
+      alias: [`bt`, `btimeout`],
       env: `GOBLET_BROWSER_TIMEOUT`,
       example: `--browserTimeout 15000`, // 15 seconds
       description: `Amount of time until a browser request will timeout should be less the timeout option`,
@@ -289,6 +310,7 @@ const taskOptions = {
       description: `Open devtools automatically when the browser opens. The debug option must also be set true`,
     },
     tracing: {
+      default: `failed`,
       allowed: artifactSaveOpts,
       env: `GOBLET_TEST_TRACING`,
       example: `--tracing failed`,
@@ -341,7 +363,8 @@ const taskOptions = {
       example: `--permissions gyroscope,notifications`,
       description: `A list of permissions to grant to all browser pages, seperated by comma`
     },
-    record: {
+    video: {
+      default: `failed`,
       allowed: artifactSaveOpts,
       example: `--record failed`,
       env: `GOBLET_TEST_VIDEO_RECORD`,
@@ -378,19 +401,6 @@ const taskOptions = {
   },
 }
 
-export const sharedOptions = {
-  ...dynamicOpts,
-  ...taskOptions,
-}
-
-// TODO: Update to this when cli-utils convert-from-sv branch is merged
-// sharedOptions.unit = {
-//   ...sharedOptions.goblet,
-//   ...sharedOptions.docker,
-//   ...sharedOptions.test,
-// }
-// setSharedOptions(sharedOptions)
-// Have to a single level object so all options are available to tasks
 setSharedOptions({
   ...taskOptions.test,
   ...taskOptions.docker,
@@ -398,4 +408,5 @@ setSharedOptions({
   ...taskOptions.playwright,
   ...taskOptions.pwContext,
   ...taskOptions.test,
+  ...taskOptions.bdd,
 })

@@ -4,7 +4,7 @@ import type { Auth, UserRecord, DecodedIdToken } from 'firebase-admin/auth'
 import { getAuth } from "firebase-admin/auth"
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { initializeApp } from "firebase-admin/app"
-import { resError } from '@gobletqa/shared/express/resError'
+import { resError } from '@gobletqa/shared/api/express/resError'
 
 
 type TFBUser = {

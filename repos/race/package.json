@@ -14,20 +14,20 @@
     "start": "vite --clearScreen false -c configs/vite.config.ts --force"
   },
   "dependencies": {
-    "@emotion/react": "11.10.6",
-    "@emotion/styled": "11.10.6",
+    "@emotion/react": "11.11.0",
+    "@emotion/styled": "11.11.0",
     "@gobletqa/components": "workspace:*",
-    "@keg-hub/jsutils": ">=9.8.0",
-    "@ltipton/parkin": "5.1.1",
+    "@keg-hub/jsutils": "9.8.3",
+    "@ltipton/parkin": "6.3.0",
     "@mui/icons-material": "5.11.16",
     "@mui/lab": "5.0.0-alpha.129",
-    "@mui/material": "5.12.1",
+    "@mui/material": "5.12.3",
     "comlink": "4.4.1",
     "react-selecto": "1.22.2"
   },
   "devDependencies": {
     "@gobletqa/shared": "workspace:*",
-    "@types/react": "18.0.17",
+    "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react-swc": "3.3.2",
     "esbuild-register": "3.4.2",

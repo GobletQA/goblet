@@ -1,6 +1,6 @@
 const Module = require('module')
-const sharedPaths = require('@GSH/utils/paths')
-const { GobletRoot } = sharedPaths
+const { aliases } = require('@GConfigs/aliases.config')
+const { GobletRoot } = aliases
 
 const overrideNoOp = (request) => true
 const resolveNoOp = () => ({})
@@ -13,7 +13,7 @@ const resolveNoOp = () => ({})
 const allowedModules = [
   `@ltipton/parkin`,
   `@keg-hub/jsutils`,
-  ...Object.keys(sharedPaths),
+  ...Object.keys(aliases),
 ]
 
 /**

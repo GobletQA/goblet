@@ -3,7 +3,7 @@ import type { TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
 import { GBrowser, Automate } from '@gobletqa/browser'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 
 export const cancelAutomate = (app:Express) => {

@@ -1,8 +1,9 @@
-import type playwright from 'playwright'
 import type { TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
 
+import { ENVS } from '@gobletqa/environment'
 import { isStr } from '@keg-hub/jsutils/isStr'
-import { toBool } from '@keg-hub/jsutils/toBool'
+import { cleanColl } from '@keg-hub/jsutils/cleanColl'
+
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
 
@@ -16,13 +17,15 @@ const buildDeviceList = (envVal:string) => {
   const { devices } = parseJsonEnvArr('devices', envVal)
   if(!devices) return emptyObj
 
-  return devices.reduce((acc, device) => {
+  const built = devices.reduce((acc, device) => {
     device &&
       isStr(device) &&
       acc.devices.push(device.replace(/-/g, ' '))
 
     return acc
   }, {devices: []})
+  
+  return built?.devices?.length ? built : emptyObj
 }
 
 /**
@@ -30,26 +33,17 @@ const buildDeviceList = (envVal:string) => {
  * This allows passing values into the test environment
  */
 export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
-  const {
-    GOBLET_HEADLESS,
-    GOBLET_DEV_TOOLS,
-    GOBLET_BROWSER_DEVICES,
-    GOBLET_BROWSER = `chromium`,
-    GOBLET_BROWSER_SLOW_MO = `50`,
-    GOBLET_BROWSER_TIMEOUT = `15000`, // 15 seconds
-  } = process.env
-
   // Save videos to the temp dir, and copy them to the repo dir as needed, I.E. if a test fails
   const { tracesTempDir, downloadsTempDir } = config.internalPaths
 
-  return {
-    type: GOBLET_BROWSER,
+  return cleanColl<Partial<TBrowserLaunchOpts & { devices?: string[], type?: string }>>({
     tracesDir: tracesTempDir,
+    type: ENVS.GOBLET_BROWSER,
     downloadsPath: downloadsTempDir,
-    headless: toBool(GOBLET_HEADLESS),
-    devtools: toBool(GOBLET_DEV_TOOLS),
-    slowMo: parseInt(GOBLET_BROWSER_SLOW_MO, 10),
-    timeout: parseInt(GOBLET_BROWSER_TIMEOUT, 10),
-    ...buildDeviceList(GOBLET_BROWSER_DEVICES),
-  } as Partial<TBrowserLaunchOpts & { devices: string[] }>
+    headless: ENVS.GOBLET_HEADLESS,
+    devtools: ENVS.GOBLET_DEV_TOOLS,
+    slowMo: ENVS.GOBLET_BROWSER_SLOW_MO,
+    timeout: ENVS.GOBLET_BROWSER_TIMEOUT,
+    ...buildDeviceList(ENVS.GOBLET_BROWSER_DEVICES),
+  })
 }

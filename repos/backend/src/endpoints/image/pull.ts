@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 export const pull = async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor
@@ -8,8 +8,8 @@ export const pull = async (req:Request, res:Response) => {
   res.status(200).json(status)
 }
 
-AsyncRouter.post(`/image/pull/:imageRef`, pull)
-AsyncRouter.get(`/image/pull/:imageRef`, pull)
+AppRouter.post(`/image/pull/:imageRef`, pull)
+AppRouter.get(`/image/pull/:imageRef`, pull)
 // Only load in a test environment
 // process.env.NODE_ENV === `test`
-//   && AsyncRouter.get(`/pull/:imageRef`, pull)
+//   && AppRouter.get(`/pull/:imageRef`, pull)

@@ -1,0 +1,263 @@
+import type {
+  TFeatureAst,
+  TParkinRunOpts,
+  TParkinRunStepOptsMap,
+} from '@ltipton/parkin'
+import type {
+  TStateObj,
+  TExFileModel,
+  TExEventData,
+  TExRunnerCfg,
+  TExTestEvent,
+} from '@gobletqa/exam'
+
+import { FeatureEnvironment } from './Environment'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { omitKeys } from '@keg-hub/jsutils/omitKeys'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+
+import {
+  ExamRunner,
+  ExamEvents,
+  RootSuiteId,
+  EExErrorType,
+  EPlayerTestType,
+} from '@gobletqa/exam'
+
+
+export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
+export type TFeatureData = {
+  steps?:TParkinRunStepOptsMap
+}
+
+export type TLocEvt = (TExEventData & { location:string })
+
+export type TRunnerOpts = {
+  debug?: boolean
+  slowMo?: number
+  testTimeout?: number
+  suiteTimeout?:number
+}
+
+const hasValidTags = (
+  filter:string[],
+  tags?:string[]
+) => {
+  return !filter?.length
+    || (tags?.length && filter?.every((clientTag:string) => tags?.includes(clientTag)))
+}
+
+export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
+
+  fromAst:string[]=[`feature`]
+  omitTestResults:string[] = [
+    `tests`,
+    `describes`,
+    `passedExpectations`,
+    `failedExpectations`,
+  ]
+
+  constructor(cfg:TExRunnerCfg, state:TStateObj) {
+    super(cfg, state)
+
+    this.isRunning = false
+    this.environment.setup(this)
+
+    cfg.omitTestResults
+      && (this.omitTestResults = flatUnion(this.omitTestResults, cfg.omitTestResults))
+
+  }
+
+  #bindEvents = (model:TExFileModel) => {
+    return ([
+      `onRunDone`,
+      `onRunStart`,
+      `onSpecDone`,
+      `onSpecStart`,
+      `onSuiteDone`,
+      `onSuiteStart`,
+    ].reduce((acc, cb) => {
+      acc[cb] = (result:TExEventData) => this?.[cb].call(
+        this,
+        {...result, location: model.location},
+        model
+      )
+
+      return acc
+    }, {}))
+  }
+
+  #buildRunOpts = (model:TExFileModel, state:TStateObj) => {
+    const { data } = state
+
+    // TODO: include bail in the run options
+    const parkinOpts = deepMerge(this.environment.runOptions, {
+      ...data,
+      tags: {...data?.tags},
+      timeout: data?.testTimeout || this.testTimeout,
+      steps: {...data?.steps, shared: {...data?.steps?.shared}},
+    })
+
+    return {
+      parkin: parkinOpts,
+      test: {
+        bail: this.bail,
+        testRetry: this.testRetry,
+        suiteRetry: this.suiteRetry,
+        testTimeout: this.testTimeout,
+        suiteTimeout: this.suiteTimeout,
+        /**
+         * When running a single test from UI
+         * This should be set to true so running stops on the first failed test
+         */
+        exitOnFailed: this.exitOnFailed,
+        skipAfterFailed: this.skipAfterFailed,
+        /**
+         * Bind Runner event listeners to the currently running model
+         * Ensures we can keep track of the test that called the event callback
+         */
+        ...this.#bindEvents(model),
+      }
+    }
+
+  }
+
+  #validateRun = (
+    content:TFeatureAst[],
+    runOpts:TParkinRunOpts
+  ) => {
+    const filter = runOpts?.tags?.filter
+    const hasFilters = Boolean(filter?.length)
+    if(!hasFilters) return true
+
+    return hasFilters
+      && content.find(feat => hasValidTags(ensureArr(filter), feat?.tags?.tokens))
+  }
+
+  /**
+   * Runs the code passed to it via the exam
+   */
+  run = async (model:TExFileModel, state:TStateObj) => {
+    try {
+
+      this.isRunning = true
+      const runOpts = this.#buildRunOpts(model, state)
+      const content = this.environment.parkin.parse.feature(model.content)
+
+      if(!this.#validateRun(content, runOpts.parkin))
+        return emptyArr as TExEventData[]
+
+      // This must come before the parkin run
+      // Otherwise the steps will have the default timeout
+      // Which is too short for some steps
+      this.environment.test.setConfig(runOpts.test)
+      await this.environment.parkin.run(content, runOpts.parkin)
+
+      const results = await this.environment.test.run() as TExEventData[]
+      this.isRunning = false
+
+      if(this.canceled){
+        await this.cleanup()
+        return emptyArr as TExEventData[]
+      }
+
+      return results.map(result => this.clearTestResults(result))
+
+    }
+    catch(err){
+
+      if(err.name === EExErrorType.TestErr){
+        if(!err.result) return []
+        return [this.clearTestResults(err.result)]
+      }
+
+      await this.cleanup()
+      throw err
+    }
+  }
+
+  onRunStart = (result:TLocEvt, model:TExFileModel) => {
+    this.event({
+      ...ExamEvents.started,
+      data: {
+        ...this.clearTestResults(result),
+        id: model.name,
+        testPath: model.location,
+        fullName: model.location,
+        type: EPlayerTestType.feature,
+      }
+    })
+  }
+
+  onRunDone = (result:TLocEvt) => {
+    this.event(ExamEvents.results({ data: result }))
+  }
+
+  onSpecDone = async (result:TLocEvt) => {
+    if(this.canceled) return
+
+    await this.event(ExamEvents.specDone({
+      data: {
+        ...this.clearTestResults(result),
+        failedExpectations: result?.failedExpectations
+      }
+    }))
+  }
+
+  onSuiteDone = (result:TLocEvt) => {
+    if(this.canceled) return
+
+    const data = this.clearTestResults(result)
+    result.id === RootSuiteId
+      ? this.event(ExamEvents.rootSuiteDone({ data }))
+      : this.event(ExamEvents.suiteDone({ data }))
+  }
+
+  onSpecStart = (result:TLocEvt) => {
+    if(this.canceled) return
+
+    this.event(ExamEvents.specStart({
+      data: this.clearTestResults(result),
+    }))
+  }
+
+  onSuiteStart = (result:TLocEvt) => {
+    if(this.canceled) return
+
+    const data = this.clearTestResults(result)
+    result.id === RootSuiteId
+      ? this.event(ExamEvents.rootSuiteStart({ data }))
+      : this.event(ExamEvents.suiteStart({ data }))
+  }
+
+  cancel = async () => {
+    this.canceled = true
+    this.environment?.test?.abort?.()
+    this.cleanup?.()
+  }
+
+  cleanup = async () => {
+    try {
+      this.isRunning = false
+      this.environment?.cleanup?.()
+    }
+    catch(err){}
+  }
+
+  /**
+  * There's a lot of meta-data that is added to the player tests results object
+  * This clears out some of it, because the frontend does not need it
+  */
+  clearTestResults = (result:TExEventData) => {
+    return omitKeys<TExTestEvent>(
+      result,
+      this.omitTestResults
+    )
+  }
+
+}
+
+
+export default FeatureRunner

@@ -2,12 +2,12 @@
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@gobletqa/shared": [ "../shared/src" ],
-      "@gobletqa/shared/*": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src" ]
     }
   },
   "include": [

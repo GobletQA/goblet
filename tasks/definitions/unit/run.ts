@@ -25,14 +25,11 @@ const runUnit = async (args:TTaskActionArgs) => {
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
-    goblet,
-    type: testTypes.unit,
     cmdArgs: buildTestArgs(params, testConfig, ETestType.unit),
-    envsHelper: (browser, reportPath) => buildUnitEnvs(
+    envsHelper: (browser) => buildUnitEnvs(
       browser,
       goblet,
       params,
-      reportPath,
       testTypes.unit
     )
   })
@@ -78,20 +75,24 @@ export const run:TTask = {
       `isMobile`,
       `permissions`,
       `tracing`,
-      `record`,
+      `video`,
       `storageState`,
       `timezone`,
       `testCI`,
       `testDebug`,
       `testCache`,
       `testReport`,
-      `testReportName`,
+      `testRetry`,
+      `suiteRetry`,
       `testColors`,
       `testTimeout`,
       `testVerbose`,
       `testWorkers`,
+      `suiteTimeout`,
       `testOpenHandles`,
       `artifactsDebug`,
+      `exitOnFailed`,
+      `skipAfterFailed`,
     ]
   ),
 }

@@ -154,16 +154,16 @@ export class Player {
       })
 
       const timeout = this.options?.playOptions?.testTimeout as number
-      const globalTimeout = this.options?.playOptions?.globalTimeout as number
+      const suiteTimeout = this.options?.playOptions?.suiteTimeout as number
       this.page.setDefaultTimeout(timeout || 15000)
 
-      const extraHTTPHeaders = this.repo?.world?.$headers
+      const extraHTTPHeaders = this.repo?.world?.$context?.extraHTTPHeaders
       extraHTTPHeaders &&
         await this.page.setExtraHTTPHeaders({...extraHTTPHeaders})
 
       this.codeRunner = new CodeRunner(this, {
         timeout,
-        globalTimeout,
+        suiteTimeout,
         debug: this.options?.playOptions?.debug as boolean,
         slowMo: this.options?.playOptions?.slowMo as number,
       })
@@ -271,10 +271,12 @@ export class Player {
     }
 
     this.page = undefined
+    this.repo = undefined
     this.context = undefined
     this.browser = undefined
     this.codeRunner = undefined
     delete this.page
+    delete this.repo
     delete this.context
     delete this.browser
     delete this.codeRunner

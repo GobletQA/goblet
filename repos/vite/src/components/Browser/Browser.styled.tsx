@@ -1,11 +1,13 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
+  Text,
   dims,
   colors,
   gutter,
   getColor,
-  IconButton
+  IconButton,
+  AdsClickIcon
 } from '@gobletqa/components'
 
 export const BrowserNav = styled('nav')(({ theme }) => `
@@ -162,3 +164,49 @@ export const BrowserShadowBottom = styled(Box)`
     box-shadow: 0px -3px 0px ${colors.recordRed};
   }
 `
+
+export const BrowserCoverClick = styled(Box)`
+  display: flex;
+  top: ${dims.browser.nav.hpx};
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  &:hover {
+    .pb-browser-intent-click {
+      opacity: 1;
+    }
+  }
+`
+
+export const BrowserIntentClick = styled(Box)`
+  flex: 1;
+  opacity: 0;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.fadeDark30};
+  transition: opacity ${dims.trans.avgEase}, background-color ${dims.trans.avgEase};
+`
+
+export const BrowserIntentClickText = styled(Text)`
+  font-size: 30px;
+  margin-left: ${gutter.margin.hpx};
+`
+
+export const BrowserIntentClickBtn = styled(IconButton)(({ theme }) => `
+  border-radius: 5px;
+  color: ${colors.white};
+  padding: ${gutter.padding.hpx} ${gutter.padding.px};
+  background-color: ${colors.fadeDark70};
+
+  &:hover {
+    background-color: ${colors.fadeDark90};
+  }
+`)
+
+export const BrowserIntentClickIcon = styled(AdsClickIcon)(({ theme }) => `
+  font-size: 50px;
+`)
+

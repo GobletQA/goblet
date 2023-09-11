@@ -10,11 +10,11 @@ import type {
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { set } from '@keg-hub/jsutils/set'
+import { getLocator } from '@GTU/Playwright'
 import { ENVS } from '@gobletqa/environment'
 import { unset } from '@keg-hub/jsutils/unset'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { getPage, getLocator } from '@GTU/Playwright'
 import {
   SavedDataWorldPath,
   SavedLocatorWorldPath,
@@ -233,15 +233,15 @@ export const compareValues = (
  */
 export const callLocatorMethod = async (
   selector:string,
-  prop:string,
+  method:string,
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
   const element = locator || getLocator(selector)
-  if(!element[prop])
-    throw new Error(`Selected Element ${selector} missing prop method "${prop}".`)
+  if(!element[method])
+    throw new Error(`Selected Element ${selector} missing method "${method}".`)
 
-  return await element[prop]()
+  return await element[method]()
 }
 
 export const getLocatorAttribute = async (
@@ -421,12 +421,12 @@ export const getLocatorTimeout = (ctx?:TStepCtx, percent:number=99) => {
  * Gets the configured timeout for a step based on the possible timeout locations
  */
 export const getStepTimeout = (ctx?:TStepCtx) => {
-  const globalTimeout = global?.getParkinOptions?.()?.timeout
+  const gobletOpts = (global?.__goblet || {})
 
   const timeout = ctx?.options?.timeout
     || ENVS.GOBLET_TEST_TIMEOUT
-    || global.__goblet?.browser?.timeout
-    || globalTimeout
+    || gobletOpts?.browser?.timeout
+    || gobletOpts?.options?.timeout
     || 15000
 
   return isNum(timeout) ? timeout : parseInt(timeout, 10)

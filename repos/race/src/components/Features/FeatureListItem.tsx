@@ -1,4 +1,8 @@
-import type { TRaceFeatures, TRaceFeature, TEditorFeatureActions } from '@GBR/types'
+import type {
+  TRaceFeature,
+  TRaceFeatures,
+  TEditorFeatureActions
+} from '@GBR/types'
 
 import { styles } from './FeatureItemHelpers'
 import { FeatureItemActions } from './FeatureItemActions'

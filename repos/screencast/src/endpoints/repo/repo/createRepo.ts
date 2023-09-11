@@ -1,12 +1,11 @@
-import type { RequestHandler, Response } from 'express'
+import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
 import { Logger } from '@GSC/utils/logger'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { Repo, loadRepoContent } from '@gobletqa/workflows'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export type TCreateBody = {
@@ -21,7 +20,7 @@ export type TCreateBody = {
 /**
  * Runs the initializeGoblet workflow to setup a new repository
  */
-export const createRepo:RequestHandler = asyncWrap(async (
+export const createRepo = async (
   req:JWTRequest,
   res:Response
 ) => {
@@ -53,6 +52,6 @@ export const createRepo:RequestHandler = asyncWrap(async (
   }
 
   return apiRes(res, content, 200)
-})
+}
 
-AppRouter.post('/repo/create', createRepo)
+AppRouter.post(`/repo/create`, createRepo)

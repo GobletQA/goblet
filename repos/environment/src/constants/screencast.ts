@@ -7,5 +7,3 @@ export const SCAuthBypassRoutes = [
   `/goblet-socket/`,
   `/repo/disconnect`,
 ]
-
-export const MethodContentSplit = `// ----- CONTENT-SPLIT ----- //`

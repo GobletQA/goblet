@@ -7,16 +7,49 @@ import type {
   TBrowserContextVideo,
 } from '@GBB/types'
 
-
+import { ENVS } from '@gobletqa/environment'
 import { isArr } from '@keg-hub/jsutils/isArr'
+import { toNum } from '@keg-hub/jsutils/toNum'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
-import { toBool } from '@keg-hub/jsutils/toBool'
 import { exists } from '@keg-hub/jsutils/exists'
+import { ArtifactSaveOpts } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { getScreenDims } from '@GBB/utils/getScreenDims'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
-import { artifactSaveActive } from '@GBB/utils/artifactSaveOption'
+
+
+/**
+ * Gets the screen dimensions from the current ENV
+ * Uses GOBLET_CONTEXT_WIDTH && GOBLET_CONTEXT_HEIGHT envs first
+ * 
+ * @returns {Object} - Screen Dims Object
+ */
+export const getScreenDims = () => {
+  if(!ENVS.GOBLET_CONTEXT_WIDTH && !ENVS.GOBLET_CONTEXT_HEIGHT) return
+
+  const width = ENVS.GOBLET_CONTEXT_WIDTH
+  const height = ENVS.GOBLET_CONTEXT_HEIGHT
+
+  return {
+    width: width || height,
+    height: height || width,
+  }
+}
+
+
+/**
+ * Check if video recording is active
+ * This is a duplicate of `artifactSaveOption` from `gobletqa/test-utils/src/utils/artifactSaveOption`
+ * But we don't have access to that method here
+ * It's only a few lines of code, but I would prefer to not duplicate it
+ */
+const shouldRecordVideo = (value:string|boolean) => {
+  return !value || value === ArtifactSaveOpts.never
+    ? false
+    : value === ArtifactSaveOpts.always
+      ? ArtifactSaveOpts.always
+      : ArtifactSaveOpts.failed
+}
 
 /**
  * Parses the GOBLET_CONTEXT_GEO env into an object 
@@ -56,17 +89,16 @@ const parseRecord = (
   config:TGobletConfig,
   opts:Partial<TBrowserContextOpts>,
   screenDims:TScreenDims,
-  shouldRecordVideo:boolean,
+  recordVideoActive:boolean,
   fullScreen:boolean
 ) => {
-  if(!shouldRecordVideo) return opts
+  if(!recordVideoActive) return opts
 
   opts.recordVideo = (opts.recordVideo || {}) as TBrowserContextVideo
-  opts.recordVideo.size = isObj(screenDims)
-    ? !fullScreen
-      ? {height: screenDims.height / 2, width: screenDims.width / 2}
-      : screenDims
-    : {} as TScreenDims
+  if(isObj(screenDims))
+    opts.recordVideo.size = !fullScreen
+        ? {height: screenDims.height / 2, width: screenDims.width / 2}
+        : screenDims
 
   // Save videos to the temp dir, and copy them to the repo dir as needed
   // I.E. a test fails
@@ -81,26 +113,16 @@ const parseRecord = (
  * This allows passing values into the test environment
  */
 export const taskEnvToContextOpts = (config:TGobletConfig) => {
-  const {
-    GOBLET_CONTEXT_TZ, // string
-    GOBLET_CONTEXT_GEO, // JSON array
-    GOBLET_CONTEXT_TOUCH, // boolean
-    GOBLET_CONTEXT_MOBILE, // boolean
-    GOBLET_CONTEXT_DOWNLOADS, // boolean
-    GOBLET_CONTEXT_PERMISSIONS,  // JSON array
-    GOBLET_FULL_SCREEN_VIDEO, // boolean
-    GOBLET_TEST_VIDEO_RECORD, // boolean || string
-  } = process.env
 
   const opts = {
-    ...parseJsonEnvArr('permissions', GOBLET_CONTEXT_PERMISSIONS),
-    ...parseGeo(GOBLET_CONTEXT_GEO),
+    ...parseJsonEnvArr('permissions', ENVS.GOBLET_CONTEXT_PERMISSIONS),
+    ...parseGeo(ENVS.GOBLET_CONTEXT_GEO),
   } as Partial<TBrowserContextOpts>
 
-  addEnvToOpts(opts, 'timezoneId', GOBLET_CONTEXT_TZ)
-  addEnvToOpts(opts, 'hasTouch', toBool(GOBLET_CONTEXT_TOUCH))
-  addEnvToOpts(opts, 'isMobile', toBool(GOBLET_CONTEXT_MOBILE))
-  addEnvToOpts(opts, 'acceptDownloads', toBool(GOBLET_CONTEXT_DOWNLOADS))
+  addEnvToOpts(opts, `timezoneId`, ENVS.GOBLET_CONTEXT_TZ)
+  addEnvToOpts(opts, `hasTouch`, ENVS.GOBLET_CONTEXT_TOUCH)
+  addEnvToOpts(opts, `isMobile`, ENVS.GOBLET_CONTEXT_MOBILE)
+  addEnvToOpts(opts, `acceptDownloads`, ENVS.GOBLET_CONTEXT_DOWNLOADS)
 
   const screenDims = getScreenDims()
 
@@ -108,13 +130,13 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     config,
     opts,
     screenDims,
-    artifactSaveActive(GOBLET_TEST_VIDEO_RECORD),
-    toBool(GOBLET_FULL_SCREEN_VIDEO)
+    shouldRecordVideo(ENVS.GOBLET_TEST_VIDEO_RECORD),
+    ENVS.GOBLET_FULL_SCREEN_VIDEO
   )
 
-  if(screenDims.height || screenDims.width){
-    addEnvToOpts(opts, 'viewport', screenDims)
-    addEnvToOpts(opts, 'screen', screenDims)
+  if(screenDims?.height || screenDims?.width){
+    addEnvToOpts(opts, `viewport`, screenDims)
+    addEnvToOpts(opts, `screen`, screenDims)
   }
 
   return opts as TBrowserContextOpts

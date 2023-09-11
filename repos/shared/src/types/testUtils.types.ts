@@ -3,22 +3,23 @@ export type TGobletTestArtifactOption = `never` | `always` | `on-fail` | true | 
 export type TGobletTestStatus = `passed` | `failed`
 
 export type TGobletTestTracingOpts = {
+  sources?:boolean
   snapshots?:boolean
   screenshots?:boolean
 }
 
 export type TGobletTestOpts = {
-  retry?:number
-  timeout?:number
   tracesDir?:string
   videosDir?:string
-  downloads?:string
+  uploadsDir?:string
+  downloadsDir?:string
+  reusePage?:boolean
   snapshotsDir?:string
+  reuseContext?:boolean
   testType?:string|false
   tracing?:TGobletTestTracingOpts
   saveVideo?:TGobletTestArtifactOption
   saveTrace?:TGobletTestArtifactOption
   saveReport?:TGobletTestArtifactOption
-  reusePage?:boolean
-  reuseContext?:boolean
+  saveScreenshot?:TGobletTestArtifactOption
 }

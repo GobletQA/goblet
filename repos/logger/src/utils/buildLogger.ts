@@ -1,7 +1,6 @@
 import type { TLogOpts } from '../types'
 
 import winston from 'winston'
-import { safeReplacer } from './safeReplacer'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 const { createLogger, transports, format } = winston
 const {
@@ -35,7 +34,7 @@ const getFormatter = (label:string) => {
         timestamp(),
         logLabel({ label }),
         simple(),
-        json({ replacer: safeReplacer }),
+        json(),
         prettyPrint({ colorize: true })
       )
     : combine(
@@ -43,7 +42,7 @@ const getFormatter = (label:string) => {
         splat(),
         timestamp(),
         logLabel({ label }),
-        json({ replacer: safeReplacer })
+        json()
       )
 }
 

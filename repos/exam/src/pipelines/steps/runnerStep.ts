@@ -1,4 +1,4 @@
-import type { TExEventData, TPipelineArgs, TStateManager } from '@GEX/types'
+import type { TRunResult, TPipelineArgs, TStateManager } from '@GEX/types'
 import type { TestErr } from '@GEX/utils/error'
 
 import { runTestsTask } from '../tasks/runTestsTask'
@@ -7,7 +7,7 @@ import {limbo} from '@keg-hub/jsutils/limbo'
 
 export const runnerStep = async (args:TPipelineArgs, manager?:TStateManager) => {
   const runners = await loadRunnerTask(args)
-  const [error, outcomes] = await limbo<TExEventData[], TestErr>(runTestsTask(args, runners))
+  const [error, outcomes] = await limbo<TRunResult[], TestErr>(runTestsTask(args, runners))
 
   if(error){
     error.result && 

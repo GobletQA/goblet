@@ -1,3 +1,4 @@
+import type { TGitData } from './repo.types'
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
 import type { TBrowserConf } from './pw.types'
@@ -37,8 +38,9 @@ export type TSocketTokenErr = {
 
 export type TSocketTokenData = TSocketTokenValid | TSocketTokenErr
 
-type TSockerBrowserData = {
+export type TSocketData = {
   url?:string
+  repo?:TGitData
   browser?:TBrowserConf
   [key:string]: any
 }
@@ -50,7 +52,7 @@ export type TSocketEvtCBProps = {
   user:TTokenUser
   config:TSocketConfig
   Manager:SocketManager
-  data:TSockerBrowserData
+  data:TSocketData
 }
 
 export type TProcConfig = {

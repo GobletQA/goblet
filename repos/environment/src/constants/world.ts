@@ -7,8 +7,8 @@ export const DefWorld:TWorldConfig = deepFreeze({
   data: {},
   $merge: [],
   $alias: {},
-  $headers: {},
-  context: {},
+  $context: {},
+  $browser: {},
 })
 
 export const SavedDataWorldPath = `__meta.savedData`

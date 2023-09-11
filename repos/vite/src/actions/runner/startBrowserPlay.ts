@@ -13,10 +13,10 @@ import { pickKeys, emptyObj } from '@keg-hub/jsutils'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { getRepoData } from '@utils/store/getStoreData'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
 import { filterFileContext } from '@utils/files/filterFileContext'
-import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
 import {
   BrowserStateEvt,
   PlayerEndedEvent,

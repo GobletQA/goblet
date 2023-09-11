@@ -13,7 +13,7 @@ import { pickKeys } from '@keg-hub/jsutils/pickKeys'
 import { loadFeatures } from '@gobletqa/shared/libs/features/features'
 import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
 import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
-import { fileModelArrayToObj } from '@gobletqa/shared/utils/fileModelArrayToObj'
+import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj'
 
 /**
  * Loads all the needed content for a repo

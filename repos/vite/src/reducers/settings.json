@@ -27,6 +27,15 @@
       "group": "goblet",
       "description": "Allow running feature tests"
     },
+    "browserIntentClick": {
+      "key": "browserIntentClick",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "goblet",
+      "description": "Require deliberately clicking on the browser before interacting with it"
+    },
     "parallelEditors": {
       "key": "parallelEditors",
       "value": true,

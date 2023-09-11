@@ -1,18 +1,9 @@
 import type { TTask, TTaskActionArgs } from '../../types'
 
-import { dockerCmd } from '@keg-hub/cli-utils'
-import { launchBrowser } from '@GTasks/utils/playwright/launchBrowser'
 
 const createTest = async (args:TTaskActionArgs) => {
-  const { params, config } = args
-  const { url, name, container, launch } = params
 
-  // TODO: Update to create a new test file using playwright record functionality
-  // Which allows recording actions in the browser as they happened
-
-  // ensure a non-headless chromium instance is running
-  // await launchBrowser(goblet, { type: 'chromium', headless: false, launch })
-  // return dockerCmd(container, ` create ${url} ${name}`)
+  console.error(`Not Implemented`)
 }
 
 export const create:TTask = {

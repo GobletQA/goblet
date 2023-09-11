@@ -26,17 +26,32 @@
 
 ### Auth
 
-* Cmd: `pnpm kube secret auth  <options>`
+**Docker Auth**
+* Cmd: `pnpm kube secret auth <options>`
 * Description: Create kubernetes docker auth secret used by the Backend API, calls the `secret` task internally
 * Example `pnpm kube secret auth`
 * Sets the name of the secret to the value of the `GB_KUBE_SCRT_DOC_AUTH` env (default: `docker-auth`).
 
-
-* Cmd: `pnpm kube secret fbsa  <options>`
+**Firebase Service Account**
+* Cmd: `pnpm kube secret fbsa <options>`
 * Description: Create kubernetes firebase service account secret used by the Backend API, calls the `secret` task internally
 * Example `pnpm kube fbsa`
 * Sets the name of the secret to the value of the `GB_KUBE_SCRT_FB_SA` env (default: `firebase-sa`).
-* Dev example: `pnpm kube secret firebase --file ~/.kegConfig/goblet/firebase.json --log`
+* Dev example: `pnpm kube secret firebase --file ~/.kegConfig/goblet/goblet-dev-firebase-sa.json --log`
+
+**Goblet Latent Token**
+* Cmd: `pnpm kube secret goblet`
+* Description: Create goblet token secret used by the Latent, calls the `secret` task internally
+* Example `pnpm kube secret goblet`
+* Sets the name of the secret to the value of the `GB_LT_TOKEN_SECRET` env (default: `goblet-token`).
+* Dev example: `pnpm kube secret goblet --log`
+
+#### Setup Locally
+
+Run the following commands to setup the secrets locally
+* `pnpm kube secret auth`
+* `pnpm kube secret firebase --file ~/.kegConfig/goblet/goblet-dev-firebase-sa.json`
+* `pnpm kube secret goblet`
 
 
 ### Secret

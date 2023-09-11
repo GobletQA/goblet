@@ -1,7 +1,8 @@
 import type { TExamCliOpts, TExamConfig, TPipelineInit } from '@GEX/types'
 
 import { loadFiles } from './loadFiles'
-import { nanoid } from '@GEX/utils/nanoid'
+import { nanoid } from '@keg-hub/jsutils/nanoid'
+import { flatArr } from '@keg-hub/jsutils/flatArr'
 import { timedRun } from '@keg-hub/jsutils/timedRun'
 import { RunPipeline } from '../pipelines/RunPipeline'
 import { onStartupStep } from '../pipelines/steps/onStartupStep'
@@ -19,7 +20,7 @@ const initPipeline = async (cfg:TPipelineInit) => {
   cfg?.config?.onShutdown?.length
     && await onShutdownStep(cfg)
 
-  return resp
+  return flatArr(resp)
 }
 
 export const initLocal = async (exam:TInitExamCfg, opts:TExamCliOpts) => {

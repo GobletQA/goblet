@@ -1,5 +1,4 @@
-import type { TGobletConfig } from '@GTU/Types'
-
+import type { EBrowserName, ETestType, TGobletConfig } from '@GTU/Types'
 
 import path from 'path'
 import { getPathFromBase } from '@gobletqa/goblet'
@@ -38,20 +37,20 @@ const getReportName = (
  * @returns {string} - Path where the report should be created
  */
 export const buildReportPath = (
-  type:string,
+  type:ETestType|string,
   { context, testReportName }:TBuildReportPathOpts,
   config:TGobletConfig,
-  browser:string
+  browser:EBrowserName|string
 ) => {
   if (!type)
     throw new Error(`Test type is required to build the test report path!`)
 
   type = type === `bdd` ? `feature` : type
-  const { full } = getGeneratedName(
-    getReportName(type, testReportName, context),
-    type,
-    browser
-  )
+  const { full } = getGeneratedName({
+    type: type as ETestType,
+    browserName: browser as EBrowserName,
+    location: getReportName(type, testReportName, context),
+  })
 
   const reportsDir = getPathFromBase(config.paths.reportsDir, config)
   // Example: goblet/artifacts/reports/features/my-tests/my-tests-chrome-12345.html

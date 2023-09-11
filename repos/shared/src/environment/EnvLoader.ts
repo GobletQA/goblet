@@ -81,7 +81,7 @@ export class EnvironmentLoader {
 
   #repoToken = (props:TTokenProps) => {
     return ENVS.GOBLET_TOKEN
-      || this.latent.getToken(getRepoRef(props), ENVS.GB_LT_TOKEN_SECRET)
+      || this.latent.getToken(getRepoRef(props))
   }
 
   /**

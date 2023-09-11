@@ -145,6 +145,6 @@ export const findTextMatch = (props:TIDFrom) => {
   const text = props?.deco?.search?.trim()
   if(!text) return undefined
 
-  const type = props.deco.type as keyof typeof IDFinders
+  const type = props?.deco?.type as keyof typeof IDFinders
   return IDFinders[type]?.(props, text)
 }

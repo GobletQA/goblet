@@ -48,12 +48,14 @@ export const ContextItem = (props:TContextItem) => {
           >
             {name}
           </ContextItemKey>
-          <ContextItemBreak
-            sx={sepSx}
-            className='gb-context-item-break'
-          >
-            - 
-          </ContextItemBreak>
+          {(valuePrefix || value || valuePostfix) && (
+            <ContextItemBreak
+              sx={sepSx}
+              className='gb-context-item-break'
+            >
+              - 
+            </ContextItemBreak>
+          ) || null}
         </>
       ) || null}
 

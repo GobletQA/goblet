@@ -20,9 +20,9 @@ export const parseJsonEnvArr = <T extends string>(key:T, value:string|string[]):
      * Only add the parsed value if it's an array
      * And it's got a value
      */
-    return isArr<string[]>(parsed) && parsed.length
-      ? { [key]: parsed }
-      : emptyObj
+    return isArr(parsed) && parsed.length
+      ? { [key]: parsed } as TParsedEnvArr
+      : emptyObj as TParsedEnvArr
   }
   catch (e){
     /**

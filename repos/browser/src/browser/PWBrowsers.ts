@@ -1,14 +1,17 @@
 import type {
   TBrowser,
+  TGetPageCB,
   TPWBrowser,
+  TGetBrowser,
   TBrowserConf,
   EBrowserType,
   EBrowserName,
-  TGobletConfig,
   TPWComponents,
+  TStartBrowser,
   TBrowserContext,
+  TPWBrowsersOpts,
+  TCreateBrowserOpts,
 } from '@GBB/types'
-import type { TGetPageCB } from './browser'
 
 import playwright from 'playwright'
 import { Logger } from '@GBB/utils/logger'
@@ -29,58 +32,22 @@ import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
 
-
-type TGetBrowserOpts = {
-  browserServer?:boolean,
-}
-
-export type TStartBrowser = {
-  initialUrl?:string
-  config?:TGobletConfig
-  browserServer?:boolean,
-  _isLoopedCalled?:boolean
-  _loopedType?:EBrowserName
-  browserConf?:TBrowserConf
-  overrides?:Partial<TBrowserConf>
-}
-
-export type TBrowserOnly = {
-  browserServer?:boolean
-  browserConf?:TBrowserConf
-}
-
-
-export type TPWBrowsersOpts = {
-  browsers:Record<EBrowserName, TBrowser>
-}
-
-export type TCreateBrowserOpts = {
-  type:EBrowserName
-  config?:TGobletConfig
-  browserConf:TBrowserConf
-}
-
-export type TGetBrowser = {
-  opts?:TGetBrowserOpts
-  config?:TGobletConfig
-  browserConf:TBrowserConf
-}
-
-
-const buildStartOpts = (props:TStartBrowser) => {
+const buildStartOpts = (args:TStartBrowser) => {
   const {
+    world,
     config,
     overrides,
     initialUrl,
     _loopedType,
     _isLoopedCalled,
-  } = props
+  } = args
 
-  const browserConf = _isLoopedCalled ? props.browserConf : buildBrowserConf(props)
+  const browserConf = _isLoopedCalled ? args.browserConf : buildBrowserConf(args)
   const type = _loopedType || getBrowserType(browserConf.type as EBrowserType)
 
   return {
     type,
+    world,
     config,
     overrides,
     initialUrl,
@@ -147,14 +114,15 @@ export class PWBrowsers {
   #createPersistentBrowser = async (args:TCreateBrowserOpts) => {
     const {
       type,
+      world,
       config,
       browserConf= emptyObj as TBrowserConf
     } = args
 
 
     const opts = deepMerge(
-      getBrowserOpts(browserConf, config),
-      getContextOpts({config, contextOpts: browserConf.context })
+      getBrowserOpts(browserConf, config, world),
+      getContextOpts({config, contextOpts: browserConf.context, world})
     )
     !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`Browser-PersistentContext options`, opts)
     
@@ -182,7 +150,7 @@ export class PWBrowsers {
       return this.#browsers
     }
 
-    browser.__goblet = {...browser?.__goblet, ...browserConf}
+    browser.__browserGoblet = {...browser?.__browserGoblet, ...browserConf}
 
     const bType = browser.browserType().name()
 
@@ -209,11 +177,12 @@ export class PWBrowsers {
   #createBrowser = async (args:TCreateBrowserOpts) => {
     const {
       type,
+      world,
       config,
       browserConf=emptyObj as TBrowserConf,
     } = args
 
-    const opts = getBrowserOpts(browserConf, config)
+    const opts = getBrowserOpts(browserConf, config, world)
     const browser = await playwright[type].launch(opts)
 
     !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`createBrowser - Browser ${type} was started`)
@@ -253,6 +222,7 @@ export class PWBrowsers {
   getBrowser = async (args:TGetBrowser):Promise<TPWBrowser> => {
     
     const {
+      world,
       config,
       browserConf= emptyObj as TBrowserConf,
     } = args
@@ -313,6 +283,7 @@ export class PWBrowsers {
       // Should be faster then going over a websocket
       const browserResp = await this.#createBrowser({
         type,
+        world,
         config,
         browserConf,
       })
@@ -337,7 +308,7 @@ export class PWBrowsers {
   * @public
   */
   startBrowser = async (
-    props:TStartBrowser,
+    args:TStartBrowser,
     getPage:TGetPageCB
   ):Promise<TPWComponents> => {
 
@@ -345,12 +316,13 @@ export class PWBrowsers {
 
       const {
         type,
+        world,
         config,
         overrides,
         initialUrl,
         internalPW,
         browserConf
-      } = buildStartOpts(props)
+      } = buildStartOpts(args)
 
       let pwComponents = internalPW
       if(pwComponents?.browser)
@@ -377,7 +349,7 @@ export class PWBrowsers {
 
             setTimeout(() => res(
               this.startBrowser({
-                ...props,
+                ...args,
                 config,
                 browserConf,
                 _loopedType: type,
@@ -390,6 +362,7 @@ export class PWBrowsers {
 
         this.#startingBrowser = true
         pwComponents = await getPage({
+          world,
           config,
           overrides,
           initialUrl,

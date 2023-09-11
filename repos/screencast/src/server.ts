@@ -3,20 +3,24 @@ import { onExit } from '@GSC/utils/onExit'
 import { initSocket } from '@GSC/libs/websocket'
 import { SCAuthBypassRoutes } from '@GSC/constants'
 import { setupRepo } from '@GSC/middleware/setupRepo'
-import { getApp } from '@gobletqa/shared/express/app'
+import { getApp } from '@gobletqa/shared/api/express/app'
 
-import { setupBrowser, setupEndpoints } from '@GSC/middleware'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
+import {
+  setupRouter,
+  setupServer,
+  setupBrowser,
+  setupEndpoints
+} from '@GSC/middleware'
 import {
   setupJWT,
   setupCors,
-  setupServer,
   setupLoggerReq,
   setupLoggerErr,
   setupBlacklist,
   setupServerListen,
   validateUser,
-} from '@gobletqa/shared/middleware'
+} from '@gobletqa/shared/api/middleware'
 
 /**
  * Starts a express API server for screencast
@@ -34,6 +38,7 @@ const initApi = async () => {
   setupCors(app)
   setupJWT(app, SCAuthBypassRoutes)
   setupServer(app)
+  setupRouter(app)
   validateUser({
     route: `/screencast\/*`,
     bypassRoutes: SCAuthBypassRoutes

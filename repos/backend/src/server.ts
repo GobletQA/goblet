@@ -2,23 +2,23 @@
 import '../resolveRoot'
 import type { Express } from 'express'
 import { BEAuthBypassRoutes } from '@GBE/constants'
-import { getApp } from '@gobletqa/shared/express/app'
+import { getApp } from '@gobletqa/shared/api/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import {
-  setupRouters,
+  setupServer,
+  setupRouter,
   setupEndpoints,
   setupConductor,
 } from '@GBE/middleware'
 import {
   setupJWT,
   setupCors,
-  setupServer,
   validateUser,
   setupBlacklist,
   setupLoggerReq,
   setupLoggerErr,
   setupServerListen,
-} from '@gobletqa/shared/middleware'
+} from '@gobletqa/shared/api/middleware'
 
 
 /**
@@ -34,10 +34,9 @@ export const initApi = async () => {
   setupBlacklist(app)
   setupCors(app)
   setupJWT(app, BEAuthBypassRoutes)
-  setupServer(app, false, false, false)
-  setupRouters(app)
+  setupServer(app)
+  setupRouter(app)
   validateUser({
-    expressRouter: `async`,
     bypassRoutes: BEAuthBypassRoutes,
     route: /(\/repo\/*|\/auth\/claims\/*)/,
   })

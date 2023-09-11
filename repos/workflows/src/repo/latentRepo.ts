@@ -13,6 +13,7 @@ import type {
 import { env } from '@keg-hub/parse-config'
 import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
+import { GobletConfigRef } from '@gobletqa/environment/constants'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
 
 type TTokenProps = { remote:string, ref?:string }
@@ -35,10 +36,10 @@ const getLatentType = (location:string) => {
 }
 
 const getRepoRef = ({ref, remote}:TTokenProps) => {
-  return ref
-    || ENVS.GB_REPO_CONFIG_REF
-    || remote
-    || ENVS.GB_GIT_REPO_REMOTE
+  const found = ref || ENVS.GB_REPO_CONFIG_REF
+  return found && found !== GobletConfigRef
+    ? found
+    : remote || ENVS.GB_GIT_REPO_REMOTE
 }
 
 export class LatentRepo {
@@ -50,7 +51,7 @@ export class LatentRepo {
 
   repoToken = (props:TTokenProps) => {
     return ENVS.GOBLET_TOKEN
-      || this.latent.getToken(getRepoRef(props), ENVS.GB_LT_TOKEN_SECRET)
+      || this.latent.getToken(getRepoRef(props))
   }
 
   rekey = (props:TLTRekey):Error|undefined => {
@@ -116,7 +117,11 @@ export class LatentRepo {
       location
     } = props
 
-    const token = this.latent.getToken(repo.git.remote)
+    const token = this.repoToken({
+      ref: repo.$ref,
+      remote: repo.git.remote
+    })
+
     const type = getLatentType(location)
     const data = env.parse(content) as TEnvObj
 
@@ -128,7 +133,7 @@ export class LatentRepo {
       replace: true,
       environment: repo.environment
     }
-    
+
     try {
 
       let saved:TFileSaveResp
@@ -150,6 +155,7 @@ export class LatentRepo {
       ]
     }
     catch(err){
+      console.log(`[Latent Repo] Save File Error`, err.message)
       return [err, undefined]
     }
   }

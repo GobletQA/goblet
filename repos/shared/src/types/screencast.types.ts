@@ -51,9 +51,6 @@ export type TScreencastConfig = {
   active?: boolean
   vnc?: TVncConfig
   novnc?: TNoVncProxy
-  page?: TBrowserPage
-  browser?: TBrowserConf
-  context?: TBrowserContextOpts
 }
 
 export type TSCContainerConfig = {

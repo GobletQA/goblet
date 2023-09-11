@@ -25,9 +25,12 @@ export const loadFiles = async (exam:TExamConfig & { file?:string }) => {
   const cfg = { cwd: rootDir }
   testDir && ((cfg as any).root = testDir)
 
-  const locations = await globMatchFiles(match, {
+  const locations = await globMatchFiles(exam, match, {
     ...cfg,
-    ignore: [...testIgnore, ...loaderIgnore]
+    ignore: [
+      ...testIgnore,
+      ...loaderIgnore,
+    ]
   })
 
   return locations?.length || passWithNoTests

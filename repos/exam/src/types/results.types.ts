@@ -7,9 +7,11 @@ export type TRunResultMeta = {
   file?:Partial<TExFileModelDef>
 }
 
-export type TRunResult = Omit<TParkinRunResult, `type`|`metadata`> & {
+export type TRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
   type:EPlayerTestType
   metaData?:TRunResultMeta
+  describes?:TRunResult[]
+  tests?:TRunResult[]
 }
 
 export enum EPlayerTestAction {
@@ -79,6 +81,8 @@ export type TExEventData = TExTestEvent
   | TRunResult
   | undefined
 
+
+export type TLocEvtData = (TExEventData & { location:string })
 
 export type TExTestSuiteDone<T=TExTestEvent> = TExTestEvent & {
   tests: T[]

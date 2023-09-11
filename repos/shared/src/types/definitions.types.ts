@@ -71,6 +71,14 @@ export type TDefGroup = {
   items: TDefGroupItem[]
 }
 
+export type TDefGroupList = {
+  [EStepKey.when]?: TStepDef[]
+  [EStepKey.then]?: TStepDef[]
+  [EStepKey.given]?: TStepDef[]
+  [EStepKey.and]?: TStepDef[]
+  [EStepKey.but]?: TStepDef[]
+}
+
 export type TDefGroupType = EStepKey.when | EStepKey.then | EStepKey.given
 
 export type TDefTypeGroup = {

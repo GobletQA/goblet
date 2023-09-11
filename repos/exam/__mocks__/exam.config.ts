@@ -57,14 +57,14 @@ export const ExamConfig:TExamConfig = {
   verbose: false,
 
   /**
-   * Timeout per test - 30 seconds (default)
+   * Timeout per test
    */
-  timeout: 0,
+  testTimeout: 0,
 
   /**
-   * Global timeout for test run per file - 20min (default)
+   * Timeout per suite (i.e. file)
    */
-  globalTimeout: 0,
+  suiteTimeout: 0,
 
   /**
    * Callback to listen for events fired during test execution
@@ -205,9 +205,20 @@ export const ExamConfig:TExamConfig = {
    */
   concurrency: 1,
 
+  /**
+   * If a test fails, skip all future tests in the suite
+   */
+  skipAfterFailed: true,
+
+  /**
+   * If a test fails, stop all running tests and exit
+   */
+  exitAfterFailed: false,
+
   colors: true,
   silent: false,
   runInBand: false,
+  
 
 }
 

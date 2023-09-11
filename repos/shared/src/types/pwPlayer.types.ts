@@ -1,11 +1,48 @@
 import type { TRepo } from './workflows.types'
-import type { EAstObject, TRunResult } from '@ltipton/parkin'
 import type { TSocketMessageObj } from './socket.types'
-import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { EAstObject, TRunResult, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
+
+import type {
+  TEventParent,
+  EPlayerTestType,
+  EPlayerTestAction,
+  EPlayerTestStatus,
+} from './exam.types'
 
 // Exported from browser/src/types
 import type { Player } from '@gobletqa/browser'
+
+
+// ---- Already exported from exam
+// export enum EPlayerTestAction {
+//   end=`end`,
+//   test=`test`,
+//   start=`start`,
+//   error=`error`,
+// }
+
+// export enum EPlayerTestStatus {
+//   failed=`failed`,
+//   passed=`passed`,
+// }
+
+
+// export enum EPlayerTestType {
+//   test=`test`,
+//   describe=`describe`,
+//   feature=`feature`
+// }
+
+// export type TEventParent = EAstObject.step
+//   | EAstObject.scenario
+//   | EAstObject.background
+//   | EAstObject.rule
+//   | EAstObject.feature
+
+
+// ---- Already exported from exam
+
 
 export type TPlayerEvent = {
   name:string
@@ -41,34 +78,11 @@ export type TPlayerResEvent<T=TPlayerEventData> = Omit<TSocketMessageObj, `data`
   fileType: string
 }
 
-export enum EPlayerTestAction {
-  end=`end`,
-  test=`test`,
-  start=`start`,
-  error=`error`,
-}
-
-export enum EPlayerTestType {
-  test=`test`,
-  describe=`describe`,
-  feature=`feature`
-}
-
-export enum EPlayerTestStatus {
-  failed=`failed`,
-  passed=`passed`,
-}
-
 export type TPlayerTestExpectation = {
   type:string
   message:string
 }
 
-export type TEventParent = EAstObject.step
-  | EAstObject.scenario
-  | EAstObject.background
-  | EAstObject.rule
-  | EAstObject.feature
 
 export type TPlayerTestStart = Omit<TRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus

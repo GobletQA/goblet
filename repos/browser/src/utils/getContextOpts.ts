@@ -1,11 +1,29 @@
+import type { TWorldConfig } from '@ltipton/parkin'
 import type { TBrowserContextOpts, TGobletConfig } from '@GBB/types'
-import type playwright from 'playwright'
 
 import { vncActive } from '@GBB/utils/checkVncEnv'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { taskEnvToContextOpts } from '@GBB/browser/taskEnvToContextOpts'
 
+
+const browserPermissions = [
+  // `camera`,
+  // `microphone`,
+  // `geolocation`,
+  // `midi`,
+  // `midi-sysex`,
+  // `notifications`,
+  // `background-sync`,
+  // `ambient-light-sensor`,
+  // `accelerometer`,
+  // `gyroscope`,
+  // `magnetometer`,
+  // `accessibility-events`,
+  // `clipboard-read`,
+  // `clipboard-write`,
+  // `payment-handler`,
+]
 
 /**
  * Default browser options
@@ -14,11 +32,13 @@ import { taskEnvToContextOpts } from '@GBB/browser/taskEnvToContextOpts'
 const options = {
   host: {} as Partial<TBrowserContextOpts>,
   vnc: {
-    colorScheme: `no-preference`
+    colorScheme: `no-preference`,
+    permissions: browserPermissions,
   } as Partial<TBrowserContextOpts>,
 }
 
 export type TGetBrowserCtxOpts = {
+  world?:TWorldConfig
   config?:TGobletConfig
   overrides?:TBrowserContextOpts
   contextOpts?:TBrowserContextOpts
@@ -29,6 +49,7 @@ export type TGetBrowserCtxOpts = {
  */
 export const getContextOpts = (args:TGetBrowserCtxOpts) => {
   const {
+    world,
     config,
     overrides=emptyObj,
     contextOpts=emptyObj,
@@ -40,21 +61,11 @@ export const getContextOpts = (args:TGetBrowserCtxOpts) => {
 
   return deepMerge<TBrowserContextOpts>(
     defContextOpts,
-    
-    // TODO: FIX THIS - should not set the context config from screencast config
     /**
-     * The default config options from the global config.config.js
+     * The config options from the repos world config
      */
-    config ? config?.screencast?.screencast?.context : emptyObj,
-    // TODO: FIX THIS - should not set the context config from screencast config
+    world?.$context,
 
-
-    // TODO: look at add $world.context
-
-    /**
-     * The config options from the repos goblet config
-     */
-    config ? config?.playwright?.context : emptyObj,
     /**
      * Options passed to this function as the first argument
      * Should override all except for options set by a task via ENVs

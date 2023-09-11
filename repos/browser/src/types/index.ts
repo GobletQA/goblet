@@ -1,3 +1,4 @@
+export * from './browser.types'
 export * from '../../../shared/src/types'
 export * from '../player/player'
 export * from '../recorder/recorder'

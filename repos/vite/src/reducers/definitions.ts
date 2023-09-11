@@ -1,6 +1,7 @@
-import type { TStepDefs, TStepDef } from '@ltipton/parkin'
+import type { TStepDef } from '@ltipton/parkin'
 import type {
   TDspAction,
+  TDefGroupList,
   TDefinitionFileModel,
   TDefinitionFileModelList,
 } from '@types'
@@ -10,8 +11,8 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TDefinitionsState = {
   activeDefinition?: TStepDef
+  definitionTypes: TDefGroupList
   definitions: TDefinitionFileModelList
-  definitionTypes: TStepDefs
 }
 
 export const definitionsState = {} as TDefinitionsState
@@ -22,9 +23,9 @@ const clearDefs = createAction<TDefinitionFileModelList>(`clearDefs`)
 const setDef = createAction<TDefinitionFileModel>(`setDef`)
 const setDefs = createAction<TDefinitionFileModelList>(`setDefs`)
 const upsertDefs = createAction<TDefinitionFileModelList>(`upsertDefs`)
-const clearDefTypes = createAction<TStepDefs>(`clearDefTypes`)
-const setDefTypes = createAction<TStepDefs>(`setDefTypes`)
-const upsertDefTypes = createAction<TStepDefs>(`upsertDefTypes`)
+const clearDefTypes = createAction<TDefGroupList>(`clearDefTypes`)
+const setDefTypes = createAction<TDefGroupList>(`setDefTypes`)
+const upsertDefTypes = createAction<TDefGroupList>(`upsertDefTypes`)
 
 export const definitionsActions = {
   resetDefs: (state:TDefinitionsState, action:TDspAction<TDefinitionsState>) => (definitionsState),
@@ -85,14 +86,14 @@ export const definitionsActions = {
   },
   clearDefTypes: (
     state:TDefinitionsState,
-    action:TDspAction<TStepDefs>
+    action:TDspAction<TDefGroupList>
   ) => ({
     ...state,
-    definitionTypes: {} as TStepDefs
+    definitionTypes: {} as TDefGroupList
   }),
   setDefTypes: (
     state:TDefinitionsState,
-    action:TDspAction<TStepDefs>
+    action:TDspAction<TDefGroupList>
   ) => {
     return {
       ...state,
@@ -101,7 +102,7 @@ export const definitionsActions = {
   },
   upsertDefTypes: (
     state:TDefinitionsState,
-    action:TDspAction<TStepDefs>
+    action:TDspAction<TDefGroupList>
   ) => {
     return {
       ...state,

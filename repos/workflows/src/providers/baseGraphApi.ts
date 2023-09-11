@@ -19,6 +19,7 @@ import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 const defPageInfo:TGraphPageInfo = emptyObj as TGraphPageInfo
+let cacheRequests = false
 
 export class BaseGraphApi {
 
@@ -39,7 +40,7 @@ export class BaseGraphApi {
 
     const defMes = `Could not complete Git Provider API call. Please try again later`
 
-    if(isArr<Error[]>(errors)){
+    if(isArr<Error>(errors)){
       if(errors.length) throw new Error(errors[0].message || defMes)
     }
     else throw new Error(errors.message || defMes)
@@ -67,9 +68,14 @@ export class BaseGraphApi {
 
     const variables = this.cache.buildVars(args, endpointKey)
 
+
+    // Disable cache for now until I can figure out why is failing
     const cacheKey = `${endpointKey}-${hashObj(variables)}`
-    const res = this.cache.checkResponse(cacheKey)
-    if(res) return res as T[]
+
+    if(cacheRequests){
+      const res = this.cache.checkResponse(cacheKey)
+      if(res) return res as T[]
+    }
 
     const opts = {
       method: `post`,
@@ -98,7 +104,7 @@ export class BaseGraphApi {
     }
 
     this.cache.reset(endpointKey)
-    this.cache.cacheResponse(cacheKey, nodes)
+    if(cacheRequests) this.cache.cacheResponse(cacheKey, nodes)
 
     return nodes as T[]
   }

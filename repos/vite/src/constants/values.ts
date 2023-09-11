@@ -1,4 +1,4 @@
-import { toNum } from "@keg-hub/jsutils/toNum"
+import { toNum } from "@keg-hub/jsutils"
 
 // Get all allowed emails from the env
 export const AllowedUsers = (process.env.GB_GITHUB_AUTH_USERS || '').split(',')

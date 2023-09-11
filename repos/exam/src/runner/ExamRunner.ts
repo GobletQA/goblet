@@ -8,6 +8,7 @@ import type {
   TExamEvt,
 } from '@GEX/types'
 
+import {exists} from '@keg-hub/jsutils/exists'
 import { Errors } from '@GEX/constants/errors'
 import {ReportEventMapper} from '@GEX/reporter/ReportEventMapper'
 
@@ -19,14 +20,22 @@ import {ReportEventMapper} from '@GEX/reporter/ReportEventMapper'
  */
 export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
-  failed:number=0
   debug?:boolean
-  timeout?:number
   verbose?:boolean
+  reuseRunner:boolean
+
+  bail:number=0
+  testRetry:number=0
+  suiteRetry:number=0
+  
+  testTimeout?:number
+  suiteTimeout?:number
+  exitOnFailed:boolean=false
+  skipAfterFailed:boolean=true
+  
+  environment:E
   canceled?:boolean
   isRunning?:boolean
-  globalTimeout?:number
-  environment:E
   eventReporter:ReportEventMapper
 
 
@@ -41,13 +50,22 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
     this.environment = BaseEnvironment as E
 
     if(cfg?.debug) this.debug = cfg.debug
-    if(cfg?.timeout) this.timeout = cfg.timeout
     if(cfg?.verbose) this.verbose = cfg.verbose
-    if(cfg?.globalTimeout) this.globalTimeout = cfg.globalTimeout
+    if(cfg?.reuseRunner) this.reuseRunner = cfg.reuseRunner
+
+    if(cfg?.bail) this.bail = cfg.bail
+    if(cfg?.testRetry) this.testRetry = cfg.testRetry
+    if(cfg?.suiteRetry) this.suiteRetry = cfg.suiteRetry
+
+    if(cfg?.testTimeout) this.testTimeout = cfg.testTimeout
+    if(cfg?.suiteTimeout) this.suiteTimeout = cfg.suiteTimeout
+    if(cfg?.exitOnFailed) this.exitOnFailed = cfg.exitOnFailed
+    if(exists(cfg?.skipAfterFailed)) this.skipAfterFailed = cfg.skipAfterFailed
+
 
   }
 
-  event = (evt:TExamEvt) => this.eventReporter.event(evt)
+  event = async (evt:TExamEvt) => this.eventReporter.event(evt)
 
   /**
    * Called when a page loads to check if mouse tracker should run

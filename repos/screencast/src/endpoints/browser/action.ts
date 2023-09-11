@@ -4,11 +4,10 @@ import type { Request as JWTRequest } from 'express-jwt'
 
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import {
   GBrowser,
   actionBrowser,
@@ -19,7 +18,7 @@ import {
  * Execute an action on a playwright component ( browser, context, page )
  *
  */
-const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
+const browserAction:RequestHandler = async (req:JWTRequest, res:Response) => {
   const { body } = req
   const {
     ref,
@@ -58,7 +57,7 @@ const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Respon
   }
 
   return apiRes(res, noOpObj, 200)
-})
+}
 
 
 AppRouter.post('/screencast/browser/action', browserAction)

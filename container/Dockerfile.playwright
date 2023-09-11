@@ -1,0 +1,66 @@
+ARG DEBUG_FILE=/github/logs/pwlogs.log
+ARG GB_SC_PORT=7006
+ARG GB_NO_VNC_PORT=26369
+ARG GB_PNPM_VERSION=8.7.4
+ARG GB_NODE_VERSION=20
+ARG GB_VNC_SERVER_PORT=26370
+ARG PLAYWRIGHT_BROWSERS_VERSION=1.37.1
+ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
+
+# ---- Setup Stage ---- #
+FROM ubuntu:focal as goblet-setup
+WORKDIR /goblet/app
+WORKDIR /goblet/app
+
+ENV HOME=/root \
+    NODE_MAJOR=$GB_NODE_VERSION \
+    PNPM_VERSION=$GB_PNPM_VERSION \
+    DISPLAY=:0.0 \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    DEBUG=pw:* \
+    PWDEBUG=console \
+    DEBUG_FILE=$DEBUG_FILE \
+    DEBIAN_FRONTEND=noninteractive \
+    GB_SUB_REPO=screencast \
+    GB_SC_PORT=$GB_SC_PORT \
+    GB_BE_PORT=$GB_BE_PORT \
+    GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
+    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
+    GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
+    GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
+    GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
+    GB_GIT_GLOBAL_IGNORE=$GB_GIT_GLOBAL_IGNORE \
+    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=0
+
+# 1. Enable all sources
+# 2. Preinstall any dependecies for settting up the image
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    git \
+    gpg \
+    curl \
+    wget \
+    novnc \
+    net-tools \
+    supervisor \
+    openssh-client \
+    ca-certificates \
+    tigervnc-standalone-server && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install nodejs -y && \
+    rm -rf /var/lib/apt/lists/*
+    
+RUN curl -fsSL https://get.pnpm.io/install.sh | ENV="~/.shrc" SHELL="$(which sh)" sh -
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH="${PATH}:${PNPM_HOME}"
+
+RUN mkdir -p $(dirname "${DEBUG_FILE}") && \
+    pnpm dlx playwright install --with-deps
+# ---- End Stage ---- #
+

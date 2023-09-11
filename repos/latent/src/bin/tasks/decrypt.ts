@@ -18,10 +18,10 @@ import {getRefFromPath, findSecretsLoc} from '../helpers'
  *
  */
 const decryptAct = (args:TTaskActionArgs) => {
-  const { ref, token, encoded } = args.params
+  const { ref, key,  token, encoded } = args.params
 
   const latent = new Latent()
-  const tok = token || latent.getToken(ref || getRefFromPath(args.params))
+  const tok = token || latent.getToken(ref || getRefFromPath(args.params), key)
 
   const secrets = latent.secrets.load({
     encoded,
@@ -44,6 +44,7 @@ export const decrypt:TTask = {
   options: {
     token: {},
     location: {},
+    key: {},
     ref: {},
     repo: {},
     root: {},

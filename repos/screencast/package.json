@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "pnpm build:docker",
-    "build:docker": "pnpm sc:build && pnpm bs:build && pnpm vnc:build && pnpm sock:build",
+    "build:docker": "pnpm sc:build",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -28,7 +28,6 @@
     "sv:local": "supervisord -c configs/supervisord.local.conf",
     "sv:prod": "supervisord -c configs/supervisord.conf",
     "format": "pnpm lint && pnpm pretty",
-    "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "start": "pnpm sc:start",
@@ -37,7 +36,7 @@
     "bs:build": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
     "bs:start": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
     "sc:build": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
-    "sc:start": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
+    "sc:start": "node --enable-source-maps -r esbuild-register configs/dev.build.config.ts",
     "sc:kill": "node --enable-source-maps -r esbuild-register scripts/ts/killServer.ts",
     "sock": "node --enable-source-maps -r esbuild-register dist/sock.js",
     "sock:build": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
@@ -49,34 +48,26 @@
   "dependencies": {
     "@gobletqa/browser": "workspace:*",
     "@gobletqa/environment": "workspace:*",
-    "@gobletqa/exam": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
-    "@gobletqa/latent": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/test-utils": "workspace:*",
-    "@keg-hub/jsutils": ">=9.8.0",
+    "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/esdev": "0.2.1",
-    "@ltipton/parkin": "5.1.1",
-    "@ltipton/symplasm": "0.0.1",
-    "cross-spawn": "7.0.3",
     "esbuild": "0.19.2",
     "esbuild-register": "3.4.2",
-    "expect": "29.6.1",
+    "esbuild-plugin-path-alias": "1.0.7",
     "express": "4.18.2",
     "express-jwt": "8.3.0",
-    "fs-extra": "10.1.0",
-    "ghost-cursor-pw": "1.1.18",
-    "nodemon": "2.0.22",
-    "playwright": "1.36.1",
-    "socket.io": "4.6.1",
-    "tail-file": "1.4.15"
+    "jsonwebtoken": "9.0.0",
+    "module-alias": "2.2.2",
+    "playwright": "1.37.1",
+    "socket.io": "4.6.1"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",
     "@types/express": "4.17.17",
-    "@types/jest": "29.1.2",
-    "@types/node": "18.15.13"
+    "@types/node": "18.15.13",
+    "nodemon": "2.0.22"
   }
 }

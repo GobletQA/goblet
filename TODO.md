@@ -51,6 +51,9 @@
     * Looks to be related to the decorators issues
   * Steps not getting the correct decorator
   * Steps with same step text cause decorator to only use the first step
+  * Needs an update to Parkin to keep a consistent uuid for feature items
+  * Needs to pass on feature test meta data
+    * This is mostly done, but needs to be published
 
 * Add cover over browser
   * Must intentionally click the browser to interact with it
@@ -94,5 +97,7 @@ On every page load
   * If it is a duplicate, try to regenerate the selector so that it properly passes
 
 
-
-For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
+### Mocks
+  * For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
+  * Also look at the new `node:test` module that provides mocking functionality 
+  * `import { mock, test } from 'node:test'`

@@ -1,7 +1,18 @@
 const path = require('path')
+const { fileSys } = require('@keg-hub/cli-utils')
 const { aliases } = require('@GConfigs/aliases.config')
 const { template } = require('@keg-hub/jsutils/template')
-const { getFileContent } = require('@GSH/utils/getFileContent')
+
+const { pathExists, readFile } = fileSys
+
+const getContent = async (location) => {
+  const [err, exists] = await pathExists(location)
+  if (!exists || err) return undefined
+
+  const [__, content] = await readFile(location)
+  return content
+}
+
 
 // If default template location not found, fallback to other repos
 // Path does not included in bundled code, so when running the bundle app
@@ -23,7 +34,7 @@ const templates = {
 }
 
 const loadTemplate = async (name, data, altName) => {
-  const content = await getFileContent(templates[name] || templates[altName] || templates.page404)
+  const content = await getContent(templates[name] || templates[altName] || templates.page404)
   return template(content, data)
 }
 

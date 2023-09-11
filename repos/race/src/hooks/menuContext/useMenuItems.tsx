@@ -35,7 +35,7 @@ export const useMenuItems = (props:THMenuItems) => {
     items:menuItems,
   } = props
 
-  const { defs, setDefs } = useStepDefs()
+  const { defs, options, setDefs } = useStepDefs()
   const onChange = useInline(props.onChange)
   const { feature, audit, updateFeature } = useEditor()
   
@@ -59,7 +59,8 @@ export const useMenuItems = (props:THMenuItems) => {
     anchorRef.current = undefined
   })
 
-  const contextItems = useMenuContext(context)
+  const contextItems = useMenuContext(context, active)
+
   const {
     onSubmenu,
     submenuProps,
@@ -109,6 +110,7 @@ export const useMenuItems = (props:THMenuItems) => {
               setOpen,
               setDefs,
               feature,
+              options,
               onChange,
               onSubmenu,
               updateWorld,

@@ -9,7 +9,7 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { getPathFromBase } from '@gobletqa/goblet'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { ApiLogger as Logger } from '@gobletqa/logger'
-import { buildFileModel } from '@GSH/utils/buildFileModel'
+import { buildFileModel } from '@GSH/models/buildFileModel'
 
 /**
  * TODO: Move this to the Parkin Lib

@@ -69,7 +69,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     } = args
 
     const repoUrl = new url.URL(remote)
-    repoUrl.host = host
+    repoUrl.host = host || repoUrl.host
     repoUrl.pathname = path.join(prePath, repoUrl.pathname, postPath, ...pathExt)
 
     return repoUrl.toString()

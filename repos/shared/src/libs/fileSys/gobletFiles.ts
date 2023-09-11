@@ -5,10 +5,10 @@ import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
-import { loadReport } from '@GSH/utils/loadReport'
+import { loadReport } from '@GSH/libs/fileSys/loadReport'
 import { loadFeature } from '@GSH/libs/features/features'
-import { buildFileModel } from '@GSH/utils/buildFileModel'
-import { resolveFileType } from '@GSH/utils/resolveFileType'
+import { buildFileModel } from '@GSH/models/buildFileModel'
+import { resolveFileType } from '@GSH/models/resolveFileType'
 import { getPathFromConfig, getRepoGobletDir } from '@gobletqa/goblet'
 import {
   AllowedWorldExtensions,

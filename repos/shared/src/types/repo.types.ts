@@ -26,20 +26,22 @@ export type TRepoPaths = {
   artifactsDir:string
   environmentsDir:string
   tracesDir?:string
+  videosDir?:string
+  uploadsDir?:string
   downloadsDir?:string
 }
 
 export type TGitData = {
   name: string
-  local: string
-  repoId:string
-  remote: string
-  branch: string
+  local:string
+  remote:string
+  branch:string
   username:string
-  repoName: string
+  provider:EProvider
+  repoId?:string
+  repoName?:string
   newBranch?:string
   branchFrom?:boolean
-  provider:EProvider
 }
 
 export type TRepoOpts = {

@@ -1,13 +1,13 @@
-import type { Response, Request, RequestHandler } from 'express'
+import type { Response, Request } from 'express'
 import type { Repo } from '@gobletqa/workflows'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
 
 /**
  * Starts a Playwright Browser using the passed in params as launch options
@@ -15,13 +15,13 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  * @param {string} params.type - The browser type to start [chromium|firefox]
  *
  */
-export const browserStart:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+export const browserStart = async (req:Request, res:Response) => {
   const { query } = req
 
   const [__, config] = await limbo<Repo>(loadRepoFromReq(req))
   const { status } = await GBrowser.start({ config, browserConf: joinBrowserConf(query) })
 
   return apiRes(res, status, 200)
-})
+}
 
-AppRouter.get('/screencast/browser/start', browserStart)
+AppRouter.get(`/screencast/browser/start`, browserStart)

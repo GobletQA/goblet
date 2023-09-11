@@ -1,6 +1,7 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
+import { Logger } from '@GSC/utils/logger'
 import { browserEvents } from '@GSC/utils/browserEvents'
 
 export const connection = (app:Express) => {
@@ -9,7 +10,7 @@ export const connection = (app:Express) => {
 
     // Todo Update to be the group / room name for the connected user
     const cache = Manager.cache[socket.id]
-    cache.groupId = 'goblet'
+    cache.groupId = `goblet`
     cache.userId = user.userId
     cache.username = user.username
     cache.subdomain = user.subdomain

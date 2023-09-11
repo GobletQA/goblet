@@ -4,7 +4,9 @@ import type { TRepoApiObj, TSockCmds, TSocketEmitData, TSocketService } from '@t
 import io from 'socket.io-client'
 import { events } from './events'
 import { EAppStatus } from '@types'
-import { TagPrefix, WSSocketResetEvt } from '@constants'
+import { WSSocketResetEvt } from '@constants'
+import { TagPrefix } from '@constants/websocket'
+
 import * as WSEventTypes from '@constants/websocket'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {
@@ -121,11 +123,11 @@ export class SocketService {
     // Skip if an event type matching an internal event
     // Custom event types with the same name as internal event
     // Get called within the callAction of the registered internal event
-    Object.entries(get(this.config, 'events', noOpObj)).map(
+    Object.entries(this?.config?.events || noOpObj).map(
       ([ name, action ]) => {
         
         const namCaps = snakeCase(name).toUpperCase()
-        if (namCaps === 'ALL') return
+        if (namCaps === `ALL`) return
 
         const eventType = `${TagPrefix}:${namCaps}`
 
@@ -136,9 +138,8 @@ export class SocketService {
     )
 
     // Socket Map Event types to internal actions
-    Object.entries(EventTypes).map(([ key, eventType ]) => {
-      this?.socket?.on(eventType, callAction(this, eventType))
-    })
+    Object.entries(EventTypes as Record<string, string>)
+      .map(([key, eventType]) => this?.socket?.on(eventType, callAction(this, eventType)))
 
     // Initial connection to the server through the socket
     // Call the onConnection method which will handel authorization
@@ -225,7 +226,8 @@ export class SocketService {
 
     this.logData(`Disconnecting from Socket!`)
     try {
-      this.socket.disconnect()
+      this.socket?.removeAllListeners?.()
+      this.socket?.disconnect?.()
     }
     catch(err){
       if(!this.socket.disconnected){

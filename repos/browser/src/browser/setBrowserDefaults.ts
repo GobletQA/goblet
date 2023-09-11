@@ -63,8 +63,8 @@ export const setContextHeaders = async (
 
   await context.setExtraHTTPHeaders(headers)
   // TODO: Hack to store extraHTTPHeaders, Need to update this at some point
-  context.__goblet = context.__goblet || {}
-  context.__goblet.extraHTTPHeaders = headers
+  context.__contextGoblet = context.__contextGoblet || {}
+  context.__contextGoblet.extraHTTPHeaders = headers
 }
 
 const setContextSettings = async ({
@@ -76,9 +76,8 @@ const setContextSettings = async ({
   
   if(headers !== false)
     await setContextHeaders(context, {
-      ...context?.__goblet?.extraHTTPHeaders,
+      ...context?.__contextGoblet?.extraHTTPHeaders,
       ...config?.world?.$context?.extraHTTPHeaders,
-      ...config?.world?.$headers
     })
 
   const contextSettings = config?.world?.$context
