@@ -90,6 +90,7 @@ export type TRepoGraphRepos = {
   after?: string
   offset?:number
   userId?:string
+  force?:boolean
   username?:string
   fullPath?:string
   provider?:string

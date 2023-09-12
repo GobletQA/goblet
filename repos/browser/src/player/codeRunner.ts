@@ -4,6 +4,7 @@ import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 
 import { PWPlay } from '@GBB/constants'
 import { Parkin } from '@ltipton/parkin'
+import { Logger } from '@gobletqa/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ParkinTest } from '@ltipton/parkin/test'
 import {
@@ -54,10 +55,10 @@ export class CodeRunner {
   /**
    * Custom options for each run of the code
    */
-  debug?: boolean
-  slowMo?: number
-  timeout?: number
-  suiteTimeout?: number
+  debug?:boolean
+  slowMo?:number
+  timeout:number=15000
+  suiteTimeout?:number
 
   constructor(player:Player, opts?:TCodeRunnerOpts) {
     this.player = player
@@ -78,24 +79,12 @@ export class CodeRunner {
     this.PTE = setupGlobals(this)
     this.PK = await setupParkin(this)
 
-    // This is a hack for a bug in Parkin
-    // The root element doesn't have an action,
-    // So it throws an error when accessing the metadata property
-    const root = this.PTE.getActiveParent()
-    const rootAction = () => {}
-    rootAction.metaData = { description: `Root describe meta-data` }
-    root.action = rootAction
-
-    // Timeout gets passed as last argument to test() method of global test method 
     await this.PK.run(content, {
       tags: {},
       steps: steps,
-      timeout: this.timeout,
     })
 
     const results = await this.PTE.run() as TPlayerEventData[]
-
-    // We only support 1 feature per file, so we only care about the first test result 
     const final = clearTestResults(results[0])
     await this.cleanup()
 
@@ -118,7 +107,26 @@ export class CodeRunner {
 
     if(result.failed){
       this.cancel()
-      throw new CodeRunError(result?.failedExpectations?.[0]?.description || `Spec Failed`)
+      
+      
+      const failed = result?.failedExpectations?.[0]
+      if(!failed){
+        Logger.empty()
+        Logger.warn(`------------- WARNING -----------`)
+        Logger.warn(`Missing failed expectation in failed Parkin test.`)
+        Logger.data(result)
+        Logger.log(`------------- WARNING -----------`)
+        Logger.empty()
+
+        throw new CodeRunError(`Spec Failed`)
+      }
+
+      Logger.empty()
+      Logger.error(`Test Run Error - failed expectation error stack`)
+      Logger.log(failed.error.stack)
+      Logger.empty()
+
+      throw new CodeRunError(failed.description)
     }
   }
 

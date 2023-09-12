@@ -46,16 +46,15 @@ const processENVs = {
  * Jest does not allow calling from the Node directly
  * So we use Parkin's test runner instead
  */
-const setTestGlobals = (Runner:CodeRunner, timeout?:number) => {
+const setTestGlobals = (Runner:CodeRunner) => {
   const opts:TParkinTestConfig = {
+    testTimeout: Runner.timeout,
+    suiteTimeout: Runner.suiteTimeout,
     onSpecDone: Runner.onSpecDone,
     onSuiteDone: Runner.onSuiteDone,
     onSpecStart: Runner.onSpecStarted,
     onSuiteStart: Runner.onSuiteStarted,
   }
-
-  const tOut = timeout || Runner.suiteTimeout
-  tOut && (opts.timeout = tOut)
 
   const PTE = new ParkinTest(opts)
 
@@ -107,7 +106,7 @@ const setGlobalOpts = (Runner:CodeRunner) => {
  * Caches any existing globals so they can be reset after the test run
  * This ensures it doesn't clobber what ever already exists
  */
-export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
+export const setupGlobals = (Runner:CodeRunner) => {
   ;(TestGlobalsCache as any).expect = (global as any).expect
   ;(TestGlobalsCache as any).page = (global as any).page
   ;(TestGlobalsCache as any).context = (global as any).context
@@ -119,7 +118,7 @@ export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
   global.page = Runner.player.page
   global.browser = Runner.player.browser
   global.context = Runner.player.context
-  return setTestGlobals(Runner, timeout)
+  return setTestGlobals(Runner)
 }
 
 /**
