@@ -9,6 +9,10 @@
 * Issues with General section
 
 
+### Parkin
+* This type of select breaks parkin 
+  * `div >> internal:has-text=/^Iowa Jamaican infomediaries$/`
+
 ### Screencast Goblet Config / FS API
 * Validate the paths of a repo config
 * Paths can only allow locations inside the mounted repo
@@ -101,3 +105,5 @@ On every page load
   * For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
   * Also look at the new `node:test` module that provides mocking functionality 
   * `import { mock, test } from 'node:test'`
+
+

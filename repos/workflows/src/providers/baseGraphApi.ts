@@ -61,7 +61,7 @@ export class BaseGraphApi {
    * Calls Github's GraphQL API endpoint to get a list of a users repos
    */
   callApi = async <T=any>(args:TGraphApiVars) => {
-    const { token, headers, endpoint, getData } = args
+    const { token, headers, endpoint, getData, force } = args
     const {
       Query: query,
       Key:endpointKey,
@@ -76,7 +76,7 @@ export class BaseGraphApi {
     // Disable cache for now until I can figure out why is failing
     const cacheKey = args.cacheKey || (userCachekey && `${endpointKey}-${userCachekey}-${hashObj(variables)}`)
 
-    if(cacheKey){
+    if(!force && cacheKey){
       const res = this.cache.checkResponse(cacheKey)
       if(res){
         Logger.log(`Found ${res?.length} cached repos`)
