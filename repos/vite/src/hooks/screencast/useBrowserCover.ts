@@ -12,8 +12,8 @@ type TClickAwayProps = Omit<ClickAwayListenerProps, `children`>
 
 export const useBrowserCover = () => {
 
-  const intentClickSetting = useSetting(`goblet.browserIntentClick`)
   const { browserState, setBrowserState } = useBrowserState()
+  const intentClickSetting = useSetting(`goblet.browserIntentClick`)
   const [clickHidden, setClickHidden] = useState<boolean>(false)
 
   const clickAwayProps = useMemo(() => {

@@ -29,6 +29,7 @@ export const useStepOptions = (props?:THStepOptions) => {
   const options = useMemo(() => {
     const found = opts.find(opt => definition?.uuid === opt?.uuid)
     if(found) activeRef.current = found
+    else opts.push(activeRef.current)
 
     return opts
   }, [

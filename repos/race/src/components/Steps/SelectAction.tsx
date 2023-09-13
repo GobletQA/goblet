@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react'
 import type { TStepDef } from '@ltipton/parkin'
 import type { TAutoOpt } from '@gobletqa/components'
-import type { TRaceStep, TRaceStepParent } from '@GBR/types'
+import type { TExpPart, TRaceStep, TRaceStepParent } from '@GBR/types'
 import type { AutocompleteRenderOptionState } from '@mui/material/Autocomplete'
 
 import { Tooltip, AutoInput } from '@gobletqa/components'
@@ -23,6 +23,7 @@ export type TSelectAction = {
   def?:TStepDef
   step: TRaceStep
   parent:TRaceStepParent
+  expressions?:TExpPart[]
   onChange:(step:TRaceStep) => void
 }
 

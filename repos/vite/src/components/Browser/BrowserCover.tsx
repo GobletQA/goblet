@@ -1,16 +1,15 @@
-import type { MouseEvent } from 'react'
+import { MouseEvent, useCallback, useState } from 'react'
 
-import { useState } from 'react'
 import { EBrowserState } from '@types'
-
+import { BrowserMouse } from './BrowserMouse'
 
 import {
   BrowserCoverClick,
-  BrowserIntentClick,
-  BrowserIntentClickBtn,
-  BrowserIntentClickText,
-  BrowserIntentClickIcon,
+  BrowserMouseText,
+  BrowserMouseIcon,
+  BrowserMouseContainer,
 } from './Browser.styled'
+import { cls } from '@keg-hub/jsutils'
 
 const styles = {
   playing: {},
@@ -30,35 +29,6 @@ export type TBrowserCover = {
   setBrowserState?:(state:EBrowserState) => void
 }
 
-const IntentClick = (props:TBrowserCover) => {
-  const { clickHidden, setClickHidden } = props
-
-  const onClick = (evt:MouseEvent) => {
-    evt.stopPropagation()
-    evt.preventDefault()
-    setClickHidden(!clickHidden)
-  }
-
-  return (
-    <BrowserIntentClick
-      onClick={onClick}
-      className='pb-browser-intent-click'
-    >
-      <BrowserIntentClickBtn
-        className='pb-browser-intent-click-button'
-      >
-        <BrowserIntentClickIcon
-          className='pb-browser-intent-click-icon'
-        />
-        <BrowserIntentClickText
-          className='pb-browser-intent-click-text'
-        >
-          Click to interact
-        </BrowserIntentClickText>
-      </BrowserIntentClickBtn>
-    </BrowserIntentClick>
-  )
-}
 
 export const BrowserCover = (props:TBrowserCover) => {
 
@@ -73,17 +43,32 @@ export const BrowserCover = (props:TBrowserCover) => {
     ? styles[browserState]
     : styles.playing
 
+  const onClick = useCallback((evt:MouseEvent) => {
+    evt.stopPropagation()
+    evt.preventDefault()
+    setClickHidden(!clickHidden)
+  }, [clickHidden])
+
   return (
     <BrowserCoverClick
       sx={style}
-      className='gb-browser-cover'
+      onClick={onClick}
+      className={cls(
+        `gb-browser-cover`,
+        (browserState !== EBrowserState.idle) || !intentClickSetting || clickHidden
+          ? browserState
+          : `follow`
+      )}
     >
       {intentClickSetting && !clickHidden && (
-        <IntentClick
-          {...props}
-          clickHidden={clickHidden}
-          setClickHidden={setClickHidden}
-        />
+        <BrowserMouse y={30} x={-60}>
+          <BrowserMouseContainer>
+            <BrowserMouseIcon />
+            <BrowserMouseText>
+              Click to interact
+            </BrowserMouseText>
+          </BrowserMouseContainer>
+        </BrowserMouse>
       ) || null}
     </BrowserCoverClick>
   )
