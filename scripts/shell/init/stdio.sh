@@ -5,10 +5,11 @@ WHITE_COL='\033[1;37m'
 GREEN_COL='\033[0;32m'
 RED_COL='\033[0;31m'
 CYAN_COL='\033[0;36m'
+PURPLE_COL='\033[0;35m'
 
 # Prints an error message to the terminal in the color white
 gb_message(){
-  printf "${WHITE_COL}[GOBLET]${NO_COL} - $@\n"
+  printf "${PURPLE_COL}[GOBLET]${NO_COL} - $@\n"
 }
 
 # Prints a message to the terminal in all green

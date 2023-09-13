@@ -1,22 +1,24 @@
 #!/bin/bash
 
-source ~/keg-cli/keg
+# Exit when any command fails
+set -e
+trap 'printf "\nFinished with exit code $?\n\n"' EXIT
 
-# Prints an log message to the terminal in the color white
-gb_log(){
-  printf "${WHITE_COL}[GOBLET]${NO_COL} - $@\n"
-}
+gb_load_stdio(){
+  # Ensure the goblet-application root directory env is set
+  if [[ -z "$GB_ROOT_DIR" ]]; then
+    printf "\033[0;31m[GOBLET]\033[0m - ENV \"GB_ROOT_DIR\" must point to the goblet-application root directory\n"
+    exit 1
+  fi
 
-# Prints an success message to the terminal in the color green
-gb_success(){
-  printf "${GREEN_COL}[GOBLET]${NO_COL} - $@\n"
+  . $GB_ROOT_DIR/scripts/shell/init/stdio.sh
 }
 
 # Builds the Goblet Action image
 # Then pushes it to th Github container registry
 buildBaseImg(){
   echo ""
-  gb_log "Building Goblet Base Image"
+  gb_message "Building Goblet Base Image"
   echo ""
 
   pnpm doc build base push
@@ -27,7 +29,7 @@ buildBaseImg(){
 # Then pushes it to th Github container registry
 buildGobletApp(){
   echo ""
-  gb_log "Building Goblet App Image"
+  gb_message "Building Goblet App Image"
   echo ""
 
   pnpm doc build app push
@@ -37,7 +39,7 @@ buildGobletApp(){
 # Then pushes it to th Github container registry
 buildGobletBackend(){
   echo ""
-  gb_log "Building Goblet Backend Image"
+  gb_message "Building Goblet Backend Image"
   echo ""
 
   pnpm doc build be push
@@ -48,7 +50,7 @@ buildGobletBackend(){
 # Then pushes it to th Github container registry
 buildGobletScreencast(){
   echo ""
-  gb_log "Building Goblet Screencast Image"
+  gb_message "Building Goblet Screencast Image"
   echo ""
 
   pnpm doc build sc push
@@ -56,6 +58,8 @@ buildGobletScreencast(){
 
 # Entry point for building Docker Action Images
 __main__(){
+  gb_load_stdio
+
   buildBaseImg
   buildGobletApp
   buildGobletBackend

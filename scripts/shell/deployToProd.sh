@@ -3,7 +3,6 @@
 # Exit when any command fails
 set -e
 trap 'printf "\nFinished with exit code $?\n\n"' EXIT
-source ~/keg-cli/keg
 
 gb_load_stdio(){
   # Ensure the goblet-application root directory env is set
@@ -17,47 +16,56 @@ gb_load_stdio(){
 
 # Builds the Goblet Action image
 # Then pushes it to th Github container registry
-buildBaseImg(){
+pullImages(){
   echo ""
-  gb_message "Building Goblet Base Image"
+  gb_message "Pulling images locally..."
   echo ""
 
-  pnpm doc build base push
-  pnpm doc pull base
+  pnpm doc pull be
+  pnpm doc pull sc
 }
 
 # Builds the Goblet Action image
 # Then pushes it to th Github container registry
-buildGobletAction(){
+switchKubeCtx(){
   echo ""
-  gb_message "Building Goblet Action Image"
+  gb_message "Switching to Kubernetes production context"
   echo ""
 
-  pnpm doc build act push
-  pnpm doc pull act
+  pnpm kube set prod --env prod
 }
 
 # Navigate to the test action repository, and builds a local image
 # Does **NOT** push the image to a remote repository
-buildTestAction(){
+deployBackend(){
   echo ""
-  gb_message "Building Goblet Test Action Image"
+  gb_message "Deploying backend images to production cluster..."
   echo ""
 
-  keg gta
-  pnpm dbl
+  pnpm dep be --env prod --clean
+}
+
+# Navigate to the test action repository, and builds a local image
+# Does **NOT** push the image to a remote repository
+deployFrontend(){
+  echo ""
+  gb_message "Building and deploying frontend to firebase..."
+  echo ""
+
+  pnpm dep fe --env prod
 }
 
 # Entry point for building Docker Action Images
 __main__(){
   gb_load_stdio
-
-  buildBaseImg
-  buildGobletAction
-  buildTestAction
+  
+  pullImages
+  switchKubeCtx
+  deployBackend
+  deployFrontend
 
   echo ""
-  gb_success "Finished building Images"
+  gb_success "Finished deploying to production"
   echo ""
 }
 

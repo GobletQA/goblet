@@ -21,8 +21,8 @@
     "repos/*"
   ],
   "scripts": {
-    "bai": "/bin/bash scripts/shell/buildActionImgs.sh",
-    "bgi": "/bin/bash scripts/shell/buildGobletImgs.sh",
+    "bai": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildActionImgs.sh",
+    "bgi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildGobletImgs.sh",
     "build": "pnpm -r build",
     "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r ./configs/aliases.js tasks/entry.ts deploy build -- frontend=true",
@@ -37,6 +37,7 @@
     "dev": "node -r ./configs/aliases.js tasks/entry.ts devspace",
     "doc": "node -r ./configs/aliases.js tasks/entry.ts docker",
     "dep": "node -r ./configs/aliases.js tasks/entry.ts deploy",
+    "dprod": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/deployToProd.sh",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:all": "pnpm format && pnpm -r format",
     "format:lint": "pnpm lint .",
