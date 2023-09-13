@@ -14,8 +14,8 @@ gb_load_stdio(){
   . $GB_ROOT_DIR/scripts/shell/init/stdio.sh
 }
 
-# Builds the Goblet Action image
-# Then pushes it to th Github container registry
+# Pull the most recently built images locally
+# Probably not needed, but doesn't hurt
 pullImages(){
   echo ""
   gb_message "Pulling images locally..."
@@ -25,14 +25,21 @@ pullImages(){
   pnpm doc pull sc
 }
 
-# Builds the Goblet Action image
-# Then pushes it to th Github container registry
-switchKubeCtx(){
+# Switch to the production kube context
+switchProdKubeCtx(){
   echo ""
   gb_message "Switching to Kubernetes production context"
   echo ""
 
   pnpm kube set prod --env prod
+}
+
+# Switch back to the dev kube context
+switchDevKubeCtx(){
+  echo ""
+  gb_message "Switching to Kubernetes dev context"
+  echo ""
+  GB_KUBE_CONTEXT=docker-desktop pnpm kube set dev
 }
 
 # Navigate to the test action repository, and builds a local image
@@ -55,14 +62,16 @@ deployFrontend(){
   pnpm dep fe --env prod
 }
 
-# Entry point for building Docker Action Images
+
+# Entry point for deploying to production
 __main__(){
   gb_load_stdio
   
   pullImages
-  switchKubeCtx
+  switchProdKubeCtx
   deployBackend
   deployFrontend
+  switchDevKubeCtx
 
   echo ""
   gb_success "Finished deploying to production"
