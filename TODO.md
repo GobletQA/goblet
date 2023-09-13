@@ -107,3 +107,10 @@ On every page load
   * `import { mock, test } from 'node:test'`
 
 
+
+### AI
+* From user defined user story
+  * AI outputs a feature file 
+    * Should be editable, needs a little tlc
+* Then run the feature
+  * 

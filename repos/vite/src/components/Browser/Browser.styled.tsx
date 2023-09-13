@@ -172,41 +172,35 @@ export const BrowserCoverClick = styled(Box)`
   right: 0;
   bottom: 0;
   position: absolute;
+  
+  &.follow {
+    cursor: pointer;
+  }
+
+  &.playing {
+    cursor: wait;
+  }
+
   &:hover {
-    .pb-browser-intent-click {
-      opacity: 1;
+    .gb-browser-mouse-follow {
+      opacity: 1 !important;
     }
   }
 `
 
-export const BrowserIntentClick = styled(Box)`
-  flex: 1;
-  opacity: 0;
+export const BrowserMouseContainer = styled(Box)`
   display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  background-color: ${colors.fadeDark30};
-  transition: opacity ${dims.trans.avgEase}, background-color ${dims.trans.avgEase};
-`
-
-export const BrowserIntentClickText = styled(Text)`
-  font-size: 30px;
-  margin-left: ${gutter.margin.hpx};
-`
-
-export const BrowserIntentClickBtn = styled(IconButton)(({ theme }) => `
-  border-radius: 5px;
+  padding: 4px 8px;
+  border-radius: 4px;
   color: ${colors.white};
-  padding: ${gutter.padding.hpx} ${gutter.padding.px};
   background-color: ${colors.fadeDark70};
+`
 
-  &:hover {
-    background-color: ${colors.fadeDark90};
-  }
-`)
+export const BrowserMouseIcon = styled(AdsClickIcon)`
+ font-size: 14px;
+`
 
-export const BrowserIntentClickIcon = styled(AdsClickIcon)(({ theme }) => `
-  font-size: 50px;
-`)
-
+export const BrowserMouseText = styled(Text)`
+  font-size: 12px;
+  margin-left: ${gutter.margin.qpx};
+`

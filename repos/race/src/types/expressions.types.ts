@@ -1,4 +1,4 @@
-import { Parkin, TStepDef } from '@ltipton/parkin'
+import { EExpParmType, Parkin, TStepDef } from '@ltipton/parkin'
 import { TRaceStep } from '@GBR/types/features.types'
 import type { TPartsMatch } from './shared.types'
 
@@ -12,17 +12,16 @@ export type TExpPart = TPartsMatch & {
   regex:RegExp
   input:string
   text:string
-  type:string
   index: number
   match:string
   kind?: string
   label?:string
   decor?:boolean
   defIndex: number
-  paramType:string
-  example?: string,
+  example?:string
   value?:string|number
-  description?: string,
+  description?: string
+  paramType:EExpParmType
   options?:string[]|number[]
 }
 
