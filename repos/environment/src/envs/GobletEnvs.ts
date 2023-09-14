@@ -3,6 +3,7 @@ import type { TGobletExtEnvs } from '@GENV/types'
 import git from './git'
 import test from './test'
 import repo from './repo'
+import joker from './joker'
 import general from './general'
 import backend from './backend'
 import browser from './browser'
@@ -19,6 +20,7 @@ const buildEnvs = () => {
     ...git(generalEnvs),
     ...repo(generalEnvs),
     ...test(generalEnvs),
+    ...joker(generalEnvs),
     ...backend(generalEnvs),
     ...browser(generalEnvs, scEnvs),
   }

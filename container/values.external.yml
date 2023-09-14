@@ -44,3 +44,11 @@ envs:
 
   # Email list of users who have access to the goblet UI platform
   GB_GITHUB_AUTH_USERS: ""
+
+  # Secrets for OpenAI integration
+  GB_OPEN_AI_ORG_ID: ""
+  GB_OPEN_AI_KEY: ""
+
+  # Secrets for Lepton AI integration
+  GB_LEPTON_AI_URL: ""
+  GB_LEPTON_AI_TOKEN: ""

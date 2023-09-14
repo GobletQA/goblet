@@ -1,5 +1,5 @@
 
-import { GBBRoot } from '../resolveRoot'
+import { GJKRoot } from '../resolveRoot'
 
 import path from 'path'
 import { esbuild } from '@ltipton/esdev'
@@ -8,8 +8,8 @@ import { loadConfigs } from '@keg-hub/parse-config'
 
 const dev = process.env.DEV_BUILD === `1`
 const nodeEnv = process.env.NODE_ENV || `local`
-const entryFile = path.join(GBBRoot, `index.js`)
-const outFile = path.join(GBBRoot, `dist/index.js`)
+const entryFile = path.join(GJKRoot, `index.js`)
+const outFile = path.join(GJKRoot, `dist/index.js`)
 
 /**
  * Load the ENVs from <node-env>.env ( local.env || prod.env )
@@ -26,7 +26,7 @@ esbuild({
   aliases,
   outFile,
   entryFile,
-  cwd: GBBRoot,
+  cwd: GJKRoot,
   mergeEnvs:true,
   sourcemap: 'inline',
   envs: {

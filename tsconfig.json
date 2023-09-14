@@ -68,6 +68,17 @@
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
 
+      "@GJK/constants": ["repos/joker/src/constants"],
+      "@GJK/constants/*": ["repos/joker/src/constants/*"],
+      "@GJK/providers": ["repos/joker/src/providers"],
+      "@GJK/providers/*": ["repos/joker/src/providers/*"],
+      "@GJK/types": ["repos/joker/src/types"],
+      "@GJK/types/*": ["repos/joker/src/types/*"],
+      "@GJK/utils": ["repos/joker/src/utils"],
+      "@GJK/utils/*": ["repos/joker/src/utils/*"],
+      "@GJK": ["repos/joker/src"],
+      "@GJK/*": ["repos/joker/src/*"],
+
       "@GLT/cli/types": ["repos/latent/src/bin/cli.types.ts"],
       "@GLT/templates": ["repos/latent/src/templates"],
       "@GLT/libs": ["repos/latent/src/libs"],
