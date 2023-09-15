@@ -19,6 +19,7 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
+    "ask": "node --enable-source-maps -r esbuild-register scripts/askAI.ts",
     "build": "pnpm j:build && pnpm types",
     "j:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",

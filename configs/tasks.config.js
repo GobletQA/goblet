@@ -183,6 +183,7 @@ module.exports = {
           `GB_VNC_*`,
           `GB_OPEN_AI_*`,
           `GB_LEPTON_AI_*`,
+          `GB_JK_AI_*`,
           `EXAM_*`,
           `DISPLAY`,
           `PLAYWRIGHT_*`,

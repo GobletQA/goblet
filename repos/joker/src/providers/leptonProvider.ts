@@ -1,38 +1,27 @@
-import type { TProviderOpts, TPromptOpts } from '@GJK/types'
-import type { OpenAI } from 'openai'
+import type { TProviderOpts, TQuestion, TPromptResp } from '@GJK/types'
 
 import OpenAISdk from 'openai'
-import { ENVS } from '@gobletqa/environment'
 import { BaseProvider } from './baseProvider'
-
-type TComps = OpenAI[`completions`]
 
 export class LeptonAI extends BaseProvider {
   ai:OpenAISdk
 
   constructor(opts:TProviderOpts){
     super(opts)
-    this.ai = new OpenAISdk({
-      baseURL: opts?.auth?.baseURL || ENVS.GB_LEPTON_AI_URL,
-      apiKey: opts?.auth?.apiKey || ENVS.GB_LEPTON_AI_TOKEN,
-    })
+    this.ai = new OpenAISdk(opts?.auth)
   }
 
   findIn = async (query?:string, items?:string[]) => {
     return undefined
   }
 
-  prompt = async (prompt:string, opts?:TPromptOpts) => {
-    const built = this.buildPrompt(prompt, opts) as any
+  prompt = async (question:TQuestion):Promise<TPromptResp> => {
+    const prompt = this.toPrompt(question) as any
+    // console.log(`Question:`, require('util').inspect(prompt, false, null, true))
+    const completion = await this.ai.chat.completions.create(prompt)
+    // console.log(`Answer:`, require('util').inspect(completion, false, null, true))
 
-    const completion = await this.ai.chat.completions.create({
-      messages: [built],
-      model: 'gpt-3.5-turbo',
-    })
-
-    console.log(completion.choices)
+    return completion
   }
 
-
 }
-

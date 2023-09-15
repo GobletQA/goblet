@@ -1,8 +1,6 @@
 import type { TProviderOpts } from '@GJK/types'
 import { SemanticSearch, Chatbot, ChatGPTInput } from 'intellinode'
 
-
-import { ENVS } from '@gobletqa/environment'
 import { BaseProvider } from './baseProvider'
 
 export class IntelliNode extends BaseProvider {
@@ -11,8 +9,8 @@ export class IntelliNode extends BaseProvider {
 
   constructor(opts:TProviderOpts){
     super(opts)
-    const apiKey = opts?.auth?.apiKey || ENVS.GB_OPEN_AI_KEY
-    const organization = opts?.auth?.organization || ENVS.GB_OPEN_AI_ORG_ID
+    const apiKey = opts?.auth?.apiKey
+    const organization = opts?.auth?.organization
 
     this.ai = new Chatbot(apiKey)
     this.search = new SemanticSearch(apiKey)

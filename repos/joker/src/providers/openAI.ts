@@ -1,7 +1,6 @@
-import type { TProviderOpts } from '@GJK/types'
+import type { TPromptResp, TProviderOpts, TQuestion } from '@GJK/types'
 
 import OpenAISdk from 'openai'
-import { ENVS } from '@gobletqa/environment'
 import { BaseProvider } from './baseProvider'
 
 export class OpenAI extends BaseProvider {
@@ -9,14 +8,21 @@ export class OpenAI extends BaseProvider {
 
   constructor(opts:TProviderOpts){
     super(opts)
-    this.ai = new OpenAISdk({
-      apiKey: opts?.auth?.apiKey || ENVS.GB_OPEN_AI_KEY,
-      organization: opts?.auth?.organization || ENVS.GB_OPEN_AI_ORG_ID,
-    })
+    this.ai = new OpenAISdk(opts?.auth)
   }
 
   findIn = async (query?:string, items?:string[]) => {
     return undefined
+  }
+
+  prompt = async (question:TQuestion):Promise<TPromptResp> => {
+    const prompt = this.toPrompt(question) as any
+    console.log(`Question:`, require('util').inspect(prompt, false, null, true))
+
+    const completion = await this.ai.chat.completions.create(prompt)
+    console.log(`Answer:`, require('util').inspect(completion, false, null, true))
+
+    return completion
   }
 
 }

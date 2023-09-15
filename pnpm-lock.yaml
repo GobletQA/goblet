@@ -721,6 +721,9 @@ importers:
       '@gobletqa/goblet':
         specifier: workspace:*
         version: link:../goblet
+      '@gobletqa/joker':
+        specifier: workspace:*
+        version: link:../joker
       '@gobletqa/shared':
         specifier: workspace:*
         version: link:../shared

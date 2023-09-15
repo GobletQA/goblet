@@ -52,3 +52,8 @@ envs:
   # Secrets for Lepton AI integration
   GB_LEPTON_AI_URL: ""
   GB_LEPTON_AI_TOKEN: ""
+
+  # Generic Secrets for AI integration
+  GB_JK_AI_URL: ""
+  GB_JK_AI_KEY: ""
+  GB_JK_AI_ORG_ID: ""

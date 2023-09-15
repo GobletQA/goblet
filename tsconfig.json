@@ -171,6 +171,9 @@
       "@gobletqa/goblet": ["repos/goblet/src"],
       "@gobletqa/goblet/*": ["repos/goblet/src/*"],
 
+      "@gobletqa/joker": ["repos/joker/src"],
+      "@gobletqa/joker/*": ["repos/joker/src/*"],
+
       "@gobletqa/latent": ["repos/latent/src"],
       "@gobletqa/latent/*": ["repos/latent/src/*"],
 
