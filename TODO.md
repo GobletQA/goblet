@@ -114,3 +114,10 @@ On every page load
     * Should be editable, needs a little tlc
 * Then run the feature
   * 
+
+
+
+Run all tests
+* Simple list of failed tests
+* Disable shutting down session container when running all tests from UI
+

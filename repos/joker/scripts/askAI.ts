@@ -19,6 +19,6 @@ ife(async () => {
   // console.log(`------- question -------`)
   // console.log(question)
   const resp = await jokerAI.ask(leptonUserToFeature.question)
-  console.log(`Answer:`, require('util').inspect(resp.choices, false, null, true))
+  console.log(`Answer:`, require('util').inspect(resp, false, null, true))
 })
 
