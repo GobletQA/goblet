@@ -81,5 +81,11 @@ export const events = {
   playSpecDone: playEvent,
   playSuiteDone: playEvent,
   playSpecStart: playEvent,
-  playSuiteStart: playEvent,
+  plySuiteStart: playEvent,
+  examCanceled: function (message:TSocketEvt){
+    
+  },
+  examError: function (message:TSocketEvt){
+    
+  },
 }

@@ -61,6 +61,7 @@ import GradingIcon from '@mui/icons-material/Grading'
 import KeyIcon from '@mui/icons-material/Key'
 import AdsClickIcon from '@mui/icons-material/AdsClick'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 
 // Icon for playing from a specific point in a feature
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
@@ -132,5 +133,6 @@ export {
   PlaylistPlayIcon,
   SubscriptionsIcon,
   AdsClickIcon,
-  UploadFileIcon
+  UploadFileIcon,
+  DirectionsRunIcon
 }

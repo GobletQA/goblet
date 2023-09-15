@@ -94,7 +94,7 @@ export const startBrowserPlay = async (
     )
   )
 
-  const promise = PromiseAbort((res, rej) => {
+  let promise = PromiseAbort((res, rej) => {
     WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
 
     // Then listen for the response event fired from the websocket service
@@ -121,6 +121,8 @@ export const startBrowserPlay = async (
         cancelOff?.()
         promise.cancel()
         rej(emptyObj)
+        // @ts-ignore
+        promise = undefined
       }
     )
   })

@@ -19,3 +19,7 @@ export const WSCancelAutomateEvent = `ws-cancel-automate-response-event`
 export const ShowBrowserLoadingEvent = `show-browser-loading-event`
 export const SetBrowserIsLoadedEvent = `set-browser-is-loaded-event`
 export const WSSocketResetEvt = `ws-socket-reset-event`
+
+export const ExamEndedEvent = `exam-ended-event`
+export const ExamErrorEvent = `exam-error-event`
+export const WSCancelExamEvent = `ws-cancel-exam-response-event`

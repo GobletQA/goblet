@@ -51,6 +51,8 @@ export const UnmountAction = {
   Component: UnmountBtn,
   className:`goblet-connect-repo`,
   action:(e:Event) => {
+    // TODO: Add confirmation model here
+    
     e?.stopPropagation?.()
     e?.preventDefault?.()
     disconnectRepo()

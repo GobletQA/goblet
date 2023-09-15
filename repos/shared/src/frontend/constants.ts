@@ -1,5 +1,6 @@
 export * from '@gobletqa/environment/constants/frontend'
 import {
+  PWPlay,
   ExpressionKinds,
   ExpressionTypes,
   ExpressionNoQuoteTypes,
@@ -7,6 +8,7 @@ import {
 } from '@gobletqa/environment/constants/frontend'
 
 export {
+  PWPlay,
   ExpressionKinds,
   ExpressionTypes,
   ExpressionNoQuoteTypes,

@@ -11,5 +11,7 @@ export {
   ExpressionNoQuoteTypes,
   DefinitionOverrideFolder
 }
+
 export * from './browser'
 export * from './websocket'
+export { PWPlay } from './browser'
