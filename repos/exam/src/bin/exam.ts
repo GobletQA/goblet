@@ -18,8 +18,8 @@ ife(async () => {
   updateCLIEnvs(exam, opts)
 
   const [results, time] = exam?.runInBand
-    ? await initLocal(exam, opts)
-    : await initWorkers(exam, opts)
+    ? await initLocal(exam)
+    : await initWorkers(exam)
 
   printDebugResults(results, time)
 

@@ -86,7 +86,7 @@ export const loadClientWorld = (
  */
 export const getClientWorld = (
   repo?:TGobletConfig,
-) => {
+):TWorldConfig => {
   const cfg = repo || getGobletConfig()
   return loadClientWorld(cfg)
 }

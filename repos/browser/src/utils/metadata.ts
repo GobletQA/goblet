@@ -16,6 +16,7 @@ import { exists } from '@keg-hub/jsutils/exists'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { vncActive } from '@GBB/utils/checkVncEnv'
 import { validate } from '@keg-hub/jsutils/validate'
+import { InternalPaths } from '@gobletqa/environment/constants'
 
 
 const {
@@ -69,7 +70,7 @@ export class BrowserMeta {
   getMetaDataPaths = (config?:TGobletConfig) => {
     config = this.#getConfig(config)
 
-    const { gobletRoot, pwMetaDataDir } = config.internalPaths
+    const { gobletRoot, pwMetaDataDir } = InternalPaths
 
     const metadataDir =
       exists(pwMetaDataDir) && existsSync(pwMetaDataDir)

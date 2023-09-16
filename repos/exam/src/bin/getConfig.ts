@@ -237,8 +237,8 @@ const buildNoConfig = (opts:TExamCliOpts):TExamConfig => {
  * Priority follows the same order. The cli options override the exam.config options
  * Which overrides teh exam default options
  */
-export const getConfig = async (opts:TExamCliOpts) => {
-  const built = !opts.config
+export const getConfig = async (opts:TExamCliOpts):Promise<TExamConfig> => {
+  const built:TExamConfig = !opts.config
     ? buildNoConfig(opts)
     : mergeConfig(await getCfgObj(opts), opts)
 

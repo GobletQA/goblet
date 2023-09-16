@@ -6,23 +6,17 @@ import type {
   TSocketEvtCBProps,
 } from '@GSC/types'
 
-const onExamRun = async (
-  data:TUserAutomateOpts,
-  socket:Socket,
-  Manager:SocketManager,
-  app:Express
-) => {
+import ExamConfig from '@gobletqa/test-utils/exam/exam.config'
 
+const onExamRun = async (app:Express, {
+  data,
+  socket,
+  Manager,
+  user
+}:TSocketEvtCBProps) => {
+
+  // ExamConfig
 
 }
 
-export const examRun = (app:Express) => {
-  return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
-    console.log(`------- data -------`)
-    console.log(data)
-    console.log(`------- user -------`)
-    console.log(user)
-    
-    await onExamRun(data, socket, Manager, app)
-  }
-}
+export const examRun = (app:Express) => async (args:TSocketEvtCBProps) => onExamRun(app, args)

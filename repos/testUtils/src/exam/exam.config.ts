@@ -12,9 +12,9 @@
 // Must load this first because it loads the alias
 import { aliases } from './setupTestAliases'
 
-import type { TBrowserConf, TGobletTestOpts } from '../types'
 import type { TExamConfig } from '@gobletqa/exam'
-import type { TTestMatch } from '@GTU/Utils/buildTestMatchFiles'
+import type { TWorldConfig } from '@ltipton/parkin'
+import type { TBrowserConf, TGobletConfig, TGobletTestOpts } from '../types'
 
 import path from 'path'
 import { isArr } from '@keg-hub/jsutils'
@@ -52,13 +52,10 @@ const HtmlReporterLoc = path.resolve(__dirname, './reporters/html/HtmlReporter.t
  */
 const EventReporterLoc = path.resolve(__dirname, './reporters/event/EventReporter.ts')
 
-export type TExamConfOpts = TTestMatch & {
-  title?:string
-  rootDir?:string
-  testDir?:string
-  extensions?:string[]
-  reportOutputPath?:string
-  globals?:Record<any, any>
+export type TExamCfgArgs = {
+  base?:string
+  world?:TWorldConfig
+  config?:TGobletConfig
 }
 
 const builtReporters = (
@@ -78,18 +75,17 @@ const builtReporters = (
   return ([...built, [EventReporterLoc, {}]]).filter(Boolean)
 }
 
-const ExamConfig = ():TExamConfig => {
+const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
 
-  const config = getGobletConfig()
-  // @ts-ignore
-  const examConfig = config?.testConfig || emptyObj
-  const world = getWorld(config)
+  const config = cfgArgs?.config || getGobletConfig(cfgArgs)
+  const examConfig = config?.testConfig || emptyObj as Partial<TExamConfig>
+  const world = cfgArgs?.world || getWorld(config)
 
   ENVS.GOBLET_TEST_DEBUG &&
     process.stdout.write(`\n[Goblet] Loaded Config:\n${JSON.stringify(config, null, 2)}\n`)
 
   const baseDir = getRepoGobletDir(config)
-  const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
+  const { devices, ...browserOpts } = taskEnvToBrowserOpts()
   // Any options passed from the task should override options in the world config
   const browserConf = {...world?.$browser, ...browserOpts} as TBrowserConf
   const contextOpts = getContextOpts({ config, world })
@@ -117,6 +113,7 @@ const ExamConfig = ():TExamConfig => {
     reuseRunner: true,
     passWithNoTests: false,
     mode: EExTestMode.serial,
+    ...examConfig,
     transforms: {...examConfig.transforms},
     aliases: {...aliases, ...examConfig?.aliases},
     ...getTimeouts({examConfig, defs: defTimeouts }),
@@ -126,10 +123,11 @@ const ExamConfig = ():TExamConfig => {
       || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
       || emptyArr,
     envs: {
-      EXAM_ENV: 1,
       // GB_REPO_NO_SECRETS: 1,
-      GOBLET_CONFIG_BASE: baseDir,
       GOBLET_FULL_SCREEN_VIDEO: 1,
+      ...examConfig?.envs,
+      EXAM_ENV: 1,
+      GOBLET_CONFIG_BASE: baseDir,
     },
     /** Pass on the browser options defined from the task that started the process */
     globals: {

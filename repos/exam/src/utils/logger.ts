@@ -30,7 +30,9 @@ const getLogLevel = () => {
 export let _LEVEL:string|number = getLogLevel()
 export const Logger = getLevelLogger(_LEVEL)
 
-export const updateLogLevel = (level?:string|number) => {
+export const updateLogLevel = (level?:string|number, logCache?:Record<`level`, any>) => {
+  if(logCache) logCache.level = Logger.level
+
   Logger.level = level || getLogLevel() || _LEVEL
   return Logger
 }

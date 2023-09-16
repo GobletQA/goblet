@@ -43,5 +43,4 @@ export type TWFGobletConfig = {
   fileTypes: TGFileTypes
   paths: Record<string, string>
   screencast: TGScreencastConfig
-  internalPaths: Record<string, string>
 }

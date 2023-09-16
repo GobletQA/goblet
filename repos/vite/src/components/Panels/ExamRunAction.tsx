@@ -78,7 +78,7 @@ export const ExamRunAction = {
       title: `Run Test Suite`,
       okText: `Yes`,
       onOk: () => {
-        // runExam()
+        runExam()
       },
       cancelText: `No`,
       onCancel: noOp,

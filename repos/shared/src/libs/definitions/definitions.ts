@@ -4,6 +4,7 @@ import path from 'path'
 import { glob } from 'glob'
 import { getSupportFiles } from './supportFiles'
 import { DefinitionsParser } from './definitionsParser'
+import { InternalPaths } from '@gobletqa/environment/constants'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
 import { getPathFromBase, getDefaultGobletConfig } from '@gobletqa/goblet'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
@@ -53,7 +54,7 @@ const getGobletDefs = async (
 
   const definitionFiles = await glob(GlobJSFiles, {
     ...GlobOnlyFiles,
-    cwd: path.join(gobletConfig.internalPaths.testUtilsDir, `src/steps`)
+    cwd: path.join(InternalPaths.testUtilsDir, `src/steps`)
   })
 
   const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin)

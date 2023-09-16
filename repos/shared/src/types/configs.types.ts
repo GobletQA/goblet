@@ -1,5 +1,6 @@
 import type { Repo } from './workflows.types'
 import type { TRepoPaths } from './repo.types'
+import type { TExamConfig } from './exam.types'
 import type { TLogLevel } from './helpers.types'
 import type { TGFileTypes } from './files.types'
 import type { TWorldConfig } from '@ltipton/parkin'
@@ -55,8 +56,8 @@ export type TDefGobletConfig = {
   fileTypes: TGFileTypes
   recorder: TRecorderOpts
   playwright?:TGobletPWConfig
-  internalPaths: TInternalPaths
   screencast: TGScreencastConfig
+  testConfig?:Partial<TExamConfig>
 }
 
 export type TGobletConfig = Repo | TDefGobletConfig

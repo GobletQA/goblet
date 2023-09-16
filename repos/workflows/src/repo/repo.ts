@@ -9,7 +9,6 @@ import type {
   TRepoPaths,
   TGobletConfig,
   TRecorderOpts,
-  TInternalPaths,
   TWFGobletConfig,
   TRepoGraphRepos,
   TRepoFromCreate,
@@ -17,6 +16,7 @@ import type {
   TGScreencastConfig,
   TRepoFromWorkflow,
   TGobletPWConfig,
+  TExamConfig,
 } from '@GWF/types'
 
 import { getWorld } from './world'
@@ -226,6 +226,13 @@ export class Repo {
    */
   parkin:Parkin = undefined
 
+  /**
+   * Custom config for configure test executor
+   * Default is exam, but others could be used
+   * @memberOf Repo
+   * @type {Object}
+   */
+  testConfig?:Partial<TExamConfig>
 
   name:string
   latent:LatentRepo
@@ -234,9 +241,6 @@ export class Repo {
   recorder: TRecorderOpts
   screencast?:TGScreencastConfig
   playwright?:TGobletPWConfig={}
-
-  // Temporary - this should be remove
-  internalPaths:TInternalPaths
 
   constructor(config:TRepoOpts = emptyObj as TRepoOpts) {
     const {

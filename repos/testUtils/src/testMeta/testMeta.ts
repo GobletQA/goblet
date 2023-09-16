@@ -9,7 +9,6 @@ import {
 import {
   getPathFromBase,
   getGobletConfig,
-  getDefaultGobletConfig
 } from '@gobletqa/goblet'
 
 import { set } from '@keg-hub/jsutils/set'
@@ -19,6 +18,7 @@ import { toBool } from '@keg-hub/jsutils/toBool'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { deepClone } from '@keg-hub/jsutils/deepClone'
+import { InternalPaths } from '@gobletqa/environment/constants'
 
 const isCIEnv = toBool(process.env.GOBLET_RUN_FROM_CI)
 const debugActive = toBool(process.env.GOBLET_ARTIFACTS_DEBUG)
@@ -42,7 +42,7 @@ const debugLog = (...args:any[]) => {
  * @return {string} - Path to the testMeta file
  */
 export const getTestMetaPath = () => {
-   return !isCIEnv ? `` : getDefaultGobletConfig()?.internalPaths?.testMetaFile
+   return !isCIEnv ? `` : InternalPaths?.testMetaFile
 }
 
 /**
