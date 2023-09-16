@@ -6,16 +6,27 @@ import type {
   TSocketEvtCBProps,
 } from '@GSC/types'
 
-import ExamConfig from '@gobletqa/test-utils/exam/exam.config'
+import { examUIRun } from '@gobletqa/test-utils/exam/examUIRun'
+import { loadRepoFromSocket } from '@GSC/utils/loadRepoFromSocket'
+
 
 const onExamRun = async (app:Express, {
   data,
+  user,
   socket,
   Manager,
-  user
 }:TSocketEvtCBProps) => {
+  const { opts } = data
+    const { repo } = await loadRepoFromSocket({
+      user,
+      repo: data?.repo,
+    })
 
-  // ExamConfig
+  await examUIRun(opts, {
+    config: repo,
+    world: repo.world,
+    base: repo?.git?.local,
+  })
 
 }
 
