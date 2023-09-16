@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { TModalProps } from './setActiveModal'
 import type { TModalAction, TModalActions, TAlert } from '@types'
 
 import { Fragment } from 'react'

@@ -58,7 +58,7 @@ export const UnmountAction = {
     e?.stopPropagation?.()
     e?.preventDefault?.()
     const { repo } = getStore().getState()
-    const name = repo?.git?.repoName || repo?.name || `current`
+    const name = repo?.git?.repoName || repo?.name || `the mounted repo`
 
     Alert({
       title: `Unmount Repo`,

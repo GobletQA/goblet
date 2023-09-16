@@ -1,4 +1,7 @@
-import { TColorOpt } from './component.types'
+import type { TColorOpt } from './component.types'
+import type { TModalComponent } from '@gobletqa/components'
+
+
 
 export enum EModalTypes {
   Idle = `idle`,
@@ -51,17 +54,15 @@ export type TModalAction = {
 
 export type TModalActions = TModalAction[]
 
-export type TAlert = {
+export type TAlert = Partial<TModalComponent> & {
   title: string
-  className?: string
-  
-  fullWidth?: boolean
-  fullScreen?: boolean
-
   okText?:string
   cancelText?:string
+  className?: string
   content?:ReactNode
   children?:ReactNode
+  fullWidth?: boolean
+  fullScreen?: boolean
   floatContent?:boolean
   actions?: TModalActions
   onOk?:(...args:any[]) => any
