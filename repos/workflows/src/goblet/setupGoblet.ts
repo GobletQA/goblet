@@ -1,17 +1,17 @@
 import type { TGobletConfig } from '@gobletqa/shared'
 import type { TGitData, TWFArgs, TGitOpts } from '@GWF/types'
 
-import { git, RepoWatcher } from '../git'
 import { Logger } from '@gobletqa/logger'
 import { wait } from '@keg-hub/jsutils/wait'
 import { gobletLoader } from '@gobletqa/goblet'
-import { repoSecrets } from '../repo/repoSecrets'
-import { getRepoName } from '../utils/getRepoName'
+
 import { failResp, successResp } from './response'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { copyTemplate } from '../utils/copyTemplate'
-import { createRepoWatcher } from '../repo/mountRepo'
+import { repoSecrets } from '@gobletqa/repo/repoSecrets'
+import { createRepoWatcher } from '@gobletqa/repo/mountRepo'
 import { configureGitOpts } from '../utils/configureGitOpts'
+import { git, RepoWatcher, getRepoName } from '@gobletqa/git'
 
 const setupWatcher = async (gitOpts:TGitOpts,) => {
   Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
@@ -90,9 +90,17 @@ export const setupGoblet = async (
     name: getRepoName(gitOpts.remote),
   } as TGobletConfig
 
-  const secretsFail = await repoSecrets(gitOpts, namedGobletCfg)
+  try {
+    await repoSecrets(gitOpts, namedGobletCfg)
 
-  return secretsFail
-    || successResp({ setup: true }, { repo: namedGobletCfg }, `Finished running Setup Goblet Workflow`)
+    return successResp(
+      { setup: true },
+      { repo: namedGobletCfg },
+      `Finished running Setup Goblet Workflow`
+    )
+  }
+  catch(err){
+    return failResp({ setup: false }, err.message)
+  }
 }
 

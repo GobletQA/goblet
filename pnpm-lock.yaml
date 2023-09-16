@@ -434,6 +434,40 @@ importers:
         specifier: 2.0.22
         version: 2.0.22
 
+  repos/git:
+    dependencies:
+      '@gobletqa/environment':
+        specifier: workspace:*
+        version: link:../environment
+      '@gobletqa/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@keg-hub/jsutils':
+        specifier: 9.8.3
+        version: 9.8.3
+    devDependencies:
+      '@keg-hub/parse-config':
+        specifier: '>=2.1.0'
+        version: 2.1.0
+      '@ltipton/esdev':
+        specifier: 0.2.1
+        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.4.2)(esbuild@0.19.2)
+      '@types/debug':
+        specifier: 4.1.5
+        version: 4.1.5
+      '@types/express':
+        specifier: 4.17.17
+        version: 4.17.17
+      '@types/node':
+        specifier: 18.15.13
+        version: 18.15.13
+      esbuild:
+        specifier: 0.19.2
+        version: 0.19.2
+      esbuild-register:
+        specifier: 3.4.2
+        version: 3.4.2(esbuild@0.19.2)
+
   repos/goblet:
     dependencies:
       '@gobletqa/environment':
@@ -718,6 +752,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
+      '@gobletqa/git':
+        specifier: workspace:*
+        version: link:../git
       '@gobletqa/goblet':
         specifier: workspace:*
         version: link:../goblet
@@ -928,9 +965,6 @@ importers:
       '@gobletqa/shared':
         specifier: workspace:*
         version: link:../shared
-      '@gobletqa/workflows':
-        specifier: workspace:*
-        version: link:../workflows
       '@keg-hub/jsutils':
         specifier: 9.8.3
         version: 9.8.3
@@ -1101,6 +1135,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
+      '@gobletqa/git':
+        specifier: workspace:*
+        version: link:../git
       '@gobletqa/goblet':
         specifier: workspace:*
         version: link:../goblet

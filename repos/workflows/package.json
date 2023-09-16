@@ -34,6 +34,7 @@
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
+    "@gobletqa/git": "workspace:*",
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/repo": "workspace:*",

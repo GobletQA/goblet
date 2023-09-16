@@ -1,6 +1,6 @@
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type {
-  TRepo,
+  Repo,
   TBrowser,
   TPlayerOpts,
   TBrowserPage,
@@ -32,7 +32,7 @@ import { getInjectScript } from '@GBB/utils/getInjectScript'
  */
 export class Player {
 
-  repo:TRepo
+  repo:Repo
   id:string = null
   browser:TBrowser
   page:TBrowserPage

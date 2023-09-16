@@ -1,4 +1,4 @@
-import type { TRepo } from '@GSH/types'
+import type { Repo } from '@GSH/types'
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
@@ -15,7 +15,7 @@ import { buildFileModel } from '@GSH/models/buildFileModel'
  * @returns {Object} - Reports ast || empty object
  */
 const resolveReportAst = (
-  repo:TRepo,
+  repo:Repo,
   fullPath:string,
   baseDir:string
 ) => {
@@ -38,7 +38,7 @@ const resolveReportAst = (
  * Checks the files path and if it exists creates a fileModel from the meta data
  */
 export const loadReport = async (
-  repo:TRepo,
+  repo:Repo,
   location:string,
   baseDir?:string
 ) => {

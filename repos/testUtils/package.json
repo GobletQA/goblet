@@ -41,7 +41,6 @@
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
-    "@gobletqa/workflows": "workspace:*",
     "@keg-hub/jsutils": "9.8.3",
     "@ltipton/parkin": "6.3.0",
     "esbuild": "0.19.2",

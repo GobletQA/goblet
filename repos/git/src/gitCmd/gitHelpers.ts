@@ -8,12 +8,12 @@ import type {
 import path from 'path'
 import { URL } from 'url'
 import { git } from './gitCmd'
-import { EProvider } from '@GGT/types'
 import { Logger } from '@gobletqa/logger'
 import { wait } from '@keg-hub/jsutils/wait'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { throwErr } from '@GGT/utils/throwErr'
 import { exists } from '@keg-hub/jsutils/exists'
+import { GitProviders } from '@gobletqa/environment/constants'
 
 /**
  * Default child process options
@@ -60,13 +60,13 @@ export const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
 }
 
 export const providerRemoteUrl = {
-  [EProvider.Github]: (gitOpts:TGitOpts) => {
+  [GitProviders.Github]: (gitOpts:TGitOpts) => {
     const {remote, token} = gitOpts
     const url = new URL(remote)
 
     return `${url.protocol}//${token}@${url.host}${url.pathname}`
   },
-  [EProvider.Gitlab]: (gitOpts:TGitOpts) => {
+  [GitProviders.Gitlab]: (gitOpts:TGitOpts) => {
     const {remote, token} = gitOpts
     const url = new URL(remote)
 
@@ -83,7 +83,7 @@ export const generateRemoteUrl = (gitOpts:TGitOpts) => {
    * Default to using the github method
    * Gitlab uses an odd `oauth2:` prefix which most provider won't use
    */
-  const {provider=EProvider.Github} = gitOpts
+  const {provider=GitProviders.Github} = gitOpts
 
   return providerRemoteUrl[provider]
     ? providerRemoteUrl[provider](gitOpts)

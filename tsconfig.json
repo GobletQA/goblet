@@ -67,6 +67,17 @@
       "@GEX/utils/*": ["repos/exam/src/utils/*"],
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
+      
+      "@GGT/constants": ["repos/git/src/constants"],
+      "@GGT/constants/*": ["repos/git/src/constants/*"],
+      "@GGT/providers": ["repos/git/src/providers"],
+      "@GGT/providers/*": ["repos/git/src/providers/*"],
+      "@GGT/types": ["repos/git/src/types"],
+      "@GGT/types/*": ["repos/git/src/types/*"],
+      "@GGT/utils": ["repos/git/src/utils"],
+      "@GGT/utils/*": ["repos/git/src/utils/*"],
+      "@GGT": ["repos/git/src"],
+      "@GGT/*": ["repos/git/src/*"],
 
       "@GJK/constants": ["repos/joker/src/constants"],
       "@GJK/constants/*": ["repos/joker/src/constants/*"],
@@ -90,8 +101,6 @@
 
       "@GRP/constants": ["repos/repo/src/constants"],
       "@GRP/constants/*": ["repos/repo/src/constants/*"],
-      "@GRP/providers": ["repos/repo/src/providers"],
-      "@GRP/providers/*": ["repos/repo/src/providers/*"],
       "@GRP/types": ["repos/repo/src/types"],
       "@GRP/types/*": ["repos/repo/src/types/*"],
       "@GRP/utils": ["repos/repo/src/utils"],
@@ -183,6 +192,9 @@
 
       "@gobletqa/goblet": ["repos/goblet/src"],
       "@gobletqa/goblet/*": ["repos/goblet/src/*"],
+
+      "@gobletqa/git": ["repos/git/src"],
+      "@gobletqa/git/*": ["repos/git/src/*"],
 
       "@gobletqa/joker": ["repos/joker/src"],
       "@gobletqa/joker/*": ["repos/joker/src/*"],

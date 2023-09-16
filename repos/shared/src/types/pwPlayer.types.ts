@@ -1,6 +1,6 @@
-import type { TRepo } from './workflows.types'
+import type { Repo } from './repo.types'
 import type { TSocketMessageObj } from './socket.types'
-import type { EAstObject, TRunResult, TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TRunResult, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 import type {
@@ -56,7 +56,7 @@ export type TPlayerEventCB = (event:TPlayerEvent) => void
 export type TPlayerCleanupCB = (player:Player) => void
 
 export type TPlayerConfig = {
-  repo?:TRepo
+  repo?:Repo
   browser?:TBrowser
   page?:TBrowserPage
   onEvent?:TPlayerEventCB

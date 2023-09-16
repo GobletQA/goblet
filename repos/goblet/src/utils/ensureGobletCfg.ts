@@ -1,4 +1,4 @@
-import type { TGitData, TGobletConfig } from '@GWF/types'
+import type { TGitData, TGobletConfig } from '../types'
 
 import path from 'path'
 import { URL } from 'url'

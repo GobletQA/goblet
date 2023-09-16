@@ -1,4 +1,4 @@
-import type { TRepo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
+import type { Repo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
 
 import path from 'path'
 import { glob } from 'glob'
@@ -18,7 +18,7 @@ let __CachedGobletDefs:TDefinitionFileModel[]
  * Builds the definitions models from the loaded definitions
  */
 const parseDefinitions = async (
-  repo:TRepo,
+  repo:Repo,
   definitionFiles:string[],
   overrideParkin:(...args:any) => any,
 ) => {
@@ -45,7 +45,7 @@ const parseDefinitions = async (
  * Caches the internal goblet step definitions so they don't have to be reloaded each time
  */
 const getGobletDefs = async (
-  repo:TRepo,
+  repo:Repo,
   overrideParkin:(...args:any) => any,
   gobletConfig:TDefGobletConfig,
   cache:boolean=true
@@ -72,7 +72,7 @@ const getGobletDefs = async (
  *
  */
 const getRepoDefinitions = async (
-  repo:TRepo,
+  repo:Repo,
   overrideParkin:(...args:any) => any,
 ) => {
 
@@ -93,7 +93,7 @@ const getRepoDefinitions = async (
  */
 const loadDefinition = async (
   location:string,
-  repo:TRepo,
+  repo:Repo,
 ) => {
   await repo.refreshWorld()
   const overrideParkin = parkinOverride(repo)
@@ -107,7 +107,7 @@ const loadDefinition = async (
  * Loads the definitions file from the passed in repo instance
  */
 export const loadDefinitions = async (
-  repo:TRepo,
+  repo:Repo,
   gobletConfig?:TDefGobletConfig,
   cache:boolean=true
 ) => {

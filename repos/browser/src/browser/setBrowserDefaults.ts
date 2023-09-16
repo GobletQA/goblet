@@ -1,12 +1,11 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type {
-  TRepo,
+  TBrowserConf,
   TBrowserPage,
+  TGobletConfig,
+  TPWComponents,
   TBrowserContext,
   TBrowserContextOpts,
-  TGobletConfig,
-  TBrowserConf,
-  TPWComponents
 } from '@GBB/types'
 
 import { isStr } from '@keg-hub/jsutils/isStr'

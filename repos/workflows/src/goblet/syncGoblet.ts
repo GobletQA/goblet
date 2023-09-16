@@ -1,8 +1,8 @@
 import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@gobletqa/workflows/types'
 
 import { Logger } from '@gobletqa/logger'
+import { git, RepoWatcher } from '@gobletqa/git'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { git, RepoWatcher } from '@gobletqa/workflows/git'
 import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
 import { GitRemoteRef, GitResetBranch } from '@gobletqa/workflows/constants'
 

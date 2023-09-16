@@ -1,12 +1,13 @@
 import type { TWFCreateArgs } from '@GWF/types'
 
-import { git } from '@GWF/git'
+import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
+import { setupGoblet } from './setupGoblet'
 import { GithubApi } from '@GWF/providers/githubApi'
-import { ensureMounted } from '@GWF/repo/ensureMounted'
+import { ensureMounted } from '@gobletqa/repo/ensureMounted'
 import { configureGitOpts } from '@GWF/utils/configureGitOpts'
-import { ensureBranchExists } from '@GWF/repo/ensureBranchExists'
 import { validateCreateArgs } from '@GWF/utils/validateCreateArgs'
+import { ensureBranchExists } from '@gobletqa/repo/ensureBranchExists'
 
 const buildCreateUrl = (args:TWFCreateArgs) => {
   const { create } = args
@@ -50,7 +51,10 @@ export const createGoblet = async (args:TWFCreateArgs) => {
 
   const gitApi = new GithubApi(gitOpts)
   const branch = await ensureBranchExists(gitApi, gitOpts)
-  const setupResp = await ensureMounted(args, {...gitOpts, branch })
+  const gitState = await ensureMounted(args, {...gitOpts, branch })
+
+  Logger.log(`Setting up Goblet...`)
+  const setupResp = await setupGoblet(args, gitOpts, gitState.mounted)
 
   setupResp.mounted && setupResp.setup
     ? Logger.success(`Finished running Create Goblet Workflow`)

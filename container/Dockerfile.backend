@@ -58,6 +58,7 @@ WORKDIR /goblet/app
 COPY repos/latent/src repos/latent/src
 COPY repos/goblet/src repos/goblet/src
 COPY repos/logger/src repos/logger/src
+COPY repos/git/src repos/git/src
 COPY repos/repo/src repos/repo/src
 COPY repos/conductor/src repos/conductor/src
 COPY repos/environment/src repos/environment/src
@@ -74,7 +75,6 @@ RUN pnpm --filter=@gobletqa/backend --prod --no-optional deploy pruned
 
 WORKDIR /goblet/app/repos
 RUN cp -R backend/pruned /goblet/runner/repos/backend
-RUN cp -R shared/src/templates /goblet/runner/repos/backend/templates
 
 # This makes the image a little smaller, but may not be worth it
 # Because then we lose source-mapping for compiled files

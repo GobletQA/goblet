@@ -1,11 +1,6 @@
 
-import type { Repo } from '@GWF/repo'
 import type { Graph } from '../constants'
 
-export type {
-  Repo,
-  Repo as TRepo
-}
 
 // ----- Graph API ----- //
 
