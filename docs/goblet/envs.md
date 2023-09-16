@@ -15,7 +15,7 @@
 * `GB_GIT_REPO_REMOTE`
   * **Description** - The remote url of the currently mounted repo
     * Speeds up loading the token when loading secrets
-    * This gets set, then removed in `shared/repo/getClientWorld.ts`
+    * This gets set, then removed in `repos/repo/world/getClientWorld.ts`
   * **Repos** - `workflows`, `latent`, `shared`
 
 
