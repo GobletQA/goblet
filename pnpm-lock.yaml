@@ -883,9 +883,6 @@ importers:
       '@gobletqa/logger':
         specifier: workspace:*
         version: link:../logger
-      '@keg-hub/cli-utils':
-        specifier: 0.9.0
-        version: 0.9.0
       '@keg-hub/jsutils':
         specifier: 9.8.3
         version: 9.8.3

@@ -1,12 +1,17 @@
 import type { TRootPaths, Repo } from '@GSH/types'
 
-import fs from 'fs'
 import path from 'path'
-import { fileSys } from '@keg-hub/cli-utils'
+import fs from 'node:fs'
+import { readdir } from 'node:fs/promises'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { getRepoGobletDir } from '@gobletqa/goblet'
-import { limboify } from '@keg-hub/jsutils/limbo'
+import { limbo, limboify } from '@keg-hub/jsutils/limbo'
 
-const { getFolderContent } = fileSys
+const defaultFileExclude = [
+  `.DS_Store`,
+  `.gitignore`,
+  `.gitkeep`,
+]
 
 /**
  * Gets the metadata of a path from the local filesystem
@@ -25,6 +30,110 @@ type TGetFilesOpts = {
     endsWith?: string[]
     startsWith?: string[]
   }
+}
+
+const throwError = (message) => {
+  throw new Error(message)
+}
+
+type TBuildFound = {
+  file?:string
+  allFound:string[]
+  fromPath?:string
+  opts:TBuildFoundOpts
+  recurCall?:(...args:any[]) => any
+}
+
+type TBuildFoundOpts = {
+  type?:string
+  full?:boolean
+  exclude?:string[]
+  include?:string[]
+  recursive?:boolean
+}
+
+/**
+ * Gets the content of a folder based on passed in options
+ * @function
+ * @param {string} fromPath - Path to get the content from
+ * @param {Array} allFound  - Past found file paths
+ * @param {string} file - File path to check if should be added to allFound array
+ * @param {boolean} opts.full - Should return the full path
+ * @param {string} opts.type - Type of content to return (folder || file)
+ * @param {Array} opts.exclude - File or folder to exclude
+ * @param {Array} opts.include - File or folder to include
+ *
+ * @returns {Array} - Array of found file paths
+ */
+const buildFoundArray = ({
+  allFound,
+  recurCall,
+  file,
+  fromPath,
+  opts = {} as TBuildFoundOpts,
+}:TBuildFound) => {
+  const {
+    exclude = defaultFileExclude,
+    full,
+    include = [],
+    recursive,
+    type
+  } = opts
+
+  // Filter out any folder matching the exclude
+  if (!file || exclude.indexOf(file) !== -1) return allFound
+
+  // Get the full path of the file or folder
+  const fullPath = path.join(fromPath, file)
+
+  // Check if we should use the full path or relative
+  const found = full ? fullPath : file
+
+  // Check if its a directory
+  const isDir = fs.statSync(fullPath).isDirectory()
+
+  // Check if found should be added to the array based on the passed in arguments
+  // Check the for type match or no type
+  ;(!type || (type === 'folder' && isDir) || (type !== 'folder' && !isDir)) &&
+    (!include.length || include.indexOf(file) !== -1) &&
+    allFound.push(found)
+
+  return !isDir || !recursive || !isFunc(recurCall)
+    ? allFound
+    : recurCall(fullPath, opts, allFound)
+}
+
+/**
+ * Gets the content of a folder based on passed in options
+ * @function
+ * @param {string} fromPath - Path to get the content from
+ * @param {Object} [opts={}] - Options for filtering the found content
+ * @param {boolean} opts.full - Should return the full path
+ * @param {string} opts.type - Type of content to return (folder || file)
+ * @param {Array} opts.exclude - File or folder to exclude
+ * @param {Array} opts.include - File or folder to include
+ *
+ * @returns {Promise|Array} - Array of found items
+ */
+const getFolderContent = async (
+  fromPath:string,
+  opts:TBuildFoundOpts = {} as TBuildFoundOpts,
+  foundPaths:string[] = []
+) => {
+  const [ err, allFiles ] = await limbo(readdir(fromPath))
+  err && throwError(err)
+
+  return allFiles.reduce(async (toResolve, file) => {
+    const allFound = await toResolve
+
+    return buildFoundArray({
+      opts,
+      file,
+      fromPath,
+      allFound,
+      recurCall: getFolderContent,
+    })
+  }, Promise.resolve(foundPaths))
 }
 
 /**
@@ -77,7 +186,7 @@ export const getRootPaths = (
 }
 
 export const buildFileTree = async (repo:Repo):Promise<TRootPaths> => {
-  const searchOpts = {
+  const searchOpts:TBuildFoundOpts = {
     full: true,
     recursive: true,
     exclude: [

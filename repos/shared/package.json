@@ -32,7 +32,6 @@
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
-    "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "6.3.0",
