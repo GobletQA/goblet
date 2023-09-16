@@ -39,6 +39,7 @@
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
     "@gobletqa/logger": "workspace:*",
+    "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/workflows": "workspace:*",
     "@keg-hub/jsutils": "9.8.3",

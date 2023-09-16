@@ -50,6 +50,7 @@
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
     "@gobletqa/joker": "workspace:*",
+    "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/test-utils": "workspace:*",
     "@keg-hub/jsutils": "9.8.3",

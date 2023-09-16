@@ -45,6 +45,7 @@
     "@gobletqa/conductor": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
+    "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/workflows": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",

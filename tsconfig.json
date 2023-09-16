@@ -88,6 +88,19 @@
       "@GLT": ["repos/latent/src"],
       "@GLT/*": ["repos/latent/src/*"],
 
+      "@GRP/constants": ["repos/repo/src/constants"],
+      "@GRP/constants/*": ["repos/repo/src/constants/*"],
+      "@GRP/providers": ["repos/repo/src/providers"],
+      "@GRP/providers/*": ["repos/repo/src/providers/*"],
+      "@GRP/types": ["repos/repo/src/types"],
+      "@GRP/types/*": ["repos/repo/src/types/*"],
+      "@GRP/utils": ["repos/repo/src/utils"],
+      "@GRP/utils/*": ["repos/repo/src/utils/*"],
+      "@GRP": ["repos/repo/src"],
+      "@GRP/*": ["repos/repo/src/*"],
+
+      
+
       "@GSH/libs": ["repos/shared/src/libs"],
       "@GSH/libs/*": ["repos/shared/src/libs/*"],
       "@GSH/templates": ["repos/shared/src/templates"],
@@ -185,6 +198,9 @@
 
       "@gobletqa/race": ["repos/race/src"],
       "@gobletqa/race/*": ["repos/race/src/*"],
+
+      "@gobletqa/repo": ["repos/repo/src"],
+      "@gobletqa/repo/*": ["repos/repo/src/*"],
 
       "@gobletqa/screencast": [ "repos/screencast/src" ],
       "@gobletqa/screencast/*": [ "repos/screencast/src/*" ],

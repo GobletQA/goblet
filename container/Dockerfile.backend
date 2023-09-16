@@ -58,6 +58,7 @@ WORKDIR /goblet/app
 COPY repos/latent/src repos/latent/src
 COPY repos/goblet/src repos/goblet/src
 COPY repos/logger/src repos/logger/src
+COPY repos/repo/src repos/repo/src
 COPY repos/conductor/src repos/conductor/src
 COPY repos/environment/src repos/environment/src
 COPY repos/workflows/src repos/workflows/src
