@@ -7,21 +7,21 @@ import {
   gutter,
 } from '@gobletqa/components'
 
-export const IdleContainer = styled(Box)`
+export const ModalContainer = styled(Box)`
   margin: ${gutter.margin.px};
 `
 
-export const IdleTitle = styled(H4)`
+export const ModalTitle = styled(H4)`
   margin-bottom: ${gutter.margin.hpx};
 `
 
-export const IdleText = styled(Text)(({ theme }) => {
+export const ModalSubText = styled(Text)(({ theme }) => {
   return `
     color: ${theme.typography.subtitle1.color};
   `
 })
 
-export const IdleText2 = styled(Text)(({ theme }) => {
+export const ModalSubText2 = styled(Text)(({ theme }) => {
   return `
     margin-top: ${gutter.margin.dpx};
     color: ${theme.typography.subtitle1.color};

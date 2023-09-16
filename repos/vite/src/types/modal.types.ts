@@ -1,3 +1,4 @@
+import { TColorOpt } from './component.types'
 
 export enum EModalTypes {
   Idle = `idle`,
@@ -27,3 +28,45 @@ export enum EModalTypes {
 } 
 
 
+import type { ComponentProps, ComponentType, CSSProperties, ReactNode } from 'react'
+
+export type TModalAction = {
+  text?: string
+  label?: string
+  type?: TColorOpt
+  color?: TColorOpt
+  loading?: boolean
+  disabled?: boolean
+  fullWidth?: boolean
+  children?: ReactNode
+  EndIcon?: ComponentType<any>
+  StartIcon?: ComponentType<any>
+  iconProps?: ComponentProps<any>
+  onClick?: (...args:any[]) => any
+  sx?: Array<CSSProperties> | CSSProperties
+  size?: 'small' | 'medium' | 'large' | string
+  classes?: string[] | Record<string, string> | string
+  variant?: 'contained' | 'outlined' | 'text' | string
+}
+
+export type TModalActions = TModalAction[]
+
+export type TAlert = {
+  title: string
+  className?: string
+  
+  fullWidth?: boolean
+  fullScreen?: boolean
+
+  okText?:string
+  cancelText?:string
+  content?:ReactNode
+  children?:ReactNode
+  floatContent?:boolean
+  actions?: TModalActions
+  onOk?:(...args:any[]) => any
+  actionProps?: Record<any, any>
+  onCancel?:(...args:any[]) => any
+  sx?: Array<CSSProperties> | CSSProperties
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false | string
+}
