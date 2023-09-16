@@ -9,8 +9,12 @@ export type TInitExamCfg = TExamConfig & { file?:string }
 export type TInitExamOpts = TExamCliOpts & { id?:string }
 
 
-export const exam = async (cfg:TInitExamCfg, opts:TInitExamOpts) => {
-  const resetCLIEnvs = updateCLIEnvs(exam, opts, true)
+export const exam = async (
+  cfg:TInitExamCfg,
+  opts:TInitExamOpts,
+  forceEnvs?:boolean
+) => {
+  const resetCLIEnvs = updateCLIEnvs(exam, opts, forceEnvs)
   const locations = await loadFiles(cfg)
 
   let error:Error

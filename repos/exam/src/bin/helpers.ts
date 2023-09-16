@@ -157,8 +157,8 @@ export const updateCLIEnvs = (
   opts?.workerId && updateEnv(OriginalEnvs, `EXAM_WORKER_ID`, opts.workerId, force)
   exists(opts?.logLevel) && updateEnv(OriginalEnvs, `EXAM_LOG_LEVEL`, opts?.logLevel, force)
 
-  exam?.debug && updateEnv(OriginalEnvs, `EXAM_CLI_DEBUG`, 1, force)
-  exam?.verbose && updateEnv(OriginalEnvs, `EXAM_CLI_VERBOSE`, 1, force)
+  exists(exam?.debug) && updateEnv(OriginalEnvs, `EXAM_CLI_DEBUG`, opts.debug, force)
+  exists(exam?.verbose) && updateEnv(OriginalEnvs, `EXAM_CLI_VERBOSE`, opts.verbose, force)
   
   exam?.mode && updateEnv(OriginalEnvs, `EXAM_CLI_MODE`, exam.mode, force)
   exam?.workers && updateEnv(OriginalEnvs, `EXAM_CLI_WORKERS`, exam.workers, force)
