@@ -445,6 +445,9 @@ importers:
       '@keg-hub/jsutils':
         specifier: 9.8.3
         version: 9.8.3
+      chokidar:
+        specifier: 3.5.3
+        version: 3.5.3
     devDependencies:
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
@@ -767,6 +770,9 @@ importers:
       '@keg-hub/jsutils':
         specifier: 9.8.3
         version: 9.8.3
+      '@ltipton/parkin':
+        specifier: 6.3.0
+        version: 6.3.0
     devDependencies:
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
@@ -1168,9 +1174,6 @@ importers:
       axios:
         specifier: 1.4.0
         version: 1.4.0
-      chokidar:
-        specifier: 3.5.3
-        version: 3.5.3
       module-alias:
         specifier: 2.2.2
         version: 2.2.2

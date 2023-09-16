@@ -36,7 +36,8 @@
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
-    "@keg-hub/jsutils": "9.8.3"
+    "@keg-hub/jsutils": "9.8.3",
+    "chokidar": "3.5.3"
   },
   "devDependencies": {
     "@keg-hub/parse-config": ">=2.1.0",
