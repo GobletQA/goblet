@@ -10,9 +10,11 @@ import { mkdir } from 'node:fs/promises'
  * @returns {boolean} - True if the path exists
  */
 export const ensurePath = async (location:string) => {
-  const [mkErr, success] = await limbo(mkdir(location, { recursive: false }))
-  if (mkErr) throw mkErr
+  const [mkErr, success] = await limbo(mkdir(location, { recursive: true }))
+  // @ts-ignore
+  const code = mkErr?.code
+  if (mkErr && code && code !== `ENOENT`) throw mkErr
 
-  return true
+  return Boolean(success || !mkErr)
 }
 
