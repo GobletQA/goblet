@@ -1,7 +1,7 @@
 /**
-DISPLAY=0.0 PARKIN_LOG_JEST_SPEC=1 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --no-cache --root /goblet/repos/lancetipton --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --colors false
+DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --no-cache --root /goblet/repos/lancetipton --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --colors false
 
-DISPLAY=0.0 PARKIN_LOG_JEST_SPEC=1 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton
+DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton
 
  */
 
@@ -37,7 +37,13 @@ export type TExamUNIRunCfg = TCmdExecOpts & {
  * @object
  */
 const defOpts:TCmdExecOpts = {
-  env: {},
+  env: {
+    /**
+     * We have to force disable the safe replacer to ensure we get valid json output
+     * This way the passed in callback events can parse the JSON from stdout
+     */
+    GB_LOGGER_FORCE_DISABLE_SAFE: `1`,
+  },
   stdio: `pipe`,
   detached: false,
   shell: `/bin/bash`,
@@ -61,7 +67,7 @@ const buildCmdParams = (
   return deepMerge<SpawnOptionsWithoutStdio>(
     defOpts,
     cmdParams,
-    params
+    params,
   )
 }
 

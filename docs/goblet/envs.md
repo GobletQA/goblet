@@ -66,3 +66,12 @@
   * **Description** - Repo ref defined in a goblet config to use as a token alongside the `GB_LT_TOKEN_SECRET`
     * Can be public. Think of it as a public key
   * **Repos** - `latent`
+
+### Logger
+* `GB_LOGGER_FORCE_DISABLE_SAFE`
+  * **Description** - Force disables the safe-replacer in the logger
+    * If enabled all values including secrets will be logged
+    * This should almost never be used
+    * It exists allow the exam json reporter to log valid JSON to stdout
+    * A better solution would be to update the safe-replacer to not break json logged to stdout
+  * **Repos** - `logger`

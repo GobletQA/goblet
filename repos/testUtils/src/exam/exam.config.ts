@@ -43,6 +43,7 @@ const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
 const RunnerLoc = path.resolve(__dirname, './feature/Runner.ts')
 const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
 const CliReporterLoc = path.resolve(__dirname, './reporters/cli/CliReporter.ts')
+const JsonReporterLoc = path.resolve(__dirname, './reporters/json/JsonReporter.ts')
 const HtmlReporterLoc = path.resolve(__dirname, './reporters/html/HtmlReporter.ts')
 
 /**
@@ -62,6 +63,10 @@ const builtReporters = (
   examConfig:Partial<TExamConfig>,
   gobletOpts:TGobletTestOpts
 ) => {
+  
+  if(ENVS.GOBLET_RUN_FROM_UI)
+    return [[JsonReporterLoc, {}]]
+  
   const built = isArr(examConfig.reporters)
     ? examConfig.reporters
     : [

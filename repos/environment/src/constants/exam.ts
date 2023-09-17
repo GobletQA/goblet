@@ -61,3 +61,6 @@ export const BuiltTestResultFailed = {
   type: `describe` as EPlayerTestType,
   status: `failed` as EPlayerTestStatus,
 }
+
+
+export const ExamJsonReporterEvtSplit = `<--|-->GOBLET-EXAM-JSON-SPLIT<--|-->`

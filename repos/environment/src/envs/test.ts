@@ -12,7 +12,6 @@ const test = (general:TGenEnv) => {
     
     GOBLET_RUN_FROM_UI,
     GOBLET_RUN_FROM_CI,
-    PARKIN_LOG_JEST_SPEC,
 
     GOBLET_TEST_TIMEOUT,
 
@@ -32,6 +31,7 @@ const test = (general:TGenEnv) => {
     PARKIN_FEATURE_TAGS,
     GOBLET_FEATURE_TAGS=PARKIN_FEATURE_TAGS,
     GOBLET_FEATURE_NAME=PARKIN_FEATURE_NAME,
+    GB_LOGGER_FORCE_DISABLE_SAFE,
 
   } = process.env
 
@@ -45,7 +45,7 @@ const test = (general:TGenEnv) => {
 
     GOBLET_RUN_FROM_UI,
     GOBLET_RUN_FROM_CI,
-    PARKIN_LOG_JEST_SPEC,
+    GB_LOGGER_FORCE_DISABLE_SAFE,
 
     GOBLET_FEATURE_TAGS,
     GOBLET_FEATURE_NAME,

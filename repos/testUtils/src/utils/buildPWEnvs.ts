@@ -49,17 +49,16 @@ export const buildPWEnvs = (
   const {
     GOBLET_RUN_FROM_UI,
     GOBLET_RUN_FROM_CI,
-    PARKIN_LOG_JEST_SPEC
   } = ENVS
 
   // Check if running form the UI and set the display as well as spec result logging
   if(runFromUi || GOBLET_RUN_FROM_UI){
     addEnv(env, `DISPLAY`, `:0.0`)
-    addEnv(env, `PARKIN_LOG_JEST_SPEC`, 1)
+    addEnv(env, `GOBLET_RUN_FROM_UI`, 1)
   }
   else if(GOBLET_RUN_FROM_CI){
     env.NODE_ENV = `test`
-    addEnv(env, `PARKIN_LOG_JEST_SPEC`, PARKIN_LOG_JEST_SPEC)
+    addEnv(env, `GOBLET_RUN_FROM_CI`, 1)
     addEnv(env, `DEBUG`, params.debugBrowser)
     params.devtools && (env.GOBLET_DEV_TOOLS = true)
   }
