@@ -1,8 +1,27 @@
-import type { TTaskParams } from '../../types'
+import { ETestType } from '@GTU/Types'
+import { exists, uniqArr } from '@keg-hub/jsutils'
+import { addParam, addFlag } from '@gobletqa/shared/utils/cmdHelpers'
 
-import { ETestType } from '../../types'
-import { addFlag, addParam } from '@keg-hub/cli-utils'
-import { exists, uniqArr, noPropArr, toBool } from '@keg-hub/jsutils'
+export type TBuildTestArgs = {
+  base?:string
+  testCI?:boolean
+  context?:string
+  noTests?:boolean
+  testSync?:boolean
+  testDebug?:boolean
+  testConfig?:string
+  testCache?:boolean
+  testWorkers?:number
+  testTimeout?:number
+  testColors?:boolean
+  testVerbose?:boolean
+  suiteTimeout?:number
+  exitOnFailed?:boolean
+  testBail?:number|boolean
+  testRetry?:boolean|number
+  suiteRetry?:boolean|number
+  skipAfterFailed?:boolean
+}
 
 
 const buildTestMatch = (
@@ -29,9 +48,9 @@ const buildTestMatch = (
  * @param {string} testConfig - Path the a test config file to load
  */
 export const buildTestArgs = (
-  params:TTaskParams,
-  testConfig:string,
-  type:ETestType
+  params:TBuildTestArgs,
+  testConfig:string=params?.testConfig,
+  type:ETestType=ETestType.bdd
 ) => {
   const {
     base,

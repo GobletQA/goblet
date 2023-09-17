@@ -1,17 +1,17 @@
 import { TTask, TTaskActionArgs, TTaskParams } from '../../types'
+import type { TBuildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import type { TBuildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
 
+import { appRoot } from '../../paths'
 import { ETestType } from '../../types'
-
-
 import { isArr } from '@keg-hub/jsutils/isArr'
-
 import { sharedOptions, Logger } from '@keg-hub/cli-utils'
+import { getDebugEnv } from '@GTasks/utils/envs/getDebugEnv'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
-import { buildBddEnvs } from '@GTasks/utils/envs/buildBddEnvs'
-import { buildTestArgs } from '@GTasks/utils/test/buildTestArgs'
 import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
-// import {runExam} from '@GTasks/utils/exam/runExam'
+import { buildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
+import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
 
 const logPair = (name:string, item:string) => {
   Logger.log(
@@ -50,19 +50,17 @@ const runBdd = async (args:TTaskActionArgs) => {
   filterTaskEnvs(params, task)
   const testConfig = await getTestConfig(params, ETestType.feature)
 
-  // TODO: this will replace `runTestCmd` in the future
-  // const exitCode = await runExam({
-  //   params,
-  //   goblet,
-  //   config: testConfig,
-  //   type: ETestType.bdd,
-  // })
-
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
-    cmdArgs: buildTestArgs(params, testConfig, ETestType.bdd),
-    envsHelper: (browser) => buildBddEnvs(browser, params, ETestType.feature)
+    cmdArgs: buildTestArgs(params as TBuildTestArgs, testConfig, ETestType.bdd),
+    envsHelper: (browser) => {
+      const debugVal = getDebugEnv(params)
+      const props = {...params, cwd: appRoot} as TBuildBddEnvs
+      if(debugVal) props.debugBrowser = debugVal
+
+      return buildBddEnvs(props, browser, ETestType.feature, false,)
+    }
   })
 
   process.exit(exitCode)
