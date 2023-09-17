@@ -83,7 +83,7 @@ export const buildTestArgs = (
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))
-  cmdArgs.push(addFlag(`colors`, testColors))
+  cmdArgs.push(addParam(`colors`, testColors))
   cmdArgs.push(addFlag(`verbose`, testVerbose))
   cmdArgs.push(addParam(`workers`, testWorkers))
   // Use the inverse of because testCache default to true

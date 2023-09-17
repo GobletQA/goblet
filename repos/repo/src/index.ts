@@ -1,6 +1,7 @@
 export * from './repo'
 export * from './saveRepo'
 export * from './mountRepo'
+export * from './latentRepo'
 export * from './getFeatures'
 export * from './decryptRepo'
 export * from './ensureMounted'

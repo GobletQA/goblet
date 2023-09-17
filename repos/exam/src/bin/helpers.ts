@@ -120,7 +120,7 @@ const updateEnv = (
   value:any,
   force?:boolean
 ) => {
-  if(exists(ENVS[key]) && !force) return
+  if(!exists(value) || exists(ENVS[key]) && !force) return
 
   OriginalEnvs[key] = ENVS[key]
   ENVS[key] = isStr(value) ? value : `${JSON.stringify(value)}`
@@ -145,7 +145,7 @@ const updateLoggerLevel = (
 export const updateCLIEnvs = (
   exam:TExamConfig,
   opts:Partial<TExamCliOpts>=emptyObj,
-  force?:boolean
+  force:boolean=true
 ) => {
 
   let logCache = {} as Record<`level`, any>
@@ -155,6 +155,7 @@ export const updateCLIEnvs = (
   opts?.env && updateEnv(OriginalEnvs, `NODE_ENV`, opts.env, force)
   opts?.env && updateEnv(OriginalEnvs, `EXAM_CLI_ENV`, opts.env, force)
   opts?.workerId && updateEnv(OriginalEnvs, `EXAM_WORKER_ID`, opts.workerId, force)
+  exists(opts?.colors) && updateEnv(OriginalEnvs, `GOBLET_TEST_COLORS`, opts.colors, force)
   exists(opts?.logLevel) && updateEnv(OriginalEnvs, `EXAM_LOG_LEVEL`, opts?.logLevel, force)
 
   exists(exam?.debug) && updateEnv(OriginalEnvs, `EXAM_CLI_DEBUG`, opts.debug, force)

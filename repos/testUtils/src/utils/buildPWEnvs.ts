@@ -1,8 +1,9 @@
-import type { TEnvObject } from '@gobletqa/shared/utils/addEnv'
+import type { TEnvObject } from '@gobletqa/shared'
 import type { TGobletTestArtifactOption } from '@GTU/Types'
 
+import { addEnv } from '@gobletqa/shared'
+import { ENVS } from '@gobletqa/environment'
 import { EBrowserName, EBrowserType } from '@GTU/Types'
-import { addEnv } from '@gobletqa/shared/utils/addEnv'
 
 export type TBuildPWEnvs = {
   nodeEnv?:string
@@ -49,7 +50,7 @@ export const buildPWEnvs = (
     GOBLET_RUN_FROM_UI,
     GOBLET_RUN_FROM_CI,
     PARKIN_LOG_JEST_SPEC
-  } = process.env
+  } = ENVS
 
   // Check if running form the UI and set the display as well as spec result logging
   if(runFromUi || GOBLET_RUN_FROM_UI){

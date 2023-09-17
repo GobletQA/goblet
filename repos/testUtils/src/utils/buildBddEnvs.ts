@@ -1,8 +1,11 @@
 import type { TBuildPWEnvs } from './buildPWEnvs'
+import type { SpawnOptionsWithoutStdio } from 'child_process'
 import { EBrowserType, ETestType, EBrowserName } from '@GTU/Types'
 
 import { buildPWEnvs } from './buildPWEnvs'
-import { addEnv } from '@gobletqa/shared/utils/addEnv'
+
+import { addEnv } from '@gobletqa/shared'
+import { getBrowserType } from '@gobletqa/browser'
 
 export type TBuildBddEnvs = TBuildPWEnvs & {
   cwd?:string
@@ -10,6 +13,7 @@ export type TBuildBddEnvs = TBuildPWEnvs & {
   tags?:string
   filter?:string
   type?:ETestType
+  gobletToken?:string
   browser?:EBrowserName
 }
 
@@ -28,8 +32,12 @@ export const buildBddEnvs = (
   type:ETestType=params?.type || ETestType.feature,
   fromUi?:boolean
 ) => {
+  const browserType = getBrowserType(browser)
+
   // Add the default playwright envs
-  const env = buildPWEnvs({...params, browser}, {}, fromUi)
+  const env = buildPWEnvs({...params, browser: browserType}, {}, fromUi)
+
+  if(fromUi) addEnv(env, `GOBLET_TOKEN`, params?.gobletToken)
 
   // Add feature file specific envs
   addEnv(env, `GOBLET_CONFIG_BASE`, params.base)
@@ -37,5 +45,5 @@ export const buildBddEnvs = (
   addEnv(env, `GOBLET_FEATURE_NAME`, params.filter)
   addEnv(env, `GOBLET_TEST_TYPE`, type === `feature` ? `bdd` : type)
 
-  return { env, cwd: params?.cwd }
+  return { env, cwd: params?.cwd } as Partial<SpawnOptionsWithoutStdio>
 }
