@@ -29,17 +29,17 @@ describe('getDefinitions', () => {
   it('should call loadDefinitions with the provided repo, config, and cache parameters', async () => {
     const cache = true
 
-    const result = await getDefinitions(mockRepo, mockConfig, cache)
+    const result = await getDefinitions(mockRepo, cache)
 
     expect(result).toEqual({ definitions: defsMock })
-    expect(loadDefinitionsMock).toHaveBeenCalledWith(mockRepo, mockConfig, cache)
+    expect(loadDefinitionsMock).toHaveBeenCalledWith(mockRepo, cache)
   })
 
   it('should call loadDefinitions with the default cache value if not provided', async () => {
-    const result = await getDefinitions(mockRepo, mockConfig)
+    const result = await getDefinitions(mockRepo)
 
     expect(result).toEqual({ definitions: defsMock })
-    expect(loadDefinitionsMock).toHaveBeenCalledWith(mockRepo, mockConfig, true)
+    expect(loadDefinitionsMock).toHaveBeenCalledWith(mockRepo, true)
   })
 })
 

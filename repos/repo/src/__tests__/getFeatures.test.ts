@@ -33,7 +33,7 @@ const { getFeatures } = require('../getFeatures')
 describe('getFeatures', () => {
 
   it('should call getDefinitions and loadFeatures with the provided repo and config', async () => {
-    const result = await getFeatures(mockRepo, mockConfig)
+    const result = await getFeatures(mockRepo)
     expect(result).toEqual({ features: featuresMock, definitions: definitionsMock })
     expect(getDefinitionsMock).toHaveBeenCalledWith(mockRepo, mockConfig)
     expect(loadFeaturesMock).toHaveBeenCalledWith(mockRepo)

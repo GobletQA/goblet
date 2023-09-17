@@ -1,4 +1,4 @@
-import type { Repo } from '@gobletqa/workflows'
+import type { Repo } from '@gobletqa/repo'
 import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 

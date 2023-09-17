@@ -10,9 +10,9 @@ import type {
 
 
 import { PWPlay } from '@GSC/constants'
-import { Repo } from '@gobletqa/workflows'
 import { Logger } from '@GSC/utils/logger'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { getDefinitions, Repo } from '@gobletqa/repo'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { loadRepoFromSocket } from '@GSC/utils/loadRepoFromSocket'
@@ -53,6 +53,8 @@ const handleStartPlaying = async (
 
   const { action, browser } = data
   const browserConf = joinBrowserConf(browser, app)
+  await getDefinitions(repo, false)
+
   const player = await playBrowser({
     repo,
     action,

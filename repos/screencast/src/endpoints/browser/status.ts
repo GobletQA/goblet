@@ -1,4 +1,4 @@
-import type { Repo } from '@gobletqa/workflows'
+import type { Repo } from '@gobletqa/repo'
 import type * as core from "express-serve-static-core"
 import type { Response, Request } from 'express'
 

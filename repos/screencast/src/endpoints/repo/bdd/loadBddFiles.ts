@@ -6,10 +6,7 @@ import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj'
 
 export const loadBddFiles = async (req:Request, res:Response) => {
-  const { definitions, features } = await getFeatures(
-    res.locals.repo,
-    req.app.locals.config
-  )
+  const { definitions, features } = await getFeatures(res.locals.repo)
 
   return apiRes(
     res,

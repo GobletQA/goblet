@@ -9,7 +9,6 @@ import expect from 'expect'
 import { unset } from '@keg-hub/jsutils/unset'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { getDefinitions } from '@gobletqa/workflows'
 import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
 
 import {
@@ -153,7 +152,6 @@ export const setupParkin = async (Runner:CodeRunner) => {
   const PK = Runner?.player?.repo?.parkin
   if(!PK) throw new Error(`Repo is missing a parkin instance`)
 
-  await getDefinitions(Runner?.player?.repo, undefined, false)
   return PK
 }
 

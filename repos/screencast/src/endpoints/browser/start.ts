@@ -1,5 +1,5 @@
+import type { Repo } from '@gobletqa/repo'
 import type { Response, Request } from 'express'
-import type { Repo } from '@gobletqa/workflows'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'

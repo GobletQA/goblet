@@ -1,4 +1,4 @@
-import type { Repo, TDefGobletConfig } from '@GRP/types'
+import type { Repo } from '@GRP/types'
 
 import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
 
@@ -7,9 +7,8 @@ import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
  */
 export const getDefinitions = async (
   repo:Repo,
-  config?:TDefGobletConfig,
   cache:boolean=true
 ) => {
-  const definitions = await loadDefinitions(repo, config as TDefGobletConfig, cache)
+  const definitions = await loadDefinitions(repo, cache)
   return { definitions }
 }
