@@ -11,8 +11,6 @@ import type {
 import { validateMatch } from '@GBM/utils/decorations/validateMatch'
 import { createDecoration } from '@GBM/utils/decorations/createDecoration'
 
-
-
 type TUpsertDeco = {
   location:string,
   meta:TDecorationMeta

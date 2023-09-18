@@ -36,7 +36,7 @@ export const validateMatch = ({
   const { search } = decoration
   if(!search) return console.warn(`Can not add decoration, missing search text`, decoration, meta)
 
-  return findTextMatch({
+  const found = findTextMatch({
     meta,
     model,
     search,
@@ -44,11 +44,14 @@ export const validateMatch = ({
     decorationList,
     compare: (match) => {
       const id = `${match.range.startLineNumber}-${search}`
-      // When action is start
-      // Return the first match found that does not exist
-      return meta.action === `start`
-        ? !decorationList[id] ? match : false
-        : rangesEqual(decorationList[id].range, match.range) ? match : false
+
+      // When action is start, Return the first match found that does not exist
+      if(meta.action === `start`)
+        return !decorationList[id] ? match : false
+
+      return rangesEqual(decorationList[id]?.range, match?.range) ? match : false
     }
-  }) || console.warn(`Could not find match to search text`, search, location, meta)
+  })
+
+  return found
 }
