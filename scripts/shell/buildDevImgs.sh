@@ -27,23 +27,13 @@ buildBaseImg(){
 
 # Builds the Goblet Action image
 # Then pushes it to th Github container registry
-buildGobletBackend(){
+buildGobletApp(){
   echo ""
-  gb_message "Building Goblet Backend Image"
-  echo ""
-
-  pnpm doc build be push
-}
-
-
-# Builds the Goblet Action image
-# Then pushes it to th Github container registry
-buildGobletScreencast(){
-  echo ""
-  gb_message "Building Goblet Screencast Image"
+  gb_message "Building Goblet App Image"
   echo ""
 
-  pnpm doc build sc push
+  pnpm doc build app push
+  pnpm doc pull app
 }
 
 # Entry point for building Docker Action Images
@@ -51,8 +41,7 @@ __main__(){
   gb_load_stdio
 
   buildBaseImg
-  buildGobletBackend
-  buildGobletScreencast
+  buildGobletApp
 
   echo ""
   gb_success "Finished building Images"

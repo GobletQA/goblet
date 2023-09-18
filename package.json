@@ -22,6 +22,7 @@
   ],
   "scripts": {
     "bai": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildActionImgs.sh",
+    "bdi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildDevImgs.sh",
     "bgi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildGobletImgs.sh",
     "build": "pnpm -r build",
     "build:docker": "pnpm -r build:docker",
