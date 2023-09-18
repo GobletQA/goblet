@@ -1,8 +1,8 @@
 import type { TFolder, TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
+import { emptyObj } from '@keg-hub/jsutils'
 import { DirectoryItem } from './DirectoryItem'
-import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { styles } from '@GBM/utils/file/fileHelpers'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
 import { DirectoryEdit, TreeItemContainer } from './FileTree.styled'
@@ -54,7 +54,10 @@ export const TreeDirectory = (props:TTreeDirectory) => {
       parentPath={parent.path}
       className='goblet-editor-file-item-row'
     >
-      <Arrow collapse={!showChild} />
+      <Arrow
+        sx={styles.iconArrow}
+        collapse={!showChild}
+      />
       {showChild
         ? <FolderOpenIcon styles={styles.iconFolder} />
         : <FolderIcon styles={styles.iconFolder} />

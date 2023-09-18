@@ -3,7 +3,7 @@ import type { RefObject, Dispatch, SetStateAction } from 'react'
 
 
 import { useCallback, useMemo } from 'react'
-import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { emptyObj } from '@keg-hub/jsutils'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
 import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
 import {
