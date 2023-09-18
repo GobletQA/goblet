@@ -48,6 +48,7 @@
   "dependencies": {
     "@gobletqa/browser": "workspace:*",
     "@gobletqa/environment": "workspace:*",
+    "@gobletqa/exam": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
     "@gobletqa/joker": "workspace:*",
     "@gobletqa/repo": "workspace:*",

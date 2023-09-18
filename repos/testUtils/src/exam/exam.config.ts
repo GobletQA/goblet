@@ -12,16 +12,16 @@
 // Must load this first because it loads the alias
 import { aliases } from './setupTestAliases'
 
-import type { TExamConfig } from '@gobletqa/exam'
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TBrowserConf, TGobletConfig, TGobletTestOpts } from '../types'
+import type { TExamConfig, TExArrOptsMap } from '@gobletqa/exam'
 
 import path from 'path'
 import { isArr } from '@keg-hub/jsutils'
 import { EExTestMode } from '@gobletqa/exam'
 import { ENVS } from '@gobletqa/environment'
 import { getWorld } from '@gobletqa/repo/world'
-import { getContextOpts } from '@gobletqa/browser'
+import { getTimeouts } from '@GTU/Utils/getTimeouts'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { flatUnion} from '@keg-hub/jsutils/flatUnion'
@@ -29,11 +29,10 @@ import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { getParkinOptions } from '@GTU/Parkin/parkinTestInit'
 import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
 import { buildTestMatchFiles } from '@GTU/Utils/buildTestMatchFiles'
-import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
-
-import { getTimeouts } from '@GTU/Utils/getTimeouts'
-import { taskEnvToBrowserOpts } from '@gobletqa/browser'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
+import { taskEnvToBrowserOpts, getContextOpts } from '@gobletqa/browser'
+import { ExamJsonReporterEvtSplit } from "@gobletqa/environment/constants"
+import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
 // Default to 20 seconds test timeout
 // Default to 1hr global suite timeout
@@ -62,20 +61,23 @@ export type TExamCfgArgs = {
 const builtReporters = (
   examConfig:Partial<TExamConfig>,
   gobletOpts:TGobletTestOpts
-) => {
-  
-  if(ENVS.GOBLET_RUN_FROM_UI)
-    return [[JsonReporterLoc, {}]]
-  
+):TExArrOptsMap[] => {
+
   const built = isArr(examConfig.reporters)
     ? examConfig.reporters
-    : [
-        [CliReporterLoc, {}],
-        [HtmlReporterLoc, {
-          saveReport: gobletOpts.saveReport,
-          saveScreenshot: gobletOpts.saveScreenshot
-        }]
-      ]
+    : ENVS.GOBLET_RUN_FROM_UI
+      ? [
+          [JsonReporterLoc, {
+            logSplit: ExamJsonReporterEvtSplit,
+          }]
+        ]
+      : [
+          [CliReporterLoc, {}],
+          [HtmlReporterLoc, {
+            saveReport: gobletOpts.saveReport,
+            saveScreenshot: gobletOpts.saveScreenshot,
+          }]
+        ]
 
   return ([...built, [EventReporterLoc, {}]]).filter(Boolean)
 }
@@ -123,7 +125,10 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
     aliases: {...aliases, ...examConfig?.aliases},
     ...getTimeouts({examConfig, defs: defTimeouts }),
     reporters: builtReporters(examConfig, gobletOpts),
-    extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
+    extensions: flatUnion([
+      ...ensureArr(examConfig?.extensions),
+      `.feature`
+    ]),
     testMatch: examConfig.testMatch
       || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
       || emptyArr,

@@ -14,12 +14,12 @@ import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
 export type TRunTestCmd = {
   cmdArgs: string[]
   params:TTaskParams
-  envsHelper: (browser:EBrowserType) => { env: TEnvObject }
+  envsHelper: (browser:EBrowserType) => Partial<SpawnOptionsWithoutStdio>
 }
 
 export type TBrowserCmd = {
   cmdArgs:string[]
-  cmdOpts: { env: TEnvObject }
+  cmdOpts: Partial<SpawnOptionsWithoutStdio>
 }
 
 export type TResp = Record<`exitCode`, any>

@@ -1,10 +1,9 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type {
-  TBrowserConf,
   TBrowserPage,
   TGobletConfig,
-  TPWComponents,
   TBrowserContext,
+  TSetBrowserDefaults,
   TBrowserContextOpts,
 } from '@GBB/types'
 
@@ -18,14 +17,6 @@ import {
   saveContextCookie,
   saveContextStorageState,
 } from '@gobletqa/browser'
-
-export type TSetBrowserDefaults = {
-  headers?:boolean
-  url?:boolean|string
-  config:TGobletConfig
-  browserConf:TBrowserConf
-  pwComponents?:TPWComponents
-}
 
 export type TSetContextSettings = {
   headers?:boolean

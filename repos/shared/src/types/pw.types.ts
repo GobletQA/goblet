@@ -1,5 +1,5 @@
 
-import type { Repo } from './repo.types'
+import type { Repo, TGobletConfig } from './repo.types'
 import type { TFileModel } from './models.types'
 import type { Automate } from '@gobletqa/browser'
 import type { TSocketEvtCBProps } from './socket.types'
@@ -166,6 +166,7 @@ export type TSetBrowserDefaults = {
   repo:Repo
   headers?:boolean
   url?:boolean|string
+  config:TGobletConfig
   browserConf:TBrowserConf
   pwComponents?:TPWComponents
 }

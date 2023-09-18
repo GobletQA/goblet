@@ -1,18 +1,15 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
-import type { TExEventData } from "@gobletqa/exam"
-import type {
-  SocketManager,
-  TUserAutomateOpts,
-  TSocketEvtCBProps,
-} from '@GSC/types'
+import type { TExTestEventMeta, TExEventData } from "@gobletqa/exam"
+import type { TSocketEvtCBProps } from '@GSC/types'
 
 import path from 'path'
 import { Logger } from '@GSC/utils/logger'
 import { latentRepo } from '@gobletqa/repo'
 import { ENVS } from '@gobletqa/environment'
-import { runExamFromUi } from '@gobletqa/test-utils/exam/runExamFromUi'
 import { loadRepoFromSocket } from '@GSC/utils/loadRepoFromSocket'
+import { runExamFromUi } from '@gobletqa/test-utils/exam/runExamFromUi'
+import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 import { InternalPaths, ExamJsonReporterEvtSplit } from '@gobletqa/environment/constants'
 
 type TLocEvt = (TExEventData & { location:string })
@@ -23,38 +20,56 @@ const testConfig = path.join(
 )
 
 const parseEventData = (data:string) => {
+  const events:TExTestEventMeta[] = []
+  if(!data.includes(ExamJsonReporterEvtSplit)) return events
+
   ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `1`
-  const events:TLocEvt[] = []
+  data.split(ExamJsonReporterEvtSplit)
+    .forEach((evt:string) => {
+      const cleaned = evt.trim()
+      if(!cleaned) return
 
-  data.split(ExamJsonReporterEvtSplit).forEach((evt:string) => {
-    const cleaned = evt.trim()
-    if(!cleaned) return
-
-    try {
-      const parsed = JSON.parse(evt)
-      events.push(parsed)
-    }
-    catch(err){
-      // TODO: clean this up
-      console.log(``)
-      console.log(`------- ERROR parsing to JSON -------`)
-      console.log(evt)
-      console.log(`------- ERROR parsing to JSON -------`)
-      console.log(``)
-    }
-  })
+      try {
+        const parsed = JSON.parse(evt)
+        events.push(parsed)
+      }
+      catch(err){
+        Logger.empty()
+        Logger.error(`[JSON Event Error] - Error parsing JSON event`)
+        Logger.pair(`[JSON Event]`, evt)
+        Logger.log(`------`)
+        Logger.empty()
+      }
+    })
   ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
 
   return events
 }
 
-const onExamRun = async (app:Express, {
+
+const handleParsedEvts = ({
   data,
   user,
   socket,
   Manager,
 }:TSocketEvtCBProps) => {
+  // TODO: send event data to frontend // full test html reporter
+  return (evts:TExTestEventMeta[]) => {
+    const formatted = evts.map(evt => formatTestEvt(evt))
+    console.log(require('util').inspect(formatted, false, null, true))
+  }
+}
+
+const onExamRun = async (app:Express, args:TSocketEvtCBProps) => {
+  const {
+    data,
+    user,
+    socket,
+    Manager,
+  } = args
+  
   const { opts } = data
+  const handleEvts = handleParsedEvts(args)
 
   const { repo } = await loadRepoFromSocket({
     user,
@@ -76,12 +91,12 @@ const onExamRun = async (app:Express, {
     },
     {
       onStdOut: (data:string) => {
-        // TODO: send event data to frontend // full test html reporter
         const events = parseEventData(data)
+        events?.length && handleEvts(events)
       },
       onStdErr: (data:string) => {
-        // TODO: send event data to frontend // full test html reporter
         const events = parseEventData(data)
+        events?.length && handleEvts(events)
       },
       onError: (error:Error) => {
         ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined

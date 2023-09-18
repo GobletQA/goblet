@@ -8,17 +8,16 @@
 } from "@gobletqa/exam"
 
 import { Logger } from "@gobletqa/exam"
-import { ExamJsonReporterEvtSplit } from "@gobletqa/environment/constants"
 
 export type TLocEvt = (TExEventData & { location:string })
 
-const logEvt = (evt:TExamEvt<TLocEvt>) => {
-  Logger.stdout(`${JSON.stringify(evt)}${ExamJsonReporterEvtSplit}`)
+const logEvt = (evt:TExamEvt<TLocEvt>, logSplit:string) => {
+  Logger.stdout(`${JSON.stringify(evt)}${logSplit}`)
 }
 
 export class FeatureJsonReporter implements IExamReporter {
   rootDir:string
-  hasStepErr?:boolean
+  logSplit?:string
 
   constructor(
     examCfg:TExamConfig,
@@ -26,14 +25,15 @@ export class FeatureJsonReporter implements IExamReporter {
     reporterContext?:TEXInterReporterContext
   ) {
     this.rootDir = examCfg.rootDir
+    this.logSplit = cfg?.logSplit
   }
 
-  onTestFileStart = (evt:TExamEvt<TLocEvt>) => logEvt(evt)
-  onTestFileResult = (evt:TExamEvt<TLocEvt>) => logEvt(evt)
-  onSuiteStart = (evt:TExamEvt<TLocEvt>) => logEvt(evt)
-  onTestStart = (evt:TExamEvt<TLocEvt>) => logEvt(evt)
-  onTestResult = (evt:TExamEvt<TLocEvt>) => logEvt(evt)
-  onSuiteResult = (evt:TExamEvt<TLocEvt>) => logEvt(evt)
+  onTestFileStart = (evt:TExamEvt<TLocEvt>) => logEvt(evt, this.logSplit)
+  onTestFileResult = (evt:TExamEvt<TLocEvt>) => logEvt(evt, this.logSplit)
+  onSuiteStart = (evt:TExamEvt<TLocEvt>) => logEvt(evt, this.logSplit)
+  onTestStart = (evt:TExamEvt<TLocEvt>) => logEvt(evt, this.logSplit)
+  onTestResult = (evt:TExamEvt<TLocEvt>) => logEvt(evt, this.logSplit)
+  onSuiteResult = (evt:TExamEvt<TLocEvt>) => logEvt(evt, this.logSplit)
 
 }
 

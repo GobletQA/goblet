@@ -24,7 +24,11 @@ import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
 import { checkInternalPWContext } from './checkInternalPWContext'
 
-
+const logMsg = (msg:string, method:string=`verbose`, ...rest:any[]) => {
+  !ENVS.GOBLET_RUN_FROM_CI
+    && !ENVS.GOBLET_RUN_FROM_UI
+    && Logger[method](msg, ...rest)
+}
 export class Browser {
 
   browser:TBrowser
@@ -56,13 +60,13 @@ export class Browser {
 
       const pages = context.pages()
       
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+      logMsg(`getPage - Found ${pages.length} pages open on the context`)
       
       const hasPages = Boolean(pages.length)
       const hasMultiplePages = pages.length > 1
 
       if(hasMultiplePages){
-        Logger.verbose(`getPage - Closing extra pages on the context`)
+        logMsg(`getPage - Closing extra pages on the context`)
         await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
       }
 
@@ -73,7 +77,7 @@ export class Browser {
       // To allow consecutive calls on start up
       if(!hasPages && this.creatingPage)
         return new Promise((res, rej) => {
-          Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
+          logMsg(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`, `info`)
           setTimeout(() => res(this.#getPage({
             initialUrl,
             browserConf
@@ -104,7 +108,7 @@ export class Browser {
       this.creatingPage = false
       const browserType = browser.browserType?.().name?.()
 
-      if(!ENVS.GOBLET_RUN_FROM_CI){
+      if(!ENVS.GOBLET_RUN_FROM_CI && !ENVS.GOBLET_RUN_FROM_UI){
         hasPages
           ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
           : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
@@ -140,7 +144,7 @@ export class Browser {
       const hasMultipleContexts = contexts.length > 1
 
       if(hasMultipleContexts){
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Closing extra contexts on the browser`)
+        logMsg(`getContext - Closing extra contexts on the browser`)
         await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
       }
 
@@ -151,25 +155,24 @@ export class Browser {
         contextOpts: browserConf.context,
       })
       
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`Context Options`, options)
+      logMsg(`Context Options`, `verbose`, options)
 
       if(hasContexts){
         context = contexts[0] as TBrowserContext
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+        logMsg(`getContext - Found existing context on browser ${browserConf.type}`)
       }
       else {
         context = await browser.newContext(options) as TBrowserContext
         context.__contextGoblet = { options }
 
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+        logMsg(`getContext - New context created for browser ${browserConf.type}`)
 
         Automate.bind({ parent: context })
       }
 
     }
     else {
-      !ENVS.GOBLET_RUN_FROM_CI
-        && Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+      logMsg(`getContext - Found Persistent context for browser ${browserConf.type}`)
     }
 
     return { context, browser }

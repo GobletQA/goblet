@@ -1,7 +1,7 @@
 /**
-DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --no-cache --root /goblet/repos/lancetipton --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --colors false
+GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --no-cache --root /goblet/repos/lancetipton --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --colors false
 
-DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton
+GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton --tags @whitelist
 
  */
 
