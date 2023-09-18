@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react'
-import type { TEditorRefHandle, TDecoration } from '@gobletqa/monaco'
+import type { TEditorRefHandle, TDecoration, TDecorationMeta } from '@gobletqa/monaco'
 import type {
   TRepoState,
   TPlayerResEvent,
@@ -97,8 +97,8 @@ export const useDecorations = ({
     })
 
     decos.length
-      ? decoration?.update(relative, decos.concat([dec]), meta)
-      : decoration?.add(relative, dec, meta)
+      ? decoration?.update(relative, decos.concat([dec]), meta as TDecorationMeta)
+      : decoration?.add(relative, dec, meta as TDecorationMeta)
   })
 
 }
