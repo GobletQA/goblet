@@ -1,4 +1,4 @@
- import type { TExamEvt, TLocEvtData } from "@gobletqa/exam"
+ import type { TExamEvt, TExEventData } from "@gobletqa/exam"
 import type { TRmCB } from '@GTU/Exam/reporters/event/EventReporter'
 import type {
   ETestType,
@@ -62,7 +62,7 @@ export class VideoRecorder {
 
     this.evtHandlers.push(evtReporter.on(
       ExamEvtNames.rootSuiteDone,
-      async (evt:TExamEvt<TLocEvtData>) => await this.saveVideo(evt, this.page)
+      async (evt:TExamEvt<TExEventData>) => await this.saveVideo(evt, this.page)
     ))
 
   }
@@ -143,7 +143,7 @@ export class VideoRecorder {
    *
    */
   saveVideo = async (
-    evt?:TExamEvt<TLocEvtData>,
+    evt?:TExamEvt<TExEventData>,
     page:TBrowserPage=this.page || global.page
   ) => {
     if(this.disabled) return false

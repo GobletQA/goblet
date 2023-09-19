@@ -29,7 +29,7 @@ const RenderSidebar = (props:TRaceSidebar) => {
       style={style}
       Panels={Panels}
       PrePanels={PrePanels}
-      className='goblet-editor-sidebar-main'
+      className='gb-editor-sidebar-main'
     >
       {children}
     </GBSidebar>

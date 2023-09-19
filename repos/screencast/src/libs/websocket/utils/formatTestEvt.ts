@@ -49,5 +49,5 @@ export const formatTestEvt = (event:TPlayerTestEventMeta|TExTestEventMeta) => {
   if(event.name === PWPlay.playError && event.message)
     event.message = filterErrMessage(data as TExEventData, PWEventErrorLogFilter)
 
-  return {...event, data}
+  return {...event, data, location: event.location || data?.location }
 }

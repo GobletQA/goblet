@@ -16,7 +16,15 @@ export const TreeItemName = styled(Span)`
   line-height: 24px;
 `
 
-export const DirectoryEdit = styled(Box)``
+export const TreeEditItem = styled(Box)`
+  flex: 1;
+  outline: none;
+  border: 1px solid var(--goblet-editor-wordHighlightBorder);
+
+  :focus {
+    cursor: text;
+  }
+`
 
 export const TreeItemContainer = styled(Box, {
    shouldForwardProp: (prop) => prop !== `parentPath`
@@ -28,12 +36,12 @@ export const TreeItemContainer = styled(Box, {
       : `${(parentPath.split(`/`).length + 1) *  4}px`
   };
 
-  &.goblet-editor-file-item-row-focused {
+  &.gb-editor-file-item-row-focused {
     background-color: var(--goblet-list-focusBackground);
     color: var(--goblet-list-focusForeground);
   }
 
-  &.goblet-editor-file-item-row {
+  &.gb-editor-file-item-row {
     display: flex;
     cursor: pointer;
     padding-top: 1px;
@@ -42,7 +50,7 @@ export const TreeItemContainer = styled(Box, {
     align-items: center;
     padding-bottom: 1px;
 
-    & .goblet-editor-file-item-icon {
+    & .gb-editor-file-item-icon {
       visibility: hidden;
       color: var(--goblet-editor-foreground);
       
@@ -60,7 +68,7 @@ export const TreeItemContainer = styled(Box, {
         background-color: var(--goblet-list-hoverBackground);
       }
       
-      & .goblet-editor-file-item-icon {
+      & .gb-editor-file-item-icon {
         visibility: visible;
       }
       
@@ -68,3 +76,7 @@ export const TreeItemContainer = styled(Box, {
   }
 
 `)
+
+export const TreeFileContentContainer = styled(Box)`
+  user-select: none;
+`

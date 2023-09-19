@@ -5,7 +5,7 @@ import { emptyObj } from '@keg-hub/jsutils'
 import { DirectoryItem } from './DirectoryItem'
 import { styles } from '@GBM/utils/file/fileHelpers'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
-import { DirectoryEdit, TreeItemContainer } from './FileTree.styled'
+import { TreeEditItem, TreeItemContainer } from './FileTree.styled'
 import {
   Arrow,
   FolderIcon,
@@ -52,7 +52,7 @@ export const TreeDirectory = (props:TTreeDirectory) => {
     <TreeItemContainer
       onClick={fileClick}
       parentPath={parent.path}
-      className='goblet-editor-file-item-row'
+      className='gb-editor-file-item-row'
     >
       <Arrow
         sx={styles.iconArrow}
@@ -72,14 +72,14 @@ export const TreeDirectory = (props:TTreeDirectory) => {
           onDeleteFolder={onDeleteFolder}
         />
       ) : (
-        <DirectoryEdit
+        <TreeEditItem
           ref={nameRef}
           contentEditable
           onBlur={fileBlur}
           spellCheck={false}
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
-          className='goblet-editor-file-item-new'
+          className='gb-editor-file-item-edit'
           style={nameConflict ? styles.conflictFolder : emptyObj}
         />
       )}

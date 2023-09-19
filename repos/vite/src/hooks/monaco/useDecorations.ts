@@ -62,7 +62,8 @@ export const useDecorations = ({
 
   useOnEvent<TPlayerResEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
     const { location } = event
-    
+    if(!location) return
+
     const relative = rmRootFromLoc(location, rootPrefix)
     const decoration = editorRef?.current?.decoration
     relative && decoration?.clear(relative)
@@ -76,8 +77,9 @@ export const useDecorations = ({
 
   useOnEvent<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
     const id = event?.data?.id
+    const location = event?.location
     const decoration = editorRef?.current?.decoration
-    if(!decoration || !id) return
+    if(!decoration || !id || !location) return
 
     updateRefs({
       event,
@@ -87,7 +89,7 @@ export const useDecorations = ({
     })
 
     const dec = buildDecoration<TDecoration>({ event: event.data, editor: EEditorType.code })
-    const relative = rmRootFromLoc(event.location, rootPrefix)
+    const relative = rmRootFromLoc(location, rootPrefix)
     const meta = { action: event.data.action }
     const decos = checkFailedSpec<TDecoration>({
       event,

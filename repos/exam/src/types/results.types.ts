@@ -7,11 +7,12 @@ export type TRunResultMeta = {
   file?:Partial<TExFileModelDef>
 }
 
-export type TRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
+export type TExRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
+  location?:string
   type:EPlayerTestType
   metaData?:TRunResultMeta
-  describes?:TRunResult[]
-  tests?:TRunResult[]
+  describes?:TExRunResult[]
+  tests?:TExRunResult[]
 }
 
 export enum EPlayerTestAction {
@@ -44,28 +45,28 @@ export type TEventParent = EAstObject.step
   | EAstObject.rule
   | EAstObject.feature
 
-export type TExTestStart = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TExTestStart = Omit<TExRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
   action:EPlayerTestAction.start
 }
 
-export type TExTestDone = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TExTestDone = Omit<TExRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
   action:EPlayerTestAction.end
 }
 
-export type TExTestResult = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TExTestResult = Omit<TExRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
   action:EPlayerTestAction.test
 }
 
-export type TExTestEvent = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TExTestEvent = Omit<TExRunResult, `type`|`action`|`status`> & {
   type:EPlayerTestType
   action:EPlayerTestAction
   status?:EPlayerTestStatus
@@ -78,7 +79,7 @@ export type TExEventData = TExTestEvent
   | TExTestResult
   | TExTestSuiteDone
   | TExTestSuiteFinished
-  | TRunResult
+  | TExRunResult
   | undefined
 
 

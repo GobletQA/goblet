@@ -1,4 +1,3 @@
-import type { TLocEvtData } from "@gobletqa/exam"
 import { colors } from './theme'
 
 const propMap = {

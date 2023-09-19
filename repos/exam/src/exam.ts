@@ -1,4 +1,4 @@
-import type { TInitExamCfg, TInitExamOpts, TRunResult } from '@GEX/types'
+import type { TInitExamCfg, TInitExamOpts, TExRunResult } from '@GEX/types'
 
 import { updateCLIEnvs } from './bin/helpers'
 import { loadFiles } from '@GEX/utils/loadFiles'
@@ -11,15 +11,15 @@ export const exam = async (
   opts:TInitExamOpts,
   forceEnvs?:boolean
 ) => {
-  const resetCLIEnvs = updateCLIEnvs(exam, opts, forceEnvs)
+  const resetCLIEnvs = updateCLIEnvs(cfg, opts, forceEnvs)
   const locations = await loadFiles(cfg)
 
   let error:Error
-  let result:TRunResult[]
+  let result:TExRunResult[]
 
   try {
     result = await initPipeline({
-      config: exam,
+      config: cfg,
       testMatch: locations,
       id: opts?.id || nanoid(),
     })

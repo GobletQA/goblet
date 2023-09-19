@@ -14,6 +14,7 @@ import {
 } from '@gobletqa/components'
 
 import {
+  TreeEditItem,
   TreeItemName,
   TreeItemContainer,
   TreeItemActionsContainer
@@ -62,9 +63,9 @@ export const TreeFile = ({
 
   const classNames = useMemo(() => {
     return [
-      `goblet-editor-file-item-row`,
+      `gb-editor-file-item-row`,
       currentPath === file.path &&
-        `goblet-editor-file-item-row-focused`,
+        `gb-editor-file-item-row-focused`,
     ].filter(Boolean).join(` `).trim()
   }, [currentPath, file.path])
 
@@ -92,7 +93,7 @@ export const TreeFile = ({
               <PencilIcon
                 onClick={onEdit}
                 styles={styles.altIcon}
-                className='goblet-editor-file-item-icon'
+                className='gb-editor-file-item-icon'
               />
             </Tooltip>
             <Tooltip
@@ -102,20 +103,20 @@ export const TreeFile = ({
               <TrashIcon
                 onClick={onDelete}
                 styles={styles.altIconLast}
-                className='goblet-editor-file-item-icon'
+                className='gb-editor-file-item-icon'
               />
             </Tooltip>
           </TreeItemActionsContainer>
         </>
       ) : (
-        <div
+        <TreeEditItem
           ref={nameRef}
           contentEditable
           onBlur={fileBlur}
           spellCheck={false}
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
-          className='goblet-editor-file-item-new'
+          className='gb-editor-file-item-edit'
           style={nameConflict ? styles.conflictFile : emptyObj}
         />
       )}

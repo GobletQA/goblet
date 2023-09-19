@@ -4,6 +4,7 @@ import { TreeFile } from './TreeFile'
 import { TreeDirectory } from './TreeDirectory'
 import { useFileHooks } from '../../hooks/file/useFileHooks'
 import { useFileCallbacks } from '../../hooks/file/useFileCallbacks'
+import { TreeFileContentContainer } from './FileTree.styled'
 
 export const File = (props:TFileProps) => {
   const {
@@ -76,7 +77,7 @@ export const File = (props:TFileProps) => {
         />
       )
     : (
-        <div className='goblet-editor-file-item'>
+        <TreeFileContentContainer className='gb-editor-file-item'>
           {(file as TFolder)?._isDirectory && (
             <TreeDirectory
               nameRef={nameRef}
@@ -123,6 +124,6 @@ export const File = (props:TFileProps) => {
               ))}
             </div>
           )}
-        </div>
+        </TreeFileContentContainer>
       )
 }

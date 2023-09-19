@@ -1,4 +1,4 @@
- import type { TExamEvt, TLocEvtData } from "@gobletqa/exam"
+ import type { TExamEvt, TExEventData } from "@gobletqa/exam"
  import type { TRmCB } from '@GTU/Exam/reporters/event/EventReporter'
 import type {
   ETestType,
@@ -52,7 +52,7 @@ export class TraceRecorder {
 
     this.evtHandlers.push(evtReporter.on(
       ExamEvtNames.rootSuiteDone,
-      async (evt:TExamEvt<TLocEvtData>) => await this.stop(evt, this.context)
+      async (evt:TExamEvt<TExEventData>) => await this.stop(evt, this.context)
     ))
   }
 
@@ -83,7 +83,7 @@ export class TraceRecorder {
    * @returns {Void}
    */
   stop = async (
-    evt?:TExamEvt<TLocEvtData>,
+    evt?:TExamEvt<TExEventData>,
     context:TBrowserContext=this.context || global.context,
   ) => {
 

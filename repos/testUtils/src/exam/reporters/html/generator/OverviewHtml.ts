@@ -1,4 +1,4 @@
-import type { TLocEvtData, TRunResult } from "@gobletqa/exam"
+import type { TExEventData } from "@gobletqa/exam"
 import {
   colors,
   margin,
@@ -17,16 +17,16 @@ type TStatsObj = {
   skippedParents?:number
 }
 
-const loopParent = (parent:TRunResult, stats:TStatsObj) => {
+const loopParent = (parent:TExEventData, stats:TStatsObj) => {
   parent?.tests?.length
-    && parent?.tests?.forEach((test:TRunResult) => {
+    && parent?.tests?.forEach((test:TExEventData) => {
         if(test.status === `skipped`) stats.skippedSteps += 1
         else if(test.passed) stats.passedSteps += 1
         else stats.failedSteps += 1
       })
 
   parent?.describes?.length
-    && parent.describes.forEach((describe:TRunResult) => {
+    && parent.describes.forEach((describe:TExEventData) => {
       if(describe.status === `skipped`) stats.skippedParents += 1
       else if(describe.passed) stats.passedParents += 1
       else stats.failedParents += 1
@@ -62,7 +62,7 @@ const countStats = (features: any[]): any => {
 }
 
 
-const getStats = (data:TLocEvtData) => {
+const getStats = (data:TExEventData) => {
   const stats = countStats(data.describes)
   return {
     failed: {
@@ -138,7 +138,7 @@ const overviewStyle = () => {
   `
 }
 
-export const OverviewHtml = (data:TLocEvtData) => {
+export const OverviewHtml = (data:TExEventData) => {
   const {
     failed,
     passed,

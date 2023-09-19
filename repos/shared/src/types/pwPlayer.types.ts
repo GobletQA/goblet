@@ -1,6 +1,7 @@
 import type { Repo } from './repo.types'
+import type { TExEventData } from './exam.types'
 import type { TSocketMessageObj } from './socket.types'
-import type { TRunResult, TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 import type {
@@ -12,7 +13,6 @@ import type {
 
 // Exported from browser/src/types
 import type { Player } from '@gobletqa/browser'
-
 
 // ---- Already exported from exam
 // export enum EPlayerTestAction {
@@ -84,28 +84,28 @@ export type TPlayerTestExpectation = {
 }
 
 
-export type TPlayerTestStart = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
   action:EPlayerTestAction.start
 }
 
-export type TPlayerTestDone = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
   action:EPlayerTestAction.end
 }
 
-export type TPlayerTestResult = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
   action:EPlayerTestAction.test
 }
 
-export type TPlayerTestEvent = Omit<TRunResult, `type`|`action`|`status`> & {
+export type TPlayerTestEvent = Omit<TExEventData, `type`|`action`|`status`> & {
   message?:string
   type:EPlayerTestType
   action:EPlayerTestAction
@@ -120,7 +120,7 @@ export type TPlayerEventData = TPlayerTestEvent
   | TPlayerTestResult
   | TPlayerTestSuiteDone
   | TPlayerTestSuiteFinished
-  | TRunResult
+  | TExEventData
 
 
 export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {

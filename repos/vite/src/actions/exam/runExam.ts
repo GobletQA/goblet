@@ -28,7 +28,7 @@ export const runExam = () => {
   let promise = PromiseAbort((res, rej) => {
     WSService.emit(SocketMsgTypes.EXAM_RUN, {
       examOpts: {
-        // TODO: passs in the exam options from UI
+        // TODO: pass in the exam options from UI
         // tags: [`@whitelist`]
       }
     })
