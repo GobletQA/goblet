@@ -26,7 +26,12 @@ import {
 export const runExam = () => {
 
   let promise = PromiseAbort((res, rej) => {
-    WSService.emit(SocketMsgTypes.EXAM_RUN, {})
+    WSService.emit(SocketMsgTypes.EXAM_RUN, {
+      examOpts: {
+        // TODO: passs in the exam options from UI
+        // tags: [`@whitelist`]
+      }
+    })
 
     // Then listen for the response event fired from the websocket service
     let onExamEnd = EE.on<TPlayerResEvent>(ExamEndedEvent, () => res(emptyObj))

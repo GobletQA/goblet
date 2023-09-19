@@ -1,7 +1,7 @@
 import type { MouseEventHandler, ComponentProps } from 'react'
 
 import { useApp } from '@store'
-import { ExamRunAlert } from '@components/Alerts/ExamRunAlert'
+import { examModal } from '@actions/modals/modals'
 import {
   colors,
   Tooltip,
@@ -39,7 +39,7 @@ const ExamRunActionComp = (props:TExamIcon) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={`Run Full Test Suite`}
+      title={`Run Test Suite`}
     >
       <IconButton
         sx={styles.button}
@@ -54,7 +54,7 @@ const ExamRunActionComp = (props:TExamIcon) => {
 
 export const ExamRunAction = {
   id:`exam-run-action`,
-  action: ExamRunAlert,
+  action: () => examModal(),
   className:`goblet-exam-run`,
   Component: ExamRunActionComp,
 }

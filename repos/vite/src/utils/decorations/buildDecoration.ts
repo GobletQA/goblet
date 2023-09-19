@@ -1,5 +1,5 @@
-import type { TBuildDecoration, TBuiltDeco, TPlayerEventData } from '@types'
 import type { IMarkdownString } from 'monaco-editor'
+import type { TPlayerTestEvent, TBuildDecoration, TBuiltDeco, TPlayerEventData } from '@types'
 
 
 import { EEditorType } from '@types'
@@ -56,10 +56,12 @@ export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) 
 
   const type = !props.type && meta.type
     ? exists((meta as TRunResultStepMeta)?.step) ? EAstObject.step : meta.type
-    : props.type || event.eventParent || getTypeFromId(event)
+    : props.type
+        || (event as TPlayerTestEvent).eventParent
+        || getTypeFromId(event as TPlayerTestEvent)
 
   const classes = getDecoCls(event, type, editor)
-  const decoType = getDecoType(event, type)
+  const decoType = getDecoType(event as TPlayerTestEvent, type)
   const search = getSearchText(
     meta,
     description || event.description,

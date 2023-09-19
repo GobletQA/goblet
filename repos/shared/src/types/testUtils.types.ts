@@ -77,9 +77,9 @@ export type TBuildPWEnvs = {
 export type TBuildBddEnvs = TBuildPWEnvs & {
   cwd?:string
   base?:string
-  tags?:string
   filter?:string
   type?:ETestType
   gobletToken?:string
+  tags?:string|string[]
   browser?:EBrowserName|EBrowserType
 }

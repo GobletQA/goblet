@@ -1,19 +1,18 @@
-import { runExam } from '@actions/exam/runExam'
 import {
   ExamRunBtn,
   ExamRunIcon,
   ExamRunText
 } from './RunExamButton.styled'
-import { ExamRunAlert } from '@components/Alerts/ExamRunAlert'
+import { examModal } from '@actions/modals/modals'
 
 export const RunExamButton = () => {
   return (
     <ExamRunBtn
       Icon={ExamRunIcon}
-      onClick={ExamRunAlert}
+      onClick={() => examModal()}
       text={(
         <ExamRunText>
-          Run Full Test Suite
+          Run Test Suite
         </ExamRunText>
       )}
     />

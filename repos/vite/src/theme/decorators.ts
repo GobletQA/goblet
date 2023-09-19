@@ -1,5 +1,21 @@
 import { colors } from '@gobletqa/components'
 
+
+// This is a hack to fix the spinner not being removed
+// The spinner classes are kept on the decorator alongside failed / passed classes
+// Seems to be a bug in monaco
+const decoratorFinishedHack = `
+  .gb-player-glyph.gb-player-finished.code.failed {
+    border: none;
+    animation: none;
+  }
+
+  .gb-player-glyph.gb-player-finished.code.passed {
+    border: none;
+    animation: none;
+  }
+`
+
 export const decorators = `
   .gb-player-line.gb-player-running.code {
     background-color: ${colors.purple10}33;
@@ -30,6 +46,8 @@ export const decorators = `
     border-right: 1em solid ${colors.purple10}33;
     border-bottom: 1em solid ${colors.purple10}33;
   }
+
+  ${decoratorFinishedHack}
 
   .gb-player-glyph.gb-player-running {
     transform: translateZ(0);

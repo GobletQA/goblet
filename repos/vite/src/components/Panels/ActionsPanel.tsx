@@ -123,7 +123,6 @@ const ActionsPanelTitle = () => {
 
 export const ActionsPanel:TSidebarPanel = {
   actions: [
-    ExamRunAction,
     UnmountAction,
     LockAction,
   ],
