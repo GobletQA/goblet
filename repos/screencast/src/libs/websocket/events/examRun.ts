@@ -68,7 +68,7 @@ const onExamRun = async (app:Express, args:TSocketEvtCBProps) => {
     Manager,
   } = args
   
-  const { opts } = data
+  const { examOpts } = data
   const handleEvts = handleParsedEvts(args)
 
   const { repo } = await loadRepoFromSocket({
@@ -83,7 +83,7 @@ const onExamRun = async (app:Express, args:TSocketEvtCBProps) => {
 
   await runExamFromUi(
     {
-      ...opts,
+      ...examOpts,
       testConfig,
       gobletToken,
       testColors: false,

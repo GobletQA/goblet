@@ -5,11 +5,9 @@ GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE
 
  */
 
-import type { TCmdExecOpts, } from '@GTU/Types'
-import type { TInitExamOpts } from '@gobletqa/exam'
-import type { TBuildBddEnvs } from '@GTU/Utils/buildBddEnvs'
-import type { TBuildTestArgs } from '@GTU/Utils/buildTestArgs'
+
 import type { SpawnOptionsWithoutStdio } from 'child_process'
+import type { TExamUIRun, TExamUIChildProcOpts } from '@GTU/Types'
 
 import { spawn } from 'child_process'
 import { Logger } from "@gobletqa/exam"
@@ -21,22 +19,12 @@ import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { buildBddEnvs } from '@GTU/Utils/buildBddEnvs'
 import { buildTestArgs } from '@GTU/Utils/buildTestArgs'
 
-export type TExamUIRun = TBuildTestArgs
-  & TInitExamOpts
-  & TBuildBddEnvs
-
-export type TExamUNIRunCfg = TCmdExecOpts & {
-  onStdOut?:(chunk?:any) => any
-  onStdErr?:(chunk?:any) => any
-  onError?:(err?:Error) => any
-  onExit?:(code?:number, signal?:NodeJS.Signals) => any
-}
 
 /**
  * Default options when executing a command
  * @object
  */
-const defOpts:TCmdExecOpts = {
+const defOpts:TExamUIChildProcOpts = {
   env: {
     /**
      * We have to force disable the safe replacer to ensure we get valid json output
@@ -52,8 +40,8 @@ const defOpts:TCmdExecOpts = {
 }
 
 const buildCmdParams = (
-  opts:TExamUIRun=emptyObj,
-  cfg:TExamUNIRunCfg=emptyObj,
+  opts:TExamUIRun,
+  cfg:TExamUIChildProcOpts,
 ) => {
 
   const cmdParams = pickKeys(cfg, [`env, stdio`, `detached`, `shell`, `gid`, `uid`])
@@ -67,12 +55,12 @@ const buildCmdParams = (
   return deepMerge<SpawnOptionsWithoutStdio>(
     defOpts,
     cmdParams,
-    params,
+    params
   )
 }
 
 const runExam = (
-  cfg:TExamUNIRunCfg=emptyObj,
+  cfg:TExamUIChildProcOpts,
   cmd:string,
   args:string[],
   params:SpawnOptionsWithoutStdio
@@ -94,8 +82,8 @@ const runExam = (
 }
 
 export const runExamFromUi = async (
-  opts:TExamUIRun=emptyObj,
-  cfg:TExamUNIRunCfg=emptyObj,
+  opts:TExamUIRun=emptyObj as TExamUIRun,
+  cfg:TExamUIChildProcOpts=emptyObj,
 ) => {
   const testCmd = buildTestArgs(opts)
   const [cmd, ...args] = testCmd

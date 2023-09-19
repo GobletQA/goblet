@@ -1,34 +1,8 @@
+import type { TBuildPWEnvs } from '@GTU/Types'
 import type { TEnvObject } from '@gobletqa/shared'
-import type { TGobletTestArtifactOption } from '@GTU/Types'
 
 import { addEnv } from '@gobletqa/shared'
 import { ENVS } from '@gobletqa/environment'
-import { EBrowserName, EBrowserType } from '@GTU/Types'
-
-export type TBuildPWEnvs = {
-  nodeEnv?:string
-  width?:number
-  height?:number
-  slowMo?:number
-  headless?:boolean
-  timezone?:string
-  hasTouch?:boolean
-  isMobile?:boolean
-  devtools?:boolean
-  downloads?:boolean
-  reusePage?:boolean
-  screenshot?:boolean
-  debugBrowser?:string
-  reuseContext?:boolean
-  browserTimeout?:number
-  devices?:string|string[]
-  permissions?:string|string[]
-  video?:TGobletTestArtifactOption
-  browser?:EBrowserName|EBrowserType
-  tracing?:TGobletTestArtifactOption
-  testReport?:TGobletTestArtifactOption
-  geolocation?:string|string[]|number[]
-}
 
 /**
  * Adds the default playwright ENVs to the current process

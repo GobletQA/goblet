@@ -1,27 +1,8 @@
+import type { TBuildTestArgs } from '@GTU/Types'
+
 import { ETestType } from '@GTU/Types'
 import { exists, uniqArr } from '@keg-hub/jsutils'
 import { addParam, addFlag } from '@gobletqa/shared/utils/cmdHelpers'
-
-export type TBuildTestArgs = {
-  base?:string
-  testCI?:boolean
-  context?:string
-  noTests?:boolean
-  testSync?:boolean
-  testDebug?:boolean
-  testConfig?:string
-  testCache?:boolean
-  testWorkers?:number
-  testTimeout?:number
-  testColors?:boolean
-  testVerbose?:boolean
-  suiteTimeout?:number
-  exitOnFailed?:boolean
-  testBail?:number|boolean
-  testRetry?:boolean|number
-  suiteRetry?:boolean|number
-  skipAfterFailed?:boolean
-}
 
 
 const buildTestMatch = (

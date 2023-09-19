@@ -19,7 +19,7 @@ import {
   TestsResultStatus,
 } from "@gobletqa/exam"
 
-import { getRelativeLoc } from '@GTU/Utils/getRelativeLoc'
+import { getRelativeLoc } from '@GTU/Utils/fileSys'
 
 export type TLocEvt = (TExEventData & { location:string })
 

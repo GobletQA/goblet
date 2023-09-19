@@ -1,21 +1,11 @@
-import type { TBuildPWEnvs } from './buildPWEnvs'
+import type { TBuildBddEnvs } from '@GTU/Types'
 import type { SpawnOptionsWithoutStdio } from 'child_process'
-import { EBrowserType, ETestType, EBrowserName } from '@GTU/Types'
 
 import { buildPWEnvs } from './buildPWEnvs'
-
 import { addEnv } from '@gobletqa/shared'
 import { getBrowserType } from '@gobletqa/browser'
+import { EBrowserType, ETestType, EBrowserName } from '@GTU/Types'
 
-export type TBuildBddEnvs = TBuildPWEnvs & {
-  cwd?:string
-  base?:string
-  tags?:string
-  filter?:string
-  type?:ETestType
-  gobletToken?:string
-  browser?:EBrowserName
-}
 
 /**
  * Builds the envs set in the command that runs a test

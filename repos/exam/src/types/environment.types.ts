@@ -38,7 +38,7 @@ export type TEnvironmentCache = {
   envs: Record<string, string>
 }
 
-export type TExEnvironmentCfg<T extends Record<string, any>=any> = (T & {
+export type TExEnvironmentCfg<T extends Record<string, any>=unknown> = (T & {
   globals?:TSerializeObj
   envs?:Record<string, TEnvironmentEnvVal>
 })

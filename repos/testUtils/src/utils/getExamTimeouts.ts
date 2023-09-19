@@ -10,7 +10,7 @@ export type TGetTimeouts = {
  * Normalize getting test and suite timeouts
  * Need to update other refs to use this method
  */
-export const getTimeouts = (opts:TGetTimeouts) => {
+export const getExamTimeouts = (opts:TGetTimeouts) => {
   const {
     defs,
     examConfig,
