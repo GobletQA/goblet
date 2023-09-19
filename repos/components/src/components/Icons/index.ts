@@ -51,6 +51,10 @@ export * from './CutIcon'
 export * from './PasteIcon'
 export * from './PasteAfterIcon'
 export * from './PasteBeforeIcon'
+export * from './AnimationPlayOutlineIcon'
+
+
+// export * from './FolderPlayOutlineIcon'
 
 
 // export * from './TextboxOutlineIcon'

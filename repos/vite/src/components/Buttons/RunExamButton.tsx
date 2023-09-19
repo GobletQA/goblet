@@ -4,16 +4,16 @@ import {
   ExamRunIcon,
   ExamRunText
 } from './RunExamButton.styled'
-
+import { ExamRunAlert } from '@components/Alerts/ExamRunAlert'
 
 export const RunExamButton = () => {
   return (
     <ExamRunBtn
       Icon={ExamRunIcon}
-      onClick={() => runExam()}
+      onClick={ExamRunAlert}
       text={(
         <ExamRunText>
-          Run Exam
+          Run Full Test Suite
         </ExamRunText>
       )}
     />

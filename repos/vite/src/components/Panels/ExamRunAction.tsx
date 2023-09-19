@@ -1,24 +1,16 @@
 import type { MouseEventHandler, ComponentProps } from 'react'
 
-import { getStore, useApp } from '@store'
-import { Alert } from '@actions/modals/alert'
-import { runExam } from '@actions/exam/runExam'
+import { useApp } from '@store'
+import { ExamRunAlert } from '@components/Alerts/ExamRunAlert'
 import {
   colors,
   Tooltip,
   gutter,
-  stopEvent,
   IconButton,
-  DirectionsRunIcon,
+  AnimationPlayOutlineIcon,
 } from '@gobletqa/components'
-import {
-  ModalTitle,
-  ModalSubText,
-  ModalContainer
-} from '@components/Modals/Modal.styled'
-import {noOp} from '@keg-hub/jsutils'
 
-export type TExamIcon = ComponentProps<typeof DirectionsRunIcon>
+export type TExamIcon = ComponentProps<typeof AnimationPlayOutlineIcon>
 
 const styles = {
   exam: {
@@ -47,14 +39,14 @@ const ExamRunActionComp = (props:TExamIcon) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={`Run Test Suite`}
+      title={`Run Full Test Suite`}
     >
       <IconButton
         sx={styles.button}
         disabled={examRunning}
         onClick={props?.onClick as MouseEventHandler<HTMLButtonElement>|undefined}
       >
-        <DirectionsRunIcon sx={iconSx} />
+        <AnimationPlayOutlineIcon sx={iconSx} />
       </IconButton>
     </Tooltip>
   )
@@ -62,41 +54,7 @@ const ExamRunActionComp = (props:TExamIcon) => {
 
 export const ExamRunAction = {
   id:`exam-run-action`,
-  Component: ExamRunActionComp,
+  action: ExamRunAlert,
   className:`goblet-exam-run`,
-  action:(evt:Event) => {
-    stopEvent(evt)
-    const { repo, app } = getStore().getState()
-    if(app?.examRunning) return
-    
-    const name = repo?.git?.repoName || repo?.name || `current`
-
-    Alert({
-      titleProps: {
-        Icon: <DirectionsRunIcon sx={{ color: colors.purple10}} />,
-      },
-      title: `Run Test Suite`,
-      okText: `Yes`,
-      onOk: () => {
-        runExam()
-      },
-      cancelText: `No`,
-      onCancel: noOp,
-      content: (
-        <ModalContainer>
-          <ModalTitle>
-            Would you like to run the entire Test Suite?
-          </ModalTitle>
-          <ModalSubText>
-            All feature files will be executed in succession.
-          </ModalSubText>
-          <ModalSubText>
-            During execution the Goblet application will be disabled.
-          </ModalSubText>
-        </ModalContainer>
-      ),
-    })
-
-
-  },
+  Component: ExamRunActionComp,
 }
