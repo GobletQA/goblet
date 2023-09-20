@@ -10,8 +10,7 @@ import {EResultStatus} from '@ltipton/parkin'
 import {emptyArr} from "@keg-hub/jsutils/emptyArr"
 
 
-type TEvt = TExamEvt<TExEventData & { location?:string }>
-export type TEvtCB = ((evt:TEvt, config:TExamConfig) => any) & {
+export type TEvtCB = ((evt:TExamEvt<TExEventData>, config:TExamConfig) => any) & {
   callbackId?:string
 }
 export type TRmCB = (() => any) & {
@@ -53,7 +52,7 @@ class EvtReporter {
     )
   }
 
-  dispatch = async (evt:TEvt) => {
+  dispatch = async (evt:TExamEvt<TExEventData>) => {
     const event = {...evt, location: evt?.location || evt?.data?.location}
     // console.log(`Dispatching Evt:`, event.name)
 
@@ -95,14 +94,14 @@ export class EventReporter implements IExamReporter {
     evtReporter.setConfig(examCfg)
   }
 
-  onTestFileResult = (evt:TEvt) => evtReporter.dispatch(evt)
-  onRunStart = (evt:TEvt) => evtReporter.dispatch(evt)
-  onRunResult = (evt:TEvt) => evtReporter.dispatch(evt)
-  onTestFileStart = (evt:TEvt) => evtReporter.dispatch(evt)
-  onSuiteStart = (evt:TEvt) => evtReporter.dispatch(evt)
-  onTestStart = (evt:TEvt) => evtReporter.dispatch(evt)
-  onTestResult = (evt:TEvt) => evtReporter.dispatch(evt)
-  onSuiteResult = (evt:TEvt) => evtReporter.dispatch(evt)
+  onTestFileResult = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onRunStart = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onRunResult = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onTestFileStart = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onSuiteStart = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onTestStart = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onTestResult = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
+  onSuiteResult = (evt:TExamEvt<TExEventData>) => evtReporter.dispatch(evt)
   cleanup = () => evtReporter.cleanup()
   onError = (evt:any) => evtReporter.dispatch(evt)
   onCancel = (evt:any) => evtReporter.dispatch(evt)

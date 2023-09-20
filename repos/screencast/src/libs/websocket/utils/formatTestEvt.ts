@@ -31,7 +31,10 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
 }
 
 
-export const formatTestEvt = (event:TPlayerTestEventMeta|TExTestEventMeta) => {
+export const formatTestEvt = (
+  event:TPlayerTestEventMeta|TExTestEventMeta,
+  extra?:Partial<TPlayerTestEventMeta|TExTestEventMeta>
+) => {
   const data = (event.data || {}) as TPlayerTestEvent
   const parent = getEventParent(data)
 
@@ -49,5 +52,10 @@ export const formatTestEvt = (event:TPlayerTestEventMeta|TExTestEventMeta) => {
   if(event.name === PWPlay.playError && event.message)
     event.message = filterErrMessage(data as TExEventData, PWEventErrorLogFilter)
 
-  return {...event, data, location: event.location || data?.location }
+  return {
+    ...event,
+    ...extra,
+    data,
+    location: event.location || data?.location
+  }
 }

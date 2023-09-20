@@ -141,7 +141,7 @@ export class CodeRunner {
     })
   }
 
-  onSpecStarted = (result:TPlayerEventData) => {
+  onSpecStart = (result:TPlayerEventData) => {
     if(this.canceled) return
 
     this.player.fireEvent({
@@ -151,7 +151,7 @@ export class CodeRunner {
     })
   }
 
-  onSuiteStarted = (result:TPlayerEventData) => {
+  onSuiteStart = (result:TPlayerEventData) => {
     if(this.canceled) return
 
     this.player.fireEvent({

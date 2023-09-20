@@ -90,7 +90,7 @@ export const useDecorations = ({
 
     const dec = buildDecoration<TDecoration>({ event: event.data, editor: EEditorType.code })
     const relative = rmRootFromLoc(location, rootPrefix)
-    const meta = { action: event.data.action }
+    const meta = { action: event?.data?.action }
     const decos = checkFailedSpec<TDecoration>({
       event,
       featureRef,

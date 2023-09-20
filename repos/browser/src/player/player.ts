@@ -60,15 +60,16 @@ export class Player {
   fireEvent = (event:Omit<TPlayerEvent, 'isPlaying'>) => {
     if(this.canceled) return this
     
-    this.onEvents.map(func => checkCall(
-      func,
-      {
-        ...event,
-        isPlaying: Player.isPlaying,
-        location: this.options?.file?.location,
-        fileType: this.options?.file?.fileType,
-      }
-    ))
+    this.onEvents.map(func => checkCall(func, {
+      ...event,
+      isPlaying: Player.isPlaying,
+      location: this.options?.file?.location,
+      fileType: this.options?.file?.fileType,
+      data: {
+        ...event?.data,
+        location: event?.data?.location ?? this.options?.file?.location,
+      },
+    }))
 
     return this
   }

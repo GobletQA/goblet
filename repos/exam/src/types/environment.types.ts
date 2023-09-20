@@ -48,7 +48,7 @@ export interface IExamEnvironment<R extends ExamRunner<IExamEnvironment>=ExamRun
   envs?:Record<string, TEnvironmentEnvVal>
   setup(runner:R, ctx:TExCtx):void|Promise<void>
   reset():void|Promise<void>
-  cleanup(args:any):void|Promise<void>
+  cleanup(...args:any[]):void|Promise<void>
 }
 
 export type IExEnvironment<

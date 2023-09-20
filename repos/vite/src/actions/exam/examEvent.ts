@@ -14,19 +14,24 @@ import {
  */
 export const examEvent = (meta:TPlayerResEvent) => {
 
-  switch(meta.name){
-    case PWPlay.playStarted: {
-      return EE.emit(PlayerStartedEvent, meta)
-    }
-    case PWPlay.playError: {
-      return EE.emit(PlayerErrorEvent, meta)
-    }
-    case PWPlay.playEnded: {
-      return EE.emit(PlayerEndedEvent, meta)
-    }
-    default: {
-      return EE.emit(PlayerTestEvt, meta)
-    }
-  }
+  // console.log(`------- exam meta -------`)
+  // console.log(meta)
+
+// if(event.fullTestRun) return
+
+  // switch(meta.name){
+  //   case PWPlay.playStarted: {
+  //     return EE.emit(PlayerStartedEvent, meta)
+  //   }
+  //   case PWPlay.playError: {
+  //     return EE.emit(PlayerErrorEvent, meta)
+  //   }
+  //   case PWPlay.playEnded: {
+  //     return EE.emit(PlayerEndedEvent, meta)
+  //   }
+  //   default: {
+  //     return EE.emit(PlayerTestEvt, meta)
+  //   }
+  // }
 
 }

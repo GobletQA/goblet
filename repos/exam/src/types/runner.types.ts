@@ -60,11 +60,12 @@ export interface IExamRunner<E extends IExamEnvironment> {
   cancel:() => void|Promise<void>
   cleanup:() => void|Promise<void>
 
-  onSpecStarted(result:TExEventData):void
-  onSpecDone(result:TExEventData):void
-
-  onSuiteStarted(result:TExEventData):void
-  onSuiteDone(result:TExEventData):void
+  onRunDone(result:TExEventData, ...args:any[]):void
+  onRunStart(result:TExEventData, ...args:any[]):void
+  onSpecDone(result:TExEventData, ...args:any[]):void
+  onSpecStart(result:TExEventData, ...args:any[]):void
+  onSuiteStart(result:TExEventData, ...args:any[]):void
+  onSuiteDone(result:TExEventData, ...args:any[]):void
 }
 
 

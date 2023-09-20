@@ -21,7 +21,6 @@ import {
 
 import { getRelativeLoc } from '@GTU/Utils/fileSys'
 
-export type TLocEvt = (TExEventData & { location:string })
 
 const logFile = (location:string, rootDir?:string) => {
   const fromRoot = getRelativeLoc(location, rootDir)
@@ -34,7 +33,7 @@ const DimText = (text:string) => (`${Logger.colors.colorMap.dim}${text}${Logger.
  * Helper to log the parent meta data - (i.e. describes)
  */
 const logParent = (
-  evt:TExamEvt<TLocEvt>,
+  evt:TExamEvt<TExEventData>,
   isStart:boolean
 ) => {
   const context = evt.data
@@ -68,7 +67,7 @@ const logParent = (
  * Logs the outcome of each describe and test
  */
 const logResult = (
-  evt:TExamEvt<TLocEvt>,
+  evt:TExamEvt<TExEventData>,
   hasStepErr?:boolean
 ) => {
 
@@ -112,7 +111,7 @@ const logResult = (
 
 }
 
-const getFailedMessage = (evt:TExamEvt<TLocEvt>,) => {
+const getFailedMessage = (evt:TExamEvt<TExEventData>) => {
   const context = evt.data
 
   if(context.status !== TestsResultStatus.failed) return {}
@@ -141,19 +140,19 @@ export class FeatureCliReporter implements IExamReporter {
     this.rootDir = examCfg.rootDir
   }
 
-  onTestFileStart = (evt:TExamEvt<TLocEvt>) => {
+  onTestFileStart = (evt:TExamEvt<TExEventData>) => {
     logFile(evt?.data?.location, this?.rootDir)
     logResult(evt)
   }
-  onTestFileResult = (evt:TExamEvt<TLocEvt>) => {
+  onTestFileResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
     Logger.gray(`\n -\n`)
     Logger.empty()
   }
 
-  onSuiteStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
-  onTestStart = (evt:TExamEvt<TLocEvt>) => logResult(evt)
-  onTestResult = (evt:TExamEvt<TLocEvt>) => {
+  onSuiteStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
+  onTestStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
+  onTestResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt, this.hasStepErr)
     
     if(evt?.data?.status !== TestsResultStatus.passed){
@@ -161,7 +160,7 @@ export class FeatureCliReporter implements IExamReporter {
       this.hasStepErr = true
     }
   }
-  onSuiteResult = (evt:TExamEvt<TLocEvt>) => {
+  onSuiteResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
     // Step errors are scoped to the parent, so we always reset the step error when it finishes
     this.hasStepErr = false

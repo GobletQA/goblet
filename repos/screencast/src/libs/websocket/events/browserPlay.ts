@@ -37,7 +37,7 @@ const handleStartPlaying = async (
       shared: {}
     },
     onEvent:(event:TPlayerTestEventMeta) => {
-      const emitEvt = {...formatTestEvt(event), group: socket.id}
+      const emitEvt = formatTestEvt(event, { group: socket.id })
       Logger.verbose(`Emit ${event.name} event`)
       Manager.emit(socket, event.name, emitEvt)
     },

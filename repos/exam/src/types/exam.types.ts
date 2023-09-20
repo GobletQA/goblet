@@ -34,6 +34,7 @@ type TInternalDynEvent =(evt:Partial<TExamEvt>) => TExamEvt
 type TInternalMissingEvent =(evt:Partial<TExamEvt>& { type?:string, fileType?:string }) => TExamEvt
 
 export type TExamEvts = {
+  started:TInternalDynEvent
   dynamic:TInternalDynEvent
   results:TInternalDynEvent
   specDone:TInternalDynEvent

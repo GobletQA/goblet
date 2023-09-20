@@ -42,10 +42,10 @@ const __ExamEvents:TExamEvts = {
     name: ExamEvtNames.results,
     message: `Exam - Suite Results`,
   }),
-  started: {
+  started: onExDynEvent({
     message: `Exam started`,
     name: ExamEvtNames.started,
-  },
+  }),
   stopped: onExDynEvent({
     name: ExamEvtNames.stopped,
     message: `Exam stopped`,

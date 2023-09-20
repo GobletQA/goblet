@@ -48,6 +48,7 @@ export type TPlayerEvent = {
   name:string
   message?:string
   isPlaying:boolean
+  fullTestRun?:boolean
   data?:TPlayerEventData
 }
 
@@ -72,45 +73,52 @@ export type TPlayerStartConfig = TPlayerConfig & {
 
 export type TPlayerOpts = TBrowserActionOptions
 
-export type TPlayerResEvent<T=TPlayerEventData> = Omit<TSocketMessageObj, `data`> & {
+export type TPlayerResEvent<T=TPlayerEventData> = (Omit<TSocketMessageObj, `data`> & {
   data:T
   location: string
   fileType: string
-}
+  fullTestRun?:boolean
+})
 
 export type TPlayerTestExpectation = {
   type:string
   message:string
 }
 
+// --- TODO: validate these are needed, should use the types from exam instead
+// --- Seems like this is being done in two places
 
 export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`> & {
+  id:string
   status:EPlayerTestStatus
   type:EPlayerTestType.test
-  eventParent?: TEventParent
+  eventParent?:TEventParent
   action:EPlayerTestAction.start
 }
 
 export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`> & {
+  id:string
   status:EPlayerTestStatus
   type:EPlayerTestType.test
-  eventParent?: TEventParent
+  eventParent?:TEventParent
   action:EPlayerTestAction.end
 }
 
 export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`> & {
+  id:string
   status:EPlayerTestStatus
   type:EPlayerTestType.test
-  eventParent?: TEventParent
+  eventParent?:TEventParent
   action:EPlayerTestAction.test
 }
 
 export type TPlayerTestEvent = Omit<TExEventData, `type`|`action`|`status`> & {
+  id:string
   message?:string
   type:EPlayerTestType
   action:EPlayerTestAction
   status?:EPlayerTestStatus
-  eventParent?: TEventParent
+  eventParent?:TEventParent
   failedExpectations?:any[]
 }
 
