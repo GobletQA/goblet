@@ -1,120 +1,124 @@
-import type { TPlayerResEvent, TTestRuns, TAddTestRunEvt, TDspAction } from '@types'
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
+import type {
+  TTestRunId,
+  TTestRun,
+  TTestRuns,
+  TDspAction,
+  TAddTestRun,
+  TTestRunEvent,
+  TAddTestRunEvts,
+  TAddActiveTestRunEvts,
+} from '@types'
 
 import { createReducer, createAction } from '@reduxjs/toolkit'
+import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
+
 
 export type TTestRunsState = {
   runs: TTestRuns
   active?:string
 }
 
-export type TAddEventToTestRun = {
-  name:string
-  event?:TPlayerResEvent
-  events?:TPlayerResEvent[]
-}
-
 export const testRunsState = {
   runs: {},
 } as TTestRunsState
 
-const addTestRun = createAction<TAddTestRunEvt>(`addTestRun`)
-const removeTestRun = createAction<string>(`removeTestRun`)
-const setTestRunActive = createAction<string>(`setTestRunActive`)
+const addTestRun = createAction<TAddTestRun>(`addTestRun`)
 const clearTestRuns = createAction<TTestRunsState>(`clearTestRuns`)
-const addActiveTestRunEvt = createAction<TPlayerResEvent>(`addActiveTestRunEvt`)
-const addEvtAndMakeActive = createAction<TAddEventToTestRun>(`addEvtAndMakeActive`)
+const removeTestRun = createAction<TTestRunId>(`removeTestRun`)
 
-const sortEvents = (events:TPlayerResEvent[]) => events.sort((a, b) => {
-  const aTime = a?.data?.timestamp || 0
-  const bTime = b?.data?.timestamp || 0
-  return aTime > bTime ? 1 : bTime > aTime ? -1 : 0
-})
+const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
+const addActiveTestRunEvt = createAction<TAddActiveTestRunEvts>(`addActiveTestRunEvt`)
+const addEvtAndMakeActive = createAction<TAddTestRunEvts>(`addEvtAndMakeActive`)
+
+
+const getEvents = (opts:TAddActiveTestRunEvts) => {
+  const { events=[], event } = opts
+  return !event || events.find(evt => evt?.timestamp ===  event?.timestamp)
+    ? events
+    : [...events, event]
+}
+
 
 export const testRunsActions = {
   clearTestRuns: (state:TTestRunsState, action:TDspAction<TTestRunsState>) => (testRunsState),
 
-  addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRunEvt>) => {
-    const { name, events=[], event } = action?.payload
-    event
-      && !events.find(evt => evt?.data?.timestamp ===  event?.data?.timestamp)
-      && events.push(event)
+  addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRun>) => {
+    const { runId, data={} } = action?.payload
 
     return {
       ...state,
-      runs: {...state.runs, [name]: sortEvents(events)}
+      runs: {...state.runs, [runId]: data}
     }
   },
 
-  setTestRunActive: (state:TTestRunsState, action:TDspAction<string>) => {
-    const name = action?.payload
-    if(state?.active === name) return state
+  setTestRunActive: (state:TTestRunsState, action:TDspAction<TTestRunId>) => {
+    const runId = action?.payload
+    if(state?.active === runId) return state
 
-    const events = state.runs?.[name] || []
+    const testRun = state.runs?.[runId] || {}
 
     return {
       ...state,
-      active: name,
-      runs: {...state.runs, [name]: events }
+      active: runId,
+      runs: {...state.runs, [runId]: testRun }
     } as TTestRunsState
   },
 
-  addActiveTestRunEvt: (state:TTestRunsState, action:TDspAction<TPlayerResEvent>) => {
-    const event  = action?.payload
-    const active = state.active
-    return active
-      ? {
-          ...state,
-          runs: {
-            ...state.runs,
-            [active]: sortEvents([...(state?.runs?.[active] || []), event])
-          },
-        }
-      : state
-  },
-
-  addTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddEventToTestRun>) => {
-    const { name, events=[], event } = action?.payload
-    event
-      && !events.find(evt => evt?.data?.timestamp ===  event?.data?.timestamp)
-      && events.push(event)
-
-    return {
-      ...state,
-      runs: {
-        ...state.runs,
-        [name]: sortEvents([...(state?.runs?.[name] || []), ...events])
-      },
-    }
-  },
-
-  addEvtAndMakeActive: (state:TTestRunsState, action:TDspAction<TAddEventToTestRun>) => {
-    const { name, events=[], event } = action?.payload
-    event
-      && !events.find(evt => evt?.data?.timestamp ===  event?.data?.timestamp)
-      && events.push(event)
-
-    const active = state?.active === name ? state?.active : name
-
-    return {
-      ...state,
-      active,
-      runs: {
-        ...state.runs,
-        [name]: sortEvents([...(state?.runs?.[name] || []), ...events])
-      },
-    }
-  },
-
-  removeTestRun: (state:TTestRunsState, action:TDspAction<string>) => {
-    const name = action?.payload
+  removeTestRun: (state:TTestRunsState, action:TDspAction<TTestRunId>) => {
+    const runId = action?.payload
     const copy = {...state}
 
-    if(copy.runs[name]) delete copy.runs[name]
-    if(state?.active === name) delete copy.active
+    if(copy.runs[runId]) delete copy.runs[runId]
+    if(state?.active === runId) delete copy.active
 
     return copy
-  }
+  },
+
+  addActiveTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddActiveTestRunEvts>) => {
+    if(!state.active){
+      console.warn(`Can not add run events; missing active Test Run ID`)
+      return state
+    }
+
+    const runId = state.active
+    const events = getEvents(action?.payload)
+    const testRun = addEventsToTestRun({...state.runs[runId]}, events)
+
+    return {...state, runs: {...state.runs, [runId]: testRun }}
+  },
+
+  addTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddTestRunEvts>) => {
+    const { runId } = action?.payload
+    if(!runId){
+      console.warn(`A runId is required to add events to a test run`)
+      return state
+    }
+    
+    const events = getEvents(action?.payload)
+    const testRun = addEventsToTestRun({...state.runs[runId]}, events)
+
+    return {...state, runs: {...state.runs, [runId]: testRun }}
+  },
+
+  addEvtAndMakeActive: (state:TTestRunsState, action:TDspAction<TAddTestRunEvts>) => {
+    const { runId } = action?.payload
+    if(!runId){
+      console.warn(`A runId is required to make a testRun active and add events to it`)
+      return state
+    }
+
+    const events = getEvents(action?.payload)
+    const testRun = addEventsToTestRun({...state.runs[runId]}, events)
+
+    return {
+      ...state,
+      active: runId,
+      runs: {...state.runs, [runId]: testRun }
+    }
+  },
+
+
 
 }
 

@@ -4,6 +4,8 @@ import {
   ExpressionNoQuoteTypes,
   DefinitionOverrideFolder,
 } from './definitions'
+
+import { ExamEvtNames } from './events'
 import { GitProviders } from './providers'
 
 export {

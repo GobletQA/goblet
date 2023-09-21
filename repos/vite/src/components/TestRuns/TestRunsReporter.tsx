@@ -8,14 +8,20 @@ export type TTestRunsReporter = {}
 export const TestRunsReporter = (props:TTestRunsReporter) => {
   const { runs, active } = useTestRuns()
 
-  return (
-    <TestRunReporterContainer>
-      {
-        !active
-          ? (<NoActiveTestRun />)
-          : (<TestRunEvents name={active} events={runs[active]} />)
-      }
-    </TestRunReporterContainer>
-  )
+  if(active){
+    console.log(runs[active])
+  }
+
+  return null
+
+  // return (
+  //   <TestRunReporterContainer>
+  //     {
+  //       !active
+  //         ? (<NoActiveTestRun />)
+  //         : (<TestRunEvents name={active} events={runs[active]} />)
+  //     }
+  //   </TestRunReporterContainer>
+  // )
   
 }

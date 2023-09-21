@@ -24,7 +24,9 @@ updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,
-  testRunsView: false,
+  // TODO: switch this back to false before deploy
+  testRunsView: true,
+  
   allTestsRunning: false,
   sidebarLocked: false,
   multiFeatsErr: false,

@@ -1,18 +1,74 @@
 import type { FocusEvent } from 'react'
+import { EResultAction } from '@ltipton/parkin'
 import type { TestCfgUpdaters } from '@components/TestRuns/TestCfgUpdaters'
-import {TPlayerResEvent} from './shared.types'
+import type {
+  EPlayerTestType,
+  TPlayerResEvent,
+  EPlayerTestAction,
+  EPlayerTestStatus,
+} from './shared.types'
 
 export type TTestCfgUpdaters = typeof TestCfgUpdaters
 export type TOnChangeExam = (args: any[], type: keyof TTestCfgUpdaters) => void
 export type TOnBlurExam = (evt: FocusEvent, type: keyof TTestCfgUpdaters) => void
 
+export type TTestRunId = string
+export type TFileLocation = string
 
-export type TTestRuns = Record<string, TPlayerResEvent[]>
-export type TAddTestRunEvt = {
-  name:string
-  event?: TPlayerResEvent
-  events?: TPlayerResEvent[]
+export type TTestRunEvent = {
+  runId:TTestRunId
+  id:string
+  uuid:string
+  text?:string
+  failed?:boolean
+  passed?:boolean
+  skipped?:boolean
+  timestamp:number
+  description:string
+  stats?:TTestRunStats
+  type:EPlayerTestType
+  location:TFileLocation
+  status?:EPlayerTestStatus
+  action:EPlayerTestAction|EResultAction
 }
+
+export type TTestRunStats = {
+  runEnd:number
+  runStart:number
+  failedSpecs:number
+  passedSpecs:number
+  passedSuites:number
+  failedSuites:number
+}
+
+export type TTestRunFileData = {
+  timestamp:number
+  status?:string
+  failed?:boolean
+  passed?:boolean
+  runId:TTestRunId
+  stats:TTestRunStats
+  location:TFileLocation
+  events:TTestRunEvent[]
+}
+
+
+export type TAddActiveTestRunEvts = {
+  event?: TTestRunEvent
+  events?: TTestRunEvent[]
+}
+export type TAddTestRunEvts = TAddActiveTestRunEvts & {
+  runId:TTestRunId
+}
+
+export type TTestRun = Record<TFileLocation, TTestRunFileData>
+export type TTestRuns = Record<TTestRunId, TTestRun>
+
+export type TAddTestRun = {
+  data:TTestRun
+  runId:TTestRunId
+}
+
 
 
 export type TTestRunsSections = keyof typeof ETestRunsSection

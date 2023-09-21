@@ -20,11 +20,46 @@ import {
   WSCancelTestRunEvt,
 } from '@constants'
 
+import { TREvents } from '@services/__mocks__/testRun.events'
+import { testRunEvents } from './testRunEvents'
+
+let mocksActive = false
+
+const runFakeEvents = (signal:Record<`cancel`, boolean>, res:any) => {
+  setTimeout(() => {
+    const event = TREvents.shift()
+    event && testRunEvents(event)
+    !signal.cancel && TREvents.length
+      ? runFakeEvents(signal, res)
+      : res()
+  }, 1000)
+}
+
+const runWithMockData = () => {
+  const signal = { cancel: false }
+  let promise = PromiseAbort((res, rej) => {
+    runFakeEvents(signal, res)
+    // Enable global exam running flag
+    appDispatch.toggleAllTestsRun(true)
+    const cancelOff = EE.on(
+      WSCancelTestRunEvt,
+      () => {
+        signal.cancel = true
+        cancelOff?.()
+        promise.cancel()
+        // @ts-ignore
+        promise = undefined
+        rej(emptyObj)
+      }
+    )
+  })
+}
+
 
 export const runAllTests = (examOpts:TExamUIRun) => {
-
+  if(mocksActive) return runWithMockData()
+  
   let promise = PromiseAbort((res, rej) => {
-
     // Enable global exam running flag
     appDispatch.toggleAllTestsRun(true)
 
@@ -46,7 +81,7 @@ export const runAllTests = (examOpts:TExamUIRun) => {
         onExamEnd = undefined
         // Send event to cancel on the backend
         WSService.emit(SocketMsgTypes.EXAM_ABORT)
-
+        
         // Finally stop listening, cancel and reject
         cancelOff?.()
         promise.cancel()
@@ -56,5 +91,4 @@ export const runAllTests = (examOpts:TExamUIRun) => {
       }
     )
   })
-
 }

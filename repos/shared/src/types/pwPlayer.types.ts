@@ -1,7 +1,7 @@
 import type { Repo } from './repo.types'
 import type { TExEventData } from './exam.types'
 import type { TSocketMessageObj } from './socket.types'
-import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TParkinRunStepOptsMap, TRunResultActionMeta } from '@ltipton/parkin'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 import type {
@@ -92,43 +92,40 @@ export type TPlayerTestExpectation = {
 // --- TODO: validate these are needed, should use the types from exam instead
 // --- Seems like this is being done in two places
 
-export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`> & {
-  id:string
+export type TPlayerTestShared = {
   timestamp:number
-  status:EPlayerTestStatus
-  type:EPlayerTestType.test
-  eventParent?:TEventParent
-  action:EPlayerTestAction.start
+  location?:string
+  metaData?:TRunResultActionMeta
 }
 
-export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`> & {
-  id:string
-  timestamp:number
-  status:EPlayerTestStatus
-  type:EPlayerTestType.test
-  eventParent?:TEventParent
-  action:EPlayerTestAction.end
-}
+export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`>
+  & TPlayerTestShared
+  & {
+      type:EPlayerTestType.test
+      action:EPlayerTestAction.start
+    }
 
-export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`> & {
-  id:string
-  timestamp:number
-  status:EPlayerTestStatus
-  type:EPlayerTestType.test
-  eventParent?:TEventParent
-  action:EPlayerTestAction.test
-}
+export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`>
+  & TPlayerTestShared
+  & {
+      type:EPlayerTestType.test
+      action:EPlayerTestAction.end
+    }
 
-export type TPlayerTestEvent = Omit<TExEventData, `type`|`action`|`status`> & {
-  id:string
-  message?:string
-  timestamp:number
-  type:EPlayerTestType
-  action:EPlayerTestAction
-  status?:EPlayerTestStatus
-  eventParent?:TEventParent
-  failedExpectations?:any[]
-}
+export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`>
+  & TPlayerTestShared
+  & {
+      type:EPlayerTestType.test
+      action:EPlayerTestAction.test
+    }
+
+export type TPlayerTestEvent = Omit<TExEventData, `type`|`action`|`status`>
+  & TPlayerTestShared
+  & {
+      type:EPlayerTestType
+      action:EPlayerTestAction
+      failedExpectations?:any[]
+    }
 
 export type TPlayerEventData = TPlayerTestEvent
   | TPlayerTestStart
@@ -139,13 +136,13 @@ export type TPlayerEventData = TPlayerTestEvent
   | TExEventData
 
 
-export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {
+export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = (TPlayerTestEvent & {
   tests: T[]
-}
+})
 
-export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = TPlayerTestEvent & {
+export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = (TPlayerTestEvent & {
   describes: T[]
-}
+})
 
 export type TPlayerEnded = TPlayerResEvent<Record<string, any>>
 export type TPlayerStarted = TPlayerResEvent<Record<string, any>>

@@ -8,12 +8,17 @@ export type TRunResultMeta = {
 }
 
 export type TExRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
+  id:string
+  testPath?:string
   location?:string
   timestamp:number
+  description?:string
   type:EPlayerTestType
-  metaData?:TRunResultMeta
-  describes?:TExRunResult[]
   tests?:TExRunResult[]
+  metaData?:TRunResultMeta
+  status:EPlayerTestStatus
+  describes?:TExRunResult[]
+  eventParent?:TEventParent
 }
 
 export enum EPlayerTestAction {
@@ -81,7 +86,7 @@ export type TExEventData = TExTestEvent
   | TExTestSuiteDone
   | TExTestSuiteFinished
   | TExRunResult
-  | undefined
+
 
 export type TExTestSuiteDone<T=TExTestEvent> = TExTestEvent & {
   tests: T[]
