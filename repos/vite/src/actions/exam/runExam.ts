@@ -3,7 +3,8 @@ import type {
   TFileModel,
   TStartPlaying,
   TPlayerResEvent,
-  TStartBrowserPlayOpts
+  TStartBrowserPlayOpts,
+  TExamUIRun
 } from '@types'
 
 
@@ -20,19 +21,14 @@ import {
 } from '@constants'
 
 
-export const runExam = () => {
+export const runExam = (examOpts:TExamUIRun) => {
 
   let promise = PromiseAbort((res, rej) => {
 
     // Enable global exam running flag
     appDispatch.toggleExamRunning(true)
 
-    WSService.emit(SocketMsgTypes.EXAM_RUN, {
-      examOpts: {
-        // TODO: pass in the exam options from UI
-        // tags: [`@whitelist`]
-      }
-    })
+    WSService.emit(SocketMsgTypes.EXAM_RUN, { examOpts })
 
     // Then listen for the response event fired from the websocket service
     let onExamEnd = EE.on<TPlayerResEvent>(ExamEndedEvent, () => res(emptyObj))

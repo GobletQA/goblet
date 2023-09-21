@@ -3,13 +3,13 @@ import {
   ExamRunIcon,
   ExamRunText
 } from './RunExamButton.styled'
-import { examModal } from '@actions/modals/modals'
+import { toggleExamView } from '@actions/exam/toggleExamView'
 
 export const RunExamButton = () => {
   return (
     <ExamRunBtn
       Icon={ExamRunIcon}
-      onClick={() => examModal()}
+      onClick={() => toggleExamView()}
       text={(
         <ExamRunText>
           Run Test Suite

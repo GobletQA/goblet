@@ -10,6 +10,18 @@ export const ExamRunModal:TModalRef = (props:TModalComponent) => {
 
 ExamRunModal.modalType = EModalTypes.ExamRun
 ExamRunModal.modalProps = {
+  maxWidth: `lg`,
+  sx: {
+    height: `100vh`,
+    [`& .MuiDialog-container`]: {
+      height: `100vh`,
+    }
+  },
+  PaperProps: {
+    sx: {
+      height: `100vh`,
+    }
+  },
   title: `Run Test Suite`,
   titleProps: {
     Icon: (<GobletIcon sx={{ color: colors.purple10}} />)

@@ -1,7 +1,7 @@
 import type { MouseEventHandler, ComponentProps } from 'react'
 
 import { useApp } from '@store'
-import { examModal } from '@actions/modals/modals'
+import { toggleExamView } from '@actions/exam/toggleExamView'
 import {
   colors,
   Tooltip,
@@ -54,7 +54,7 @@ const ExamRunActionComp = (props:TExamIcon) => {
 
 export const ExamRunAction = {
   id:`exam-run-action`,
-  action: () => examModal(),
+  action: () => toggleExamView(),
   className:`goblet-exam-run`,
   Component: ExamRunActionComp,
 }

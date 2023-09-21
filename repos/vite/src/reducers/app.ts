@@ -5,13 +5,15 @@ import { EAppStatus, EEditorType } from '@types'
 import { getQueryData } from '@utils/url/getQueryData'
 import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 import { createReducer, createAction } from '@reduxjs/toolkit'
+import {exists} from '@keg-hub/jsutils'
 
 export type TAppState = {
   editor:EEditorType
   status:EAppStatus
-  examRunning: boolean
   sidebarLocked: boolean
   multiFeatsErr: boolean
+  examView: boolean|undefined
+  examRunning: boolean|undefined
 }
 
 const editor = getQueryData()?.editor
@@ -22,6 +24,7 @@ updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,
+  examView: false,
   examRunning: false,
   sidebarLocked: false,
   multiFeatsErr: false,
@@ -32,9 +35,10 @@ const clearApp = createAction<TAppState>(`clearApp`)
 const setApp = createAction<TAppState>(`setApp`)
 const setStatus = createAction<EAppStatus>(`setStatus`)
 const setEditor = createAction<EEditorType>(`setEditor`)
-const toggleExamRunning = createAction<boolean>(`toggleExamRunning`)
 const toggleSidebarLocked = createAction<boolean>(`toggleSidebarLocked`)
 const toggleMultiFeatsErr = createAction<boolean>(`toggleMultiFeatsErr`)
+const toggleExamView = createAction<boolean|undefined>(`toggleExamView`)
+const toggleExamRunning = createAction<boolean|undefined>(`toggleExamRunning`)
 
 export const appActions = {
   clearApp: (state:TAppState, action:TDspAction<TAppState>) => (appState),
@@ -43,10 +47,16 @@ export const appActions = {
     ...state,
     editor: action?.payload,
   }),
-  toggleExamRunning: (state:TAppState, action:TDspAction<boolean>) => {
+  toggleExamView: (state:TAppState, action:TDspAction<boolean|undefined>) => {
     return {
       ...state,
-      examRunning: Boolean(action?.payload)
+      examView: exists(action?.payload) ? action?.payload : !state.examView
+    }
+  },
+  toggleExamRunning: (state:TAppState, action:TDspAction<boolean|undefined>) => {
+    return {
+      ...state,
+      examRunning: exists(action?.payload) ? action?.payload : !state.examRunning
     }
   },
   toggleSidebarLocked: (state:TAppState, action:TDspAction<boolean>) => {
@@ -74,6 +84,7 @@ export const appReducer = createReducer(appState, (builder:ActionReducerMapBuild
   builder.addCase(setApp, appActions.setApp)
   builder.addCase(setStatus, appActions.setStatus)
   builder.addCase(setEditor, appActions.setEditor)
+  builder.addCase(toggleExamView, appActions.toggleExamView)
   builder.addCase(toggleExamRunning, appActions.toggleExamRunning)
   builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
   builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)

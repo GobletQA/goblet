@@ -1,6 +1,6 @@
 import type { TMenuItem } from '@gobletqa/components'
 
-import { examModal } from '@actions/modals/modals'
+import { toggleExamView } from '@actions/exam/toggleExamView'
 import { AnimationPlayOutlineIcon } from '@gobletqa/components'
 
 export const ExamRunAction:TMenuItem = {
@@ -14,5 +14,5 @@ export const ExamRunAction:TMenuItem = {
     describeChild: true,
     title: `Run all features files included in the test suite`,
   },
-  onClick: () => examModal(),
+  onClick: () => toggleExamView(),
 }

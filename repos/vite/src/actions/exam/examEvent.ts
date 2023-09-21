@@ -14,10 +14,9 @@ import {
  */
 export const examEvent = (meta:TPlayerResEvent) => {
 
-  // console.log(`------- exam meta -------`)
+  console.log(`------- exam event -------`)
   // console.log(meta)
 
-// if(event.fullTestRun) return
 
   // switch(meta.name){
   //   case PWPlay.playStarted: {

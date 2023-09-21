@@ -5,7 +5,7 @@ import { getStore } from '@store'
 import { ExamGetExamUICfgEvt, WSCancelExamEvent } from '@constants'
 import { runExam } from '@actions/exam/runExam'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import {toggleModal} from '@actions/modals/toggleModal'
+import { toggleExamView } from '@actions/exam/toggleExamView'
 import {
   colors,
   CloseIcon,
@@ -18,7 +18,7 @@ export const ExamCancelAction = {
   variant: `contained`,
   StartIcon: CloseIcon,
   sx: { marginRight: `12px`, minWidth: `100px` },
-  onClick: () => toggleModal(false),
+  onClick: () => toggleExamView(false),
 }
 
 export const ExamAbortAction = {
@@ -34,13 +34,6 @@ export const ExamAbortAction = {
   },
 }
 
-const onExamRun = async () => {
-  EE.emit<TExamGetExamUICfgEvt>(ExamGetExamUICfgEvt, (cfg:TExamUIRun) => {
-    console.log(`------- exam run -------`)
-    console.log(cfg)
-    // await runExam()
-  })
-}
 
 export const ExamRunAction = {
   text: `Run`,
@@ -50,5 +43,8 @@ export const ExamRunAction = {
   StartIcon: PlayCircleOutlineIcon,
   sx: { color: colors.white, minWidth: `100px` },
   iconProps: { sx: { color: colors.white } },
-  onClick: onExamRun,
+  onClick: () => EE.emit<TExamGetExamUICfgEvt>(
+    ExamGetExamUICfgEvt,
+    async (cfg:TExamUIRun) => await runExam(cfg)
+  ),
 }
