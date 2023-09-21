@@ -1,12 +1,12 @@
 import type { FocusEvent } from 'react'
 import type { TModalAction } from '@gobletqa/components'
-import type { TExamUIRun, TExamGetExamUICfgEvt, TAppState } from '@types'
+import type { TExamUIRun, TTestsGetExamUICfgEvt, TAppState } from '@types'
 
 import { useState } from 'react'
-import { ExamUpdaters } from './ExamUpdaters'
 import { cls, wordCaps } from '@keg-hub/jsutils'
+import { TestCfgUpdaters } from './TestCfgUpdaters'
 
-import { ExamGetExamUICfgEvt } from '@constants'
+import { TestsGetExamUICfgEvt } from '@constants'
 import { useRepo, useSettings, useApp } from '@store'
 import { ExamForm } from '@components/Forms/ExamForm'
 import { ExamEventReporter } from './ExamEventReporter'
@@ -14,17 +14,17 @@ import { buildExamCfg } from '@utils/browser/buildExamCfg'
 import {
   ExamSection,
   ExamSectionBtn,
-  ExamRunHeader,
-  ExamRunContainer,
-  ExamRunHeaderText,
+  TestRunsHeader,
+  TestRunsContainer,
+  TestRunsHeaderText,
   ExamSectionsContainer
-} from './ExamRun.styled'
+} from './TestRuns.styled'
 
 import {
-  ExamRunAction,
+  TestRunsAction,
   ExamAbortAction,
   ExamCancelAction,
-} from './ExamRunActions'
+} from './TestRunsActions'
 
 
 import {
@@ -52,13 +52,13 @@ const useExamOpts = (app:TAppState) => {
     examCfg,
     setExamCfg,
     actions: [
-      app.examRunning ? ExamAbortAction : ExamCancelAction,
-      ExamRunAction
+      app.allTestsRunning ? ExamAbortAction : ExamCancelAction,
+      TestRunsAction
     ] as TModalAction[],
   }
 }
 
-export const ExamRun = () => {
+export const TestRuns = () => {
   const app = useApp()
   
   const {
@@ -67,35 +67,35 @@ export const ExamRun = () => {
     setExamCfg
   } = useExamOpts(app)
 
-  const onBlurExam = useInline((evt:FocusEvent, type:keyof typeof ExamUpdaters) => {
-    const resp = ExamUpdaters[type]?.onBlur?.(evt, examCfg)
+  const onBlurExam = useInline((evt:FocusEvent, type:keyof typeof TestCfgUpdaters) => {
+    const resp = TestCfgUpdaters[type]?.onBlur?.(evt, examCfg)
     resp && setExamCfg({...examCfg, ...resp })
   })
 
-  const onChangeExam = useInline((args:any[], type:keyof typeof ExamUpdaters) => {
+  const onChangeExam = useInline((args:any[], type:keyof typeof TestCfgUpdaters) => {
     const [evt, value, reason, opt] = args
-    const resp = ExamUpdaters[type]?.onChange?.(evt, value, reason, opt, examCfg)
+    const resp = TestCfgUpdaters[type]?.onChange?.(evt, value, reason, opt, examCfg)
     resp && setExamCfg({...examCfg, ...resp })
   })
 
   const [section, setSection] = useState<TExamSections>(
-    app.examRunning ? EExamSection.reporter : EExamSection.config
+    app.allTestsRunning ? EExamSection.reporter : EExamSection.config
   )
 
   const onChangeSection = useInline((sec:TExamSections) => sec !== section && setSection(sec))
 
-  useOnEvent<TExamGetExamUICfgEvt>(ExamGetExamUICfgEvt, cb => {
+  useOnEvent<TTestsGetExamUICfgEvt>(TestsGetExamUICfgEvt, cb => {
     setSection(`reporter`)
     cb?.(examCfg)
   })
 
   return (
-    <ExamRunContainer className='gb-exam-run-container' >
-      <ExamRunHeader>
-        <ExamRunHeaderText>
+    <TestRunsContainer className='gb-exam-run-container' >
+      <TestRunsHeader>
+        <TestRunsHeaderText>
           Run Test Suite
-        </ExamRunHeaderText>
-      </ExamRunHeader>
+        </TestRunsHeaderText>
+      </TestRunsHeader>
     
       <ExamSectionsContainer className='gb-exam-sections-container' >
         <ExamSection className='gb-exam-section' >
@@ -132,7 +132,7 @@ export const ExamRun = () => {
             />
           )
     }
-    </ExamRunContainer>
+    </TestRunsContainer>
   )
 }
 

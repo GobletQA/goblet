@@ -1,7 +1,7 @@
 import { getStore } from '@store'
 import { noOp } from '@keg-hub/jsutils'
 import { Alert } from '@actions/modals/alert'
-import { runExam } from '@actions/exam/runExam'
+import { runAllTests } from '@actions/testRuns/runAllTests'
 import {
   colors,
   stopEvent,
@@ -13,11 +13,11 @@ import {
   ModalContainer
 } from '@components/Modals/Modal.styled'
 
-export const ExamRunAlert = (evt?:any) => {
+export const TestRunsAlert = (evt?:any) => {
   evt && stopEvent(evt)
   const { app } = getStore().getState()
 
-  return !app?.examRunning
+  return !app?.allTestsRunning
     && Alert({
         titleProps: {
           Icon: <AnimationPlayOutlineIcon sx={{ color: colors.purple10}} />,
@@ -25,7 +25,7 @@ export const ExamRunAlert = (evt?:any) => {
         title: `Run Test Suite`,
         okText: `Yes`,
         onOk: () => {
-          runExam()
+          runAllTests({})
         },
         cancelText: `No`,
         onCancel: noOp,

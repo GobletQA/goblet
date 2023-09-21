@@ -12,9 +12,9 @@ import {
 /**
  * Emits a Exam TestEvt event with just the Exam test response data
  */
-export const examEvent = (meta:TPlayerResEvent) => {
+export const testRunEvents = (meta:TPlayerResEvent) => {
 
-  console.log(`------- exam event -------`)
+  console.log(`------- test event -------`)
   // console.log(meta)
 
 

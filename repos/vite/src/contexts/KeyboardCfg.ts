@@ -2,7 +2,7 @@ import type { TKeyboard } from '@types'
 
 import {
   CancelButtonID,
-  WSCancelExamEvent,
+  WSCancelTestRunEvt,
   BrowserStateAttrKey,
   WSCancelPlayerEvent,
   WSCancelAutomateEvent,
@@ -20,8 +20,8 @@ const cancelAutomation = async () => {
   const { app } = getStore().getState()
 
   // TODO: investigate moving this to its own function
-  if(app.examRunning){
-    EE.emit(WSCancelExamEvent, {})
+  if(app.allTestsRunning){
+    EE.emit(WSCancelTestRunEvt, {})
     return
   }
 

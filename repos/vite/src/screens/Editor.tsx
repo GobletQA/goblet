@@ -2,7 +2,7 @@ import { useApp } from '@store'
 import { EEditorType } from '@types'
 import { SubNavId } from '@constants'
 import { Layout } from '@components/Layout'
-import { ExamRun }  from '@components/ExamRun'
+import { TestRuns }  from '@components/TestRuns'
 import { dims } from '@gobletqa/components/theme'
 import { CodeEditor } from '@components/CodeEditor'
 import { VisualEditor } from '@components/VisualEditor'
@@ -23,8 +23,8 @@ const EditorComps = {
 export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
-  const { examView, editor, sidebarLocked } = useApp()
-  const { Component, ...rest } = examView ? { Component: ExamRun } : EditorComps[editor]
+  const { testRunsView, editor, sidebarLocked } = useApp()
+  const { Component, ...rest } = testRunsView ? { Component: TestRuns } : EditorComps[editor]
 
   return (
     <Layout>

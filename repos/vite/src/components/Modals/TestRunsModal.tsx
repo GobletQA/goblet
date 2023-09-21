@@ -1,15 +1,15 @@
 import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
 import { EModalTypes } from '@types'
-import { ExamRun } from '@components/ExamRun'
+import { TestRuns } from '@components/TestRuns'
 import { colors, GobletIcon } from '@gobletqa/components'
 
-export const ExamRunModal:TModalRef = (props:TModalComponent) => {
-  return (<ExamRun />)
+export const TestRunsModal:TModalRef = (props:TModalComponent) => {
+  return (<TestRuns />)
 }
 
-ExamRunModal.modalType = EModalTypes.ExamRun
-ExamRunModal.modalProps = {
+TestRunsModal.modalType = EModalTypes.TestRuns
+TestRunsModal.modalProps = {
   maxWidth: `lg`,
   sx: {
     height: `100vh`,

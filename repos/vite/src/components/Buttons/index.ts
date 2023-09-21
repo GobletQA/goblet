@@ -1,2 +1,2 @@
 export * from './LogoutButton'
-export * from './RunExamButton'
+export * from './RunTestsButton'

@@ -19,4 +19,4 @@ export type TVncConnected = {
   rfb:RFB|null
 }
 
-export type TExamGetExamUICfgEvt = (cfg:TExamUIRun) => void
+export type TTestsGetExamUICfgEvt = (cfg:TExamUIRun) => void

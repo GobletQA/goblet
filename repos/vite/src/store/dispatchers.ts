@@ -9,9 +9,11 @@ import { filesActions } from '@reducers/files'
 import { settingsActions } from '@reducers/settings'
 import { containerActions } from '@reducers/container'
 import { definitionsActions } from '@reducers/definitions'
+import { testRunsActions } from '@reducers/testRuns'
 
 export const appDispatch = createDispatcher(appActions)
 export const pageDispatch = createDispatcher(pageActions)
+export const testRunsDispatch = createDispatcher(testRunsActions)
 export const containerDispatch = createDispatcher(containerActions)
 export const defsDispatch = createDispatcher(definitionsActions)
 export const filesDispatch = createDispatcher(filesActions)

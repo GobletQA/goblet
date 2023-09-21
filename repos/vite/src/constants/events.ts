@@ -22,5 +22,5 @@ export const WSSocketResetEvt = `ws-socket-reset-event`
 
 export const ExamEndedEvent = `exam-ended-event`
 export const ExamErrorEvent = `exam-error-event`
-export const ExamGetExamUICfgEvt = `exam-get-exam-ui-cfg-event`
-export const WSCancelExamEvent = `ws-cancel-exam-response-event`
+export const TestsGetExamUICfgEvt = `exam-get-exam-ui-cfg-event`
+export const WSCancelTestRunEvt = `ws-cancel-test-run-event`

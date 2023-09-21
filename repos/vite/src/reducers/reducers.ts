@@ -1,7 +1,6 @@
 import type { TState } from '@types'
 
 import { combineReducers } from 'redux'
-import { createReducer } from '@reduxjs/toolkit'
 
 import { appState, appReducer } from './app'
 import { userState, userReducer } from './user'
@@ -11,6 +10,7 @@ import { modalState, modalReducer } from './modal'
 import { reposState, reposReducer } from './repos'
 import { filesState, filesReducer } from './files'
 import { settingsState, settingsReducer } from './settings'
+import { testRunsState, testRunsReducer } from './testRuns'
 import { containerState, containerReducer } from './container'
 import { screencastState, screencastReducer } from './screencast'
 import { definitionsState, definitionsReducer } from './definitions'
@@ -23,6 +23,7 @@ export const preloadedState = {
   files: filesState,
   modal: modalState,
   repos: reposState,
+  testRuns: testRunsState,
   settings: settingsState,
   container: containerState,
   screencast: screencastState,
@@ -37,6 +38,7 @@ export const reducer = combineReducers<TState>({
   modal: modalReducer,
   repos: reposReducer,
   files: filesReducer,
+  testRuns: testRunsReducer,
   settings: settingsReducer,
   container: containerReducer,
   screencast: screencastReducer,

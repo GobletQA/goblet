@@ -2,14 +2,14 @@ import { DrawAction } from './DrawAction'
 import { SquareAction } from './SquareAction'
 import { PictureAction } from './PictureAction'
 
-import { ExamRunAction } from './ExamRunAction'
+import { TestRunsAction } from './TestRunsAction'
 import { DecorationAction } from './DecorationAction'
 import { WorldEditorAction } from './WorldEditorAction'
 
 export const RaceActions = [
   DecorationAction,
   WorldEditorAction,
-  ExamRunAction,
+  TestRunsAction,
   DrawAction,
   SquareAction,
   PictureAction,
@@ -17,7 +17,7 @@ export const RaceActions = [
 
 export const MonacoActions = [
   DecorationAction,
-  ExamRunAction,
+  TestRunsAction,
   DrawAction,
   SquareAction,
   PictureAction,

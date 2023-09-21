@@ -8,7 +8,7 @@ import {
   PlayerEndedEvent,
   PlayerStartedEvent,
 } from '@constants'
-import { examEvent } from '@actions/exam/examEvent'
+import { testRunEvents } from '@actions/testRuns/testRunEvents'
 
 /**
  * Emits a PlayerTestEvt event with just the Player test response data
@@ -16,7 +16,7 @@ import { examEvent } from '@actions/exam/examEvent'
  */
 export const playEvent = (meta:TPlayerResEvent) => {
   if(meta.fullTestRun)
-    return examEvent(meta)
+    return testRunEvents(meta)
 
   switch(meta.name){
     case PWPlay.playStarted: {

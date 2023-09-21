@@ -17,16 +17,16 @@ import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import {
   ExamEndedEvent,
-  WSCancelExamEvent,
+  WSCancelTestRunEvt,
 } from '@constants'
 
 
-export const runExam = (examOpts:TExamUIRun) => {
+export const runAllTests = (examOpts:TExamUIRun) => {
 
   let promise = PromiseAbort((res, rej) => {
 
     // Enable global exam running flag
-    appDispatch.toggleExamRunning(true)
+    appDispatch.toggleAllTestsRun(true)
 
     WSService.emit(SocketMsgTypes.EXAM_RUN, { examOpts })
 
@@ -40,7 +40,7 @@ export const runExam = (examOpts:TExamUIRun) => {
     *
     */
     const cancelOff = EE.on(
-      WSCancelExamEvent,
+      WSCancelTestRunEvt,
       () => {
         onExamEnd?.()
         onExamEnd = undefined

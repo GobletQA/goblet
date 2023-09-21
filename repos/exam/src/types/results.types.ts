@@ -9,6 +9,7 @@ export type TRunResultMeta = {
 
 export type TExRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
   location?:string
+  timestamp:number
   type:EPlayerTestType
   metaData?:TRunResultMeta
   describes?:TExRunResult[]

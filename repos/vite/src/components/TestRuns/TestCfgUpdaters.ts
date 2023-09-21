@@ -3,7 +3,7 @@ import type { TExamUIRun } from '@types'
 
 import { exists, flatUnion, noOp, toBool, toNum } from '@keg-hub/jsutils'
 
-export const ExamUpdaters = {
+export const TestCfgUpdaters = {
   tags: {
     onBlur: (evt:FocusEvent, examCfg:TExamUIRun) => {
       const value = (evt.target as HTMLInputElement).value || ``

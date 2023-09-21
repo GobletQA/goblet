@@ -1,7 +1,7 @@
 import type { MouseEventHandler, ComponentProps } from 'react'
 
 import { useApp } from '@store'
-import { toggleExamView } from '@actions/exam/toggleExamView'
+import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 import {
   colors,
   Tooltip,
@@ -30,9 +30,9 @@ const styles = {
   }
 }
 
-const ExamRunActionComp = (props:TExamIcon) => {
-  const { examRunning } = useApp()
-  const iconSx = examRunning ? styles.exam.running : styles.exam.idle
+const TestRunsActionComp = (props:TExamIcon) => {
+  const { allTestsRunning } = useApp()
+  const iconSx = allTestsRunning ? styles.exam.running : styles.exam.idle
 
   return (
     <Tooltip
@@ -43,7 +43,7 @@ const ExamRunActionComp = (props:TExamIcon) => {
     >
       <IconButton
         sx={styles.button}
-        disabled={examRunning}
+        disabled={allTestsRunning}
         onClick={props?.onClick as MouseEventHandler<HTMLButtonElement>|undefined}
       >
         <AnimationPlayOutlineIcon sx={iconSx} />
@@ -52,9 +52,9 @@ const ExamRunActionComp = (props:TExamIcon) => {
   )
 }
 
-export const ExamRunAction = {
-  id:`exam-run-action`,
-  action: () => toggleExamView(),
+export const TestRunsAction = {
+  id:`test-runs-action`,
+  action: () => toggleTestRunsView(),
   className:`goblet-exam-run`,
-  Component: ExamRunActionComp,
+  Component: TestRunsActionComp,
 }

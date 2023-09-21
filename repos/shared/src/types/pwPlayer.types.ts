@@ -92,6 +92,7 @@ export type TPlayerTestExpectation = {
 
 export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`> & {
   id:string
+  timestamp:number
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?:TEventParent
@@ -100,6 +101,7 @@ export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`> & {
 
 export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`> & {
   id:string
+  timestamp:number
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?:TEventParent
@@ -108,6 +110,7 @@ export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`> & {
 
 export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`> & {
   id:string
+  timestamp:number
   status:EPlayerTestStatus
   type:EPlayerTestType.test
   eventParent?:TEventParent
@@ -117,6 +120,7 @@ export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`> & {
 export type TPlayerTestEvent = Omit<TExEventData, `type`|`action`|`status`> & {
   id:string
   message?:string
+  timestamp:number
   type:EPlayerTestType
   action:EPlayerTestAction
   status?:EPlayerTestStatus

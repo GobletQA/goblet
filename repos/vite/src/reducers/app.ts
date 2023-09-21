@@ -12,8 +12,8 @@ export type TAppState = {
   status:EAppStatus
   sidebarLocked: boolean
   multiFeatsErr: boolean
-  examView: boolean|undefined
-  examRunning: boolean|undefined
+  testRunsView: boolean|undefined
+  allTestsRunning: boolean|undefined
 }
 
 const editor = getQueryData()?.editor
@@ -24,8 +24,8 @@ updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,
-  examView: false,
-  examRunning: false,
+  testRunsView: false,
+  allTestsRunning: false,
   sidebarLocked: false,
   multiFeatsErr: false,
   status:EAppStatus.Active,
@@ -37,8 +37,8 @@ const setStatus = createAction<EAppStatus>(`setStatus`)
 const setEditor = createAction<EEditorType>(`setEditor`)
 const toggleSidebarLocked = createAction<boolean>(`toggleSidebarLocked`)
 const toggleMultiFeatsErr = createAction<boolean>(`toggleMultiFeatsErr`)
-const toggleExamView = createAction<boolean|undefined>(`toggleExamView`)
-const toggleExamRunning = createAction<boolean|undefined>(`toggleExamRunning`)
+const toggleTestRunsView = createAction<boolean|undefined>(`toggleTestRunsView`)
+const toggleAllTestsRun = createAction<boolean|undefined>(`toggleAllTestsRun`)
 
 export const appActions = {
   clearApp: (state:TAppState, action:TDspAction<TAppState>) => (appState),
@@ -47,16 +47,16 @@ export const appActions = {
     ...state,
     editor: action?.payload,
   }),
-  toggleExamView: (state:TAppState, action:TDspAction<boolean|undefined>) => {
+  toggleTestRunsView: (state:TAppState, action:TDspAction<boolean|undefined>) => {
     return {
       ...state,
-      examView: exists(action?.payload) ? action?.payload : !state.examView
+      testRunsView: exists(action?.payload) ? action?.payload : !state.testRunsView
     }
   },
-  toggleExamRunning: (state:TAppState, action:TDspAction<boolean|undefined>) => {
+  toggleAllTestsRun: (state:TAppState, action:TDspAction<boolean|undefined>) => {
     return {
       ...state,
-      examRunning: exists(action?.payload) ? action?.payload : !state.examRunning
+      allTestsRunning: exists(action?.payload) ? action?.payload : !state.allTestsRunning
     }
   },
   toggleSidebarLocked: (state:TAppState, action:TDspAction<boolean>) => {
@@ -84,8 +84,8 @@ export const appReducer = createReducer(appState, (builder:ActionReducerMapBuild
   builder.addCase(setApp, appActions.setApp)
   builder.addCase(setStatus, appActions.setStatus)
   builder.addCase(setEditor, appActions.setEditor)
-  builder.addCase(toggleExamView, appActions.toggleExamView)
-  builder.addCase(toggleExamRunning, appActions.toggleExamRunning)
+  builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
+  builder.addCase(toggleAllTestsRun, appActions.toggleAllTestsRun)
   builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
   builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)
 })

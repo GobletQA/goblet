@@ -18,21 +18,21 @@ import {
 import { Toggle } from '@gobletqa/components/components/Form/Inputs'
 
 
-export const ExamRunContainer = styled(Box)(({ theme }) => `
+export const TestRunsContainer = styled(Box)(({ theme }) => `
   height: 100%;
   display: flex;
   flex-direction: column;
   border-right: 1px solid ${getColor(colors.gray01, colors.black10, theme)};
 `)
 
-export const ExamRunHeader = styled(Box)`
+export const TestRunsHeader = styled(Box)`
   display: flex;
   align-items: center;
   padding: ${gutter.padding.hpx} ${gutter.padding.px};
   padding-right: 0px;
 `
 
-export const ExamRunHeaderText = styled(H3)(({ theme }) => `
+export const TestRunsHeaderText = styled(H3)(({ theme }) => `
   color: ${getColor(colors.purple18, colors.purple01, theme)};
 `)
 
