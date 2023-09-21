@@ -8,17 +8,14 @@ import type {
 
 
 import { addToast } from '@actions/toasts'
+import { emptyObj } from '@keg-hub/jsutils'
+import { appDispatch } from '@store/dispatchers'
 import { WSService } from '@services/socketService'
-import { pickKeys, emptyObj } from '@keg-hub/jsutils'
-import { getWorldVal } from '@utils/repo/getWorldVal'
-import { getRepoData } from '@utils/store/getStoreData'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
-import { buildCmdParams } from '@utils/browser/buildCmdParams'
 import {
   ExamEndedEvent,
-  ExamErrorEvent,
   WSCancelExamEvent,
 } from '@constants'
 
@@ -26,6 +23,10 @@ import {
 export const runExam = () => {
 
   let promise = PromiseAbort((res, rej) => {
+
+    // Enable global exam running flag
+    appDispatch.toggleExamRunning(true)
+
     WSService.emit(SocketMsgTypes.EXAM_RUN, {
       examOpts: {
         // TODO: pass in the exam options from UI
@@ -48,7 +49,7 @@ export const runExam = () => {
         onExamEnd?.()
         onExamEnd = undefined
         // Send event to cancel on the backend
-        WSService.emit(SocketMsgTypes.EXAM_ABORT, { player: true })
+        WSService.emit(SocketMsgTypes.EXAM_ABORT)
 
         // Finally stop listening, cancel and reject
         cancelOff?.()

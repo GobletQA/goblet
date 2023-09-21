@@ -92,7 +92,6 @@ export type TExTestSuiteFinished<T=TExTestEvent> = TExTestEvent & {
 
 export type TExEnded = TExamEvt<Record<string, any>>
 export type TExStarted = TExamEvt<Record<string, any>>
-export type TExResult = TExamEvt<TExSuiteResult[]>
 
 export type TExSpecDone = TExamEvt<TExTestDone>
 export type TExSpecStart = TExamEvt<TExTestStart>
@@ -105,7 +104,6 @@ export type TExSuiteResult = TExamEvt<
 
 export type TExTestEventMeta = TExEnded
   | TExStarted
-  | TExResult
   | TExSpecDone
   | TExSpecStart
   | TExSuiteStart

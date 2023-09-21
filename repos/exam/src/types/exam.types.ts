@@ -22,7 +22,7 @@ import {TExBuiltReporters, TExReporterCfg} from "./reporters.types"
 
 
 
-export type TExamEvt<T=TExEventData|TExEventData[]> = {
+export type TExamEvt<T=TExEventData> = {
   data?:T
   name:string
   message?:string

@@ -49,6 +49,7 @@ export type TPlayerEvent = {
   message?:string
   isPlaying:boolean
   fullTestRun?:boolean
+  procId?:number|string
   data?:TPlayerEventData
 }
 
@@ -78,6 +79,7 @@ export type TPlayerResEvent<T=TPlayerEventData> = (Omit<TSocketMessageObj, `data
   location: string
   fileType: string
   fullTestRun?:boolean
+  procId?:number|string
 })
 
 export type TPlayerTestExpectation = {

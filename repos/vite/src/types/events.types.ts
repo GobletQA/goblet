@@ -1,5 +1,6 @@
-import type { TSymAST } from './shared.types'
+import type { TSymAST, TExamUIRun } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
+
 
 export type TGlobalCopyEvent = {
   text: string
@@ -17,3 +18,5 @@ export type TBrowserIsLoadedEvent = {
 export type TVncConnected = {
   rfb:RFB|null
 }
+
+export type TExamGetExamUICfgEvt = (cfg:TExamUIRun) => void

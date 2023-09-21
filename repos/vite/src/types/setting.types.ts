@@ -15,7 +15,7 @@ export type TSetting = {
   description?: string
   emptyOption?: string
   onReset?: (event:any) => void
-  type?: `string` | `number` | `select` | `boolean`
+  type?: `string` | `number` | `select` | `boolean`|`tags`
 }
 
 type TNoSettingKeys = {

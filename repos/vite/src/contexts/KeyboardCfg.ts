@@ -2,11 +2,13 @@ import type { TKeyboard } from '@types'
 
 import {
   CancelButtonID,
+  WSCancelExamEvent,
   BrowserStateAttrKey,
   WSCancelPlayerEvent,
   WSCancelAutomateEvent,
 } from '@constants'
 
+import { getStore } from '@store'
 import { EBrowserState } from '@types'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { getFileModel } from '@utils/files/getFileModel'
@@ -15,6 +17,14 @@ import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
 const cancelAutomation = async () => {
+  const { app } = getStore().getState()
+
+  // TODO: investigate moving this to its own function
+  if(app.examRunning){
+    EE.emit(WSCancelExamEvent, {})
+    return
+  }
+
   const cancelBtn = document.querySelector<HTMLButtonElement>(`#${CancelButtonID}`)
   if(!cancelBtn) return console.log(`[Key-Cmd] - Cancel action not found`)
 

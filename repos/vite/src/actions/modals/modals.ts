@@ -1,6 +1,5 @@
 import type { TModalProps } from './setActiveModal'
 
-import { getStore } from '@store'
 import { EModalTypes } from '@types'
 import { setActiveModal } from './setActiveModal'
 
@@ -45,13 +44,8 @@ export const waitingModal = (props?:TModalProps) => setActiveModal(
   props
 )
 
-export const examModal = (props?:TModalProps) => {
-  const { app } = getStore().getState()
-
-  !app?.examRunning
-    && setActiveModal(
-        EModalTypes.examRun,
-        props?.visible,
-        props
-      )
-}
+export const examModal = (props?:TModalProps) => setActiveModal(
+  EModalTypes.examRun,
+  props?.visible,
+  props
+)

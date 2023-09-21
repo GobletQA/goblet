@@ -9,6 +9,8 @@
       "options",
       "default",
       "display",
+      "enabled",
+      "prefixTag",
       "description",
       "emptyOption"
     ],
@@ -115,6 +117,22 @@
     }
   },
   "browser": {
+    "browser": {
+      "key": "browser",
+      "value": "chromium",
+      "active": false,
+      "enabled": false,
+      "type": "select",
+      "group": "browser",
+      "default": "chromium",
+      "emptyOption": "chromium",
+      "description": "Default browser to use when executing tests and automation",
+      "options": [
+        "webkit",
+        "firefox",
+        "chromium"
+      ]
+    },
     "slowMo": {
       "key": "slowMo",
       "value": 100,
@@ -135,11 +153,39 @@
       "group": "browser",
       "description": "Amount of time to wait for a browser action to complete successfully"
     },
+    "geolocation": {
+      "key": "geolocation",
+      "value": "",
+      "active": true,
+      "default": "",
+      "type": "string",
+      "group": "browser",
+      "description": "Geo-location of the browser when the tests are executed. Coordinates separated by a comma"
+    },
+    "permissions": {
+      "key": "permissions",
+      "value": "",
+      "active": true,
+      "default": "",
+      "type": "string",
+      "group": "browser",
+      "description": "Comma separated list of permissions to give the the browser by default"
+    },
+    "devices": {
+      "display": false,
+      "key": "devices",
+      "value": "",
+      "active": false,
+      "default": "",
+      "type": "string",
+      "group": "browser",
+      "description": "Comma separated list of devices to use when executing tests or automation"
+    },
     "debug": {
       "key": "debug",
-      "value": true,
+      "value": false,
       "active": true,
-      "default": true,
+      "default": false,
       "enabled": false,
       "type": "boolean",
       "group": "browser",
@@ -601,6 +647,104 @@
         "",
         "Goblet-dark",
         "Goblet-light"
+      ]
+    }
+  },
+  "test": {
+    "tags": {
+      "key": "tags",
+      "value": "",
+      "default": "",
+      "type": "tags",
+      "group": "test",
+      "prefixTag": "@",
+      "active": false,
+      "enabled": false,
+      "description": "Default tags to run when running tests from the Goblet UI"
+    },
+    "headless": {
+      "key": "headless",
+      "value": false,
+      "active": true,
+      "default": false,
+      "group": "test",
+      "type": "boolean",
+      "description": "Use a headless browser when executing tests or automation"
+    },
+    "screenshot": {
+      "key": "screenshot",
+      "value": false,
+      "active": true,
+      "default": false,
+      "group": "test",
+      "type": "boolean",
+      "description": "Automatically take screenshots of failed tests during execution"
+    },
+    "reusePage": {
+      "display": false,
+      "key": "reusePage",
+      "value": false,
+      "active": false,
+      "default": false,
+      "group": "test",
+      "type": "boolean",
+      "description": "Reuse the same browser page when executing multiple tests. Not recommended!"
+    },
+    "reuseContext": {
+      "key": "reuseContext",
+      "value": true,
+      "active": true,
+      "default": true,
+      "group": "test",
+      "type": "boolean",
+      "description": "Reuse the same browser context when executing multiple tests"
+    },
+    "video": {
+      "active": true,
+      "group": "test",
+      "key": "video",
+      "emptyOption": "",
+      "value": false,
+      "default": false,
+      "description": "Capture a video of a test as its executed. Will be saved into the artifacts directory",
+      "options": [
+        "never",
+        "always",
+        "on-fail",
+        false,
+        true
+      ]
+    },
+    "tracing": {
+      "active": true,
+      "group": "test",
+      "key": "tracing",
+      "emptyOption": "",
+      "value": false,
+      "default": false,
+      "description": "Save a trace report of a test as its executed. Will be saved into the artifacts directory",
+      "options": [
+        "never",
+        "always",
+        "on-fail",
+        false,
+        true
+      ]
+    },
+    "testReport": {
+      "active": true,
+      "group": "test",
+      "key": "testReport",
+      "emptyOption": "",
+      "value": false,
+      "default": false,
+      "description": "Save an HTML report of a test as its executed. Will be saved into the artifacts directory",
+      "options": [
+        "never",
+        "always",
+        "on-fail",
+        false,
+        true
       ]
     }
   }

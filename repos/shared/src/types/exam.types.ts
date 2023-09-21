@@ -1,9 +1,7 @@
 export * from '../../../exam/src/types/index'
 
 import type { TCmdExecOpts } from './socket.types'
-import type { TWorldConfig } from '@ltipton/parkin'
-import type { TGobletConfig } from './configs.types'
-import type { TExamConfig, TInitExamOpts } from  '../../../exam/src/types/index'
+import type { TInitExamOpts } from  '../../../exam/src/types/index'
 import type { TBuildTestArgs, TBuildBddEnvs } from './testUtils.types'
 
 export type TExamUIRun = TBuildTestArgs

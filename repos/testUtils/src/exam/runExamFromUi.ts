@@ -81,7 +81,7 @@ const runExam = (
   return childProc
 }
 
-export const runExamFromUi = async (
+export const runExamFromUi = (
   opts:TExamUIRun=emptyObj as TExamUIRun,
   cfg:TExamUIChildProcOpts=emptyObj,
 ) => {

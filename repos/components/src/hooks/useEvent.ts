@@ -1,3 +1,5 @@
+import type { TEventCB } from '@gobletqa/shared/libs/eventEmitter'
+
 import { exists } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { useInline } from '@GBC/hooks/components/useInline'
@@ -7,10 +9,10 @@ export type TAnonFunc = (...args:any[]) => any
 
 export const useOnEvent = <P=Record<any, any>>(
   event:string,
-  cb?:TAnonFunc,
+  cb?:TEventCB<P>,
   key:string=event
 ) => {
-  const inline = useInline(cb)
+  const inline = useInline<TEventCB<P>>(cb)
   
   useEffectOnce(() => {
     const off = EE.on<P>(event, inline, key)

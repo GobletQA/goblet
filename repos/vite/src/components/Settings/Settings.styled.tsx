@@ -1,7 +1,9 @@
+import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
+import Autocomplete from '@mui/material/Autocomplete'
 
-export const StyledInput = styled(TextField)(() => {
+export const SettingInput = styled(TextField)(() => {
   return {
     [`input[type=number]`]: {
       MozAppearance: `textfield`,
@@ -18,3 +20,7 @@ export const StyledInput = styled(TextField)(() => {
     }
   }
 })
+
+export const SettingContainer = styled(Box)``
+
+export const SettingTags = styled(Autocomplete)``

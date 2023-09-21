@@ -22,3 +22,8 @@ export type TExamUIRunFinish = {
   code:number
   cb?:TExamUIRunFinishCB
 }
+
+
+export type TKillExamUIRunEvtOpts = {
+  procId:string|number
+}

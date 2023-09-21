@@ -8,6 +8,7 @@ import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 const {
   examRun,
+  examAbort,
   authToken,
   connection,
   disconnect,
@@ -42,6 +43,7 @@ export const initSocket:TInitSocket = (
       ...config,
       events: {
         examRun: examRun(app),
+        examAbort: examAbort(app),
         authToken: authToken(app),
         disconnect: disconnect(app),
         connection: connection(app),

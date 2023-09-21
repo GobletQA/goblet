@@ -14,8 +14,7 @@ import path from 'node:path'
 import { Logger } from '@GSC/utils/logger'
 import { ENVS } from '@gobletqa/environment'
 import {isArr} from '@keg-hub/jsutils/isArr'
-import { limbo } from '@keg-hub/jsutils/limbo'
-import { writeFile, readFile } from 'node:fs/promises'
+import { writeFile, readFile, mkdir, copyFile } from 'node:fs/promises'
 import { PWPlay, InternalPaths } from '@gobletqa/environment/constants'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 
@@ -24,9 +23,27 @@ const finishedEvt = {
   message: `Test Suite finished`,
 }
 
-const buildTempLoc = (name?:string, type?:`json`|`html`) => {
+enum EUIReportType {
+  json=`json`,
+  html=`html`
+}
+
+const cleanRepoName = (name:string) => {
+  return name.replace(/[!@#$%^&*()_\\=+?:;"'<>,.{}|\/\[\]]/g, ` `)
+    .trim()
+    .replace(/\s/g, `-`)
+    .toLowerCase()
   
-  path.join(InternalPaths.reportsTempDir)
+}
+
+const buildTempLoc = (
+  dir:string,
+  name:string,
+  type:EUIReportType,
+  timestamp:string|number,
+) => {
+  const cleaned = cleanRepoName(name)
+  return path.join(dir,  `${cleaned}.${timestamp}.${type}`)
 }
 
 
@@ -44,41 +61,64 @@ export class ExamUIRun {
     props.onEvent
       && this.onEvent.push(props.onEvent)
   }
-  
-  saveTempJsonReport = async () => {
-    InternalPaths.reportsTempDir
 
+  #ensureTempDir = async (type:EUIReportType) => {
+    const tempJsonLoc = path.join(InternalPaths.reportsTempDir, type)
+    await mkdir(tempJsonLoc, { recursive: true })
+    
+    return tempJsonLoc
+  }
+
+  #ensureRepoDir = async (subdir:string=`full`) => {
+    const repoLoc = path.join(this.repo.paths.reportsDir, subdir)
+    await mkdir(repoLoc, { recursive: true })
+
+    return repoLoc
+  }
+
+  #generateHtml = async () => {
+    return ``
+  }
+
+  saveTempJsonReport = async () => {
+    const tempJsonLoc = await this.#ensureTempDir(EUIReportType.json)
+    const loc = buildTempLoc(
+      tempJsonLoc,
+      this.repo.name,
+      EUIReportType.json,
+      new Date().getTime()
+    )
+
+    Logger.pair(`Saving Exam UI Run events to`, loc)
+    await writeFile(loc, JSON.stringify(this.events))
   }
 
   saveTempHtmlReport = async () => {
-    InternalPaths
-    
-    
+    const tempHtmlLoc = await this.#ensureTempDir(EUIReportType.html)
+    const loc = buildTempLoc(
+      tempHtmlLoc,
+      this.repo.name,
+      EUIReportType.html,
+      new Date().getTime()
+    )
+
+    const html = await this.#generateHtml()
+    await writeFile(loc, html)
   }
 
-  saveJsonReportToRepo = async () => {
-    InternalPaths
-    
-    
+  saveReportToRepo = async (tempLoc:string) => {
+    const repoDir = await this.#ensureRepoDir(`full`)
+    const repoLoc = path.join(repoDir, path.basename(tempLoc))
+
+    await copyFile(tempLoc, repoLoc)
   }
 
-  saveHtmlReportToRepo = async () => {
-    const reportsTemp = InternalPaths.reportsTempDir
-    
-    
-  }
-
-  runFinish = (args:TExamUIRunFinish) => {
-    ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
-
-    const {
-      cb,
-      code,
-    } = args
+  runFinish = async (args:TExamUIRunFinish) => {
+    const {cb, code} = args
 
     ;[cb, ...this.onRunFinish].forEach(cb => cb && cb?.(finishedEvt, this.events))
 
-
+    await this.saveTempJsonReport()
   }
 
   parseEvent = ({data, ref }:{ data:string, ref:string }) => {
@@ -124,8 +164,6 @@ export class ExamUIRun {
   }
 
   cleanup = () => {
-    ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
-
     this.repo = undefined
     this.events = {}
     this.events = undefined
