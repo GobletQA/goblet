@@ -13,9 +13,17 @@ import {
 
 
 export const TestRunsContainer = styled(Box)(({ theme }) => `
+  z-index: 1;
   height: 100%;
   display: flex;
+  position: absolute;
   flex-direction: column;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 100%;
+  background-color: ${getColor(colors.white, colors.purple23, theme)};
   border-right: 1px solid ${getColor(colors.gray01, colors.black10, theme)};
 `)
 
@@ -31,7 +39,7 @@ export const TestRunsHeaderText = styled(H3)(({ theme }) => `
 `)
 
 
-export const ExamSectionsContainer = styled(Box)(({ theme }) => `
+export const TestRunsSectionsContainer = styled(Box)(({ theme }) => `
   display: flex;
   align-items: center;
   justify-content: start;
@@ -42,11 +50,11 @@ export const ExamSectionsContainer = styled(Box)(({ theme }) => `
   border-bottom: 1px solid ${getColor(colors.white01, colors.gray15, theme)};
 `)
 
-export const ExamSection = styled(Box)`
+export const TestRunsSection = styled(Box)`
   margin-right: ${gutter.margin.hpx};
 `
 
-export const ExamSectionBtn = styled(Button)(({ theme }) => `
+export const TestRunsSectionBtn = styled(Button)(({ theme }) => `
   border-radius: 0px;
   height: ${dims.editor.tabs.px};
   padding-left: ${gutter.padding.px};

@@ -14,3 +14,10 @@ export type TAddTestRunEvt = {
   events?: TPlayerResEvent[]
 }
 
+
+export type TTestRunsSections = keyof typeof ETestRunsSection
+export enum ETestRunsSection {
+  runs=`runs`,
+  config=`config`,
+  reporter=`reporter`,
+}

@@ -24,7 +24,8 @@ export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
   const { testRunsView, editor, sidebarLocked } = useApp()
-  const { Component, ...rest } = testRunsView ? { Component: TestRuns } : EditorComps[editor]
+  const { Component, ...rest } = EditorComps[editor]
+  TestRuns
 
   return (
     <Layout>
@@ -33,7 +34,7 @@ export default function Editor(props:TEditorProps){
         style={style}
         {...rest}
       />
-      <DefinitionsSlider />
+      {testRunsView ? (<TestRuns />) : (<DefinitionsSlider />)}
     </Layout>
   )
 }

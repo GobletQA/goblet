@@ -3,23 +3,21 @@ import type { TModalAction } from '@gobletqa/components'
 import type { TExamUIRun, TTestsGetExamUICfgEvt, TAppState } from '@types'
 
 import { useState } from 'react'
+import { ETestRunsSection } from '@types'
 import { PastTestRuns } from './PastTestRuns'
-import { cls, wordCaps } from '@keg-hub/jsutils'
 import { TestCfgUpdaters } from './TestCfgUpdaters'
 
+import { TestRunsTabs } from './TestRunsTabs'
 import { TestsGetExamUICfgEvt } from '@constants'
 import { useRepo, useSettings, useApp } from '@store'
 import { ExamForm } from '@components/Forms/ExamForm'
 import { TestRunsReporter } from './TestRunsReporter'
 import { buildExamCfg } from '@utils/browser/buildExamCfg'
 import {
-  ExamSection,
-  ExamSectionBtn,
   TestRunsHeader,
   TestActionsFooter,
   TestRunsContainer,
   TestRunsHeaderText,
-  ExamSectionsContainer
 } from './TestRuns.styled'
 
 import {
@@ -33,14 +31,6 @@ import {
   useInline,
   useOnEvent,
 } from '@gobletqa/components'
-
-
-export type TExamSections = keyof typeof EExamSection
-export enum EExamSection {
-  runs=`runs`,
-  config=`config`,
-  reporter=`reporter`,
-}
 
 const useExamOpts = (app:TAppState) => {
   const repo = useRepo()
@@ -79,64 +69,34 @@ export const TestRuns = () => {
     resp && setExamCfg({...examCfg, ...resp })
   })
 
-  const [section, setSection] = useState<TExamSections>(
-    app.allTestsRunning ? EExamSection.reporter : EExamSection.config
+  const [section, setSection] = useState<ETestRunsSection>(
+    app.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.config
   )
 
-  const onChangeSection = useInline((sec:TExamSections) => sec !== section && setSection(sec))
+  const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
 
   useOnEvent<TTestsGetExamUICfgEvt>(TestsGetExamUICfgEvt, cb => {
-    setSection(`reporter`)
+    setSection(ETestRunsSection.reporter)
     cb?.(examCfg)
   })
 
   return (
-    <TestRunsContainer className='gb-exam-run-container' >
+    <TestRunsContainer className='gb-test-run-container' >
       <TestRunsHeader>
         <TestRunsHeaderText>
           Run Test Suite
         </TestRunsHeaderText>
       </TestRunsHeader>
     
-      <ExamSectionsContainer className='gb-exam-sections-container' >
-        <ExamSection className='gb-exam-section gb-exam-section-config' >
-          <ExamSectionBtn
-            className={cls(
-              `gb-exam-section-button`,
-              section === EExamSection.config && `active`,
-            )}
-            text={wordCaps(EExamSection.config)}
-            onClick={() => onChangeSection(EExamSection.config)}
-          />
-        </ExamSection>
+      <TestRunsTabs
+        section={section}
+        onChangeSection={onChangeSection}
+      />
 
-        <ExamSection className='gb-exam-section gb-exam-section-reporter' >
-          <ExamSectionBtn
-            className={cls(
-              `gb-exam-section-button`,
-              section === EExamSection.reporter && `active`,
-            )}
-            text={wordCaps(EExamSection.reporter)}
-            onClick={() => onChangeSection(EExamSection.reporter)}
-          />
-        </ExamSection>
-
-        <ExamSection className='gb-exam-section gb-exam-section-runs' >
-          <ExamSectionBtn
-            className={cls(
-              `gb-exam-section-button`,
-              section === EExamSection.runs && `active`,
-            )}
-            text={`Previous ${wordCaps(EExamSection.runs)}`}
-            onClick={() => onChangeSection(EExamSection.runs)}
-          />
-        </ExamSection>
-
-      </ExamSectionsContainer>
       {
-        section === EExamSection.reporter
+        section === ETestRunsSection.reporter
           ? (<TestRunsReporter />)
-          : section === EExamSection.runs
+          : section === ETestRunsSection.runs
             ? (<PastTestRuns />)
             : (
                 <ExamForm

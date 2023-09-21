@@ -32,21 +32,21 @@ export const BrowserOpts = (props:TBrowserOpts) => {
 
   return (
     <>
-      <TestOptsHeaderContainer className='gb-exam-browser-options-header' >
-        <TestOptsHeaderTitle className='gb-exam-browser-options-header-title' >
+      <TestOptsHeaderContainer className='gb-test-browser-options-header' >
+        <TestOptsHeaderTitle className='gb-test-browser-options-header-title' >
           Browser Options
         </TestOptsHeaderTitle>
       </TestOptsHeaderContainer>
 
       <OptionsContainer>
 
-        <InputContainer className='gb-exam-slowmo-container' >
+        <InputContainer className='gb-test-slowmo-container' >
           <NumberInput
             type='number'
             defaultValue={100}
             label='Browser Speed'
             name='exam-browser-slowmo'
-            className='gb-exam-slowmo-input'
+            className='gb-test-slowmo-input'
             onBlur={(evt) => onBlurExam(evt, `testBail`)}
             helperText={
               <InputHelperText>
