@@ -1,5 +1,6 @@
 import type { TPlayerResEvent } from '@types'
-
+import {TAddTestRunEvt} from "@types"
+import {testRunsDispatch} from "@store"
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {
   PWPlay,
@@ -12,10 +13,8 @@ import {
 /**
  * Emits a Exam TestEvt event with just the Exam test response data
  */
-export const testRunEvents = (meta:TPlayerResEvent) => {
-
-  console.log(`------- test event -------`)
-  // console.log(meta)
+export const testRunEvents = (evt:TPlayerResEvent) => {
+  testRunsDispatch.addEvtAndMakeActive({ name: evt.runId, event: evt })
 
 
   // switch(meta.name){

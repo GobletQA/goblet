@@ -67,7 +67,7 @@ export const testRunsActions = {
           ...state,
           runs: {
             ...state.runs,
-            [active]: sortEvents([...state.runs[active], event])
+            [active]: sortEvents([...(state?.runs?.[active] || []), event])
           },
         }
       : state
@@ -83,7 +83,7 @@ export const testRunsActions = {
       ...state,
       runs: {
         ...state.runs,
-        [name]: sortEvents([...state.runs[name], ...events])
+        [name]: sortEvents([...(state?.runs?.[name] || []), ...events])
       },
     }
   },
@@ -101,7 +101,7 @@ export const testRunsActions = {
       active,
       runs: {
         ...state.runs,
-        [name]: sortEvents([...state.runs[name], ...events])
+        [name]: sortEvents([...(state?.runs?.[name] || []), ...events])
       },
     }
   },

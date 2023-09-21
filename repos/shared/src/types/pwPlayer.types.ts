@@ -76,8 +76,10 @@ export type TPlayerOpts = TBrowserActionOptions
 
 export type TPlayerResEvent<T=TPlayerEventData> = (Omit<TSocketMessageObj, `data`> & {
   data:T
-  location: string
-  fileType: string
+  runId:string
+  location:string
+  fileType:string
+  runTimestamp:number
   fullTestRun?:boolean
   procId?:number|string
 })

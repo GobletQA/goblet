@@ -3,18 +3,20 @@ import type { TModalAction } from '@gobletqa/components'
 import type { TExamUIRun, TTestsGetExamUICfgEvt, TAppState } from '@types'
 
 import { useState } from 'react'
+import { PastTestRuns } from './PastTestRuns'
 import { cls, wordCaps } from '@keg-hub/jsutils'
 import { TestCfgUpdaters } from './TestCfgUpdaters'
 
 import { TestsGetExamUICfgEvt } from '@constants'
 import { useRepo, useSettings, useApp } from '@store'
 import { ExamForm } from '@components/Forms/ExamForm'
-import { ExamEventReporter } from './ExamEventReporter'
+import { TestRunsReporter } from './TestRunsReporter'
 import { buildExamCfg } from '@utils/browser/buildExamCfg'
 import {
   ExamSection,
   ExamSectionBtn,
   TestRunsHeader,
+  TestActionsFooter,
   TestRunsContainer,
   TestRunsHeaderText,
   ExamSectionsContainer
@@ -30,13 +32,12 @@ import {
 import {
   useInline,
   useOnEvent,
-  GobletIcon,
 } from '@gobletqa/components'
 
 
-export type TExamSections = `config`|`reporter`
-
+export type TExamSections = keyof typeof EExamSection
 export enum EExamSection {
+  runs=`runs`,
   config=`config`,
   reporter=`reporter`,
 }
@@ -98,7 +99,7 @@ export const TestRuns = () => {
       </TestRunsHeader>
     
       <ExamSectionsContainer className='gb-exam-sections-container' >
-        <ExamSection className='gb-exam-section' >
+        <ExamSection className='gb-exam-section gb-exam-section-config' >
           <ExamSectionBtn
             className={cls(
               `gb-exam-section-button`,
@@ -109,7 +110,7 @@ export const TestRuns = () => {
           />
         </ExamSection>
 
-        <ExamSection className='gb-exam-section' >
+        <ExamSection className='gb-exam-section gb-exam-section-reporter' >
           <ExamSectionBtn
             className={cls(
               `gb-exam-section-button`,
@@ -119,19 +120,34 @@ export const TestRuns = () => {
             onClick={() => onChangeSection(EExamSection.reporter)}
           />
         </ExamSection>
+
+        <ExamSection className='gb-exam-section gb-exam-section-runs' >
+          <ExamSectionBtn
+            className={cls(
+              `gb-exam-section-button`,
+              section === EExamSection.runs && `active`,
+            )}
+            text={`Previous ${wordCaps(EExamSection.runs)}`}
+            onClick={() => onChangeSection(EExamSection.runs)}
+          />
+        </ExamSection>
+
       </ExamSectionsContainer>
-    {
-      section === `reporter`
-        ? (<ExamEventReporter />)
-        : (
-            <ExamForm
-              actions={actions}
-              examCfg={examCfg}
-              onBlurExam={onBlurExam}
-              onChangeExam={onChangeExam}
-            />
-          )
-    }
+      {
+        section === EExamSection.reporter
+          ? (<TestRunsReporter />)
+          : section === EExamSection.runs
+            ? (<PastTestRuns />)
+            : (
+                <ExamForm
+                  examCfg={examCfg}
+                  onBlurExam={onBlurExam}
+                  onChangeExam={onChangeExam}
+                />
+              )
+      }
+      <TestActionsFooter actions={actions} />
+
     </TestRunsContainer>
   )
 }

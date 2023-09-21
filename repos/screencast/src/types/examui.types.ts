@@ -14,6 +14,7 @@ export type TParsedEvtOpts = {
 
 export type TExamUIRunOpts = {
   repo:Repo
+  runTimestamp:number
   onEvent?:TExamUIRunEvtCB
   onRunFinish:TExamUIRunFinishCB
 }

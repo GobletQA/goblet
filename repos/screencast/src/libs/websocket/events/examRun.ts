@@ -41,6 +41,7 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
 
   const examUI = new ExamUIRun({
     repo,
+    runTimestamp: new Date().getTime(),
     onEvent: (evt) => Manager.emit(socket, evt.name, evt),
     onRunFinish: (evt) => Manager.emit(socket, evt.name, evt),
   })

@@ -33,33 +33,33 @@ const cleanRepoName = (name:string) => {
     .trim()
     .replace(/\s/g, `-`)
     .toLowerCase()
-  
 }
 
 const buildTempLoc = (
   dir:string,
   name:string,
   type:EUIReportType,
-  timestamp:string|number,
 ) => {
-  const cleaned = cleanRepoName(name)
-  return path.join(dir,  `${cleaned}.${timestamp}.${type}`)
+  return path.join(dir, `${name}.${type}`)
 }
 
 
 export class ExamUIRun {
   repo:Repo
+  runId:string
   saveHtml?:boolean
   saveJson?:boolean
+  runTimestamp:number
   events:TExamUIRunEvts = {}
   onEvent:TExamUIRunEvtCB[]=[]
   onRunFinish:TExamUIRunFinishCB[]=[]
 
   constructor(props:TExamUIRunOpts) {
     this.repo = props.repo
+    this.runTimestamp = props.runTimestamp
 
-    props.onEvent
-      && this.onEvent.push(props.onEvent)
+    this.runId = this.buildRunId()
+    props.onEvent && this.onEvent.push(props.onEvent)
   }
 
   #ensureTempDir = async (type:EUIReportType) => {
@@ -80,13 +80,16 @@ export class ExamUIRun {
     return ``
   }
 
+  buildRunId = () => {
+    return `${cleanRepoName(this.repo.name)}.${this.runTimestamp}`
+  }
+
   saveTempJsonReport = async () => {
     const tempJsonLoc = await this.#ensureTempDir(EUIReportType.json)
     const loc = buildTempLoc(
       tempJsonLoc,
-      this.repo.name,
-      EUIReportType.json,
-      new Date().getTime()
+      this.runId,
+      EUIReportType.json
     )
 
     Logger.pair(`Saving Exam UI Run events to`, loc)
@@ -97,9 +100,8 @@ export class ExamUIRun {
     const tempHtmlLoc = await this.#ensureTempDir(EUIReportType.html)
     const loc = buildTempLoc(
       tempHtmlLoc,
-      this.repo.name,
-      EUIReportType.html,
-      new Date().getTime()
+      this.runId,
+      EUIReportType.html
     )
 
     const html = await this.#generateHtml()
@@ -151,8 +153,13 @@ export class ExamUIRun {
   onEvtsParsed = ({events, extra, cb}:TParsedEvtOpts) => {
 
     events.forEach(evt => {
-      const formatted = formatTestEvt(evt, extra) as TExTestEventMeta
-      [cb, ...this.onEvent].forEach(cb => cb && cb?.(formatted))
+      const formatted = formatTestEvt(evt, {
+        ...extra,
+        runId: this.runId,
+        runTimestamp: this.runTimestamp,
+      }) as TExTestEventMeta
+
+      ;[cb, ...this.onEvent].forEach(cb => cb && cb?.(formatted))
     })
 
     const data = events?.[0]?.data
