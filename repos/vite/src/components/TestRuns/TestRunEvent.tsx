@@ -1,4 +1,4 @@
-import type { TPlayerResEvent } from '@types'
+import type { TTestRunEvent } from '@types'
 
 import {
   TestRunEventsContainer,
@@ -9,26 +9,25 @@ import {
   TestRunEventIconContainer,
 } from './TestRunEvents.styled'
 
-export type TTestRunEvent = {
-  [key:string]: any
+export type TTestRunEvt = {
+  start:TTestRunEvent
+  end?:TTestRunEvent
 }
 
-export const TestRunEvent = (props:TTestRunEvent) => {
+export const TestRunEvent = (props:TTestRunEvt) => {
   const {
-    type,
-    text,
-    status,
-    description,
+    end,
+    start,
   } = props
 
   return (
     <TestRunEventItem>
       <TestRunEventContainer>
         <TestRunEventIconContainer>
-          {status}
+          {start.status}
         </TestRunEventIconContainer>
         <TestRunEventText>
-          {type} {text}
+          {start.type} {start.text}
         </TestRunEventText>
       </TestRunEventContainer>
     </TestRunEventItem>

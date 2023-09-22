@@ -1,5 +1,6 @@
 import type { TSymAST, TExamUIRun } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
+import {TTestRunEvent, TTestRunFileData, TTestRunId} from './test.types'
 
 
 export type TGlobalCopyEvent = {
@@ -20,3 +21,9 @@ export type TVncConnected = {
 }
 
 export type TTestsGetExamUICfgEvt = (cfg:TExamUIRun) => void
+
+export type TOnTestRunEvent = {
+  runId:TTestRunId
+  event?: TTestRunEvent
+  events?: TTestRunEvent[]
+}

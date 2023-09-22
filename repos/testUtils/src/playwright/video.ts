@@ -61,7 +61,7 @@ export class VideoRecorder {
     }
 
     this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.rootSuiteDone,
+      ExamEvtNames.suiteDoneRoot,
       async (evt:TExamEvt<TExEventData>) => await this.saveVideo(evt, this.page)
     ))
 

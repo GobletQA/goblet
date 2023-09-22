@@ -1,4 +1,7 @@
 import type { TTestRunEvent, TPlayerResEvent, TPlayerEventData } from '@types'
+import { PWPlay, TestRunFileRootEvtRef } from '@constants'
+import {rmRootFromLoc} from '@utils/repo/rmRootFromLoc'
+
 
 const getUuid = (evt:TPlayerResEvent) => {
   const loc = evt?.data?.location || evt?.location
@@ -43,6 +46,7 @@ const getText = (evt:TPlayerResEvent) => {
 export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) => {
   const {
     id,
+    name,
     runId,
     message,
     data={} as TPlayerEventData,
@@ -62,8 +66,13 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
     description,
   } = data
 
+  const uuid = name === PWPlay.playResults || name === PWPlay.playStarted
+    ? TestRunFileRootEvtRef
+    : metaData?.uuid || getUuid(evt)
+
   return {
     id,
+    uuid,
     type,
     stats,
     runId,
@@ -72,10 +81,9 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
     passed,
     skipped,
     text: getText(evt),
-    location: location || evt.location,
     description: description || message,
     timestamp: timestamp || evt.timestamp,
-    uuid: metaData?.uuid || getUuid(evt),
+    location: rmRootFromLoc(location || evt.location),
     status: status || failed && `failed` || passed && `passed` || `unknown`,
     ...trEvt,
   } as TTestRunEvent

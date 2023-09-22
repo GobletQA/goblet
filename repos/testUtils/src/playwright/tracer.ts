@@ -51,7 +51,7 @@ export class TraceRecorder {
     }
 
     this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.rootSuiteDone,
+      ExamEvtNames.suiteDoneRoot,
       async (evt:TExamEvt<TExEventData>) => await this.stop(evt, this.context)
     ))
   }

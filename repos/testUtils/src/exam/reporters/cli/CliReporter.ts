@@ -39,8 +39,8 @@ const logParent = (
   const context = evt.data
   const space = spaceFromId(context)
   
-  const isRoot = evt.name === ExamEvtNames.rootSuiteDone
-    || evt.name === ExamEvtNames.rootSuiteStart
+  const isRoot = evt.name === ExamEvtNames.suiteDoneRoot
+    || evt.name === ExamEvtNames.suiteStartRoot
     || space.length === 4
 
   const [first, description=``] = context.description.split(`>`)

@@ -43,6 +43,12 @@ const buildTempLoc = (
   return path.join(dir, `${name}.${type}`)
 }
 
+const safeLogData = (data:string) => {
+  ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
+  data && Logger.stdout(data)
+  ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `1`
+}
+
 
 export class ExamUIRun {
   repo:Repo
@@ -125,27 +131,19 @@ export class ExamUIRun {
 
   parseEvent = ({data, ref }:{ data:string, ref:string }) => {
     const events:TExTestEventMeta[] = []
-    if(!data.includes(ref)) return events
+    if(!data.includes(ref)){
+      safeLogData(data)
+      return events
+    }
 
-    ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `1`
     data.split(ref)
       .forEach((evt:string) => {
         const cleaned = evt.trim()
         if(!cleaned) return
 
-        try {
-          const parsed = JSON.parse(evt)
-          events.push(parsed)
-        }
-        catch(err){
-          Logger.empty()
-          Logger.error(`[JSON Event Error] - Error parsing JSON event`)
-          Logger.pair(`[JSON Event]`, evt)
-          Logger.log(`------`)
-          Logger.empty()
-        }
+        try { events.push(JSON.parse(evt)) }
+        catch(err){ safeLogData(evt) }
       })
-    ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
 
     return events
   }

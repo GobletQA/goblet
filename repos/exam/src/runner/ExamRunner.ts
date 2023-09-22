@@ -226,7 +226,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
     const data = this.cleanExResult(result)
     result.id === RootSuiteId
-      ? this.event(ExamEvents.rootSuiteStart({ data }))
+      ? this.event(ExamEvents.suiteStartRoot({ data }))
       : this.event(ExamEvents.suiteStart({ data }))
   }
 
@@ -245,7 +245,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
     const data = this.cleanExResult(result)
     result.id === RootSuiteId
-      ? this.event(ExamEvents.rootSuiteDone({ data }))
+      ? this.event(ExamEvents.suiteDoneRoot({ data }))
       : this.event(ExamEvents.suiteDone({ data }))
   }
 

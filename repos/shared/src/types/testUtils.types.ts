@@ -31,6 +31,7 @@ export type TBuildTestArgs = {
   base?:string
   testCI?:boolean
   context?:string
+  testMatch?:string
   noTests?:boolean
   testSync?:boolean
   testDebug?:boolean

@@ -2,12 +2,14 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
   H3,
+  H5,
   dims,
   Text,
   gutter,
   Button,
   colors,
   getColor,
+  WarningIcon,
   ModalFooter
 } from '@gobletqa/components'
 
@@ -79,11 +81,31 @@ export const TestActionsFooter = styled(ModalFooter)(({ theme }) => `
 `)
 
 
+export const TestRunReporterContainer = styled(Box)`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding-left: ${gutter.padding.px};
+  padding-right: ${gutter.padding.px};
+`
 
-export const TestRunReporterContainer = styled(Box)``
-
-
-export const NoTestRunActiveText = styled(Text)``
 export const TestRunEventsContainer = styled(Box)``
-export const NoTestRunActiveContainer = styled(Box)``
+
+export const NoTestRunActiveContainer = styled(Box)`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const NoTestRunActiveText = styled(H5)(({ theme }) => `
+  font-size: 16px;
+  color: ${getColor(colors.gray15, colors.gray03, theme)};
+`)
+
+export const NoTestRunActiveIcon = styled(WarningIcon)`
+  color: ${colors.warn};
+  margin-right: ${gutter.margin.hpx};
+  font-size: 30px;
+`
 

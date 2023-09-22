@@ -12,7 +12,7 @@ const EvtReporterMap = {
 
   // Event `PLAY-SUITE-DONE` - Top level suite-0 only
   // onTestFileResult
-  [ExamEvtNames.rootSuiteDone]: `onTestFileResult`,
+  [ExamEvtNames.suiteDoneRoot]: `onTestFileResult`,
 
   // Event `PLAY-SPEC-DONE`
   // onTestResult
@@ -28,7 +28,7 @@ const EvtReporterMap = {
 
   // Event `PLAY-SUITE-START-ROOT` - Top level suite-0 only
   // onTestFileStart
-  [ExamEvtNames.rootSuiteStart]: `onTestFileStart`,
+  [ExamEvtNames.suiteStartRoot]: `onTestFileStart`,
  
   // Event `PLAY-RESULTS` - Maybe switch this for `PLAY-ENDED` || `PLAY-STOPPED`
   // onRunResult

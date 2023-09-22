@@ -8,6 +8,8 @@ export const PWPlay = {
   playSpecStart: `PLAY-SPEC-START`,
   playSuiteDone: `PLAY-SUITE-DONE`,
   playSuiteStart: `PLAY-SUITE-START`,
+  playSuiteDoneRoot: `PLAY-SUITE-DONE-ROOT`,
+  playSuiteStartRoot: `PLAY-SUITE-START-ROOT`,
   playEnded: `PLAY-ENDED`,
   playError: `PLAY-ERROR`,
   playAction: `PLAY-ACTION`,

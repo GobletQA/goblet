@@ -10,7 +10,7 @@
 import { Logger } from "@gobletqa/exam"
 
 const logEvt = (evt:TExamEvt<TExEventData>, logSplit:string) => {
-  Logger.stdout(`${JSON.stringify(evt)}${logSplit}`)
+  Logger.stdout(`${logSplit}${JSON.stringify(evt)}${logSplit}`)
 }
 
 export class FeatureJsonReporter implements IExamReporter {

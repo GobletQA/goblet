@@ -50,7 +50,8 @@ export const buildTestArgs = (
     testTimeout,
     suiteTimeout,
     exitOnFailed,
-    skipAfterFailed
+    skipAfterFailed,
+    testMatch=context,
   } = params
 
   // node ./repos/exam/.bin/exam.js --config ../../app/repos/testUtils/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
@@ -95,10 +96,11 @@ export const buildTestArgs = (
 
   // If context is set use that as the only file to run
   // Uses glob pattern matching functionality to find the correct test to run
-  if(context){
-    const match = buildTestMatch(type, context, base)
+  if(testMatch){
+    const match = buildTestMatch(type, testMatch, base)
     match && cmdArgs.push(addParam(`testMatch`, match))
   }
+
 
   const cleaned = uniqArr<string>(cmdArgs.filter(arg => arg), undefined)
 

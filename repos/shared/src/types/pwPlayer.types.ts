@@ -95,6 +95,7 @@ export type TPlayerTestExpectation = {
 export type TPlayerTestShared = {
   timestamp:number
   location?:string
+  status:EPlayerTestStatus
   metaData?:TRunResultActionMeta
 }
 

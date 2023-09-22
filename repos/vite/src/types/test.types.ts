@@ -14,6 +14,7 @@ export type TOnBlurExam = (evt: FocusEvent, type: keyof TTestCfgUpdaters) => voi
 
 export type TTestRunId = string
 export type TFileLocation = string
+export type TEventUUID = string
 
 export type TTestRunEvent = {
   runId:TTestRunId
@@ -30,6 +31,18 @@ export type TTestRunEvent = {
   location:TFileLocation
   status?:EPlayerTestStatus
   action:EPlayerTestAction|EResultAction
+}
+
+export type TTestRunEvents = {
+  [key:TEventUUID]: {
+    end?:TTestRunEvent
+    start?:TTestRunEvent
+    other?:TTestRunEvent
+    // TODO: validate these
+    test?:TTestRunEvent
+    abort?:TTestRunEvent
+    skipped?:TTestRunEvent
+  }
 }
 
 export type TTestRunStats = {
@@ -49,7 +62,7 @@ export type TTestRunFileData = {
   runId:TTestRunId
   stats:TTestRunStats
   location:TFileLocation
-  events:TTestRunEvent[]
+  events: TTestRunEvents
 }
 
 

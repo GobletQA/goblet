@@ -82,6 +82,8 @@ export const events = {
   playSuiteDone: playEvent,
   playSpecStart: playEvent,
   playSuiteStart: playEvent,
+  playSuiteDoneRoot: playEvent,
+  playSuiteStartRoot: playEvent,
   examCanceled: function (message:TSocketEvt){
     
   },

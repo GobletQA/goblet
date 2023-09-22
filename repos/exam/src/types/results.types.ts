@@ -1,24 +1,30 @@
 
 import type { TExamEvt } from './exam.types'
 import type { TExFileModelDef } from './file.types'
-import type { EAstObject, TRunResult as TParkinRunResult } from '@ltipton/parkin'
+import type { EAstObject, TRunResult, TTestStats } from '@ltipton/parkin'
 
 export type TRunResultMeta = {
   file?:Partial<TExFileModelDef>
 }
 
-export type TExRunResult = Omit<TParkinRunResult, `type`|`metadata`|`describes`|`tests`> & {
+export enum EPlayerTestStatus {
+  failed=`failed`,
+  passed=`passed`,
+}
+
+export type TExRunResult = Omit<TRunResult, `type`|`metadata`|`describes`|`tests`|`status`> & {
   id:string
   testPath?:string
   location?:string
   timestamp:number
+  stats: TTestStats
   description?:string
   type:EPlayerTestType
   tests?:TExRunResult[]
   metaData?:TRunResultMeta
-  status:EPlayerTestStatus
   describes?:TExRunResult[]
   eventParent?:TEventParent
+  status: EPlayerTestStatus
 }
 
 export enum EPlayerTestAction {
@@ -35,10 +41,7 @@ export enum EPlayerTestType {
   describe=`describe`,
 }
 
-export enum EPlayerTestStatus {
-  failed=`failed`,
-  passed=`passed`,
-}
+
 
 export type TExTestExpectation = {
   type:string
