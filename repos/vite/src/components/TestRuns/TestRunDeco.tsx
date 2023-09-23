@@ -1,4 +1,6 @@
-import { EPlayerTestStatus } from '@types'
+import {cls} from '@keg-hub/jsutils'
+import { TTestRunEvtStatus, EPlayerTestStatus } from '@types'
+import {CSSProperties} from 'react'
 
 import {
   TestRunDecoPass,
@@ -9,22 +11,32 @@ import {
 
 
 export type TTestRunDeco = {
-  status:EPlayerTestStatus|`running`|`loading`
+  className?:string
+  sx?:CSSProperties
+  status:TTestRunEvtStatus
 }
 
 const StatusDecoMap = {
+  // TODO: add a loading Deco component
+  loading: undefined,
   running: TestRunDecoSpin,
-  loading: TestRunDecoSpin,
   [EPlayerTestStatus.passed]: TestRunDecoPass,
   [EPlayerTestStatus.failed]: TestRunDecoFail,
 }
 
 export const TestRunDeco  = (props:TTestRunDeco) => {
-  const { status } = props
-  const Component = StatusDecoMap[status]
+  const { sx, className, status } = props
+  const Component = StatusDecoMap[status as keyof typeof StatusDecoMap]
 
   return (
-    <TestRunDecoContainer>
+    <TestRunDecoContainer
+      sx={sx}
+      className={cls(
+        status,
+        className,
+        `gb-test-runs-deco-container`
+      )}
+    >
       {Component && (<Component />) || null}
     </TestRunDecoContainer>
   )

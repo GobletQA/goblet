@@ -2,8 +2,8 @@ import type { FocusEvent } from 'react'
 import { EResultAction } from '@ltipton/parkin'
 import type { TestCfgUpdaters } from '@components/TestRuns/TestCfgUpdaters'
 import type {
+  EStepKey,
   EPlayerTestType,
-  TPlayerResEvent,
   EPlayerTestAction,
   EPlayerTestStatus,
 } from './shared.types'
@@ -15,6 +15,8 @@ export type TOnBlurExam = (evt: FocusEvent, type: keyof TTestCfgUpdaters) => voi
 export type TTestRunId = string
 export type TFileLocation = string
 export type TEventUUID = string
+export type TTestRunMetaType = EStepKey|`scenario`|`rule`|`background`|`feature`
+export type TTestRunEvtStatus = EPlayerTestStatus|`running`|`loading`
 
 export type TTestRunEvent = {
   runId:TTestRunId
@@ -29,20 +31,24 @@ export type TTestRunEvent = {
   stats?:TTestRunStats
   type:EPlayerTestType
   location:TFileLocation
-  status?:EPlayerTestStatus
+  status?:TTestRunEvtStatus
+  metaType?:TTestRunMetaType
   action:EPlayerTestAction|EResultAction
 }
 
+
+export type TTestRunEventStages = {
+  end?:TTestRunEvent
+  start?:TTestRunEvent
+  // other?:TTestRunEvent
+  // TODO: validate these
+  // test?:TTestRunEvent
+  // abort?:TTestRunEvent
+  // skipped?:TTestRunEvent
+}
+
 export type TTestRunEvents = {
-  [key:TEventUUID]: {
-    end?:TTestRunEvent
-    start?:TTestRunEvent
-    other?:TTestRunEvent
-    // TODO: validate these
-    test?:TTestRunEvent
-    abort?:TTestRunEvent
-    skipped?:TTestRunEvent
-  }
+  [key:TEventUUID]: TTestRunEventStages
 }
 
 export type TTestRunStats = {

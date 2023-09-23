@@ -1,16 +1,17 @@
 import type { TPlayerResEvent, TTestRun, TTestRunFileData } from '@types'
 
-import { cls } from '@keg-hub/jsutils'
 import { useState } from 'react'
+import { cls } from '@keg-hub/jsutils'
 import { TestRunDeco } from './TestRunDeco'
-import { TestRunEvent } from './TestRunEvent'
-import { useTestRunState } from '@hooks/testRuns/useTestRunState'
+import { TestRunEvents } from './TestRunEvents'
+import { TestRunFileRootEvtRef } from '@constants'
+import { useEventState } from '@hooks/testRuns/useEventState'
 
 import {
   TestRunEventsList,
+  TestRunFileContainer,
   TestRunListHeaderText,
   TestRunEventsDropdown,
-  TestRunEventsContainer,
   TestRunEventsListHeader,
   TestRunEventsListHeaderContainer,
 } from './TestRunsReporter.styled'
@@ -38,7 +39,7 @@ const TestRunFile = (props:TTestRunFile) => {
 
   const [open, setOpen] = useState(true)
   const onClick = () => setOpen(!open)
-  const runState = useTestRunState(file)
+  const runState = useEventState(file?.events[TestRunFileRootEvtRef])
 
   return (
     <TestRunEventsList
@@ -54,7 +55,10 @@ const TestRunFile = (props:TTestRunFile) => {
             runState.className,
             `test-run-events-file-list-header`,
           )}>
-            <TestRunDeco status={runState.status as any} />
+            <TestRunDeco
+              status={runState.status}
+              className='gb-test-run-file-deco'
+            />
             <TestRunListHeaderText>
               {location}
             </TestRunListHeaderText>
@@ -64,20 +68,10 @@ const TestRunFile = (props:TTestRunFile) => {
     >
       <TestRunEventsDropdown
         in={open}
-        timeout="auto"
         unmountOnExit
+        timeout="auto"
       >
-          {
-            Object.entries(file.events).map(([uuid, events]) => {
-              return events.start && (
-                <TestRunEvent
-                  key={uuid}
-                  end={events.end}
-                  start={events.start}
-                />
-              ) || null
-            })
-          }
+        <TestRunEvents file={file} />
       </TestRunEventsDropdown>
     </TestRunEventsList>
   )
@@ -92,7 +86,7 @@ export const TestRunFiles = (props:TTestRunFileEvents) => {
       {
         Object.entries(run).map(([location, file]) => {
           return (
-            <TestRunEventsContainer
+            <TestRunFileContainer
               key={location}
               className='test-run-events-file-container'
             >
@@ -100,7 +94,7 @@ export const TestRunFiles = (props:TTestRunFileEvents) => {
                 file={file}
                 location={location}
               />
-            </TestRunEventsContainer>
+            </TestRunFileContainer>
           )
         })
       }

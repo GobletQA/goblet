@@ -10,6 +10,8 @@ export type TRunResultMeta = {
 export enum EPlayerTestStatus {
   failed=`failed`,
   passed=`passed`,
+  skipped=`skipped`,
+  aborted=`aborted`
 }
 
 export type TExRunResult = Omit<TRunResult, `type`|`metadata`|`describes`|`tests`|`status`> & {

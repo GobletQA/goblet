@@ -81,6 +81,7 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
     passed,
     skipped,
     text: getText(evt),
+    metaType: metaData.type,
     description: description || message,
     timestamp: timestamp || evt.timestamp,
     location: rmRootFromLoc(location || evt.location),

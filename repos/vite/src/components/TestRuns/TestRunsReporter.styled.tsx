@@ -20,6 +20,7 @@ import { styled } from '@mui/material/styles'
 import {
   dims,
   Span,
+  Text,
   gutter,
   colors,
   InText,
@@ -32,12 +33,10 @@ export const TestRunReporterContainer = styled(Box)(({ theme }) => `
   display: flex;
   overflow-y: auto;
   flex-direction: column;
-  padding-left: ${gutter.padding.px};
-  padding-right: ${gutter.padding.px};
 
+  padding: 0px;
   overflow-x: hidden;
   scrollbar-width: none;
-  padding: 0px ${gutter.padding.hpx};
   scrollbar-gutter: stable both-edges;
 
   ::-webkit-scrollbar-track {
@@ -59,9 +58,13 @@ export const TestRunReporterContainer = styled(Box)(({ theme }) => `
 
 `)
 
+export const TestRunFileContainer = styled(Box)`
+  width: 100%;
+`
 export const TestRunEventsContainer = styled(Box)`
   width: 100%;
 `
+
 export const TestRunEventsDropdown = styled(Collapse)``
 
 export const TestRunEventsList = styled(List)`
@@ -94,17 +97,85 @@ export const TestRunEventsListHeader = styled(ListSubheader)(({ theme }) => `
 export const TestRunListHeaderText = styled(InText)``
 
 export const TestRunEventItem = styled(ListItem)`
-  margin-left: ${gutter.margin.hpx};
+  padding-left: ${gutter.padding.size * 1}px;
+  &.scenario {
+    padding-left: ${gutter.padding.size * 2}px;
+  }
+  &.rule {
+    padding-left: ${gutter.padding.size * 2}px;
+  }
+  &.background {
+    padding-left: ${gutter.padding.size * 2}px;
+  }
+  &.test {
+    padding-left: ${gutter.padding.size * 3}px;
+  }
 `
-export const TestRunEventContainer = styled(Box)``
-export const TestRunEventText = styled(ListItemText)``
-export const TestRunEventIconContainer = styled(ListItemIcon)``
+export const TestRunEventContainer = styled(Box)`
+  display: flex;
+`
+export const TestRunEventTextContainer = styled(ListItemText)`
+  & .gb-test-run-event-type {
+    &.feature {
+      color: ${colors.royalPurple};
+    }
+    &.scenario {
+      color: ${colors.lightEditor.blueGreen};
+    }
+    &.rule {
+      color: ${colors.lightEditor.blueGreen};
+    }
+    &.background {
+      color: ${colors.lightEditor.blueGreen};
+    }
+    &.test {
+      color: ${colors.gray10};
+    }
+  }
+
+`
+
+export const TestRunEventIconContainer = styled(ListItemIcon)`
+  min-width: 25px;
+  max-width: 25px;
+`
 
 
 export const TestRunDecoContainer = styled(Box)`
-  padding-right: ${gutter.padding.hpx};
+  width: 25px;
+  height: 25px;
+
+  &.gb-test-run-file-deco {
+    padding-right: ${gutter.padding.hpx};
+  }
+  
 `
 export const TestRunDecoPass = styled(DecoPass)``
 export const TestRunDecoFail = styled(DecoFail)``
 export const TestRunDecoSpin = styled(DecoSpin)``
 export const TestRunDecoError = styled(DecoError)``
+
+const shared = `
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: ${gutter.margin.hpx};
+  margin-right: ${gutter.margin.qpx};
+`
+
+export const TestRunTypeEvtType = styled(Span)`
+  ${shared}
+`
+export const TestRunFeatureEvtType = styled(Span)`
+  ${shared}
+`
+export const TestRunParentEvtType = styled(Span)`
+  ${shared}
+`
+export const TestRunStepEvtType = styled(Span)`
+  ${shared}
+`
+
+export const TestRunEvtText = styled(Span)`
+  font-size: 14px;
+  color: ${getColor(colors.gray19, colors.gray02)};
+`
