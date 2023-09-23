@@ -103,6 +103,7 @@ COPY --from=goblet-built /goblet/app/ .
 
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \
+    ln -s /ms-playwright /root/.cache/ms-playwright && \
     chmod a+x /goblet/app/container/initialize.sh
 
 CMD [ "container/initialize.sh" ]
