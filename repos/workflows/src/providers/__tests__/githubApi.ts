@@ -24,6 +24,7 @@ describe(`Git Providers`, () => {
         prePath: `pre`,
         remote: `https://github.com/foo/bar`
       })
+
       expect(preUrl).toBe(`https://api.github.com/pre/foo/bar`)
 
       const postUrl = GithubApi.buildAPIUrl({
