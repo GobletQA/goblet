@@ -13,7 +13,6 @@ export type TAppState = {
   sidebarLocked: boolean
   multiFeatsErr: boolean
   testRunsView: boolean|undefined
-  allTestsRunning: boolean|undefined
 }
 
 const editor = getQueryData()?.editor
@@ -27,8 +26,7 @@ export const appState = {
   // TODO: switch this back to false before deploy
   // testRunsView: true,
   testRunsView: false,
-  
-  allTestsRunning: false,
+
   sidebarLocked: false,
   multiFeatsErr: false,
   status:EAppStatus.Active,
@@ -41,7 +39,6 @@ const setEditor = createAction<EEditorType>(`setEditor`)
 const toggleSidebarLocked = createAction<boolean>(`toggleSidebarLocked`)
 const toggleMultiFeatsErr = createAction<boolean>(`toggleMultiFeatsErr`)
 const toggleTestRunsView = createAction<boolean|undefined>(`toggleTestRunsView`)
-const toggleAllTestsRun = createAction<boolean|undefined>(`toggleAllTestsRun`)
 
 export const appActions = {
   clearApp: (state:TAppState, action:TDspAction<TAppState>) => (appState),
@@ -54,12 +51,6 @@ export const appActions = {
     return {
       ...state,
       testRunsView: exists(action?.payload) ? action?.payload : !state.testRunsView
-    }
-  },
-  toggleAllTestsRun: (state:TAppState, action:TDspAction<boolean|undefined>) => {
-    return {
-      ...state,
-      allTestsRunning: exists(action?.payload) ? action?.payload : !state.allTestsRunning
     }
   },
   toggleSidebarLocked: (state:TAppState, action:TDspAction<boolean>) => {
@@ -88,7 +79,6 @@ export const appReducer = createReducer(appState, (builder:ActionReducerMapBuild
   builder.addCase(setStatus, appActions.setStatus)
   builder.addCase(setEditor, appActions.setEditor)
   builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
-  builder.addCase(toggleAllTestsRun, appActions.toggleAllTestsRun)
   builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
   builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)
 })

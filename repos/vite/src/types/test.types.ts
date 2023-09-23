@@ -16,7 +16,7 @@ export type TTestRunId = string
 export type TFileLocation = string
 export type TEventUUID = string
 export type TTestRunMetaType = EStepKey|`scenario`|`rule`|`background`|`feature`
-export type TTestRunEvtStatus = EPlayerTestStatus|`running`|`loading`
+export type TTestRunEvtStatus = EPlayerTestStatus|`running`|`loading`|`unknown`
 
 export type TTestRunEvent = {
   runId:TTestRunId
@@ -95,4 +95,10 @@ export enum ETestRunsSection {
   runs=`runs`,
   config=`config`,
   reporter=`reporter`,
+}
+
+export type TTestRunEventState = {
+  className:string
+  stats:TTestRunStats
+  status:TTestRunEvtStatus
 }

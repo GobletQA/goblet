@@ -5,7 +5,6 @@ import {testRunsDispatch, getStore} from "@store"
 import { OnTestRunEvt } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { testRunEventFactory } from '@utils/testRuns/testRunEventFactory'
-import { appDispatch } from '@store'
 
 // const { playStarted } = PWPlay
 
@@ -15,8 +14,8 @@ import { appDispatch } from '@store'
 export const testRunEvents = (evt:TPlayerResEvent) => {
 
   if(evt.name !== PWPlay.playResults){
-    const { app } = getStore().getState()
-    !app.allTestsRunning && appDispatch.toggleAllTestsRun(true)
+    const { testRuns } = getStore().getState()
+    !testRuns.allTestsRunning && testRunsDispatch.toggleAllTestsRun(true)
   }
 
   const event = testRunEventFactory(evt)
@@ -25,7 +24,7 @@ export const testRunEvents = (evt:TPlayerResEvent) => {
 
   // TODO: fix this hack, need an on all tests finished event from backend websocket
   evt.name === PWPlay.playResults
-    && appDispatch.toggleAllTestsRun(false)
+    && testRunsDispatch.toggleAllTestsRun(false)
 
 
   // testRunsDispatch.addEvtAndMakeActive({ runId: evt.runId, event })

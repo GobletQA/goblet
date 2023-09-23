@@ -97,7 +97,7 @@ export const TestRunEventsListHeader = styled(ListSubheader)(({ theme }) => `
 export const TestRunListHeaderText = styled(InText)``
 
 export const TestRunEventItem = styled(ListItem)`
-  padding-left: ${gutter.padding.size * 1}px;
+  padding-left: ${gutter.padding.px};
   &.scenario {
     padding-left: ${gutter.padding.size * 2}px;
   }
@@ -111,10 +111,24 @@ export const TestRunEventItem = styled(ListItem)`
     padding-left: ${gutter.padding.size * 3}px;
   }
 `
+
 export const TestRunEventContainer = styled(Box)`
   display: flex;
-`
-export const TestRunEventTextContainer = styled(ListItemText)`
+  align-items: flex-start;
+  padding-left: ${gutter.padding.hpx};
+
+  &.gb-evt-state-passed.gb-run-state-failed {
+    opacity: 0.7;
+  }
+
+  &.feature {
+    padding-left: ${gutter.padding.qpx};
+  }
+
+  &.test {
+    padding-left: ${gutter.padding.tQpx};
+  }
+
   & .gb-test-run-event-type {
     &.feature {
       color: ${colors.royalPurple};
@@ -132,47 +146,65 @@ export const TestRunEventTextContainer = styled(ListItemText)`
       color: ${colors.gray10};
     }
   }
+`
 
+export const TestRunEventTextContainer = styled(ListItemText)`
+  margin: 0px;
 `
 
 export const TestRunEventIconContainer = styled(ListItemIcon)`
-  min-width: 25px;
-  max-width: 25px;
+  min-width: 20px;
+  max-width: 20px;
 `
 
 
 export const TestRunDecoContainer = styled(Box)`
-  width: 25px;
+  width: 20px;
   height: 25px;
+  display: flex;
+  align-items: center;
 
   &.gb-test-run-file-deco {
-    padding-right: ${gutter.padding.hpx};
+    margin-right: ${gutter.margin.hpx};
   }
-  
+
+  &.gb-test-run-event-deco {
+    & svg.gb-deco-icon {
+      top: -3px;
+    }
+    & svg.gb-deco-icon.gb-deco-icon-pass {
+      top: -6px;
+    }
+    & .gb-deco-icon.gb-deco-icon-spin {
+      top: -3px;
+      position: relative;
+    }
+  }
+
+  & .gb-deco-icon.gb-deco-icon-spin {
+    position: initial;
+  }
+
+  & svg.gb-deco-icon {
+    width: 20px;
+    height: 20px;
+    position: relative;
+  }
+
 `
-export const TestRunDecoPass = styled(DecoPass)``
+export const TestRunDecoPass = styled(DecoPass)`
+
+`
 export const TestRunDecoFail = styled(DecoFail)``
 export const TestRunDecoSpin = styled(DecoSpin)``
 export const TestRunDecoError = styled(DecoError)``
 
-const shared = `
+
+export const TestRunTypeEvtType = styled(Box)`
   font-size: 14px;
   font-weight: bold;
   margin-left: ${gutter.margin.hpx};
   margin-right: ${gutter.margin.qpx};
-`
-
-export const TestRunTypeEvtType = styled(Span)`
-  ${shared}
-`
-export const TestRunFeatureEvtType = styled(Span)`
-  ${shared}
-`
-export const TestRunParentEvtType = styled(Span)`
-  ${shared}
-`
-export const TestRunStepEvtType = styled(Span)`
-  ${shared}
 `
 
 export const TestRunEvtText = styled(Span)`

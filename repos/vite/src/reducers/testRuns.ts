@@ -1,15 +1,14 @@
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import type {
-  TTestRunId,
-  TTestRun,
   TTestRuns,
+  TTestRunId,
   TDspAction,
   TAddTestRun,
-  TTestRunEvent,
   TAddTestRunEvts,
   TAddActiveTestRunEvts,
 } from '@types'
 
+import {exists} from '@keg-hub/jsutils'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 
@@ -17,10 +16,12 @@ import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 export type TTestRunsState = {
   runs: TTestRuns
   active?:string
+  allTestsRunning: boolean|undefined
 }
 
 export const testRunsState = {
   runs: {},
+  allTestsRunning: false,
 } as TTestRunsState
 
 const addTestRun = createAction<TAddTestRun>(`addTestRun`)
@@ -42,6 +43,13 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 
 export const testRunsActions = {
   clearTestRuns: (state:TTestRunsState, action:TDspAction<TTestRunsState>) => (testRunsState),
+
+  toggleAllTestsRun: (state:TTestRunsState, action:TDspAction<boolean|undefined>) => {
+    return {
+      ...state,
+      allTestsRunning: exists(action?.payload) ? action?.payload : !state.allTestsRunning
+    }
+  },
 
   addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRun>) => {
     const { runId, data={} } = action?.payload

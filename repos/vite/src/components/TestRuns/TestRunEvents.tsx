@@ -1,4 +1,4 @@
-import type { TTestRun, TTestRunFileData } from '@types'
+import type { TTestRun, TTestRunEventState, TTestRunFileData } from '@types'
 
 import { TestRunEvent } from './TestRunEvent'
 import { TestRunFileRootEvtRef } from '@constants'
@@ -10,10 +10,14 @@ export type TTestRunFileEvents = {
 
 export type TTestRunEvents = {
   file:TTestRunFileData
+  runState:TTestRunEventState
 }
 
 export const TestRunEvents = (props:TTestRunEvents) => {
-  const { file } = props
+  const {
+    file,
+    runState
+  } = props
 
   return (
     <TestRunEventsContainer>
@@ -27,6 +31,7 @@ export const TestRunEvents = (props:TTestRunEvents) => {
                   key={uuid}
                   end={events.end}
                   start={events.start}
+                  runState={runState}
                 />
               ) || null
           })

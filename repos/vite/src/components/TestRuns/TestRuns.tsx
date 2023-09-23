@@ -1,6 +1,6 @@
 import type { FocusEvent } from 'react'
 import type { TModalAction } from '@gobletqa/components'
-import type { TExamUIRun, TTestsGetExamUICfgEvt, TAppState } from '@types'
+import type { TTestRunsState, TExamUIRun, TTestsGetExamUICfgEvt } from '@types'
 
 import { useState } from 'react'
 import { ETestRunsSection } from '@types'
@@ -9,7 +9,7 @@ import { TestCfgUpdaters } from './TestCfgUpdaters'
 
 import { TestRunsTabs } from './TestRunsTabs'
 import { TestsGetExamUICfgEvt } from '@constants'
-import { useRepo, useSettings, useApp } from '@store'
+import { useRepo, useSettings, useTestRuns } from '@store'
 import { ExamForm } from '@components/Forms/ExamForm'
 import { TestRunsReporter } from './TestRunsReporter'
 import { buildExamCfg } from '@utils/browser/buildExamCfg'
@@ -32,7 +32,7 @@ import {
   useOnEvent,
 } from '@gobletqa/components'
 
-const useExamOpts = (app:TAppState) => {
+const useExamOpts = (testRuns:TTestRunsState) => {
   const repo = useRepo()
   const settings = useSettings()
   const cfg = buildExamCfg({ repo, settings })
@@ -43,7 +43,7 @@ const useExamOpts = (app:TAppState) => {
     examCfg,
     setExamCfg,
     actions: [
-      app.allTestsRunning ? ExamAbortAction : ExamCancelAction,
+      testRuns.allTestsRunning ? ExamAbortAction : ExamCancelAction,
       TestRunsAction
     ] as TModalAction[],
   }
@@ -56,13 +56,13 @@ const SectionTabMap = {
 }
 
 export const TestRuns = () => {
-  const app = useApp()
+  const testRuns = useTestRuns()
   
   const {
     actions,
     examCfg,
     setExamCfg
-  } = useExamOpts(app)
+  } = useExamOpts(testRuns)
 
   const onBlurExam = useInline((evt:FocusEvent, type:keyof typeof TestCfgUpdaters) => {
     const resp = TestCfgUpdaters[type]?.onBlur?.(evt, examCfg)
@@ -76,7 +76,7 @@ export const TestRuns = () => {
   })
 
   const [section, setSection] = useState<ETestRunsSection>(
-    app.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.config
+    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.config
   )
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))

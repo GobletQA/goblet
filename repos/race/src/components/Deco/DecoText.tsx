@@ -7,6 +7,7 @@ import { tooltipClasses } from '@mui/material/Tooltip'
 import {
   Tooltip
 } from '@gobletqa/components'
+import {cls} from '@keg-hub/jsutils'
 
 export type TDecoText = {
   id?:string
@@ -41,10 +42,10 @@ export const DecoText = (props:TDecoText) => {
 
   return (
     <>
-      <DecoLineHighlight className={`gb-deco-line-highlight bottom ${className}`} />
+      <DecoLineHighlight className={cls(className, `bottom`, `gb-deco-line-highlight`)} />
       <DecoContainer
         sx={containerSx}
-        className={`gb-deco-container ${className}`}
+        className={cls(`gb-deco-container`, className)}
       >
         <Tooltip
           loc='bottom'

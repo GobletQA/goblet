@@ -1,56 +1,11 @@
-import type { TOnTestRunEvent, TTestRuns, TAddActiveTestRunEvts } from '@types'
-
-import { useApp } from "@store"
-import { NoActiveTestRun } from './NoActiveTestRun'
+import { useTestRuns } from "@store"
 import { TestRunFiles } from './TestRunFiles'
-import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
+import { Loading } from '@gobletqa/components'
+import { NoActiveTestRun } from './NoActiveTestRun'
+import { useTestRunListen } from '@hooks/testRuns/useTestRunListen'
 import { TestRunReporterContainer } from './TestRunsReporter.styled'
 
-import {useRef, useState} from 'react'
-import { OnTestRunEvt } from '@constants'
-import {
-  Loading,
-  useOnEvent,
-  useForceUpdate,
-} from '@gobletqa/components'
-
-
-import { runMock } from './runMock'
-
 export type TTestRunsReporter = {}
-
-const getEvents = (opts:TAddActiveTestRunEvts) => {
-  const { events=[], event } = opts
-  return !event || events.find(evt => evt?.timestamp ===  event?.timestamp)
-    ? events
-    : [...events, event]
-}
-
-const useTestRunListen = () => {
-  
-  const testRunsRef = useRef<TTestRuns>(runMock as TTestRuns)
-  const forceUpdate = useForceUpdate()
-  const [runId, setRunId] = useState<string>(`runMock`)
-
-  useOnEvent<TOnTestRunEvent>(OnTestRunEvt, async (data) => {
-    const evtRunId = data.runId
-    const events = getEvents(data)
-    const testRun = addEventsToTestRun({...testRunsRef.current[evtRunId]}, events)
-    testRunsRef.current[evtRunId] = testRun
-
-    // If there's a runId change, then update the state with the new ID
-    evtRunId !== runId && setRunId(evtRunId)
-
-    // Force update so we get the updates to the ref
-    forceUpdate()
-
-  })
-  
-  return {
-    active: runId,
-    runs: testRunsRef.current
-  }
-}
 
 const styles = {
   container: {
@@ -60,11 +15,12 @@ const styles = {
 }
 
 export const TestRunsReporter = (props:TTestRunsReporter) => {
-  const { allTestsRunning } = useApp()
+  const { allTestsRunning } = useTestRuns()
 
   const {
     runs,
     active,
+    failedFiles,
   } = useTestRunListen()
 
   return (
@@ -73,7 +29,12 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
     >
       {
         active
-          ? (<TestRunFiles run={runs[active]} />)
+          ? (
+              <TestRunFiles
+                run={runs[active]}
+                failedFiles={failedFiles}
+              />
+            )
           : allTestsRunning
             ? (
                 <Loading

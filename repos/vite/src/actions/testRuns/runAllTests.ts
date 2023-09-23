@@ -4,7 +4,7 @@ import type {
 } from '@types'
 
 import { emptyObj } from '@keg-hub/jsutils'
-import { appDispatch } from '@store/dispatchers'
+import { testRunsDispatch } from '@store/dispatchers'
 import { WSService } from '@services/socketService'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
@@ -20,7 +20,7 @@ export const runAllTests = (examOpts:TExamUIRun) => {
   
   let promise = PromiseAbort((res, rej) => {
     // Enable global exam running flag
-    appDispatch.toggleAllTestsRun(true)
+    testRunsDispatch.toggleAllTestsRun(true)
 
     WSService.emit(SocketMsgTypes.EXAM_RUN, { examOpts })
 

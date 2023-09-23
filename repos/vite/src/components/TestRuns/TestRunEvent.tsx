@@ -1,38 +1,25 @@
 import {cls, wordCaps} from '@keg-hub/jsutils'
-import type { TTestRunEvent } from '@types'
+import type { TTestRunEvent, TTestRunEventState } from '@types'
 
+import { useMemo } from 'react'
 import { TestRunDeco } from './TestRunDeco'
 import { useEventState } from '@hooks/testRuns/useEventState'
 import {
   TestRunEvtText,
   TestRunEventItem,
   TestRunTypeEvtType,
-  TestRunStepEvtType,
-  TestRunParentEvtType,
-  TestRunFeatureEvtType,
   TestRunEventContainer,
   TestRunEventIconContainer,
   TestRunEventTextContainer,
 } from './TestRunsReporter.styled'
 
-import {
-  PurpleText,
-  YellowText,
-  GreenText,
-} from '@gobletqa/components'
 
 export type TTestRunEvt = {
   start:TTestRunEvent
   end?:TTestRunEvent
+  runState:TTestRunEventState
 }
 
-const EventTypeMap = {
-  step: TestRunStepEvtType,
-  rule: TestRunParentEvtType,
-  scenario: TestRunParentEvtType,
-  background: TestRunParentEvtType,
-  feature: TestRunFeatureEvtType,
-}
 
 const withColin = [
   `feature`,
@@ -41,6 +28,27 @@ const withColin = [
   `background`
 ]
 
+const useClassList = (props:TTestRunEvt, evtState:TTestRunEventState) => {
+  const {
+    start,
+    runState,
+  } = props
+
+  return useMemo(() => {
+    return [
+      start.type,
+      start.metaType,
+      evtState?.status && `gb-evt-state-${evtState.status}`,
+      runState?.status && `gb-run-state-${runState.status}`
+    ].filter(Boolean).join(` `)
+  }, [
+    start.type,
+    start.metaType,
+    evtState?.status,
+    runState?.status,
+  ])
+}
+ 
 const TestRunEventType = (props:TTestRunEvt) => {
   const {
     end,
@@ -48,10 +56,9 @@ const TestRunEventType = (props:TTestRunEvt) => {
   } = props
 
   const type = start.metaType ? start.metaType : start.type
-  const Component = EventTypeMap[type as keyof typeof EventTypeMap] || TestRunTypeEvtType
 
   return (
-    <Component
+    <TestRunTypeEvtType
       className={cls(
         start.type,
         start.metaType,
@@ -63,49 +70,32 @@ const TestRunEventType = (props:TTestRunEvt) => {
           ? (<>{wordCaps(type)}:</>)
           : (<>{wordCaps(type)}</>)
       }
-    </Component>
+    </TestRunTypeEvtType>
   )
 }
 
 export const TestRunEvent = (props:TTestRunEvt) => {
   const {
-    end,
     start,
   } = props
 
-
   const evtState = useEventState(props)
+  const classList = useClassList(props, evtState)
 
   return (
-    <TestRunEventItem
-      className={cls(
-        start.type,
-        start.metaType,
-        `gb-test-run-event-item`
-      )}
-    >
-      <TestRunEventContainer className='gb-test-run-event-container' >
+    <TestRunEventItem className={`gb-test-run-event-item ${classList}`}>
+      <TestRunEventContainer className={`gb-test-run-event-container ${classList}`} >
         <TestRunEventIconContainer className='gb-test-run-event-icon-container' >
           <TestRunDeco
             status={evtState.status}
             className='gb-test-run-event-deco'
           />
         </TestRunEventIconContainer>
+        <TestRunEventType {...props} />
         <TestRunEventTextContainer
-          className={cls(
-            start.type,
-            start.metaType,
-            'gb-test-run-event-text-container'
-          )}
+          className={`gb-test-run-event-text-container ${classList}`}
         >
-          <TestRunEventType {...props} />
-          <TestRunEvtText
-            className={cls(
-                start.type,
-                start.metaType,
-              `gb-test-run-event-text`
-            )}
-          >
+          <TestRunEvtText className={`gb-test-run-event-text ${classList}`}>
             {start.text}
           </TestRunEvtText>
         </TestRunEventTextContainer>

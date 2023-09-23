@@ -21,9 +21,13 @@ export const DecoSuccess = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
         <DecoSuccessContainer
           {...rest}
           ref={ref}
-          className={cls(`gb-deco-icon-success-container`, className)}
+          className={cls(
+            className,
+            `gb-deco-icon-container`,
+            `gb-deco-icon-success-container`,
+          )}
         >
-          <DecoPassIcon className='gb-deco-icon-success' />
+          <DecoPassIcon className='gb-deco-icon gb-deco-icon-success' />
         </DecoSuccessContainer>
         {children}
       </>

@@ -19,9 +19,13 @@ export const DecoPass = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
         <DecoPassContainer
           {...rest}
           ref={ref}
-          className={cls(`gb-deco-icon-pass-container`, className)}
+          className={cls(
+            className,
+            `gb-deco-icon-container`,
+            `gb-deco-icon-pass-container`,
+          )}
         >
-          <DecoPassIcon className='gb-deco-icon-pass' />
+          <DecoPassIcon className={cls(`gb-deco-icon`, `gb-deco-icon-pass`)} />
         </DecoPassContainer>
         {children}
       </>

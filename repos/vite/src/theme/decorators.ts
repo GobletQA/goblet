@@ -38,7 +38,7 @@ export const decorators = `
     border-bottom: 2px solid ${colors.red10}66;
   }
 
-  .gb-test-runs-deco,
+  .gb-deco-icon-spin,
   .gb-player-glyph.gb-player-running.code {
     margin: 0px auto;
     font-size: 3px;
@@ -56,7 +56,7 @@ export const decorators = `
 
   ${decoratorFinishedHack}
 
-  .gb-test-runs-deco.running,
+  .gb-deco-icon-spin,
   .gb-player-glyph.gb-player-running {
     transform: translateZ(0);
     -ms-transform: translateZ(0);
@@ -84,8 +84,7 @@ export const decorators = `
       transform: rotate(360deg);
     }
   }
-  
-  .gb-test-runs-deco.finished.passed,
+
   .gb-player-glyph.gb-player-finished.code.passed {
     left: 12px !important;
     width: 8px !important;
@@ -96,7 +95,6 @@ export const decorators = `
     border-bottom: 3px solid ${colors.green10};
   }
 
-  .gb-test-runs-deco.finished.failed,
   .gb-player-glyph.gb-player-finished.code.failed {
     position: absolute;
     left: 0px !important;
@@ -104,8 +102,6 @@ export const decorators = `
     height: 18px !important;
   }
 
-  .gb-test-runs-deco.finished.failed:before,
-  .gb-test-runs-deco.finished.failed:after,
   .gb-player-glyph.gb-player-finished.code.failed:before,
   .gb-player-glyph.gb-player-finished.code.failed:after {
     position: absolute;
@@ -115,13 +111,11 @@ export const decorators = `
     content: ' ';
     background-color: ${colors.red10};
   }
-  
-  .gb-test-runs-deco.finished.failed:before,
+
   .gb-player-glyph.gb-player-finished.code.failed:before {
     transform: rotate(45deg);
   }
 
-  .gb-test-runs-deco.finished.failed:after,
   .gb-player-glyph.gb-player-finished.code.failed:after {
     transform: rotate(-45deg);
   }

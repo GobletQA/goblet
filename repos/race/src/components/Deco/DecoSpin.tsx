@@ -21,9 +21,14 @@ export const DecoSpin = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
         <DecoSpinContainer
           {...rest}
           ref={ref}
-          className={cls(`gb-deco-icon-spin-container`, className, props.className)}
+          className={cls(
+            className,
+            props.className,
+            `gb-deco-icon-container`,
+            `gb-deco-icon-spin-container`,
+          )}
         >
-          <DecoSpinIcon className={`gb-deco-icon-spin ${glyphMarginClassName}`} />
+          <DecoSpinIcon className={`gb-deco-icon gb-deco-icon-spin ${glyphMarginClassName}`} />
         </DecoSpinContainer>
         {children}
       </>

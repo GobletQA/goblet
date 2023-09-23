@@ -1,6 +1,6 @@
 import type { MouseEventHandler, ComponentProps } from 'react'
 
-import { useApp } from '@store'
+import { useTestRuns } from '@store'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 import {
   colors,
@@ -31,7 +31,7 @@ const styles = {
 }
 
 const TestRunsActionComp = (props:TExamIcon) => {
-  const { allTestsRunning } = useApp()
+  const { allTestsRunning } = useTestRuns()
   const iconSx = allTestsRunning ? styles.exam.running : styles.exam.idle
 
   return (

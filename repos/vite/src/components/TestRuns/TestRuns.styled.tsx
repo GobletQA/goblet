@@ -83,6 +83,7 @@ export const TestActionsFooter = styled(ModalFooter)(({ theme }) => `
 
 
 export const NoTestRunActiveContainer = styled(Box)`
+  flex: 1;
   width: 100%;
   display: flex;
   align-items: center;

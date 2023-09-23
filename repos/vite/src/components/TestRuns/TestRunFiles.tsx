@@ -23,6 +23,7 @@ export type TTestRunEvents = {
 
 export type TTestRunFileEvents = {
   run:TTestRun
+  failedFiles:string[]
 }
 
 export type TTestRunFile = {
@@ -71,11 +72,14 @@ const TestRunFile = (props:TTestRunFile) => {
         unmountOnExit
         timeout="auto"
       >
-        <TestRunEvents file={file} />
+        <TestRunEvents
+          file={file}
+          runState={runState}
+        />
       </TestRunEventsDropdown>
     </TestRunEventsList>
   )
-  
+
 }
 
 export const TestRunFiles = (props:TTestRunFileEvents) => {

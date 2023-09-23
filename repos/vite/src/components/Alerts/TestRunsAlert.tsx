@@ -15,9 +15,9 @@ import {
 
 export const TestRunsAlert = (evt?:any) => {
   evt && stopEvent(evt)
-  const { app } = getStore().getState()
+  const { testRuns } = getStore().getState()
 
-  return !app?.allTestsRunning
+  return !testRuns?.allTestsRunning
     && Alert({
         titleProps: {
           Icon: <AnimationPlayOutlineIcon sx={{ color: colors.purple10}} />,

@@ -20,9 +20,13 @@ export const DecoError = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
         <DecoErrorContainer
           {...rest}
           ref={ref}
-          className={cls(`gb-deco-icon-error-container`, className)}
+          className={cls(
+            className,
+            `gb-deco-icon-container`,
+            `gb-deco-icon-error-container`,
+          )}
         >
-          <DecoFailIcon className='gb-deco-icon-error' />
+          <DecoFailIcon className='gb-deco-icon gb-deco-icon-error' />
         </DecoErrorContainer>
         {children}
       </>
