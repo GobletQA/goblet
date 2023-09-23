@@ -7,12 +7,13 @@ import { DecoPassIcon, DecoPassContainer } from './Deco.styled'
 
 export type TDeco = {
   deco?:TRaceDeco
+  iconClass?:string
   sx?:CSSProperties
   className?:string
   children?:ReactNode
 }
 export const DecoPass = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
-  const { deco, children, className, ...rest } = props
+  const { deco, children, iconClass, className, ...rest } = props
 
     return (
       <>
@@ -25,7 +26,13 @@ export const DecoPass = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
             `gb-deco-icon-pass-container`,
           )}
         >
-          <DecoPassIcon className={cls(`gb-deco-icon`, `gb-deco-icon-pass`)} />
+          <DecoPassIcon
+            className={cls(
+              iconClass,
+              `gb-deco-icon`,
+              `gb-deco-icon-pass`
+            )}
+          />
         </DecoPassContainer>
         {children}
       </>

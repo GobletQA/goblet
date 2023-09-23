@@ -27,6 +27,7 @@ const StatusDecoMap = {
 export const TestRunDeco  = (props:TTestRunDeco) => {
   const { sx, className, status } = props
   const Component = StatusDecoMap[status as keyof typeof StatusDecoMap]
+  const iconClass = status === `running` ? `gb-test-runs-deco-spin` : ``
 
   return (
     <TestRunDecoContainer
@@ -37,7 +38,7 @@ export const TestRunDeco  = (props:TTestRunDeco) => {
         `gb-test-runs-deco-container`
       )}
     >
-      {Component && (<Component />) || null}
+      {Component && (<Component iconClass={iconClass} />) || null}
     </TestRunDecoContainer>
   )
 }

@@ -8,12 +8,18 @@ import { DecoSpinIcon, DecoSpinContainer } from './Deco.styled'
 export type TDeco = {
   deco?:TRaceDeco
   sx?:CSSProperties
+  iconClass?:string
   className?:string
   children?:ReactNode
 }
 
 export const DecoSpin = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
-  const { deco, children, ...rest } = props
+  const {
+    deco,
+    children,
+    iconClass,
+    ...rest
+  } = props
   const { className, glyphMarginClassName  } = (deco?.options || {})
 
     return (
@@ -28,7 +34,13 @@ export const DecoSpin = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
             `gb-deco-icon-spin-container`,
           )}
         >
-          <DecoSpinIcon className={`gb-deco-icon gb-deco-icon-spin ${glyphMarginClassName}`} />
+          <DecoSpinIcon
+            className={cls(
+              iconClass,
+              glyphMarginClassName,
+              `gb-deco-icon gb-deco-icon-spin`
+            )}
+          />
         </DecoSpinContainer>
         {children}
       </>

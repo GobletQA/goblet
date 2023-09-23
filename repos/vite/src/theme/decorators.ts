@@ -18,6 +18,10 @@ const decoratorFinishedHack = `
   }
 `
 
+/**
+ * The .code class is only used for the monaco editor, not for race
+ * The decos have different styles, so the extra class is used to separate them
+ */
 export const decorators = `
 
   .gb-test-runs-line.running,
@@ -38,7 +42,7 @@ export const decorators = `
     border-bottom: 2px solid ${colors.red10}66;
   }
 
-  .gb-deco-icon-spin,
+  .gb-test-runs-deco-spin,
   .gb-player-glyph.gb-player-running.code {
     margin: 0px auto;
     font-size: 3px;
@@ -56,7 +60,7 @@ export const decorators = `
 
   ${decoratorFinishedHack}
 
-  .gb-deco-icon-spin,
+  .gb-test-runs-deco-spin,
   .gb-player-glyph.gb-player-running {
     transform: translateZ(0);
     -ms-transform: translateZ(0);
