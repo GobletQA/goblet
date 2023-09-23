@@ -16,6 +16,13 @@ export type TExpressionMenu = TMenuContextRef & {
   onChange:(...args:any[]) => any
 }
 
+const iconProps = {
+  svgStyle: {
+    width: `18px`,
+    height: `18px`,
+  }
+}
+
 export const ExpressionMenu = (props:TExpressionMenu) => {
 
   const {
@@ -39,6 +46,7 @@ export const ExpressionMenu = (props:TExpressionMenu) => {
         id={parentId}
         onClick={onOpen}
         Icon={GobletIcon}
+        iconProps={iconProps}
         aria-haspopup="true"
         aria-controls={open ? id : undefined}
         aria-expanded={open ? 'true' : undefined}
