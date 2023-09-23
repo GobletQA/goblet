@@ -804,6 +804,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
+      '@gobletqa/exam':
+        specifier: workspace:*
+        version: link:../exam
       '@gobletqa/goblet':
         specifier: workspace:*
         version: link:../goblet

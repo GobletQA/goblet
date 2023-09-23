@@ -26,10 +26,7 @@ export const runAllTests = (testRunOpts:TTestRunUICfg) => {
     WSService.emit(SocketMsgTypes.TESTS_RUN_ALL, { testRunOpts })
 
     // Then listen for the response event fired from the websocket service
-    let onTestRunEnd = EE.on<TPlayerResEvent>(TestRunExecEndEvt, () => {
-      console.log(`------- resolving promise -------`)
-      res(emptyObj)
-    })
+    let onTestRunEnd = EE.on<TPlayerResEvent>(TestRunExecEndEvt, () => res(emptyObj))
 
     /**
     * Listens for a cancel event
