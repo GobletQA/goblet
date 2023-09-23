@@ -9,8 +9,8 @@ import type {
 } from './shared.types'
 
 export type TTestCfgUpdaters = typeof TestCfgUpdaters
-export type TOnChangeExam = (args: any[], type: keyof TTestCfgUpdaters) => void
-export type TOnBlurExam = (evt: FocusEvent, type: keyof TTestCfgUpdaters) => void
+export type TOnChangeTestCfg = (args: any[], type: keyof TTestCfgUpdaters) => void
+export type TOnBlurTestCfg = (evt: FocusEvent, type: keyof TTestCfgUpdaters) => void
 
 export type TTestRunId = string
 export type TFileLocation = string

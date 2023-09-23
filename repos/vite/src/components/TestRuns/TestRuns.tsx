@@ -1,6 +1,6 @@
 import type { FocusEvent } from 'react'
 import type { TModalAction } from '@gobletqa/components'
-import type { TTestRunsState, TExamUIRun, TTestsGetExamUICfgEvt } from '@types'
+import type { TTestRunsState, TExamUIRun, TTestsGetUICfgEvt } from '@types'
 
 import { useState } from 'react'
 import { ETestRunsSection } from '@types'
@@ -8,11 +8,11 @@ import { PastTestRuns } from './PastTestRuns'
 import { TestCfgUpdaters } from './TestCfgUpdaters'
 
 import { TestRunsTabs } from './TestRunsTabs'
-import { TestsGetExamUICfgEvt } from '@constants'
-import { useRepo, useSettings, useTestRuns } from '@store'
-import { ExamForm } from '@components/Forms/ExamForm'
+import { TestsGetUICfgEvt } from '@constants'
 import { TestRunsReporter } from './TestRunsReporter'
-import { buildExamCfg } from '@utils/browser/buildExamCfg'
+import { TestCfgForm } from '@components/Forms/TestCfgForm'
+import { useRepo, useSettings, useTestRuns } from '@store'
+import { buildTestRunCfg } from '@utils/browser/buildTestRunCfg'
 import {
   TestRunsHeader,
   TestActionsFooter,
@@ -21,9 +21,9 @@ import {
 } from './TestRuns.styled'
 
 import {
-  TestRunsAction,
-  ExamAbortAction,
-  ExamCancelAction,
+  TestRunsRunAction,
+  TestRunsAbortAction,
+  TestRunsCancelAction,
 } from './TestRunsActions'
 
 
@@ -32,19 +32,19 @@ import {
   useOnEvent,
 } from '@gobletqa/components'
 
-const useExamOpts = (testRuns:TTestRunsState) => {
+const useTestRunOpts = (testRuns:TTestRunsState) => {
   const repo = useRepo()
   const settings = useSettings()
-  const cfg = buildExamCfg({ repo, settings })
+  const cfg = buildTestRunCfg({ repo, settings })
 
-  const [examCfg, setExamCfg] = useState<TExamUIRun>(cfg)
+  const [testRunCfg, setTestRunCfg] = useState<TExamUIRun>(cfg)
 
   return {
-    examCfg,
-    setExamCfg,
+    testRunCfg,
+    setTestRunCfg,
     actions: [
-      testRuns.allTestsRunning ? ExamAbortAction : ExamCancelAction,
-      TestRunsAction
+      testRuns.allTestsRunning ? TestRunsAbortAction : TestRunsCancelAction,
+      TestRunsRunAction
     ] as TModalAction[],
   }
 }
@@ -60,19 +60,19 @@ export const TestRuns = () => {
   
   const {
     actions,
-    examCfg,
-    setExamCfg
-  } = useExamOpts(testRuns)
+    testRunCfg,
+    setTestRunCfg
+  } = useTestRunOpts(testRuns)
 
-  const onBlurExam = useInline((evt:FocusEvent, type:keyof typeof TestCfgUpdaters) => {
-    const resp = TestCfgUpdaters[type]?.onBlur?.(evt, examCfg)
-    resp && setExamCfg({...examCfg, ...resp })
+  const onBlurTestCfg = useInline((evt:FocusEvent, type:keyof typeof TestCfgUpdaters) => {
+    const resp = TestCfgUpdaters[type]?.onBlur?.(evt, testRunCfg)
+    resp && setTestRunCfg({...testRunCfg, ...resp })
   })
 
-  const onChangeExam = useInline((args:any[], type:keyof typeof TestCfgUpdaters) => {
+  const onChangeTestCfg = useInline((args:any[], type:keyof typeof TestCfgUpdaters) => {
     const [evt, value, reason, opt] = args
-    const resp = TestCfgUpdaters[type]?.onChange?.(evt, value, reason, opt, examCfg)
-    resp && setExamCfg({...examCfg, ...resp })
+    const resp = TestCfgUpdaters[type]?.onChange?.(evt, value, reason, opt, testRunCfg)
+    resp && setTestRunCfg({...testRunCfg, ...resp })
   })
 
   const [section, setSection] = useState<ETestRunsSection>(
@@ -81,9 +81,9 @@ export const TestRuns = () => {
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
 
-  useOnEvent<TTestsGetExamUICfgEvt>(TestsGetExamUICfgEvt, cb => {
+  useOnEvent<TTestsGetUICfgEvt>(TestsGetUICfgEvt, cb => {
     setSection(ETestRunsSection.reporter)
-    cb?.(examCfg)
+    cb?.(testRunCfg)
   })
   
   const Component = SectionTabMap[section]
@@ -105,10 +105,10 @@ export const TestRuns = () => {
         section !== ETestRunsSection.config
           ? (<Component />)
           : (
-              <ExamForm
-                examCfg={examCfg}
-                onBlurExam={onBlurExam}
-                onChangeExam={onChangeExam}
+              <TestCfgForm
+                testRunCfg={testRunCfg}
+                onBlurTestCfg={onBlurTestCfg}
+                onChangeTestCfg={onChangeTestCfg}
               />
             )
       }

@@ -5,7 +5,7 @@ import {
 } from './RunTestsButton.styled'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 
-export const RunExamButton = () => {
+export const RunAllTestsButton = () => {
   return (
     <TestRunsBtn
       Icon={TestRunsIcon}

@@ -10,7 +10,7 @@ import {
   AnimationPlayOutlineIcon,
 } from '@gobletqa/components'
 
-export type TExamIcon = ComponentProps<typeof AnimationPlayOutlineIcon>
+export type TTestRunsIcon = ComponentProps<typeof AnimationPlayOutlineIcon>
 
 const styles = {
   exam: {
@@ -30,7 +30,7 @@ const styles = {
   }
 }
 
-const TestRunsActionComp = (props:TExamIcon) => {
+const TestRunsActionComp = (props:TTestRunsIcon) => {
   const { allTestsRunning } = useTestRuns()
   const iconSx = allTestsRunning ? styles.exam.running : styles.exam.idle
 

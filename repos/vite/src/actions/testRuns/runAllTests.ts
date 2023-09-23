@@ -10,7 +10,7 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes } from '@constants'
 import {
-  ExamEndedEvent,
+  TestRunEndedEvt,
   WSCancelTestRunEvt,
 } from '@constants'
 
@@ -25,7 +25,7 @@ export const runAllTests = (examOpts:TExamUIRun) => {
     WSService.emit(SocketMsgTypes.EXAM_RUN, { examOpts })
 
     // Then listen for the response event fired from the websocket service
-    let onExamEnd = EE.on<TPlayerResEvent>(ExamEndedEvent, () => res(emptyObj))
+    let onTestRunEnd = EE.on<TPlayerResEvent>(TestRunEndedEvt, () => res(emptyObj))
 
     /**
     * Listens for a cancel event
@@ -36,8 +36,8 @@ export const runAllTests = (examOpts:TExamUIRun) => {
     const cancelOff = EE.on(
       WSCancelTestRunEvt,
       () => {
-        onExamEnd?.()
-        onExamEnd = undefined
+        onTestRunEnd?.()
+        onTestRunEnd = undefined
         // Send event to cancel on the backend
         WSService.emit(SocketMsgTypes.EXAM_ABORT)
         

@@ -1,18 +1,17 @@
-import type { TTestsGetExamUICfgEvt, TExamUIRun } from '@types'
-import type { TModalAction } from '@gobletqa/components'
+import type { TTestsGetUICfgEvt, TExamUIRun } from '@types'
 
 import { getStore } from '@store'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { runAllTests } from '@actions/testRuns/runAllTests'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
-import { TestsGetExamUICfgEvt, WSCancelTestRunEvt } from '@constants'
+import { TestsGetUICfgEvt, WSCancelTestRunEvt } from '@constants'
 import {
   colors,
   CloseIcon,
   PlayCircleOutlineIcon,
 } from '@gobletqa/components'
 
-export const ExamCancelAction = {
+export const TestRunsCancelAction = {
   color: `error`,
   text: `Cancel`,
   variant: `contained`,
@@ -21,21 +20,21 @@ export const ExamCancelAction = {
   onClick: () => toggleTestRunsView(false),
 }
 
-export const ExamAbortAction = {
+export const TestRunsAbortAction = {
   color: `error`,
   text: `Abort`,
   variant: `contained`,
   StartIcon: CloseIcon,
   sx: { marginRight: `12px`, minWidth: `100px` },
   onClick: () => {
-    const { app } = getStore().getState()
-    app?.allTestsRunning
+    const { testRuns } = getStore().getState()
+    testRuns?.allTestsRunning
       && EE.emit(WSCancelTestRunEvt, {})
   },
 }
 
 
-export const TestRunsAction = {
+export const TestRunsRunAction = {
   text: `Run`,
   color: `success`,
   keyboard: `enter`,
@@ -43,8 +42,8 @@ export const TestRunsAction = {
   StartIcon: PlayCircleOutlineIcon,
   sx: { color: colors.white, minWidth: `100px` },
   iconProps: { sx: { color: colors.white } },
-  onClick: () => EE.emit<TTestsGetExamUICfgEvt>(
-    TestsGetExamUICfgEvt,
+  onClick: () => EE.emit<TTestsGetUICfgEvt>(
+    TestsGetUICfgEvt,
     async (cfg:TExamUIRun) => await runAllTests(cfg)
   ),
 }

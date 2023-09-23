@@ -1,7 +1,7 @@
 import type {
   TExamUIRun,
-  TOnBlurExam,
-  TOnChangeExam,
+  TOnBlurTestCfg,
+  TOnChangeTestCfg,
 } from '@types'
 import { exists } from '@keg-hub/jsutils'
 import {
@@ -13,21 +13,21 @@ import {
   OptionsContainer,
   TestOptsHeaderTitle,
   TestOptsHeaderContainer,
-} from './ExamForm.styled'
+} from './TestCfgForm.styled'
 
 
 export type TBrowserOpts = {
-  examCfg:TExamUIRun
-  onBlurExam:TOnBlurExam
-  onChangeExam:TOnChangeExam
+  testRunCfg:TExamUIRun
+  onBlurTestCfg:TOnBlurTestCfg
+  onChangeTestCfg:TOnChangeTestCfg
 }
 
 export const BrowserOpts = (props:TBrowserOpts) => {
 
   const {
-    examCfg,
-    onBlurExam,
-    onChangeExam,
+    testRunCfg,
+    onBlurTestCfg,
+    onChangeTestCfg,
   } = props
 
   return (
@@ -47,7 +47,7 @@ export const BrowserOpts = (props:TBrowserOpts) => {
             label='Browser Speed'
             name='exam-browser-slowmo'
             className='gb-test-slowmo-input'
-            onBlur={(evt) => onBlurExam(evt, `testBail`)}
+            onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
             helperText={
               <InputHelperText>
                 Speed in which browser actions are executed, a.k.a &nbsp;<b>"slow-mo"</b>

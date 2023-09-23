@@ -1,10 +1,8 @@
-import type { TModalAction } from '@gobletqa/components'
-
-import type { TExamUIRun, TOnBlurExam, TOnChangeExam } from '@types'
+import type { TExamUIRun, TOnBlurTestCfg, TOnChangeTestCfg } from '@types'
 
 import { TestOpts } from './TestOpts'
 import { BrowserOpts } from './BrowserOpts'
-import { ExamCfgContainer } from './ExamForm.styled'
+import { TestCfgContainer } from './TestCfgForm.styled'
 
 /**
  * Add rest of test and browser options
@@ -38,19 +36,19 @@ import { ExamCfgContainer } from './ExamForm.styled'
  */
 
 
-export type TExamForm = {
-  examCfg:TExamUIRun
-  onBlurExam:TOnBlurExam
-  onChangeExam:TOnChangeExam
+export type TTestCfgForm = {
+  testRunCfg:TExamUIRun
+  onBlurTestCfg:TOnBlurTestCfg
+  onChangeTestCfg:TOnChangeTestCfg
 }
 
-export const ExamForm = (props:TExamForm) => {
+export const TestCfgForm = (props:TTestCfgForm) => {
   return (
     <>
-      <ExamCfgContainer>
+      <TestCfgContainer>
         <TestOpts {...props} />
         <BrowserOpts {...props} />
-      </ExamCfgContainer>
+      </TestCfgContainer>
     </>
   )
 }

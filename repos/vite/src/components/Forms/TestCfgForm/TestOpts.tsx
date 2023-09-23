@@ -1,7 +1,7 @@
 import type {
   TExamUIRun,
-  TOnBlurExam,
-  TOnChangeExam,
+  TOnBlurTestCfg,
+  TOnChangeTestCfg,
 } from '@types'
 import { exists } from '@keg-hub/jsutils'
 import {
@@ -13,21 +13,21 @@ import {
   OptionsContainer,
   TestOptsHeaderTitle,
   TestOptsHeaderContainer,
-} from './ExamForm.styled'
+} from './TestCfgForm.styled'
 
 
 export type TTestOpts = {
-  examCfg:TExamUIRun
-  onBlurExam:TOnBlurExam
-  onChangeExam:TOnChangeExam
+  testRunCfg:TExamUIRun
+  onBlurTestCfg:TOnBlurTestCfg
+  onChangeTestCfg:TOnChangeTestCfg
 }
 
 export const TestOpts = (props:TTestOpts) => {
 
   const {
-    examCfg,
-    onBlurExam,
-    onChangeExam,
+    testRunCfg,
+    onBlurTestCfg,
+    onChangeTestCfg,
   } = props
 
   return (
@@ -45,11 +45,11 @@ export const TestOpts = (props:TTestOpts) => {
             freeSolo={true}
             multiple={true}
             className='gb-test-tags-input'
-            onBlur={(evt) => onBlurExam(evt, `tags`)}
-            onChange={(...args:any[]) => onChangeExam(args, `tags`)}
+            onBlur={(evt) => onBlurTestCfg(evt, `tags`)}
+            onChange={(...args:any[]) => onChangeTestCfg(args, `tags`)}
             label={`Tag Filter`}
             placeholder={`@whitelist   @passing   @user-auth  ...`}
-            value={examCfg.tags || []}
+            value={testRunCfg.tags || []}
             helperText={
               <InputHelperText>
                 Set one or multiple tags to filter which tests will be executed.
@@ -70,7 +70,7 @@ export const TestOpts = (props:TTestOpts) => {
               </InputHelperText>
             }
             placeholder='Enter the step retry amount... ( default: 0 )'
-            onBlur={(evt) => onBlurExam(evt, `testRetry`)}
+            onBlur={(evt) => onBlurTestCfg(evt, `testRetry`)}
           />
         </InputContainer>
         <InputContainer className='gb-test-suite-retry-input-container' >
@@ -86,7 +86,7 @@ export const TestOpts = (props:TTestOpts) => {
               </InputHelperText>
             }
             placeholder='Enter the Feature retry amount... ( default: 0 )'
-            onBlur={(evt) => onBlurExam(evt, `suiteRetry`)}
+            onBlur={(evt) => onBlurTestCfg(evt, `suiteRetry`)}
           />
         </InputContainer>
 
@@ -103,15 +103,15 @@ export const TestOpts = (props:TTestOpts) => {
               </InputHelperText>
             }
             placeholder='Enter a test bail amount... ( default: 5 )'
-            onBlur={(evt) => onBlurExam(evt, `testBail`)}
+            onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
           />
         </InputContainer>
 
         <InputContainer className='gb-test-suite-retry-input-container' >
           <ToggleInput
             label='Exit on Fail'
-            value={exists(examCfg.exitOnFailed) ? `${examCfg.exitOnFailed}` : `false`}
-            onChange={(...args) => onChangeExam(args, `exitOnFailed`)}
+            value={exists(testRunCfg.exitOnFailed) ? `${testRunCfg.exitOnFailed}` : `false`}
+            onChange={(...args) => onChangeTestCfg(args, `exitOnFailed`)}
             options={[
               { value: `true`, text: `True` },
               { value: `false`, text: `False` },

@@ -9,7 +9,7 @@ import {
   AutoInput,
 } from '@gobletqa/components'
 
-export const ExamCfgContainer = styled(Box)`
+export const TestCfgContainer = styled(Box)`
   height: 100%;
   padding: ${gutter.padding.px};
   padding-top: 0px;

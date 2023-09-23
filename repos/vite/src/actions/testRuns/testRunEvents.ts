@@ -9,7 +9,7 @@ import { testRunEventFactory } from '@utils/testRuns/testRunEventFactory'
 // const { playStarted } = PWPlay
 
 /**
- * Emits a Exam TestEvt event with just the Exam test response data
+ * Emits a Test Run TestEvt event with just the test run response data
  */
 export const testRunEvents = (evt:TPlayerResEvent) => {
 

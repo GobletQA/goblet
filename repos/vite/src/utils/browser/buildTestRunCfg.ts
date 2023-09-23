@@ -37,12 +37,12 @@ const addSettingOpt = (
   value && (opts[key] = value)
 }
 
-export type TBuildExamCfg = {
+export type TBuildTestRunCfg = {
   repo?:TRepoOpts
   settings?:TSettings
 }
 
-const getStoreItems = (opts:TBuildExamCfg) => {
+const getStoreItems = (opts:TBuildTestRunCfg) => {
   const state = getStore()?.getState()
   return {
     repo: opts.repo ?? state.repo,
@@ -54,7 +54,7 @@ const getStoreItems = (opts:TBuildExamCfg) => {
  * Loads the world and store settings and merges them together
  * Then sets default test run specific params based on the merged settings
  */
-export const buildExamCfg = (opts:TBuildExamCfg) => {
+export const buildTestRunCfg = (opts:TBuildTestRunCfg) => {
   const examCfg:Partial<TExamUIRun> = {}
   const { repo, settings } = getStoreItems(opts)
   const mergedSettings = deepMerge(settings, repo?.world?.settings)
