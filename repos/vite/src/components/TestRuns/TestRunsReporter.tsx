@@ -2,9 +2,9 @@ import type { TOnTestRunEvent, TTestRuns, TAddActiveTestRunEvts } from '@types'
 
 import { useApp } from "@store"
 import { NoActiveTestRun } from './NoActiveTestRun'
-import { TestRunFileEvents } from './TestRunFileEvents'
-import { TestRunReporterContainer } from './TestRuns.styled'
+import { TestRunFiles } from './TestRunFiles'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
+import { TestRunReporterContainer } from './TestRunsReporter.styled'
 
 import {useRef, useState} from 'react'
 import { OnTestRunEvt } from '@constants'
@@ -14,8 +14,10 @@ import {
   useForceUpdate,
 } from '@gobletqa/components'
 
-export type TTestRunsReporter = {}
 
+import { runMock } from './runMock'
+
+export type TTestRunsReporter = {}
 
 const getEvents = (opts:TAddActiveTestRunEvts) => {
   const { events=[], event } = opts
@@ -26,9 +28,9 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 
 const useTestRunListen = () => {
   
-  const testRunsRef = useRef<TTestRuns>({})
+  const testRunsRef = useRef<TTestRuns>(runMock as TTestRuns)
   const forceUpdate = useForceUpdate()
-  const [runId, setRunId] = useState<string>()
+  const [runId, setRunId] = useState<string>(`runMock`)
 
   useOnEvent<TOnTestRunEvent>(OnTestRunEvt, async (data) => {
     const evtRunId = data.runId
@@ -71,7 +73,7 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
     >
       {
         active
-          ? (<TestRunFileEvents run={runs[active]} />)
+          ? (<TestRunFiles run={runs[active]} />)
           : allTestsRunning
             ? (
                 <Loading

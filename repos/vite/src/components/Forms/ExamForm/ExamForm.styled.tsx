@@ -10,9 +10,9 @@ import {
 } from '@gobletqa/components'
 
 export const ExamCfgContainer = styled(Box)`
+  height: 100%;
   padding: ${gutter.padding.px};
   padding-top: 0px;
-  flex-grow: 2;
 `
 
 export const OptionsContainer = styled(Box)`

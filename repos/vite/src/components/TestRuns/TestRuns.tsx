@@ -49,6 +49,12 @@ const useExamOpts = (app:TAppState) => {
   }
 }
 
+const SectionTabMap = {
+  [ETestRunsSection.config]: () => null,
+  [ETestRunsSection.runs]: PastTestRuns,
+  [ETestRunsSection.reporter]: TestRunsReporter
+}
+
 export const TestRuns = () => {
   const app = useApp()
   
@@ -79,12 +85,14 @@ export const TestRuns = () => {
     setSection(ETestRunsSection.reporter)
     cb?.(examCfg)
   })
+  
+  const Component = SectionTabMap[section]
 
   return (
     <TestRunsContainer className='gb-test-run-container' >
-      <TestRunsHeader>
+      <TestRunsHeader className='gb-test-run-header' >
         <TestRunsHeaderText>
-          Run Test Suite
+          Test Suite
         </TestRunsHeaderText>
       </TestRunsHeader>
     
@@ -94,17 +102,15 @@ export const TestRuns = () => {
       />
 
       {
-        section === ETestRunsSection.reporter
-          ? (<TestRunsReporter />)
-          : section === ETestRunsSection.runs
-            ? (<PastTestRuns />)
-            : (
-                <ExamForm
-                  examCfg={examCfg}
-                  onBlurExam={onBlurExam}
-                  onChangeExam={onChangeExam}
-                />
-              )
+        section !== ETestRunsSection.config
+          ? (<Component />)
+          : (
+              <ExamForm
+                examCfg={examCfg}
+                onBlurExam={onBlurExam}
+                onChangeExam={onChangeExam}
+              />
+            )
       }
       <TestActionsFooter actions={actions} />
 

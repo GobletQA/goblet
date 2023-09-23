@@ -7,7 +7,7 @@ const { divider } = dims.panel
 
 const sharedStyle = `
   opacity: 0;
-  z-index: 100;
+  z-index: 9;
   background: #000;
   box-sizing: border-box;
   background-clip: padding-box;

@@ -49,10 +49,10 @@ export * from './PassIcon'
 
 export * from './CutIcon'
 export * from './PasteIcon'
+export * from './BugPlayIcon'
 export * from './PasteAfterIcon'
 export * from './PasteBeforeIcon'
 export * from './AnimationPlayOutlineIcon'
-
 
 // export * from './FolderPlayOutlineIcon'
 

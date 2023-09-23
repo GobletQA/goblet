@@ -1,18 +1,19 @@
-import {TestRunFileRootEvtRef} from '@constants'
-import {cls} from '@keg-hub/jsutils'
 import type { TPlayerResEvent, TTestRun, TTestRunFileData } from '@types'
 
-import { useMemo, useState } from 'react'
+import { cls } from '@keg-hub/jsutils'
+import { useState } from 'react'
 import { TestRunDeco } from './TestRunDeco'
 import { TestRunEvent } from './TestRunEvent'
-
+import { useTestRunState } from '@hooks/testRuns/useTestRunState'
 
 import {
   TestRunEventsList,
+  TestRunListHeaderText,
   TestRunEventsDropdown,
   TestRunEventsContainer,
   TestRunEventsListHeader,
-} from './TestRunEvents.styled'
+  TestRunEventsListHeaderContainer,
+} from './TestRunsReporter.styled'
 
 export type TTestRunEvents = {
   name:string
@@ -28,31 +29,6 @@ export type TTestRunFile = {
   file:TTestRunFileData
 }
 
-const useFileRunState = (file:TTestRunFileData) => {
-  const rootEvt = file?.events[TestRunFileRootEvtRef]
-  return useMemo(() => {
-    if(!rootEvt?.start)
-      return {}
-    
-    return !rootEvt?.end
-      ? {
-          status: `running`,
-          stats: rootEvt?.start?.stats,
-          className: `gb-test-runs-line running`
-        }
-      : {
-          stats: rootEvt?.end?.stats,
-          status: rootEvt?.end?.status,
-          className: `gb-test-runs-line ${rootEvt?.end?.status}`
-        }
-    
-  }, [
-    rootEvt?.end,
-    rootEvt?.start,
-  ])
-  
-}
-
 const TestRunFile = (props:TTestRunFile) => {
   const {
     file,
@@ -62,25 +38,29 @@ const TestRunFile = (props:TTestRunFile) => {
 
   const [open, setOpen] = useState(true)
   const onClick = () => setOpen(!open)
-
-  const fileState = useFileRunState(file)
-  const { start, end } = file?.events[TestRunFileRootEvtRef]
+  const runState = useTestRunState(file)
 
   return (
     <TestRunEventsList
       className={`test-run-events-file-list`}
-      subheader={
+      subheader={(
         <TestRunEventsListHeader
           onClick={onClick}
           className={cls(
-            fileState.className,
-            `test-run-events-file-list-header`,
+            `test-run-events-file-list-header-container`
           )}
         >
-          <TestRunDeco status={fileState.status as any} />
-          {location}
+          <TestRunEventsListHeaderContainer className={cls(
+            runState.className,
+            `test-run-events-file-list-header`,
+          )}>
+            <TestRunDeco status={runState.status as any} />
+            <TestRunListHeaderText>
+              {location}
+            </TestRunListHeaderText>
+          </TestRunEventsListHeaderContainer>
         </TestRunEventsListHeader>
-      }
+      )}
     >
       <TestRunEventsDropdown
         in={open}
@@ -104,7 +84,7 @@ const TestRunFile = (props:TTestRunFile) => {
   
 }
 
-export const TestRunFileEvents = (props:TTestRunFileEvents) => {
+export const TestRunFiles = (props:TTestRunFileEvents) => {
   const { run } = props
 
   return (

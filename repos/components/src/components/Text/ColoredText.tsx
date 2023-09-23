@@ -39,3 +39,10 @@ export const RedText = (props:ComponentProps<typeof Span>) => (
     sx={[inherit, props.sx, { color: colors.red10 }] as CSSProperties[]}
   />
 )
+
+export const InText = (props:ComponentProps<typeof Span>) => (
+  <Span
+    {...props}
+    sx={[inherit, props.sx] as CSSProperties[]}
+  />
+)

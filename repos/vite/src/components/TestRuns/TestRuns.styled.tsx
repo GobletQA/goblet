@@ -4,7 +4,6 @@ import {
   H3,
   H5,
   dims,
-  Text,
   gutter,
   Button,
   colors,
@@ -15,29 +14,31 @@ import {
 
 
 export const TestRunsContainer = styled(Box)(({ theme }) => `
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  position: absolute;
-  flex-direction: column;
   top: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
   width: 100%;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
   background-color: ${getColor(colors.white, colors.purple23, theme)};
   border-right: 1px solid ${getColor(colors.gray01, colors.black10, theme)};
 `)
 
-export const TestRunsHeader = styled(Box)`
+export const TestRunsHeader = styled(Box)(({ theme }) => `
   display: flex;
-  align-items: center;
-  padding: ${gutter.padding.hpx} ${gutter.padding.px};
   padding-right: 0px;
-`
+  align-items: center;
+  height: ${dims.browser.actions.height}px;
+  padding: ${gutter.padding.hpx} ${gutter.padding.px};
+  background-color: ${getColor(colors.white, colors.black13, theme)};
+`)
 
 export const TestRunsHeaderText = styled(H3)(({ theme }) => `
-  color: ${getColor(colors.purple18, colors.purple01, theme)};
+  color: ${getColor(colors.gray18, colors.purple01, theme)};
 `)
 
 
@@ -58,7 +59,7 @@ export const TestRunsSection = styled(Box)`
 
 export const TestRunsSectionBtn = styled(Button)(({ theme }) => `
   border-radius: 0px;
-  height: ${dims.editor.tabs.px};
+  height: ${dims.header.hpx};
   padding-left: ${gutter.padding.px};
   padding-right: ${gutter.padding.px};
   border-bottom: 1px solid transparent;
@@ -76,20 +77,10 @@ export const TestActionsFooter = styled(ModalFooter)(({ theme }) => `
   flex-grow: 1;
   justify-content: space-between;
   max-height: ${dims.header.height * 2}px;
-  background-color: ${getColor(colors.white, colors.purple23, theme)};
-  padding: ${gutter.padding.px} ${gutter.padding.hpx} ${gutter.padding.hpx};
+  padding: ${gutter.padding.hpx} ${gutter.padding.dpx};
+  background-color: ${getColor(colors.white00, colors.purple23, theme)};
 `)
 
-
-export const TestRunReporterContainer = styled(Box)`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  padding-left: ${gutter.padding.px};
-  padding-right: ${gutter.padding.px};
-`
-
-export const TestRunEventsContainer = styled(Box)``
 
 export const NoTestRunActiveContainer = styled(Box)`
   width: 100%;

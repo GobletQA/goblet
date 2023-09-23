@@ -1,32 +1,31 @@
 import { EPlayerTestStatus } from '@types'
 
-
 import {
   TestRunDecoPass,
   TestRunDecoFail,
   TestRunDecoSpin,
   TestRunDecoContainer
-} from './TestRunEvents.styled'
+} from './TestRunsReporter.styled'
 
 
 export type TTestRunDeco = {
   status:EPlayerTestStatus|`running`|`loading`
 }
 
+const StatusDecoMap = {
+  running: TestRunDecoSpin,
+  loading: TestRunDecoSpin,
+  [EPlayerTestStatus.passed]: TestRunDecoPass,
+  [EPlayerTestStatus.failed]: TestRunDecoFail,
+}
+
 export const TestRunDeco  = (props:TTestRunDeco) => {
   const { status } = props
-  
+  const Component = StatusDecoMap[status]
+
   return (
     <TestRunDecoContainer>
-      {
-        status === EPlayerTestStatus.passed
-          ? (<TestRunDecoPass />)
-          : status === EPlayerTestStatus.failed
-            ? (<TestRunDecoFail />)
-          : status === `running` || status === `loading`
-            ? (<TestRunDecoSpin />)
-            : null
-      }
+      {Component && (<Component />) || null}
     </TestRunDecoContainer>
   )
 }

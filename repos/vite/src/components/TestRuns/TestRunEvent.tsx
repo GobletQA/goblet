@@ -7,7 +7,7 @@ import {
   TestRunEventContainer,
   TestRunEventText,
   TestRunEventIconContainer,
-} from './TestRunEvents.styled'
+} from './TestRunsReporter.styled'
 
 export type TTestRunEvt = {
   start:TTestRunEvent
