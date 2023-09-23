@@ -1,6 +1,11 @@
 import type { TSymAST } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
-import {TTestRunUICfg, TTestRunEvent, TTestRunId} from './test.types'
+import {
+  TTestRunId,
+  TTestRunUICfg,
+  TTestRunEvent,
+  TTestRunEndEvent,
+} from './test.types'
 
 
 export type TGlobalCopyEvent = {
@@ -26,4 +31,5 @@ export type TOnTestRunEvent = {
   runId:TTestRunId
   event?: TTestRunEvent
   events?: TTestRunEvent[]
+  endEvent?:TTestRunEndEvent
 }

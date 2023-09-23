@@ -1,6 +1,7 @@
 import type { TExTestEventMeta } from "@gobletqa/exam"
 import type {
   Repo,
+  TExamEvtExtra,
   TExamUIRunEvts,
   TExamUIRunOpts,
   TParsedEvtOpts,
@@ -14,9 +15,11 @@ import path from 'node:path'
 import { Logger } from '@GSC/utils/logger'
 import { ENVS } from '@gobletqa/environment'
 import {isArr} from '@keg-hub/jsutils/isArr'
+import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { writeFile, readFile, mkdir, copyFile } from 'node:fs/promises'
 import { PWPlay, InternalPaths } from '@gobletqa/environment/constants'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
+
 
 const finishedEvt = {
   name: PWPlay.playEnded,
@@ -58,6 +61,7 @@ export class ExamUIRun {
   runTimestamp:number
   events:TExamUIRunEvts = {}
   onEvent:TExamUIRunEvtCB[]=[]
+  extraEvt:Partial<TExamEvtExtra>
   onRunFinish:TExamUIRunFinishCB[]=[]
 
   constructor(props:TExamUIRunOpts) {
@@ -66,6 +70,8 @@ export class ExamUIRun {
 
     this.runId = this.buildRunId()
     props.onEvent && this.onEvent.push(props.onEvent)
+    props.onRunFinish && this.onRunFinish.push(props.onRunFinish)
+    this.extraEvt = props.extraEvt ?? emptyObj
   }
 
   #ensureTempDir = async (type:EUIReportType) => {
@@ -122,9 +128,16 @@ export class ExamUIRun {
   }
 
   runFinish = async (args:TExamUIRunFinish) => {
-    const {cb, code} = args
+    const {cb, code, extra} = args
 
-    ;[cb, ...this.onRunFinish].forEach(cb => cb && cb?.(finishedEvt, this.events))
+    const event = formatTestEvt(finishedEvt, {
+      ...this.extraEvt,
+      ...extra,
+      runId: this.runId,
+      runTimestamp: this.runTimestamp,
+    }) as TExTestEventMeta
+
+    ;[cb, ...this.onRunFinish].forEach(cb => cb && cb?.(event, this.events))
 
     await this.saveTempJsonReport()
   }
@@ -152,6 +165,7 @@ export class ExamUIRun {
 
     events.forEach(evt => {
       const formatted = formatTestEvt(evt, {
+        ...this.extraEvt,
         ...extra,
         runId: this.runId,
         runTimestamp: this.runTimestamp,

@@ -1,5 +1,5 @@
 import type { TFeatureAst } from '@ltipton/parkin'
-import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd, TRaceDecoUpdate } from '@gobletqa/race'
+import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd, TRaceDecoUpdate, TRaceDecoMeta } from '@gobletqa/race'
 import type {
   TFileTree,
   TFileModel,
@@ -113,7 +113,6 @@ export const useRaceDecorations = ({
 
     const { location } = event
     const relative = rmRootFromLoc(location, rootPrefix)
-    const meta = { action: event.data.action }
     const dec = buildDecoration<TRaceDeco, TFeatureAst>({
       event: data,
       testPath: data.testPath,
@@ -126,7 +125,9 @@ export const useRaceDecorations = ({
       scenarioRef,
       editor: EEditorType.visual,
     })
-    
+
+    const meta = { action: event.data.action } as TRaceDecoMeta
+
     decos.length
       ? decoRef?.current?.update?.(relative, decos.concat([dec]), meta)
       : decoRef?.current?.add(relative, dec, meta)

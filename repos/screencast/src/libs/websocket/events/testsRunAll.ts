@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
-import type { TKillTestRunUIRunEvtOpts, TPlayerTestEventMeta, TSocketEvtCBProps } from '@GSC/types'
+import type { TExamEvtExtra, TKillTestRunUIRunEvtOpts, TPlayerTestEventMeta, TSocketEvtCBProps } from '@GSC/types'
 
 import path from 'path'
 import { EE } from '@gobletqa/shared'
@@ -42,6 +42,7 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
   const examUI = new ExamUIRun({
     repo,
     runTimestamp: new Date().getTime(),
+    extraEvt: { group: socket.id, fullTestRun: true },
     onEvent: (evt) => Manager.emit(socket, evt.name, evt),
     onRunFinish: (evt) => Manager.emit(socket, evt.name, evt),
   })
@@ -83,7 +84,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
      * Extra args to add to the events
      * Is a function to allow accessing the child proc id within the event callbacks
      */
-    const getExtra = ():Partial<TPlayerTestEventMeta> => ({
+    const getExtra = ():Partial<TExamEvtExtra> => ({
       group: socket.id,
       fullTestRun: true,
       procId: childProc?.pid,
@@ -113,7 +114,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
       onExit: async (code) => {
         if(examRunAborted) return res({ code })
 
-        await examUI.runFinish({ code })
+        await examUI.runFinish({ code, extra: getExtra() })
         Logger.log(`UI-Exam finished with exit code: ${code}`)
 
         cleanup()

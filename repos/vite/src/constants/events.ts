@@ -1,3 +1,5 @@
+import { ETestRunEvtRef } from '@types'
+
 export const BrowserNavEvt = `browser-nav-event`
 export const PlayerTestEvt = `player-test-event`
 export const GlobalCopyEvt = `global-copy-event`
@@ -26,4 +28,5 @@ export const TestRunErrorEvt = `test-run-error-event`
 export const TestRunGetUICfgEvt = `test-run-get-ui-cfg-event`
 export const WSCancelTestRunEvt = `ws-cancel-test-run-event`
 
-export const TestRunFileRootEvtRef = `Test-Run-File-Root`
+export const TestRunEndEvt = ETestRunEvtRef.TestRunEndEvt
+export const TestRunFileRootEvtRef = ETestRunEvtRef.TestRunFileRootEvtRef

@@ -1,3 +1,21 @@
+const endEvent = {
+  "id": "f77c5353-3dd2-4552-9ec3-eefd3aee5252",
+  "message": "Test Suite finished",
+  "error": false,
+  "data": {},
+  "group": "0OJ1sRnL77Qw6fJJAAAP",
+  "name": "PLAY-ENDED",
+  "isRunning": false,
+  "timestamp": 1695500838946,
+  "fullTestRun": true,
+  "procId": 74043,
+  "runId": "end-2-end.1695500818347",
+  "runTimestamp": 1695500818347,
+  "socketId": "0OJ1sRnL77Qw6fJJAAAP",
+  "groupId": "goblet"
+}
+
+
 const secretsFile = {
     "events": {
         "Test-Run-File-Root": {

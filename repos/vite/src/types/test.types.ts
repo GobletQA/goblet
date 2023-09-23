@@ -8,7 +8,12 @@ import type {
   EPlayerTestAction,
   EPlayerTestStatus,
 } from './shared.types'
+import {emptyObj} from '@keg-hub/jsutils'
 
+export enum ETestRunEvtRef {
+  TestRunEndEvt=`test-run-end-event`,
+  TestRunFileRootEvtRef=`Test-Run-File-Root`
+}
 
 export type TTestRunUICfg = (TExamUIRun & {})
 
@@ -40,6 +45,22 @@ export type TTestRunEvent = {
   action:EPlayerTestAction|EResultAction
 }
 
+export type TTestRunEndEvent = {
+  name:string
+  error:boolean
+  group: string
+  procId:number
+  message:string
+  groupId:string
+  socketId:string
+  timestamp:number
+  runId:TTestRunId
+  isRunning:boolean
+  fullTestRun?:boolean
+  runTimestamp:string
+  data: typeof emptyObj
+  id: ETestRunEvtRef.TestRunEndEvt
+}
 
 export type TTestRunEventStages = {
   end?:TTestRunEvent
