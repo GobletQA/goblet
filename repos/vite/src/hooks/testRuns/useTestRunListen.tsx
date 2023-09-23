@@ -1,28 +1,27 @@
-import type { TOnTestRunEvent, TTestRuns, TAddActiveTestRunEvts } from '@types'
+import type {
+  TTestRuns,
+  TTestRunExecEvt,
+  TTestRunExecEndEvent,
+  TAddActiveTestRunEvts
+} from '@types'
 
 import {useRef, useState} from 'react'
-import { OnTestRunEvt } from '@constants'
+import { getEvents } from '@utils/testRuns/getEvents'
+import { addTestRun } from '@actions/testRuns/addTestRun'
+import { TestRunExecEvt, TestRunExecEndEvt } from '@constants'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 import {
   useOnEvent,
   useForceUpdate,
 } from '@gobletqa/components'
 
-
+/**
+ * **IMPORTANT** - Only include this for testing
+ * It should not be included in production builds
+ */
 import { runMock } from '@services/__mocks__/testrun.mock'
 
 export type TTestRunsReporter = {}
-
-const getEvents = (opts:TAddActiveTestRunEvts) => {
-  const { events=[], event } = opts
-  const evts = !event || events.find(evt => evt?.timestamp ===  event?.timestamp)
-    ? events
-    : [...events, event]
-
-  const failedEvt = evts.find(evt => evt.status === `failed`)
-
-  return { events: evts, failedLoc: failedEvt?.location }
-}
 
 export const useTestRunListen = () => {
 
@@ -36,7 +35,7 @@ export const useTestRunListen = () => {
   const [runId, setRunId] = useState<string>()
   const testRunsRef = useRef<TTestRuns>({} as TTestRuns)
 
-  useOnEvent<TOnTestRunEvent>(OnTestRunEvt, async (data) => {
+  useOnEvent<TTestRunExecEvt>(TestRunExecEvt, async (data) => {
     const evtRunId = data.runId
     const { events, failedLoc } = getEvents(data)
     const testRun = addEventsToTestRun({...testRunsRef.current[evtRunId]}, events)
@@ -51,7 +50,15 @@ export const useTestRunListen = () => {
       : forceUpdate()
 
   })
-  
+
+
+  useOnEvent<TTestRunExecEndEvent>(TestRunExecEndEvt, (data) => {
+    const { runId } = data
+    const testRun = testRunsRef.current[runId]
+    // Add the test run to the store after it finishes
+    testRun && addTestRun({ runId, data: testRun })
+  })
+
   return {
     failedFiles,
     active: runId,

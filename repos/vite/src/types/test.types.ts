@@ -1,3 +1,4 @@
+import type { emptyObj } from '@keg-hub/jsutils'
 import type { FocusEvent } from 'react'
 import { EResultAction } from '@ltipton/parkin'
 import type { TestCfgUpdaters } from '@components/TestRuns/TestCfgUpdaters'
@@ -8,12 +9,6 @@ import type {
   EPlayerTestAction,
   EPlayerTestStatus,
 } from './shared.types'
-import {emptyObj} from '@keg-hub/jsutils'
-
-export enum ETestRunEvtRef {
-  TestRunEndEvt=`test-run-end-event`,
-  TestRunFileRootEvtRef=`Test-Run-File-Root`
-}
 
 export type TTestRunUICfg = (TExamUIRun & {})
 
@@ -46,20 +41,20 @@ export type TTestRunEvent = {
 }
 
 export type TTestRunEndEvent = {
-  name:string
-  error:boolean
-  group: string
-  procId:number
-  message:string
-  groupId:string
-  socketId:string
-  timestamp:number
   runId:TTestRunId
-  isRunning:boolean
+  id:string
+  name?:string
+  error?:boolean
+  group?: string
+  message?:string
+  groupId?:string
+  socketId?:string
+  isRunning?:boolean
   fullTestRun?:boolean
-  runTimestamp:string
-  data: typeof emptyObj
-  id: ETestRunEvtRef.TestRunEndEvt
+  data?:typeof emptyObj
+  procId?:number|string
+  timestamp:string|number
+  runTimestamp:string|number
 }
 
 export type TTestRunEventStages = {
@@ -112,7 +107,6 @@ export type TAddTestRun = {
   data:TTestRun
   runId:TTestRunId
 }
-
 
 
 export type TTestRunsSections = keyof typeof ETestRunsSection

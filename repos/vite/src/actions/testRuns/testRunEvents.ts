@@ -1,47 +1,49 @@
-import type { TOnTestRunEvent, TAddTestRunEvts, TPlayerResEvent } from '@types'
+import type {
+  TPlayerResEvent,
+  TTestRunExecEvt,
+  TTestRunExecEndEvent,
+} from '@types'
 
-import { PWPlay } from '@constants'
-import {testRunsDispatch, getStore} from "@store"
-import { OnTestRunEvt } from '@constants'
+import {testRunsDispatch} from "@store"
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { testRunEventFactory } from '@utils/testRuns/testRunEventFactory'
+import {
+  PWPlay,
+  TestRunExecEvt,
+  TestRunExecEndEvt
+} from '@constants'
 
-// const { playStarted } = PWPlay
+
+const onTestEvent = (evt:TPlayerResEvent) => {
+  const event = testRunEventFactory(evt)
+  EE.emit<TTestRunExecEvt>(TestRunExecEvt, {
+    event,
+    runId: evt.runId,
+  })
+}
+
+const onTestRunEnd = (event:TPlayerResEvent) => {
+  testRunsDispatch.toggleAllTestsRun(false)
+  EE.emit<TTestRunExecEndEvent>(TestRunExecEndEvt, {
+    event,
+    runId: event.runId,
+  })
+}
 
 /**
  * Emits a Test Run TestEvt event with just the test run response data
  */
 export const testRunEvents = (evt:TPlayerResEvent) => {
+  evt.name === PWPlay.playEnded
+    ? onTestRunEnd(evt)
+    : onTestEvent(evt)
 
-  if(evt.name !== PWPlay.playResults){
-    const { testRuns } = getStore().getState()
-    !testRuns.allTestsRunning && testRunsDispatch.toggleAllTestsRun(true)
-  }
-
-  const event = testRunEventFactory(evt)
-  
-  EE.emit<TOnTestRunEvent>(OnTestRunEvt, { runId: evt.runId, event })
-
-  // TODO: fix this hack, need an on all tests finished event from backend websocket
-  evt.name === PWPlay.playResults
-    && testRunsDispatch.toggleAllTestsRun(false)
-
-
+  /**
+   * TODO: Redux is to slow to capture all the event updates
+   * It would be nice if we could update the store directly
+   * As we could just call it here.
+   * But need to find a work-around to update the store without re-rendering the UI
+   */
   // testRunsDispatch.addEvtAndMakeActive({ runId: evt.runId, event })
-
-  // switch(meta.name){
-  //   case PWPlay.playStarted: {
-  //     return EE.emit(PlayerStartedEvent, meta)
-  //   }
-  //   case PWPlay.playError: {
-  //     return EE.emit(PlayerErrorEvent, meta)
-  //   }
-  //   case PWPlay.playEnded: {
-  //     return EE.emit(PlayerEndedEvent, meta)
-  //   }
-  //   default: {
-  //     return EE.emit(PlayerTestEvt, meta)
-  //   }
-  // }
 
 }

@@ -27,9 +27,13 @@ export type TVncConnected = {
 
 export type TTestRunGetUICfgEvt = (cfg:TTestRunUICfg) => void
 
-export type TOnTestRunEvent = {
+export type TTestRunExecEvt = {
   runId:TTestRunId
   event?: TTestRunEvent
   events?: TTestRunEvent[]
-  endEvent?:TTestRunEndEvent
+}
+
+export type TTestRunExecEndEvent = {
+  runId:TTestRunId
+  event?:TTestRunEndEvent
 }

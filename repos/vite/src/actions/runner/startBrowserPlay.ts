@@ -1,3 +1,6 @@
+// TODO: should add a Promise timeout here to avoid memory leaks
+// Has to be very long, could be based on the global timeout option from Exam / Parkin
+
 import type {
   TGitData,
   TFileModel,
