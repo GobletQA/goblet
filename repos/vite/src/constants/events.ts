@@ -23,7 +23,7 @@ export const WSSocketResetEvt = `ws-socket-reset-event`
 export const OnTestRunEvt = `on-test-run-event`
 export const TestRunEndedEvt = `test-run-ended-event`
 export const TestRunErrorEvt = `test-run-error-event`
-export const TestsGetUICfgEvt = `exam-get-exam-ui-cfg-event`
+export const TestRunGetUICfgEvt = `test-run-get-ui-cfg-event`
 export const WSCancelTestRunEvt = `ws-cancel-test-run-event`
 
 export const TestRunFileRootEvtRef = `Test-Run-File-Root`

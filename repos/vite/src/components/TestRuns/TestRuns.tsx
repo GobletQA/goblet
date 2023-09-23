@@ -1,6 +1,6 @@
 import type { FocusEvent } from 'react'
 import type { TModalAction } from '@gobletqa/components'
-import type { TTestRunsState, TTestRunUICfg, TTestsGetUICfgEvt } from '@types'
+import type { TTestRunsState, TTestRunUICfg, TTestRunGetUICfgEvt } from '@types'
 
 import { useState } from 'react'
 import { ETestRunsSection } from '@types'
@@ -8,7 +8,7 @@ import { PastTestRuns } from './PastTestRuns'
 import { TestCfgUpdaters } from './TestCfgUpdaters'
 
 import { TestRunsTabs } from './TestRunsTabs'
-import { TestsGetUICfgEvt } from '@constants'
+import { TestRunGetUICfgEvt } from '@constants'
 import { TestRunsReporter } from './TestRunsReporter'
 import { TestCfgForm } from '@components/Forms/TestCfgForm'
 import { useRepo, useSettings, useTestRuns } from '@store'
@@ -81,7 +81,7 @@ export const TestRuns = () => {
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
 
-  useOnEvent<TTestsGetUICfgEvt>(TestsGetUICfgEvt, cb => {
+  useOnEvent<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, cb => {
     setSection(ETestRunsSection.reporter)
     cb?.(testRunCfg)
   })

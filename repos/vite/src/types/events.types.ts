@@ -20,7 +20,7 @@ export type TVncConnected = {
   rfb:RFB|null
 }
 
-export type TTestsGetUICfgEvt = (cfg:TTestRunUICfg) => void
+export type TTestRunGetUICfgEvt = (cfg:TTestRunUICfg) => void
 
 export type TOnTestRunEvent = {
   runId:TTestRunId

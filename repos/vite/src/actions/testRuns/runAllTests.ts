@@ -15,14 +15,14 @@ import {
 } from '@constants'
 
 
-export const runAllTests = (examOpts:TTestRunUICfg) => {
+export const runAllTests = (testRunOpts:TTestRunUICfg) => {
 
   
   let promise = PromiseAbort((res, rej) => {
-    // Enable global exam running flag
+    // Enable global tests running flag
     testRunsDispatch.toggleAllTestsRun(true)
 
-    WSService.emit(SocketMsgTypes.EXAM_RUN, { examOpts })
+    WSService.emit(SocketMsgTypes.TESTS_RUN_ALL, { testRunOpts })
 
     // Then listen for the response event fired from the websocket service
     let onTestRunEnd = EE.on<TPlayerResEvent>(TestRunEndedEvt, () => res(emptyObj))
@@ -39,7 +39,7 @@ export const runAllTests = (examOpts:TTestRunUICfg) => {
         onTestRunEnd?.()
         onTestRunEnd = undefined
         // Send event to cancel on the backend
-        WSService.emit(SocketMsgTypes.EXAM_ABORT)
+        WSService.emit(SocketMsgTypes.TESTS_RUN_ABORT)
         
         // Finally stop listening, cancel and reject
         cancelOff?.()

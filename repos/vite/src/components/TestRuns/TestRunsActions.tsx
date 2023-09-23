@@ -1,10 +1,10 @@
-import type { TTestsGetUICfgEvt, TTestRunUICfg } from '@types'
+import type { TTestRunGetUICfgEvt, TTestRunUICfg } from '@types'
 
 import { getStore } from '@store'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { runAllTests } from '@actions/testRuns/runAllTests'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
-import { TestsGetUICfgEvt, WSCancelTestRunEvt } from '@constants'
+import { TestRunGetUICfgEvt, WSCancelTestRunEvt } from '@constants'
 import {
   colors,
   CloseIcon,
@@ -42,8 +42,8 @@ export const TestRunsRunAction = {
   StartIcon: PlayCircleOutlineIcon,
   sx: { color: colors.white, minWidth: `100px` },
   iconProps: { sx: { color: colors.white } },
-  onClick: () => EE.emit<TTestsGetUICfgEvt>(
-    TestsGetUICfgEvt,
+  onClick: () => EE.emit<TTestRunGetUICfgEvt>(
+    TestRunGetUICfgEvt,
     async (cfg:TTestRunUICfg) => await runAllTests(cfg)
   ),
 }

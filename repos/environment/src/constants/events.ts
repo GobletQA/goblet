@@ -17,6 +17,6 @@ export const ExamEvtNames = {
   warning: `PLAY-WARNING`,
 }
 
-export const KillExamUIRunProcEvt = `kill-exam-ui-run-proc-event`
+export const KillTestRunUIProcEvt = `kill-test-run-ui-proc-event`
 
 export const KillPlayCodeRunnerEvt = `kill-play-code-runner-event`

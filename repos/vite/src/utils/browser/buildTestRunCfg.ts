@@ -55,53 +55,53 @@ const getStoreItems = (opts:TBuildTestRunCfg) => {
  * Then sets default test run specific params based on the merged settings
  */
 export const buildTestRunCfg = (opts:TBuildTestRunCfg) => {
-  const examCfg:Partial<TTestRunUICfg> = {}
+  const testRunCfg:Partial<TTestRunUICfg> = {}
   const { repo, settings } = getStoreItems(opts)
   const mergedSettings = deepMerge(settings, repo?.world?.settings)
 
   // ------ Browser Specific Options ---- //
   // TODO: update browser.timeout to be `browser.browserTimeout`
-  addSettingOpt(examCfg, `browserTimeout`, mergedSettings?.browser?.timeout)
-  addSettingOpt(examCfg, `browserTimeout`, mergedSettings?.browser?.browserTimeout)
+  addSettingOpt(testRunCfg, `browserTimeout`, mergedSettings?.browser?.timeout)
+  addSettingOpt(testRunCfg, `browserTimeout`, mergedSettings?.browser?.browserTimeout)
 
-  addSettingOpt(examCfg, `debug`, mergedSettings?.browser?.debug)
-  addSettingOpt(examCfg, `slowMo`, mergedSettings?.browser?.slowMo)
-  addSettingOpt(examCfg, `browser`, mergedSettings?.browser?.browser)
-  addSettingOpt(examCfg, `devices`, mergedSettings?.browser?.devices)
-  addSettingOpt(examCfg, `timezone`, mergedSettings?.browser?.timezone)
-  addSettingOpt(examCfg, `geolocation`, mergedSettings?.browser?.geolocation)
-  addSettingOpt(examCfg, `permissions`, mergedSettings?.browser?.permissions)
+  addSettingOpt(testRunCfg, `debug`, mergedSettings?.browser?.debug)
+  addSettingOpt(testRunCfg, `slowMo`, mergedSettings?.browser?.slowMo)
+  addSettingOpt(testRunCfg, `browser`, mergedSettings?.browser?.browser)
+  addSettingOpt(testRunCfg, `devices`, mergedSettings?.browser?.devices)
+  addSettingOpt(testRunCfg, `timezone`, mergedSettings?.browser?.timezone)
+  addSettingOpt(testRunCfg, `geolocation`, mergedSettings?.browser?.geolocation)
+  addSettingOpt(testRunCfg, `permissions`, mergedSettings?.browser?.permissions)
 
-  addSettingOpt(examCfg, `width`, mergedSettings?.browser?.width)
-  addSettingOpt(examCfg, `height`, mergedSettings?.browser?.height)
-  addSettingOpt(examCfg, `isMobile`, mergedSettings?.browser?.isMobile)
-  addSettingOpt(examCfg, `hasTouch`, mergedSettings?.browser?.hasTouch)
-  addSettingOpt(examCfg, `downloads`, mergedSettings?.browser?.downloads)
+  addSettingOpt(testRunCfg, `width`, mergedSettings?.browser?.width)
+  addSettingOpt(testRunCfg, `height`, mergedSettings?.browser?.height)
+  addSettingOpt(testRunCfg, `isMobile`, mergedSettings?.browser?.isMobile)
+  addSettingOpt(testRunCfg, `hasTouch`, mergedSettings?.browser?.hasTouch)
+  addSettingOpt(testRunCfg, `downloads`, mergedSettings?.browser?.downloads)
   
-  addSettingOpt(examCfg, `reusePage`, mergedSettings?.browser?.reusePage)
-  addSettingOpt(examCfg, `reuseContext`, mergedSettings?.browser?.reuseContext)
+  addSettingOpt(testRunCfg, `reusePage`, mergedSettings?.browser?.reusePage)
+  addSettingOpt(testRunCfg, `reuseContext`, mergedSettings?.browser?.reuseContext)
 
 
   // ------ Test Specific Options ---- //
-  addSettingOpt(examCfg, `tags`, mergedSettings?.test?.tags)
-  addSettingOpt(examCfg, `video`, mergedSettings?.test?.video)
-  addSettingOpt(examCfg, `filter`, mergedSettings?.test?.filter)
-  addSettingOpt(examCfg, `tracing`, mergedSettings?.test?.tracing)
-  addSettingOpt(examCfg, `headless`, mergedSettings?.test?.headless)
-  addSettingOpt(examCfg, `screenshot`, mergedSettings?.test?.screenshot)
-  addSettingOpt(examCfg, `testReport`, mergedSettings?.test?.testReport)
+  addSettingOpt(testRunCfg, `tags`, mergedSettings?.test?.tags)
+  addSettingOpt(testRunCfg, `video`, mergedSettings?.test?.video)
+  addSettingOpt(testRunCfg, `filter`, mergedSettings?.test?.filter)
+  addSettingOpt(testRunCfg, `tracing`, mergedSettings?.test?.tracing)
+  addSettingOpt(testRunCfg, `headless`, mergedSettings?.test?.headless)
+  addSettingOpt(testRunCfg, `screenshot`, mergedSettings?.test?.screenshot)
+  addSettingOpt(testRunCfg, `testReport`, mergedSettings?.test?.testReport)
 
-  addSettingOpt(examCfg, `testBail`, mergedSettings?.test?.testBail)
-  addSettingOpt(examCfg, `testTimeout`, mergedSettings?.test?.testTimeout)
-  addSettingOpt(examCfg, `suiteTimeout`, mergedSettings?.test?.suiteTimeout)
+  addSettingOpt(testRunCfg, `testBail`, mergedSettings?.test?.testBail)
+  addSettingOpt(testRunCfg, `testTimeout`, mergedSettings?.test?.testTimeout)
+  addSettingOpt(testRunCfg, `suiteTimeout`, mergedSettings?.test?.suiteTimeout)
 
-  addSettingOpt(examCfg, `testRetry`, mergedSettings?.test?.testRetry)
-  addSettingOpt(examCfg, `testDebug`, mergedSettings?.test?.testDebug)
-  addSettingOpt(examCfg, `suiteRetry`, mergedSettings?.test?.suiteRetry)
-  addSettingOpt(examCfg, `testVerbose`, mergedSettings?.test?.testVerbose)
+  addSettingOpt(testRunCfg, `testRetry`, mergedSettings?.test?.testRetry)
+  addSettingOpt(testRunCfg, `testDebug`, mergedSettings?.test?.testDebug)
+  addSettingOpt(testRunCfg, `suiteRetry`, mergedSettings?.test?.suiteRetry)
+  addSettingOpt(testRunCfg, `testVerbose`, mergedSettings?.test?.testVerbose)
 
-  addSettingOpt(examCfg, `exitOnFailed`, mergedSettings?.test?.exitOnFailed)
-  addSettingOpt(examCfg, `skipAfterFailed`, mergedSettings?.test?.skipAfterFailed)
+  addSettingOpt(testRunCfg, `exitOnFailed`, mergedSettings?.test?.exitOnFailed)
+  addSettingOpt(testRunCfg, `skipAfterFailed`, mergedSettings?.test?.skipAfterFailed)
 
-  return examCfg
+  return testRunCfg
 }

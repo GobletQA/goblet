@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
-import type { TKillExamUIRunEvtOpts, TPlayerTestEventMeta, TSocketEvtCBProps } from '@GSC/types'
+import type { TKillTestRunUIRunEvtOpts, TPlayerTestEventMeta, TSocketEvtCBProps } from '@GSC/types'
 
 import path from 'path'
 import { EE } from '@gobletqa/shared'
@@ -13,7 +13,7 @@ import { loadRepoFromSocket } from '@GSC/utils/loadRepoFromSocket'
 import { runExamFromUi } from '@gobletqa/test-utils/exam/runExamFromUi'
 import {
   InternalPaths,
-  KillExamUIRunProcEvt,
+  KillTestRunUIProcEvt,
   ExamJsonReporterEvtSplit
 } from '@gobletqa/environment/constants'
 
@@ -49,7 +49,7 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
   return {
     examUI,
     runOpts: {
-      ...data.examOpts,
+      ...data.testRunOpts,
       testConfig,
       gobletToken,
       testColors: false,
@@ -125,7 +125,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
      * Listen for the kill exam event to know if the user wants to abort the run
      * This allows the websocket events to be decoupled yet still communicate
      */
-    let off = EE.on<TKillExamUIRunEvtOpts>(KillExamUIRunProcEvt, ({ procId }) => {
+    let off = EE.on<TKillTestRunUIRunEvtOpts>(KillTestRunUIProcEvt, ({ procId }) => {
       /**
        * If we ever want to allow more then 1 run of exam from ui
        * We can use this and force passing in the pid
@@ -151,7 +151,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
 }
 
 
-export const examRun = (app:Express) => async (args:TSocketEvtCBProps) => {
+export const testsRunAll = (app:Express) => async (args:TSocketEvtCBProps) => {
   // TODO: Investigate if the exit code should be sent back to the frontend ?
   const [err, res] = await limbo(onExamRun(args))
   if(!err) return

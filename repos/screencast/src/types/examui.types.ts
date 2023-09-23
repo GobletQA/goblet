@@ -25,6 +25,6 @@ export type TExamUIRunFinish = {
 }
 
 
-export type TKillExamUIRunEvtOpts = {
+export type TKillTestRunUIRunEvtOpts = {
   procId:string|number
 }

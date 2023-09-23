@@ -12,7 +12,7 @@ import { testRunEvents } from '@actions/testRuns/testRunEvents'
 
 /**
  * Emits a PlayerTestEvt event with just the Player test response data
- * If `meta?.fullTestRun` is set, then call exam event instead
+ * If `meta?.fullTestRun` is set, then call testRunEvents instead
  */
 export const playEvent = (meta:TPlayerResEvent) => {
   if(meta.fullTestRun)

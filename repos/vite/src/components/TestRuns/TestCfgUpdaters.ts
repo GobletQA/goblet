@@ -5,7 +5,7 @@ import { exists, flatUnion, noOp, toBool, toNum } from '@keg-hub/jsutils'
 
 export const TestCfgUpdaters = {
   tags: {
-    onBlur: (evt:FocusEvent, examCfg:TTestRunUICfg) => {
+    onBlur: (evt:FocusEvent, testRunCfg:TTestRunUICfg) => {
       const value = (evt.target as HTMLInputElement).value || ``
       if(!value) return undefined
 
@@ -20,7 +20,7 @@ export const TestCfgUpdaters = {
           return tags
         }, [] as string[])
 
-      const tags = flatUnion(examCfg.tags, formatted)
+      const tags = flatUnion(testRunCfg.tags, formatted)
 
       return { tags }
     },
@@ -29,7 +29,7 @@ export const TestCfgUpdaters = {
       value:string|string[],
       reason:string,
       opt:any,
-      examCfg:TTestRunUICfg
+      testRunCfg:TTestRunUICfg
     ) => {
       return reason === `removeOption`
         ? { tags: value }

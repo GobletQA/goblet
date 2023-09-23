@@ -45,7 +45,7 @@ export const BrowserOpts = (props:TBrowserOpts) => {
             type='number'
             defaultValue={100}
             label='Browser Speed'
-            name='exam-browser-slowmo'
+            name='tests-run-browser-slowmo'
             className='gb-test-slowmo-input'
             onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
             helperText={

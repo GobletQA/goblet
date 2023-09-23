@@ -61,7 +61,7 @@ export const TestOpts = (props:TTestOpts) => {
           <NumberInput
             type='number'
             label='Step Retry'
-            name='exam-test-retry-input'
+            name='tests-run-retry-input'
             defaultValue={0}
             className='gb-test-test-retry'
             helperText={
@@ -77,7 +77,7 @@ export const TestOpts = (props:TTestOpts) => {
           <NumberInput
             type='number'
             label='Feature Retry'
-            name='exam-suite-retry-input'
+            name='tests-run-suite-retry-input'
             defaultValue={0}
             className='gb-test-suite-retry'
             helperText={
@@ -94,7 +94,7 @@ export const TestOpts = (props:TTestOpts) => {
           <NumberInput
             type='number'
             label='Test Bail'
-            name='exam-bail-input'
+            name='tests-run-bail-input'
             defaultValue={5}
             className='gb-test-test-bail'
             helperText={

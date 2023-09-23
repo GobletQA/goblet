@@ -44,8 +44,3 @@ export const waitingModal = (props?:TModalProps) => setActiveModal(
   props
 )
 
-export const examModal = (props?:TModalProps) => setActiveModal(
-  EModalTypes.examRun,
-  props?.visible,
-  props
-)
