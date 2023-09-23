@@ -28,18 +28,23 @@ const getSearchText = (
   // if(editor !== EEditorType.code) return ``
 
   const metaText = meta[type as keyof typeof meta]
+
   if(exists(metaText)) return metaText
 
   switch(type){
-    case EAstObject.step:
+    case EAstObject.step: {
       return description
-    case EAstObject.scenario:
+    }
+    case EAstObject.scenario:{
       return description.replace(/Scenario > /g,``)
-    case EAstObject.feature:
+    }
+    case EAstObject.feature: {
       return description.replace(/Feature > /g,``)
-    default: 
+    }
+    default: {
       const [type, ...rest] = description.split(` > `)
       return rest.join(` > `)
+    }
   }
 }
 
@@ -47,9 +52,9 @@ export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) 
   const {
     uuid,
     event,
+    editor,
     testPath,
     description,
-    editor
   } = props
 
   const meta = (event?.metaData || emptyObj) as TRunResultActionMeta
