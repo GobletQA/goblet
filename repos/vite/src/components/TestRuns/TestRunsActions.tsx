@@ -1,4 +1,4 @@
-import type { TTestsGetUICfgEvt, TExamUIRun } from '@types'
+import type { TTestsGetUICfgEvt, TTestRunUICfg } from '@types'
 
 import { getStore } from '@store'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -44,6 +44,6 @@ export const TestRunsRunAction = {
   iconProps: { sx: { color: colors.white } },
   onClick: () => EE.emit<TTestsGetUICfgEvt>(
     TestsGetUICfgEvt,
-    async (cfg:TExamUIRun) => await runAllTests(cfg)
+    async (cfg:TTestRunUICfg) => await runAllTests(cfg)
   ),
 }

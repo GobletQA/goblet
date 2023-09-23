@@ -1,4 +1,4 @@
-import { TExamUIRun, TRepoOpts, TSetting, TSettings } from '@types'
+import { TTestRunUICfg, TRepoOpts, TSetting, TSettings } from '@types'
 import { getStore } from '@store'
 import {
   exists,
@@ -29,8 +29,8 @@ const ensureType = (setting:TSetting) => {
 
 
 const addSettingOpt = (
-  opts:Partial<TExamUIRun>,
-  key:keyof TExamUIRun,
+  opts:Partial<TTestRunUICfg>,
+  key:keyof TTestRunUICfg,
   setting:TSetting
 ) => {
   const value = setting?.active ? ensureType(setting) : undefined
@@ -55,7 +55,7 @@ const getStoreItems = (opts:TBuildTestRunCfg) => {
  * Then sets default test run specific params based on the merged settings
  */
 export const buildTestRunCfg = (opts:TBuildTestRunCfg) => {
-  const examCfg:Partial<TExamUIRun> = {}
+  const examCfg:Partial<TTestRunUICfg> = {}
   const { repo, settings } = getStoreItems(opts)
   const mergedSettings = deepMerge(settings, repo?.world?.settings)
 

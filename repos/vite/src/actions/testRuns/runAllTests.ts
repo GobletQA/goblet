@@ -1,5 +1,5 @@
 import type {
-  TExamUIRun,
+  TTestRunUICfg,
   TPlayerResEvent,
 } from '@types'
 
@@ -15,7 +15,7 @@ import {
 } from '@constants'
 
 
-export const runAllTests = (examOpts:TExamUIRun) => {
+export const runAllTests = (examOpts:TTestRunUICfg) => {
 
   
   let promise = PromiseAbort((res, rej) => {

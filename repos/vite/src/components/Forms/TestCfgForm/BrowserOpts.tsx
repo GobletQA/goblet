@@ -1,5 +1,5 @@
 import type {
-  TExamUIRun,
+  TTestRunUICfg,
   TOnBlurTestCfg,
   TOnChangeTestCfg,
 } from '@types'
@@ -17,7 +17,7 @@ import {
 
 
 export type TBrowserOpts = {
-  testRunCfg:TExamUIRun
+  testRunCfg:TTestRunUICfg
   onBlurTestCfg:TOnBlurTestCfg
   onChangeTestCfg:TOnChangeTestCfg
 }

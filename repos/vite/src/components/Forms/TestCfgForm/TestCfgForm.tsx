@@ -1,4 +1,4 @@
-import type { TExamUIRun, TOnBlurTestCfg, TOnChangeTestCfg } from '@types'
+import type { TTestRunUICfg, TOnBlurTestCfg, TOnChangeTestCfg } from '@types'
 
 import { TestOpts } from './TestOpts'
 import { BrowserOpts } from './BrowserOpts'
@@ -37,7 +37,7 @@ import { TestCfgContainer } from './TestCfgForm.styled'
 
 
 export type TTestCfgForm = {
-  testRunCfg:TExamUIRun
+  testRunCfg:TTestRunUICfg
   onBlurTestCfg:TOnBlurTestCfg
   onChangeTestCfg:TOnChangeTestCfg
 }

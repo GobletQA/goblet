@@ -1,6 +1,6 @@
 import type { FocusEvent } from 'react'
 import type { TModalAction } from '@gobletqa/components'
-import type { TTestRunsState, TExamUIRun, TTestsGetUICfgEvt } from '@types'
+import type { TTestRunsState, TTestRunUICfg, TTestsGetUICfgEvt } from '@types'
 
 import { useState } from 'react'
 import { ETestRunsSection } from '@types'
@@ -37,7 +37,7 @@ const useTestRunOpts = (testRuns:TTestRunsState) => {
   const settings = useSettings()
   const cfg = buildTestRunCfg({ repo, settings })
 
-  const [testRunCfg, setTestRunCfg] = useState<TExamUIRun>(cfg)
+  const [testRunCfg, setTestRunCfg] = useState<TTestRunUICfg>(cfg)
 
   return {
     testRunCfg,

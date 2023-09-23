@@ -3,10 +3,14 @@ import { EResultAction } from '@ltipton/parkin'
 import type { TestCfgUpdaters } from '@components/TestRuns/TestCfgUpdaters'
 import type {
   EStepKey,
+  TExamUIRun,
   EPlayerTestType,
   EPlayerTestAction,
   EPlayerTestStatus,
 } from './shared.types'
+
+
+export type TTestRunUICfg = (TExamUIRun & {})
 
 export type TTestCfgUpdaters = typeof TestCfgUpdaters
 export type TOnChangeTestCfg = (args: any[], type: keyof TTestCfgUpdaters) => void

@@ -1,11 +1,11 @@
 import type { FocusEvent } from 'react'
-import type { TExamUIRun } from '@types'
+import type { TTestRunUICfg } from '@types'
 
 import { exists, flatUnion, noOp, toBool, toNum } from '@keg-hub/jsutils'
 
 export const TestCfgUpdaters = {
   tags: {
-    onBlur: (evt:FocusEvent, examCfg:TExamUIRun) => {
+    onBlur: (evt:FocusEvent, examCfg:TTestRunUICfg) => {
       const value = (evt.target as HTMLInputElement).value || ``
       if(!value) return undefined
 
@@ -29,7 +29,7 @@ export const TestCfgUpdaters = {
       value:string|string[],
       reason:string,
       opt:any,
-      examCfg:TExamUIRun
+      examCfg:TTestRunUICfg
     ) => {
       return reason === `removeOption`
         ? { tags: value }
