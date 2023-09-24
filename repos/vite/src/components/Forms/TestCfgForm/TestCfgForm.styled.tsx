@@ -1,13 +1,23 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
+import Collapse from '@mui/material/Collapse'
 import { Toggle } from '@gobletqa/components/components/Form/Inputs'
 import {
   H4,
+  cmx,
   Span,
   Input,
+  dims,
   gutter,
+  InText,
+  colors,
+  getColor,
+  Dropdown,
   AutoInput,
+  ExpandIcon,
 } from '@gobletqa/components'
+
+const avgEase = dims.trans.avgEase
 
 export const TestCfgContainer = styled(Box)`
   height: 100%;
@@ -15,15 +25,50 @@ export const TestCfgContainer = styled(Box)`
   padding-top: 0px;
 `
 
-export const OptionsContainer = styled(Box)`
+export const TestCfgSectionContainer = styled(Box)`
   padding: ${gutter.padding.px};
   padding-top: 0px;
 `
 
+export const TestCfgSectionDrawer = styled(Collapse)`
+  padding: ${gutter.padding.qpx} ${gutter.padding.dpx} ${gutter.padding.hpx};
+  background-color: ${cmx(getColor(colors.white01, colors.black19), 25)};
+`
+
+export const OptionsContainer = styled(Box)``
+
 export const TestOptsHeaderContainer = styled(Box)`
+  cursor: pointer;
   margin-top: ${gutter.margin.hpx};
 `
-export const TestOptsHeaderTitle = styled(H4)``
+export const TestOptsHeaderTitle = styled(H4)`
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  
+  border-bottom: 1px solid;
+  padding-bottom: 8px;
+  color: ${getColor(colors.gray18, colors.gray01)};
+  transition: opacity ${avgEase}, border-bottom-color ${avgEase}, color ${avgEase};
+  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
+
+  &:hover {
+    color: ${cmx(getColor(colors.purple11, colors.gray01), 90)};
+    border-bottom-color: ${cmx(getColor(colors.purple06, colors.gray01), 20)};
+  }
+
+  &.open {
+
+  }
+`
+
+export const TestOptsHeaderText = styled(InText)``
+
+export const TestCfgExpandIcon = styled(ExpandIcon)`
+  left: -5px;
+  position: relative;
+  margin-right: ${gutter.margin.qpx};
+`
 
 
 export const TestOptsContainer = styled(Box)``
@@ -43,6 +88,5 @@ export const ToggleInput = styled(Toggle)`
     height: 30px;
   }
 `
-
 
 

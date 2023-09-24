@@ -1,6 +1,6 @@
-import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
-import { Text, Label, PurpleText, GreenText, Span, getColor, gutter, colors } from '@gobletqa/components'
+import { styled } from '@mui/material/styles'
+import { Label, Span, getColor, gutter, colors } from '@gobletqa/components'
 
 export const ContextItemContainer = styled(Box)`
   width: 100%;

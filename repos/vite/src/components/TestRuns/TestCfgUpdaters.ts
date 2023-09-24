@@ -84,5 +84,13 @@ export const TestCfgUpdaters = {
       return slowMo > -1 ? { slowMo } : undefined
     },
   },
-  
+  testMatch: {
+    onChange: noOp,
+    onBlur: (evt:FocusEvent, testRunCfg:TTestRunUICfg) => {
+      const value = ((evt.target as HTMLInputElement).value || ``).trim()
+      if(!value) return undefined
+
+      return { testMatch: value }
+    },
+  }
 }

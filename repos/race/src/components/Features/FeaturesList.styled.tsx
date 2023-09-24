@@ -59,6 +59,8 @@ export const FeaturesGroup = styled(Box)<TListFeatures>`
     }
 
     & .gb-dropdown-expand-icon {
+      width: 22px;
+      height: 22px;
       color: var(--goblet-list-inactiveSelectionForeground);
     }
   }
@@ -76,6 +78,8 @@ export const FeaturesGroup = styled(Box)<TListFeatures>`
     }
 
     & .gb-dropdown-expand-icon {
+      width: 22px;
+      height: 22px;
       color: var(--goblet-list-hoverForeground);
     }
   }

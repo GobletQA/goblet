@@ -3,7 +3,9 @@ import type {
   TOnBlurTestCfg,
   TOnChangeTestCfg,
 } from '@types'
-import { exists } from '@keg-hub/jsutils'
+
+import { useState } from 'react'
+import { TestOptsSectionHeader } from './TestOptsSectionHeader'
 import {
   TagsInput,
   NumberInput,
@@ -11,8 +13,8 @@ import {
   InputContainer,
   InputHelperText,
   OptionsContainer,
-  TestOptsHeaderTitle,
-  TestOptsHeaderContainer,
+  TestCfgSectionDrawer,
+  TestCfgSectionContainer,
 } from './TestCfgForm.styled'
 
 
@@ -30,35 +32,45 @@ export const BrowserOpts = (props:TBrowserOpts) => {
     onChangeTestCfg,
   } = props
 
+  const [open, setOpen] = useState(true)
+
   return (
-    <>
-      <TestOptsHeaderContainer className='gb-test-browser-options-header' >
-        <TestOptsHeaderTitle className='gb-test-browser-options-header-title' >
-          Browser Options
-        </TestOptsHeaderTitle>
-      </TestOptsHeaderContainer>
+    <TestCfgSectionContainer>
+      <TestOptsSectionHeader
+        initial={open}
+        onChange={setOpen}
+        title='Browser Options'
+        className='gb-test-browser-options-header'
+        titleClass='gb-test-browser-options-header-title'
+      />
 
-      <OptionsContainer>
+      <TestCfgSectionDrawer
+        in={open}
+        unmountOnExit
+        timeout="auto"
+      >
+        <OptionsContainer>
 
-        <InputContainer className='gb-test-slowmo-container' >
-          <NumberInput
-            type='number'
-            defaultValue={100}
-            label='Browser Speed'
-            name='tests-run-browser-slowmo'
-            className='gb-test-slowmo-input'
-            onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
-            helperText={
-              <InputHelperText>
-                Speed in which browser actions are executed, a.k.a &nbsp;<b>"slow-mo"</b>
-              </InputHelperText>
-            }
-            placeholder='Enter the browser speed... ( default: 100 )'
-          />
-        </InputContainer>
+          <InputContainer className='gb-test-slowmo-container' >
+            <NumberInput
+              type='number'
+              defaultValue={100}
+              label='Browser Speed'
+              name='tests-run-browser-slowmo'
+              className='gb-test-slowmo-input'
+              onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
+              helperText={
+                <InputHelperText>
+                  Speed in which browser actions are executed, a.k.a &nbsp;<b>"slow-mo"</b>
+                </InputHelperText>
+              }
+              placeholder='Enter the browser speed... ( default: 100 )'
+            />
+          </InputContainer>
 
-      </OptionsContainer>
-    </>
+        </OptionsContainer>
+      </TestCfgSectionDrawer>
+    </TestCfgSectionContainer>
   )
 }
 
