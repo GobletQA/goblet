@@ -4,12 +4,14 @@ import { signOutAuthUser } from '../provider/signOutAuthUser'
 
 export type TSignOutManually = {
   id?:string
+  idleSignOut?:boolean
 }
 
 export const signOutManually = async (params?:TSignOutManually) => {
   try {
     const containerId = params?.id || getContainerData()?.meta?.id
-    await containerApi.remove({ id: containerId })
+    const idleSignOut = params?.idleSignOut
+    await containerApi.remove({ id: containerId, idleSignOut })
   }
   catch(err){
     console.log(`Error removing session container`)
