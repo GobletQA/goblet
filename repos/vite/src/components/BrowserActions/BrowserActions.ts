@@ -1,12 +1,10 @@
 import type { TActionGroupActions, TBrowserAction } from '@gobletqa/components'
-import { PlayAction } from './PlayAction'
 import { StateAction } from './StateAction'
-// import { RecordAction } from './RecordAction'
 import { EmptyAction } from './EmptyAction'
+import { TestRunAction } from './TestRunAction'
 
 const leftActions = [
-  PlayAction,
-  // RecordAction,
+  TestRunAction,
 ] as TActionGroupActions
 
 leftActions.name = `browser-left-actions-group`

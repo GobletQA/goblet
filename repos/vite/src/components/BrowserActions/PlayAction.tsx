@@ -25,7 +25,7 @@ export type TEditorPathChange = {
 const onCancelPlayers = () => EE.emit(WSCancelPlayerEvent, {})
 const onCancelAutomation = () => EE.emit(WSCancelAutomateEvent, {})
 
-const useActionProps = (props:TBrowserActionProps) => {
+export const usePlayAction = (props:TBrowserActionProps) => {
 
   const { browserState } = useBrowserState()
   const [location, setLocation] = useState<string>(``)
@@ -90,14 +90,14 @@ const useActionProps = (props:TBrowserActionProps) => {
 }
 
 
-const RunTests = (props:TBrowserActionProps) => {
-  const { actProps } = useActionProps(props)
+export const PlayTest = (props:TBrowserActionProps) => {
+  const { actProps } = usePlayAction(props)
 
   return (<BaseAction {...actProps} />)
 }
 
 export const PlayAction:TBrowserAction = {
-  Component: RunTests,
+  Component: PlayTest,
   containerSx: {},
   name: `play-browser-action`,
 }

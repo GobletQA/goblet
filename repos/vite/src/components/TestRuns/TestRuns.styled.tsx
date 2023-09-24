@@ -8,8 +8,12 @@ import {
   Button,
   colors,
   getColor,
+  TuneIcon,
+  CloseIcon,
+  IconButton,
   WarningIcon,
-  ModalFooter
+  ContentPasteIcon,
+  FormatListBulletedIcon
 } from '@gobletqa/components'
 
 
@@ -28,10 +32,11 @@ export const TestRunsContainer = styled(Box)(({ theme }) => `
   border-right: 1px solid ${getColor(colors.gray01, colors.black10, theme)};
 `)
 
-export const TestRunsHeader = styled(Box)(({ theme }) => `
+export const TestRunsHeaderContainer = styled(Box)(({ theme }) => `
   display: flex;
   padding-right: 0px;
   align-items: center;
+  justify-content: space-between;
   height: ${dims.browser.actions.height}px;
   padding: ${gutter.padding.hpx} ${gutter.padding.px};
   background-color: ${getColor(colors.white, colors.black13, theme)};
@@ -72,16 +77,6 @@ export const TestRunsSectionBtn = styled(Button)(({ theme }) => `
   }
 `)
 
-export const TestActionsFooter = styled(ModalFooter)(({ theme }) => `
-  z-index: 30;
-  flex-grow: 1;
-  justify-content: space-between;
-  max-height: ${dims.header.height * 2}px;
-  padding: ${gutter.padding.hpx} ${gutter.padding.dpx};
-  background-color: ${getColor(colors.white00, colors.purple23, theme)};
-`)
-
-
 export const NoTestRunActiveContainer = styled(Box)`
   flex: 1;
   width: 100%;
@@ -99,5 +94,27 @@ export const NoTestRunActiveIcon = styled(WarningIcon)`
   color: ${colors.warn};
   margin-right: ${gutter.margin.hpx};
   font-size: 30px;
+`
+
+
+export const TestRunsCancelButton = styled(IconButton)``
+export const TestRunsCancelButtonIcon = styled(CloseIcon)`
+  font-size: 20px;
+`
+
+
+export const TestRunsListIcon = styled(FormatListBulletedIcon)`
+  height: 15px;
+  width: 15px;
+`
+
+export const TestRunsReporterIcon = styled(ContentPasteIcon)`
+  height: 15px;
+  width: 15px;
+`
+
+export const TestRunsOptsIcon = styled(TuneIcon)`
+  height: 15px;
+  width: 15px;
 `
 

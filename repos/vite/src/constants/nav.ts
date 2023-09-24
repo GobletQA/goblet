@@ -20,7 +20,7 @@ import {
   CloudOffIcon,
   FunctionsIcon,
   LabelImportantIcon,
-  AnimationPlayOutlineIcon,
+  FolderPlayOutlineIcon,
 } from '@gobletqa/components'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 
@@ -95,7 +95,7 @@ export const SideNav = deepFreeze({
       items: [
         {
           title: `Run Test Suite`,
-          Icon: AnimationPlayOutlineIcon,
+          Icon: FolderPlayOutlineIcon,
           action: () => toggleTestRunsView(),
         },
         EditorNavItems[EEditorType.code],

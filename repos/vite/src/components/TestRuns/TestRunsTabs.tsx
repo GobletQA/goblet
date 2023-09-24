@@ -1,9 +1,13 @@
+import type { ComponentType } from 'react'
 import { ETestRunsSection } from '@types'
-import { cls, wordCaps } from '@keg-hub/jsutils'
+import { cls, snakeCase, wordCaps } from '@keg-hub/jsutils'
 
 import {
   TestRunsSection,
+  TestRunsListIcon,
+  TestRunsOptsIcon,
   TestRunsSectionBtn,
+  TestRunsReporterIcon,
   TestRunsSectionsContainer,
 } from './TestRuns.styled'
 
@@ -11,6 +15,48 @@ import {
 export type TTestRunsTabs = {
   section:ETestRunsSection
   onChangeSection: (section:ETestRunsSection) => void
+}
+
+export type TTestRunTab = {
+  active?:boolean
+  Icon?:ComponentType<any>
+  className?:string
+  buttonClass?:string
+  section:ETestRunsSection
+  onClick?:(section:ETestRunsSection) => void
+}
+
+
+
+export const TestRunsTab = (props:TTestRunTab) => {
+  
+  const {
+    Icon,
+    active,
+    onClick,
+    section,
+    className,
+    buttonClass,
+  } = props
+  
+  return (
+    <TestRunsSection className={cls(
+      className,
+      `gb-test-section`,
+      `gb-test-section-${section}`,
+    )} >
+      <TestRunsSectionBtn
+        Icon={Icon}
+        onClick={() => onClick?.(section)}
+        text={`${wordCaps(snakeCase(section))}`}
+        className={cls(
+          buttonClass,
+          active && `active`,
+          `gb-test-section-button`,
+        )}
+      />
+    </TestRunsSection>
+  )
 }
 
 export const TestRunsTabs = (props:TTestRunsTabs) => {
@@ -21,39 +67,24 @@ export const TestRunsTabs = (props:TTestRunsTabs) => {
   
   return (
     <TestRunsSectionsContainer className='gb-test-sections-container' >
-      <TestRunsSection className='gb-test-section gb-test-section-config' >
-        <TestRunsSectionBtn
-          className={cls(
-            `gb-test-section-button`,
-            section === ETestRunsSection.config && `active`,
-          )}
-          text={wordCaps(ETestRunsSection.config)}
-          onClick={() => onChangeSection(ETestRunsSection.config)}
-        />
-      </TestRunsSection>
-
-      <TestRunsSection className='gb-test-section gb-test-section-reporter' >
-        <TestRunsSectionBtn
-          className={cls(
-            `gb-test-section-button`,
-            section === ETestRunsSection.reporter && `active`,
-          )}
-          text={wordCaps(ETestRunsSection.reporter)}
-          onClick={() => onChangeSection(ETestRunsSection.reporter)}
-        />
-      </TestRunsSection>
-
-      <TestRunsSection className='gb-test-section gb-test-section-runs' >
-        <TestRunsSectionBtn
-          className={cls(
-            `gb-test-section-button`,
-            section === ETestRunsSection.runs && `active`,
-          )}
-          text={`Previous ${wordCaps(ETestRunsSection.runs)}`}
-          onClick={() => onChangeSection(ETestRunsSection.runs)}
-        />
-      </TestRunsSection>
-
+      <TestRunsTab
+        onClick={onChangeSection}
+        Icon={TestRunsListIcon}
+        section={ETestRunsSection.testRuns}
+        active={section === ETestRunsSection.testRuns}
+      />
+      <TestRunsTab
+        onClick={onChangeSection}
+        Icon={TestRunsReporterIcon}
+        section={ETestRunsSection.reporter}
+        active={section === ETestRunsSection.reporter}
+      />
+      <TestRunsTab
+        Icon={TestRunsOptsIcon}
+        onClick={onChangeSection}
+        section={ETestRunsSection.runOptions}
+        active={section === ETestRunsSection.runOptions}
+      />
     </TestRunsSectionsContainer>
   )
 }

@@ -5,7 +5,7 @@ import { runAllTests } from '@actions/testRuns/runAllTests'
 import {
   colors,
   stopEvent,
-  AnimationPlayOutlineIcon,
+  FolderPlayOutlineIcon,
 } from '@gobletqa/components'
 import {
   ModalTitle,
@@ -20,7 +20,7 @@ export const TestRunsAlert = (evt?:any) => {
   return !testRuns?.allTestsRunning
     && Alert({
         titleProps: {
-          Icon: <AnimationPlayOutlineIcon sx={{ color: colors.purple10}} />,
+          Icon: <FolderPlayOutlineIcon sx={{ color: colors.purple10}} />,
         },
         title: `Run Test Suite`,
         okText: `Yes`,

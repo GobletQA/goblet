@@ -111,9 +111,9 @@ export type TAddTestRun = {
 
 export type TTestRunsSections = keyof typeof ETestRunsSection
 export enum ETestRunsSection {
-  runs=`runs`,
-  config=`config`,
+  testRuns=`testRuns`,
   reporter=`reporter`,
+  runOptions=`runOptions`,
 }
 
 export type TTestRunEventState = {

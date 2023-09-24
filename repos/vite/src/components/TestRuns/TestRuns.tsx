@@ -9,23 +9,12 @@ import { TestCfgUpdaters } from './TestCfgUpdaters'
 
 import { TestRunsTabs } from './TestRunsTabs'
 import { TestRunGetUICfgEvt } from '@constants'
+import { TestRunsHeader } from './TestRunsHeader'
 import { TestRunsReporter } from './TestRunsReporter'
 import { TestCfgForm } from '@components/Forms/TestCfgForm'
 import { useRepo, useSettings, useTestRuns } from '@store'
 import { buildTestRunCfg } from '@utils/browser/buildTestRunCfg'
-import {
-  TestRunsHeader,
-  TestActionsFooter,
-  TestRunsContainer,
-  TestRunsHeaderText,
-} from './TestRuns.styled'
-
-import {
-  TestRunsRunAction,
-  TestRunsAbortAction,
-  TestRunsCancelAction,
-} from './TestRunsActions'
-
+import { TestRunsContainer } from './TestRuns.styled'
 
 import {
   useInline,
@@ -42,16 +31,12 @@ const useTestRunOpts = (testRuns:TTestRunsState) => {
   return {
     testRunCfg,
     setTestRunCfg,
-    actions: [
-      testRuns.allTestsRunning ? TestRunsAbortAction : TestRunsCancelAction,
-      TestRunsRunAction
-    ] as TModalAction[],
   }
 }
 
 const SectionTabMap = {
-  [ETestRunsSection.config]: () => null,
-  [ETestRunsSection.runs]: PastTestRuns,
+  [ETestRunsSection.runOptions]: () => null,
+  [ETestRunsSection.testRuns]: PastTestRuns,
   [ETestRunsSection.reporter]: TestRunsReporter
 }
 
@@ -59,7 +44,6 @@ export const TestRuns = () => {
   const testRuns = useTestRuns()
   
   const {
-    actions,
     testRunCfg,
     setTestRunCfg
   } = useTestRunOpts(testRuns)
@@ -76,7 +60,7 @@ export const TestRuns = () => {
   })
 
   const [section, setSection] = useState<ETestRunsSection>(
-    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.config
+    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.testRuns
   )
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
@@ -90,20 +74,15 @@ export const TestRuns = () => {
 
   return (
     <TestRunsContainer className='gb-test-run-container' >
-      <TestRunsHeader className='gb-test-run-header' >
-        <TestRunsHeaderText>
-          Test Suite
-        </TestRunsHeaderText>
-      </TestRunsHeader>
-    
+      <TestRunsHeader />
       <TestRunsTabs
         section={section}
         onChangeSection={onChangeSection}
       />
 
       {
-        section !== ETestRunsSection.config
-          ? (<Component />)
+        section !== ETestRunsSection.runOptions
+          ? (<Component onChangeSection={onChangeSection} />)
           : (
               <TestCfgForm
                 testRunCfg={testRunCfg}
@@ -112,8 +91,6 @@ export const TestRuns = () => {
               />
             )
       }
-      <TestActionsFooter actions={actions} />
-
     </TestRunsContainer>
   )
 }

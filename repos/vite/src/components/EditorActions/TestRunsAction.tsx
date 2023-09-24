@@ -1,11 +1,11 @@
 import type { TMenuItem } from '@gobletqa/components'
 
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
-import { AnimationPlayOutlineIcon } from '@gobletqa/components'
+import { FolderPlayOutlineIcon } from '@gobletqa/components'
 
 export const TestRunsAction:TMenuItem = {
   closeMenu:true,
-  Icon: AnimationPlayOutlineIcon,
+  Icon: FolderPlayOutlineIcon,
   text: `Run Test Suite`,
   id:`run-test-suite-editor-action`,
   key:`run-test-suite-editor-action`,

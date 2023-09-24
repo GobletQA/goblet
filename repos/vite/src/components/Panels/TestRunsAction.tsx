@@ -7,10 +7,10 @@ import {
   Tooltip,
   gutter,
   IconButton,
-  AnimationPlayOutlineIcon,
+  FolderPlayOutlineIcon,
 } from '@gobletqa/components'
 
-export type TTestRunsIcon = ComponentProps<typeof AnimationPlayOutlineIcon>
+export type TTestRunsIcon = ComponentProps<typeof FolderPlayOutlineIcon>
 
 const styles = {
   tests: {
@@ -46,7 +46,7 @@ const TestRunsActionComp = (props:TTestRunsIcon) => {
         disabled={allTestsRunning}
         onClick={props?.onClick as MouseEventHandler<HTMLButtonElement>|undefined}
       >
-        <AnimationPlayOutlineIcon sx={iconSx} />
+        <FolderPlayOutlineIcon sx={iconSx} />
       </IconButton>
     </Tooltip>
   )

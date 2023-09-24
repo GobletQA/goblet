@@ -32,7 +32,7 @@ export const TestCfgSectionContainer = styled(Box)`
 
 export const TestCfgSectionDrawer = styled(Collapse)`
   padding: ${gutter.padding.qpx} ${gutter.padding.dpx} ${gutter.padding.hpx};
-  background-color: ${cmx(getColor(colors.white01, colors.black19), 25)};
+  background-color: ${cmx(getColor(colors.white01, colors.black19), 30)};
 `
 
 export const OptionsContainer = styled(Box)``
@@ -49,8 +49,8 @@ export const TestOptsHeaderTitle = styled(H4)`
   border-bottom: 1px solid;
   padding-bottom: 8px;
   color: ${getColor(colors.gray18, colors.gray01)};
-  transition: opacity ${avgEase}, border-bottom-color ${avgEase}, color ${avgEase};
   border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
+  transition: opacity ${avgEase}, border-bottom-color ${avgEase}, color ${avgEase};
 
   &:hover {
     color: ${cmx(getColor(colors.purple11, colors.gray01), 90)};
