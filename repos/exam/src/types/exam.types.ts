@@ -25,6 +25,7 @@ import {TExBuiltReporters, TExReporterCfg} from "./reporters.types"
 export type TExamEvt<T=TExEventData> = {
   data?:T
   name:string
+  error?:boolean
   message?:string
   location?:string
   isRunning?:boolean
@@ -34,6 +35,7 @@ type TInternalDynEvent =(evt:Partial<TExamEvt>) => TExamEvt
 type TInternalMissingEvent =(evt:Partial<TExamEvt>& { type?:string, fileType?:string }) => TExamEvt
 
 export type TExamEvts = {
+  error:TInternalDynEvent
   started:TInternalDynEvent
   dynamic:TInternalDynEvent
   results:TInternalDynEvent

@@ -4,7 +4,6 @@ import type { TExamReporters, TExamConfig } from '@gobletqa/exam'
 import path from 'path'
 import { isArr } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
-import { ExamJsonReporterEvtSplit } from "@gobletqa/environment/constants"
 
 const CliReporterLoc = path.resolve(__dirname, './cli/CliReporter.ts')
 const JsonReporterLoc = path.resolve(__dirname, './json/JsonReporter.ts')
@@ -27,7 +26,7 @@ export const getReporters = (
     : ENVS.GOBLET_RUN_FROM_UI
       ? [
           [JsonReporterLoc, {
-            logSplit: ExamJsonReporterEvtSplit,
+            logSplit: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
           }]
         ]
       : [

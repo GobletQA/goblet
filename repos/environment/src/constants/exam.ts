@@ -1,6 +1,3 @@
-import type { EPlayerTestAction, EPlayerTestType, EPlayerTestStatus } from '@GENV/types'
-
-
 export const ExamCfgArrayItems = [
   `testMatch`,
   `reporters`,
@@ -25,9 +22,9 @@ export const NoTestsFoundPass = {
   testPath: `none`,
   id: NoTestsPassId,
   fullName: `No Tests Found`,
-  action: `end` as EPlayerTestAction,
-  type: `describe` as EPlayerTestType,
-  status: `passed` as EPlayerTestStatus,
+  action: `end` as const,
+  status: `passed` as const,
+  type: `describe` as const,
   description: `No tests were found and "passWithNoTests" is active`,
 }
 
@@ -57,9 +54,9 @@ export const BuiltTestResultFailed = {
   failedExpectations: [],
   passedExpectations: [],
   description: `Test failed`,
-  action: `end` as EPlayerTestAction,
-  type: `describe` as EPlayerTestType,
-  status: `failed` as EPlayerTestStatus,
+  action: `end` as const,
+  type: `describe` as const,
+  status: `failed`  as const,
 }
 
 

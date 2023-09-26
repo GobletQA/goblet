@@ -1,40 +1,36 @@
 
 import type { TExamEvt } from './exam.types'
 import type { TExFileModelDef } from './file.types'
-import type { EAstObject, TRunResult, TTestStats } from '@ltipton/parkin'
+import type {
+  TTestStats,
+  EAstObject,
+  TRunResult,
+  EResultAction,
+  EResultStatus,
+} from '@ltipton/parkin'
 
 export type TRunResultMeta = {
   file?:Partial<TExFileModelDef>
 }
 
-export enum EPlayerTestStatus {
-  failed=`failed`,
-  passed=`passed`,
-  skipped=`skipped`,
-  aborted=`aborted`
-}
 
-export type TExRunResult = Omit<TRunResult, `type`|`metadata`|`describes`|`tests`|`status`> & {
+export type TExResultType = TRunResult[`type`]
+export type TExRunResult = Omit<TRunResult, `metadata`|`describes`|`tests`|`status`> & {
   id:string
   testPath?:string
   location?:string
   timestamp:number
   stats: TTestStats
   description?:string
-  type:EPlayerTestType
   tests?:TExRunResult[]
+  status: EResultStatus
   metaData?:TRunResultMeta
   describes?:TExRunResult[]
   eventParent?:TEventParent
-  status: EPlayerTestStatus
+  action:EResultAction|`error`
+  type:TExResultType|EPlayerTestType
 }
 
-export enum EPlayerTestAction {
-  end=`end`,
-  test=`test`,
-  start=`start`,
-  error=`error`,
-}
 
 export enum EPlayerTestType {
   test=`test`,
@@ -57,37 +53,46 @@ export type TEventParent = EAstObject.step
   | EAstObject.feature
 
 export type TExTestStart = Omit<TExRunResult, `type`|`action`|`status`> & {
-  status:EPlayerTestStatus
+  status:EResultStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
-  action:EPlayerTestAction.start
+  action:EResultAction.start
 }
 
 export type TExTestDone = Omit<TExRunResult, `type`|`action`|`status`> & {
-  status:EPlayerTestStatus
+  status:EResultStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
-  action:EPlayerTestAction.end
+  action:EResultAction.end
 }
 
 export type TExTestResult = Omit<TExRunResult, `type`|`action`|`status`> & {
-  status:EPlayerTestStatus
+  status:EResultStatus
   type:EPlayerTestType.test
   eventParent?: TEventParent
-  action:EPlayerTestAction.test
+  action:EResultAction.test
 }
 
 export type TExTestEvent = Omit<TExRunResult, `type`|`action`|`status`> & {
   type:EPlayerTestType
-  action:EPlayerTestAction
-  status?:EPlayerTestStatus
+  action:EResultAction|`error`
+  status?:EResultStatus
   eventParent?: TEventParent
+}
+
+export type TEXErrorResult = Omit<TExRunResult, `type`|`action`|`status`> & {
+  error:Error
+  action:`error`
+  eventParent?:TEventParent
+  status:EResultStatus.failed
+  type:EPlayerTestType.error|EAstObject.error
 }
 
 export type TExEventData = TExTestEvent
   | TExTestStart
   | TExTestDone
   | TExTestResult
+  | TEXErrorResult
   | TExTestSuiteDone
   | TExTestSuiteFinished
   | TExRunResult

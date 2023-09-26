@@ -6,7 +6,6 @@
 } from "@gobletqa/exam"
 import {isStr} from "@keg-hub/jsutils/isStr"
 import {nanoid} from "@keg-hub/jsutils/nanoid"
-import {EResultStatus} from '@ltipton/parkin'
 import {emptyArr} from "@keg-hub/jsutils/emptyArr"
 
 

@@ -50,6 +50,10 @@ const __ExamEvents:TExamEvts = {
     name: ExamEvtNames.stopped,
     message: `Exam stopped`,
   }),
+  error: onExDynEvent({
+    name: ExamEvtNames.error,
+    message: `Exam error`,
+  }),
   ended: {
     message: `Exam finished`,
     name: ExamEvtNames.ended,

@@ -5,12 +5,12 @@ import { loadFiles } from '@GEX/utils/loadFiles'
 import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { initPipeline } from './pipelines/initPipeline'
 
-
 export const exam = async (
   cfg:TInitExamCfg,
   opts:TInitExamOpts,
   forceEnvs?:boolean
 ) => {
+
   const resetCLIEnvs = updateCLIEnvs(cfg, opts, forceEnvs)
   const locations = await loadFiles(cfg)
 

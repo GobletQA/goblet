@@ -1,6 +1,8 @@
-import {cls} from '@keg-hub/jsutils'
-import { TTestRunEvtStatus, EPlayerTestStatus } from '@types'
+import type { TTestRunEvtStatus } from '@types'
+
 import {CSSProperties} from 'react'
+import {cls} from '@keg-hub/jsutils'
+import { EResultStatus } from '@ltipton/parkin'
 
 import {
   TestRunDecoPass,
@@ -20,8 +22,8 @@ const StatusDecoMap = {
   // TODO: add a loading Deco component
   loading: undefined,
   running: TestRunDecoSpin,
-  [EPlayerTestStatus.passed]: TestRunDecoPass,
-  [EPlayerTestStatus.failed]: TestRunDecoFail,
+  [EResultStatus.passed]: TestRunDecoPass,
+  [EResultStatus.failed]: TestRunDecoFail,
 }
 
 export const TestRunDeco  = (props:TTestRunDeco) => {

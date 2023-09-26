@@ -1,6 +1,10 @@
 import type { Express } from 'express'
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
-import type { TExamEvtExtra, TKillTestRunUIRunEvtOpts, TPlayerTestEventMeta, TSocketEvtCBProps } from '@GSC/types'
+import type {
+  TExamEvtExtra,
+  TSocketEvtCBProps,
+  TKillTestRunUIRunEvtOpts,
+} from '@GSC/types'
 
 import path from 'path'
 import { EE } from '@gobletqa/shared'
@@ -14,7 +18,6 @@ import { runExamFromUi } from '@gobletqa/test-utils/exam/runExamFromUi'
 import {
   InternalPaths,
   KillTestRunUIProcEvt,
-  ExamJsonReporterEvtSplit
 } from '@gobletqa/environment/constants'
 
 
@@ -42,6 +45,7 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
   const examUI = new ExamUIRun({
     repo,
     runTimestamp: new Date().getTime(),
+    eventSplit: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
     extraEvt: { group: socket.id, fullTestRun: true },
     onEvent: (evt) => Manager.emit(socket, evt.name, evt),
     onRunFinish: (evt) => Manager.emit(socket, evt.name, evt),
@@ -94,13 +98,13 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
       onStdOut: (data:string) => {
         if(examRunAborted) return
 
-        const events = examUI.parseEvent({ data, ref: ExamJsonReporterEvtSplit })
+        const events = examUI.parseEvent({ data })
         events?.length && examUI.onEvtsParsed({ events, extra: getExtra() })
       },
       onStdErr: (data:string) => {
         if(examRunAborted) return
 
-        const events = examUI.parseEvent({ data, ref: ExamJsonReporterEvtSplit })
+        const events = examUI.parseEvent({ data })
         events?.length && examUI.onEvtsParsed({ events, extra: getExtra() })
       },
       onError: (error:Error) => {

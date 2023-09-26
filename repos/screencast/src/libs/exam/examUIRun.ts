@@ -59,6 +59,7 @@ export class ExamUIRun {
   saveHtml?:boolean
   saveJson?:boolean
   runTimestamp:number
+  eventSplit?:string=``
   events:TExamUIRunEvts = {}
   onEvent:TExamUIRunEvtCB[]=[]
   extraEvt:Partial<TExamEvtExtra>
@@ -72,6 +73,7 @@ export class ExamUIRun {
     props.onEvent && this.onEvent.push(props.onEvent)
     props.onRunFinish && this.onRunFinish.push(props.onRunFinish)
     this.extraEvt = props.extraEvt ?? emptyObj
+    props.eventSplit && (this.eventSplit = props.eventSplit)
   }
 
   #ensureTempDir = async (type:EUIReportType) => {
@@ -142,7 +144,10 @@ export class ExamUIRun {
     await this.saveTempJsonReport()
   }
 
-  parseEvent = ({data, ref }:{ data:string, ref:string }) => {
+  parseEvent = ({
+    data,
+    ref=this.eventSplit
+  }:{ data:string, ref?:string }) => {
     const events:TExTestEventMeta[] = []
     if(!data.includes(ref)){
       safeLogData(data)

@@ -11,6 +11,7 @@ import type { TExamUIRun, TExamUIChildProcOpts } from '@GTU/Types'
 
 import { spawn } from 'child_process'
 import { Logger } from "@gobletqa/exam"
+import { ENVS } from "@gobletqa/environment"
 import { aliases } from '@GConfigs/aliases.config'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
@@ -24,20 +25,28 @@ import { buildTestArgs } from '@GTU/Utils/buildTestArgs'
  * Default options when executing a command
  * @object
  */
-const defOpts:TExamUIChildProcOpts = {
+const getDefOpts = ():TExamUIChildProcOpts => ({
+  stdio: `pipe`,
+  detached: false,
+  shell: `/bin/bash`,
+  gid: process.getgid(),
+  uid: process.getuid(),
   env: {
     /**
      * We have to force disable the safe replacer to ensure we get valid json output
      * This way the passed in callback events can parse the JSON from stdout
      */
     GB_LOGGER_FORCE_DISABLE_SAFE: `1`,
+    /**
+     * Ensure exam logs any thrown errors as JSON
+     */
+    EXAM_LOG_ERR_EVENT: `1`,
+    /**
+     * Ensure the log split key is set to the current environments value
+     */
+    EXAM_EVENT_LOG_SPLIT_KEY: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
   },
-  stdio: `pipe`,
-  detached: false,
-  shell: `/bin/bash`,
-  gid: process.getgid(),
-  uid: process.getuid(),
-}
+})
 
 const buildCmdParams = (
   opts:TExamUIRun,
@@ -53,7 +62,7 @@ const buildCmdParams = (
   }, EBrowserType.chromium, ETestType.feature, true)
   
   return deepMerge<SpawnOptionsWithoutStdio>(
-    defOpts,
+    getDefOpts(),
     cmdParams,
     params
   )

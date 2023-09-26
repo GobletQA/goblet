@@ -1,48 +1,17 @@
 import type { Repo } from './repo.types'
 import type { TExEventData } from './exam.types'
 import type { TSocketMessageObj } from './socket.types'
-import type { TParkinRunStepOptsMap, TRunResultActionMeta } from '@ltipton/parkin'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
-
+import type { EPlayerTestType } from './exam.types'
 import type {
-  TEventParent,
-  EPlayerTestType,
-  EPlayerTestAction,
-  EPlayerTestStatus,
-} from './exam.types'
+  EResultStatus,
+  EResultAction,
+  TRunResultActionMeta,
+  TParkinRunStepOptsMap,
+} from '@ltipton/parkin'
 
 // Exported from browser/src/types
 import type { Player } from '@gobletqa/browser'
-
-// ---- Already exported from exam
-// export enum EPlayerTestAction {
-//   end=`end`,
-//   test=`test`,
-//   start=`start`,
-//   error=`error`,
-// }
-
-// export enum EPlayerTestStatus {
-//   failed=`failed`,
-//   passed=`passed`,
-// }
-
-
-// export enum EPlayerTestType {
-//   test=`test`,
-//   describe=`describe`,
-//   feature=`feature`
-// }
-
-// export type TEventParent = EAstObject.step
-//   | EAstObject.scenario
-//   | EAstObject.background
-//   | EAstObject.rule
-//   | EAstObject.feature
-
-
-// ---- Already exported from exam
-
 
 export type TPlayerEvent = {
   name:string
@@ -95,7 +64,7 @@ export type TPlayerTestExpectation = {
 export type TPlayerTestShared = {
   timestamp:number
   location?:string
-  status:EPlayerTestStatus
+  status:EResultStatus
   metaData?:TRunResultActionMeta
 }
 
@@ -103,28 +72,28 @@ export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`>
   & TPlayerTestShared
   & {
       type:EPlayerTestType.test
-      action:EPlayerTestAction.start
+      action:EResultAction.start
     }
 
 export type TPlayerTestDone = Omit<TExEventData, `type`|`action`|`status`>
   & TPlayerTestShared
   & {
       type:EPlayerTestType.test
-      action:EPlayerTestAction.end
+      action:EResultAction.end
     }
 
 export type TPlayerTestResult = Omit<TExEventData, `type`|`action`|`status`>
   & TPlayerTestShared
   & {
       type:EPlayerTestType.test
-      action:EPlayerTestAction.test
+      action:EResultAction.test
     }
 
 export type TPlayerTestEvent = Omit<TExEventData, `type`|`action`|`status`>
   & TPlayerTestShared
   & {
       type:EPlayerTestType
-      action:EPlayerTestAction
+      action:EResultAction|`error`
       failedExpectations?:any[]
     }
 

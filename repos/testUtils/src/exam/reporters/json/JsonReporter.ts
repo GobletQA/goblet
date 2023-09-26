@@ -8,6 +8,7 @@
 } from "@gobletqa/exam"
 
 import { Logger } from "@gobletqa/exam"
+import { ENVS } from '@gobletqa/environment'
 
 const logEvt = (evt:TExamEvt<TExEventData>, logSplit:string) => {
   Logger.stdout(`${logSplit}${JSON.stringify(evt)}${logSplit}`)
@@ -23,7 +24,7 @@ export class FeatureJsonReporter implements IExamReporter {
     reporterContext?:TEXInterReporterContext
   ) {
     this.rootDir = examCfg.rootDir
-    this.logSplit = cfg?.logSplit
+    this.logSplit = cfg?.logSplit || ENVS.EXAM_EVENT_LOG_SPLIT_KEY
   }
 
   onRunStart = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
@@ -34,6 +35,7 @@ export class FeatureJsonReporter implements IExamReporter {
   onTestStart = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
   onTestResult = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
   onSuiteResult = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
+  onError = (evt:any) => logEvt(evt, this.logSplit)
 
 }
 

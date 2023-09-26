@@ -60,7 +60,7 @@ export const TestRuns = () => {
   })
 
   const [section, setSection] = useState<ETestRunsSection>(
-    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.testRuns
+    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
   )
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))

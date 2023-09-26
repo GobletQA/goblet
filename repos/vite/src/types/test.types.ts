@@ -1,14 +1,13 @@
 import type { emptyObj } from '@keg-hub/jsutils'
 import type { FocusEvent } from 'react'
-import { EResultAction } from '@ltipton/parkin'
+import { EResultStatus, EResultAction } from '@ltipton/parkin'
 import type { TestCfgUpdaters } from '@components/TestRuns/TestCfgUpdaters'
 import type {
   EStepKey,
   TExamUIRun,
   EPlayerTestType,
-  EPlayerTestAction,
-  EPlayerTestStatus,
 } from './shared.types'
+
 
 export type TTestRunUICfg = (TExamUIRun & {})
 
@@ -20,7 +19,7 @@ export type TTestRunId = string
 export type TFileLocation = string
 export type TEventUUID = string
 export type TTestRunMetaType = EStepKey|`scenario`|`rule`|`background`|`feature`
-export type TTestRunEvtStatus = EPlayerTestStatus|`running`|`loading`|`unknown`
+export type TTestRunEvtStatus = EResultStatus|`running`|`loading`|`unknown`
 
 export type TTestRunEvent = {
   runId:TTestRunId
@@ -34,10 +33,10 @@ export type TTestRunEvent = {
   description:string
   stats?:TTestRunStats
   type:EPlayerTestType
+  action:EResultAction
   location:TFileLocation
   status?:TTestRunEvtStatus
   metaType?:TTestRunMetaType
-  action:EPlayerTestAction|EResultAction
 }
 
 export type TTestRunEndEvent = {
