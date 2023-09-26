@@ -1,13 +1,17 @@
+import type { TTestRuns } from "@types"
+
 import { useTestRuns } from "@store"
 import { ETestRunsSection } from "@types"
 import { TestRunError } from './TestRunError'
 import { TestRunFiles } from './TestRunFiles'
 import { Loading } from '@gobletqa/components'
 import { NoActiveTestRun } from './NoActiveTestRun'
-import { useTestRunListen } from '@hooks/testRuns/useTestRunListen'
 import { TestRunLoadingContainer, TestRunReporterContainer } from './TestRunsReporter.styled'
 
 export type TTestRunsReporter = {
+  runs: TTestRuns
+  active?:string
+  failedFiles:string[]
   onChangeSection:(section:ETestRunsSection) => void
 }
 
@@ -18,16 +22,15 @@ const styles = {
   }
 }
 
-export const TestRunsReporter = (props:TTestRunsReporter) => {
-  const { onChangeSection } = props
-  const { allTestsRunning } = useTestRuns()
-
+export const TestRunsReporter = (props:TTestRunsReporter) => {  
   const {
     runs,
     active,
     failedFiles,
-  } = useTestRunListen()
+    onChangeSection
+  } = props
 
+  const { allTestsRunning } = useTestRuns()
   const activeRun = runs[active as string]
 
   return (
@@ -35,27 +38,27 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
       className='test-runs-reporter-container'
     >
       {
-        activeRun?.runError
-          ? <TestRunError run={activeRun} />
-          : activeRun
-            ? (
-                <TestRunFiles
-                  run={activeRun}
-                  failedFiles={failedFiles}
+        allTestsRunning && !activeRun
+          ? (
+              <TestRunLoadingContainer>
+                <Loading
+                  size={30}
+                  color={`primary`}
+                  containerSx={styles.container}
+                  message={`Test Run Starting...`}
                 />
-              )
-            : allTestsRunning
-              ? (
-                  <TestRunLoadingContainer>
-                    <Loading
-                      size={30}
-                      color={`primary`}
-                      containerSx={styles.container}
-                      message={`Test Run Starting...`}
+              </TestRunLoadingContainer>
+            )
+          : activeRun?.runError
+            ? <TestRunError run={activeRun} />
+              : activeRun
+                ? (
+                    <TestRunFiles
+                      run={activeRun}
+                      failedFiles={failedFiles}
                     />
-                  </TestRunLoadingContainer>
-                )
-              : (<NoActiveTestRun onChangeSection={onChangeSection} />)
+                  )
+                : (<NoActiveTestRun onChangeSection={onChangeSection} />)
       }
     </TestRunReporterContainer>
   )

@@ -4,7 +4,10 @@ import {testRunFileFactory} from "./testRunFileFactory"
 import { findMatchingEvent } from './findMatchingEvent'
 
 
-export const addEventsToTestRun = (testRun:TTestRun, events:TTestRunEvent[]) => {
+export const addEventsToTestRun = (
+  testRun:TTestRun,
+  events:TTestRunEvent[]
+) => {
 
   events.forEach(event => {
     testRun.files = testRun.files || {}

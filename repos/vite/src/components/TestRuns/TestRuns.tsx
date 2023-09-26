@@ -10,10 +10,11 @@ import { TestRunsTabs } from './TestRunsTabs'
 import { TestRunGetUICfgEvt } from '@constants'
 import { TestRunsHeader } from './TestRunsHeader'
 import { TestRunsReporter } from './TestRunsReporter'
+import { TestRunsContainer } from './TestRuns.styled'
 import { TestCfgForm } from '@components/Forms/TestCfgForm'
 import { useRepo, useSettings, useTestRuns } from '@store'
 import { buildTestRunCfg } from '@utils/browser/buildTestRunCfg'
-import { TestRunsContainer } from './TestRuns.styled'
+import { useTestRunListen } from '@hooks/testRuns/useTestRunListen'
 
 import {
   useInline,
@@ -64,11 +65,20 @@ export const TestRuns = () => {
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
 
+  const {
+    runs,
+    active,
+    setRunId,
+    failedFiles,
+  } = useTestRunListen()
+
   useOnEvent<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, cb => {
     setSection(ETestRunsSection.reporter)
+    setRunId(undefined)
     cb?.(testRunCfg)
   })
-  
+
+
   const Component = SectionTabMap[section]
 
   return (
@@ -81,7 +91,15 @@ export const TestRuns = () => {
 
       {
         section !== ETestRunsSection.runOptions
-          ? (<Component onChangeSection={onChangeSection} />)
+          ? (
+              <Component
+                runs={runs}
+                active={active}
+                setRunId={setRunId}
+                failedFiles={failedFiles}
+                onChangeSection={onChangeSection}
+              />
+            )
           : (
               <TestCfgForm
                 testRunCfg={testRunCfg}

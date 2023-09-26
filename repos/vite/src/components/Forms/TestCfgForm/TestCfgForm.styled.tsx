@@ -47,9 +47,9 @@ export const TestOptsHeaderTitle = styled(H4)`
   align-items: center;
   
   border-bottom: 1px solid;
+  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
   padding-bottom: 8px;
   color: ${getColor(colors.gray18, colors.gray01)};
-  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
   transition: opacity ${avgEase}, border-bottom-color ${avgEase}, color ${avgEase};
 
   &:hover {

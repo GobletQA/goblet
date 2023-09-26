@@ -36,6 +36,8 @@ export const TestRunReporterContainer = styled(Box)(({ theme }) => `
   overflow-x: hidden;
   scrollbar-width: none;
   scrollbar-gutter: stable both-edges;
+  margin-top: ${gutter.margin.hpx};
+  padding-bottom: ${gutter.padding.size * 15}px;
 
   ::-webkit-scrollbar-track {
       background: ${getColor(colors.white, colors.purple23, theme)};

@@ -13,6 +13,12 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 
 
+/**
+ * **IMPORTANT** - Only include this for testing
+ * It should not be included in production builds
+ */
+// import { runMock } from '@services/__mocks__/testrun.mock'
+
 export type TTestRunsState = {
   active?:string
   runs: TTestRuns
@@ -20,6 +26,7 @@ export type TTestRunsState = {
 }
 
 export const testRunsState = {
+  // runs: runMock,
   runs: {},
   allTestsRunning: false,
 } as TTestRunsState
@@ -46,7 +53,7 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 
 export const testRunsActions = {
   addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRun>) => {
-    const { runId, data={ files: {} } } = action?.payload
+    const { runId, data={ files: {}, runId } } = action?.payload
 
     return {
       ...state,
@@ -92,7 +99,7 @@ export const testRunsActions = {
 
     const runId = state.active
     const events = getEvents(action?.payload)
-    const testRun = addEventsToTestRun({...state.runs[runId]}, events)
+    const testRun = addEventsToTestRun({...state.runs[runId], runId }, events)
 
     return {...state, runs: {...state.runs, [runId]: testRun }}
   },
@@ -105,7 +112,7 @@ export const testRunsActions = {
     }
     
     const events = getEvents(action?.payload)
-    const testRun = addEventsToTestRun({...state.runs[runId]}, events)
+    const testRun = addEventsToTestRun({...state.runs[runId], runId}, events)
 
     return {...state, runs: {...state.runs, [runId]: testRun }}
   },
@@ -118,7 +125,7 @@ export const testRunsActions = {
     }
 
     const events = getEvents(action?.payload)
-    const testRun = addEventsToTestRun({...state.runs[runId]}, events)
+    const testRun = addEventsToTestRun({...state.runs[runId], runId}, events)
 
     return {
       ...state,

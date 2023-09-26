@@ -100,8 +100,10 @@ export type TAddTestRunEvts = TAddActiveTestRunEvts & {
 }
 
 export type TTestRun = {
+  runId:TTestRunId
   canceled?:boolean
   runError?:TTestRunEvent
+  status?:TTestRunEvtStatus
   files: Record<TFileLocation, TTestRunFileData>
 }
 export type TTestRuns = Record<TTestRunId, TTestRun>

@@ -5,7 +5,8 @@ import type {
   TTestRunExecErrEvent
 } from '@types'
 
-import {useRef, useState} from 'react'
+import { useTestRuns } from '@store'
+import {useEffect, useRef, useState} from 'react'
 import { getEvents } from '@utils/testRuns/getEvents'
 import { addTestRun } from '@actions/testRuns/addTestRun'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
@@ -20,30 +21,27 @@ import {
   TestRunExecCancelEvt,
 } from '@constants'
 
-/**
- * **IMPORTANT** - Only include this for testing
- * It should not be included in production builds
- */
-import { runMock } from '@services/__mocks__/testrun.mock'
 
 export type TTestRunsReporter = {}
 
 export const useTestRunListen = () => {
 
+  const testRuns = useTestRuns()
   const forceUpdate = useForceUpdate()
 
   const [failedFiles, setFailedFiles] = useState<string[]>([])
 
-  // const [runId, setRunId] = useState<string>(`runMock`)
-  // const testRunsRef = useRef<TTestRuns>(runMock as TTestRuns)
-
-  const [runId, setRunId] = useState<string>()
-  const testRunsRef = useRef<TTestRuns>({} as TTestRuns)
+  const [runId, setRunId] = useState<string|undefined>(testRuns.active)
+  const testRunsRef = useRef<TTestRuns>({...testRuns.runs})
 
   useOnEvent<TTestRunExecEvt>(TestRunExecEvt, async (data) => {
     const evtRunId = data.runId
     const { events, failedLoc } = getEvents(data)
-    const testRun = addEventsToTestRun({...testRunsRef.current[evtRunId]}, events)
+    const testRun = addEventsToTestRun(
+      {...testRunsRef.current[evtRunId], runId: evtRunId},
+      events
+    )
+
     testRunsRef.current[evtRunId] = testRun
 
     // If there's a runId change, then update the state with the new ID
@@ -70,15 +68,36 @@ export const useTestRunListen = () => {
   })
 
   useOnEvent<TTestRunExecErrEvent>(TestRunErrEvt, (data) => {
-    const { runId, event } = data
-    const testRun = testRunsRef.current[runId]
-    if(!testRun) return
-    
-    testRun.runError = event
+    const { runId:evtRunId, event } = data
+    const testRun = testRunsRef.current[evtRunId] || { files: {}, runId: evtRunId }
+    testRunsRef.current[evtRunId] = {...testRun, runError: event}
+
+    // If the error event also created a new testRun, set it as the active test run
+    evtRunId !== runId && setRunId(evtRunId)
+
     forceUpdate()
   })
 
+  useEffect(() => {
+    const activeEql = testRuns.active === runId
+    if(testRuns.active && runId && !activeEql)
+      return setRunId(testRuns.active)
+
+    const exRuns = testRuns.runs
+    const runsRef = testRunsRef.current
+
+    if(exRuns && runsRef && exRuns !== runsRef){
+      testRunsRef.current = {...exRuns}
+      forceUpdate()
+    }
+    
+  }, [
+    testRuns.runs,
+    testRuns.active,
+  ])
+
   return {
+    setRunId,
     failedFiles,
     active: runId,
     runs: testRunsRef.current

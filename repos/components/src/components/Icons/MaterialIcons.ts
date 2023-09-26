@@ -70,6 +70,7 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 // Icon for playing all or a group of features
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 export {
   Settings,
@@ -140,5 +141,6 @@ export {
   DirectionsRunIcon,
   FormatListBulletedIcon,
   ContentPasteIcon,
-  TuneIcon
+  TuneIcon,
+  KeyboardArrowRightIcon
 }
