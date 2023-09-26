@@ -10,7 +10,6 @@ import type {
   TExamUIRunFinishCB,
 } from '@GSC/types'
 
-
 import path from 'node:path'
 import { Logger } from '@GSC/utils/logger'
 import { ENVS } from '@gobletqa/environment'

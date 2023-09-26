@@ -1,14 +1,11 @@
-import { colors, PlayCircleOutlineIcon } from '@gobletqa/components'
+import { PlayCircleOutlineIcon } from '@gobletqa/components'
 import {useTestRuns} from '@store'
+import { TestRunsMsg } from './TestRunsMsg'
 import {
-  NoPastRunsIcon,
-  NoPastRunsText,
-  NoPastRunsButton,
-  NoPastRunsContainer,
-  PastTestRunsContainer,
-  NoPastRunsTextContainer,
-  NoPastRunsButtonContainer
-} from './PastTestRuns.styled'
+  TestRunsButton,
+  TestRunsButtonContainer
+} from './TestRunsMsg.styled'
+
 import { ETestRunsSection } from '@types'
 
 export type TPastTestRuns = {
@@ -16,38 +13,27 @@ export type TPastTestRuns = {
 }
 
 
-
 export const PastTestRuns = (props:TPastTestRuns) => {
   const { onChangeSection } = props
   const { runs } = useTestRuns()
 
-  return (
-    <PastTestRunsContainer>
-    
-      {!runs?.length && (
-        <NoPastRunsContainer>
-
-          <NoPastRunsTextContainer>
-            <NoPastRunsIcon />
-            <NoPastRunsText>
-              No previous test runs exist
-            </NoPastRunsText>
-          </NoPastRunsTextContainer>
-
-          <NoPastRunsButtonContainer>
-            <NoPastRunsButton
+  return !runs?.length
+    ? (
+        <TestRunsMsg
+          className='gb-test-run-no-past-run'
+          textClass='gb-test-run-no-past-run-text'
+          iconClass='gb-test-run-no-past-run-icon'
+          message={`No previous test runs exist`}
+        >
+          <TestRunsButtonContainer>
+            <TestRunsButton
               text='Run Tests'
               variant='contained'
               Icon={PlayCircleOutlineIcon}
-              onClick={() => onChangeSection(ETestRunsSection.runOptions)}
+              onClick={() => onChangeSection?.(ETestRunsSection.runOptions)}
             />
-          </NoPastRunsButtonContainer>
-
-        </NoPastRunsContainer>
-      )}
-    
-
-
-    </PastTestRunsContainer>
-  )
+          </TestRunsButtonContainer>
+        </TestRunsMsg>
+      )
+    : (<>Test Runs</>)
 }

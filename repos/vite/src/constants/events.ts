@@ -21,9 +21,10 @@ export const SetBrowserIsLoadedEvent = `set-browser-is-loaded-event`
 export const WSSocketResetEvt = `ws-socket-reset-event`
 
 export const TestRunExecEvt = `test-run-exec-event`
-export const TestRunErrorEvt = `test-run-error-event`
+export const TestRunErrEvt = `test-run-error-event`
 export const TestRunExecEndEvt = `test-run-exec-end-event`
-export const TestRunGetUICfgEvt = `test-run-get-ui-cfg-event`
 export const WSCancelTestRunEvt = `ws-cancel-test-run-event`
+export const TestRunGetUICfgEvt = `test-run-get-ui-cfg-event`
+export const TestRunExecCancelEvt = `test-run-exec-cancel-event`
 
 export const TestRunFileRootEvtRef = `Test-Run-File-Root`

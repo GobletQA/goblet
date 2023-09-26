@@ -1,5 +1,4 @@
 import type { FocusEvent } from 'react'
-import type { TModalAction } from '@gobletqa/components'
 import type { TTestRunsState, TTestRunUICfg, TTestRunGetUICfgEvt } from '@types'
 
 import { useState } from 'react'

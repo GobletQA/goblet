@@ -10,13 +10,13 @@ import {
   BlockIcon,
 } from '@gobletqa/components'
 
-export const PastTestRunsContainer = styled(Box)`
+export const TestRunsMsgContainer = styled(Box)`
   padding: ${gutter.padding.px};
   padding-top: 0px;
   height: 100%;
 `
 
-export const NoPastRunsContainer = styled(Box)`
+export const TestRunsMsgContentContainer = styled(Box)`
   flex: 1;
   width: 100%;
   display: flex;
@@ -26,7 +26,7 @@ export const NoPastRunsContainer = styled(Box)`
   padding: ${gutter.padding.dpx};
 `
 
-export const NoPastRunsTextContainer = styled(Box)`
+export const TestRunsMsgTextContainer = styled(Box)`
   width: 100%;
   display: flex;
   align-items: center;
@@ -35,20 +35,27 @@ export const NoPastRunsTextContainer = styled(Box)`
   background-color: ${cmx(getColor(colors.white01, colors.black19), 30)};
 `
 
-export const NoPastRunsText = styled(H5)(({ theme }) => `
+export const TestRunsMsgText = styled(H5)(({ theme }) => `
   font-size: 16px;
   color: ${getColor(colors.gray15, colors.gray03, theme)};
 `)
 
-export const NoPastRunsIcon = styled(BlockIcon)`
+export const TestRunsMsgIcon = styled(BlockIcon)`
   font-size: 22px;
   color: ${colors.error};
   margin-right: ${gutter.margin.hpx};
 `
 
-export const NoPastRunsButtonContainer = styled(Box)`
+export const TestRunsMsgButtonContainer = styled(Box)`
   margin-top: ${gutter.margin.dpx};
   padding-top: ${gutter.padding.dpx};
 `
 
-export const NoPastRunsButton = styled(Button)``
+export const TestRunsMsgButton = styled(Button)``
+
+export const TestRunsButtonContainer = styled(Box)`
+  margin-top: ${gutter.margin.dpx};
+  padding-top: ${gutter.padding.dpx};
+`
+
+export const TestRunsButton = styled(Button)``

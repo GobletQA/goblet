@@ -14,12 +14,14 @@ import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes } from '@constants'
 import {
   TestRunExecEndEvt,
+  TestRunExecCancelEvt,
   WSCancelTestRunEvt,
 } from '@constants'
 
 
 export const runAllTests = (testRunOpts:TTestRunUICfg) => {
   let promise = PromiseAbort((res, rej) => {
+
     // Enable global tests running flag
     testRunsDispatch.toggleAllTestsRun(true)
 
@@ -37,16 +39,24 @@ export const runAllTests = (testRunOpts:TTestRunUICfg) => {
     const cancelOff = EE.on(
       WSCancelTestRunEvt,
       () => {
-        onTestRunEnd?.()
-        onTestRunEnd = undefined
+        testRunsDispatch.cancelTestRun()
+        testRunsDispatch.toggleAllTestsRun(false)
+
+        // Send event to cancel locally
+        EE.emit(TestRunExecCancelEvt)
+
         // Send event to cancel on the backend
         WSService.emit(SocketMsgTypes.TESTS_RUN_ABORT)
-        
+
         // Finally stop listening, cancel and reject
         cancelOff?.()
         promise.cancel()
+
         // @ts-ignore
         promise = undefined
+
+        onTestRunEnd?.()
+        onTestRunEnd = undefined
         rej(emptyObj)
       }
     )

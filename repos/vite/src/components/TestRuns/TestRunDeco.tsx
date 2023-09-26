@@ -8,6 +8,7 @@ import {
   TestRunDecoPass,
   TestRunDecoFail,
   TestRunDecoSpin,
+  TestRunDecoCanceled,
   TestRunDecoContainer
 } from './TestRunsReporter.styled'
 
@@ -22,6 +23,7 @@ const StatusDecoMap = {
   // TODO: add a loading Deco component
   loading: undefined,
   running: TestRunDecoSpin,
+  canceled: TestRunDecoCanceled,
   [EResultStatus.passed]: TestRunDecoPass,
   [EResultStatus.failed]: TestRunDecoFail,
 }

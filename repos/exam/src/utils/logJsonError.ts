@@ -1,19 +1,37 @@
 import type { TExamEvt, TEXErrorResult } from '@GEX/types'
 import {
   EAstObject,
-  EResultAction,
   EResultStatus,
 } from '@ltipton/parkin'
 
 import { ENVS } from '@gobletqa/environment'
-import { TestsToSocketEvtMap } from '@GEX/constants'
+import { ExamErrTag } from "@GEX/constants/tags"
 import { CliLogger, stripColors } from './logger'
+import { TestsToSocketEvtMap } from '@GEX/constants'
 import { buildFailedTestResult } from './buildResult'
 
 export type TLogJsonError = Error & {
   cause?:string
   method?:string
   result?:string
+}
+
+const buildJsonErr = (err:TLogJsonError) => {
+  const cleanStack = stripColors(err?.stack?.replace?.(ExamErrTag, ``) || ``).trim()
+  const cleanMsg = stripColors(err?.message?.replace?.(ExamErrTag, ``) || ``).trim()
+
+  const jsonErr = {
+    stack: cleanStack,
+    message: cleanMsg,
+    type: EAstObject.error,
+    name: err.name || err?.constructor?.name,
+  } as TLogJsonError
+
+  err.method && (jsonErr.method = err.method)
+  err.cause && (jsonErr.cause = stripColors(`${err.cause}`).trim())
+  err.result && (jsonErr.result = stripColors(`${err.result}`).trim())
+  
+  return jsonErr
 }
 
 /**
@@ -26,16 +44,7 @@ export type TLogJsonError = Error & {
 export const logJsonError = (err:TLogJsonError) => {
   if(!ENVS.EXAM_LOG_ERR_EVENT) return
 
-  const jsonErr = {
-    type: EAstObject.error,
-    stack: stripColors(err.stack),
-    message: stripColors(err?.message),
-    name: err.name || err?.constructor?.name,
-  } as TLogJsonError
-
-  err.method && (jsonErr.method = err.method)
-  err.cause && (jsonErr.cause = stripColors(`${err.cause}`))
-  err.result && (jsonErr.result = stripColors(`${err.result}`))
+  const jsonErr = buildJsonErr(err)
 
   const {
     type,
@@ -49,15 +58,15 @@ export const logJsonError = (err:TLogJsonError) => {
     location: `/`,
     isRunning: false,
     name: TestsToSocketEvtMap.error,
-    message: stripColors(err?.message),
+    message: jsonErr.message,
     data: {
       ...failedResult,
       testPath: `/`,
       error: jsonErr,
       action: `error`,
       type: EAstObject.error,
+      description: jsonErr.stack,
       status: EResultStatus.failed,
-      description: stripColors(err?.stack),
     }
   }
 

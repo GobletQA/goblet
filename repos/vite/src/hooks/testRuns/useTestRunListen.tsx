@@ -2,18 +2,23 @@ import type {
   TTestRuns,
   TTestRunExecEvt,
   TTestRunExecEndEvent,
-  TAddActiveTestRunEvts
+  TTestRunExecErrEvent
 } from '@types'
 
 import {useRef, useState} from 'react'
 import { getEvents } from '@utils/testRuns/getEvents'
 import { addTestRun } from '@actions/testRuns/addTestRun'
-import { TestRunExecEvt, TestRunExecEndEvt } from '@constants'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 import {
   useOnEvent,
   useForceUpdate,
 } from '@gobletqa/components'
+import {
+  TestRunErrEvt,
+  TestRunExecEvt,
+  TestRunExecEndEvt,
+  TestRunExecCancelEvt,
+} from '@constants'
 
 /**
  * **IMPORTANT** - Only include this for testing
@@ -28,7 +33,7 @@ export const useTestRunListen = () => {
   const forceUpdate = useForceUpdate()
 
   const [failedFiles, setFailedFiles] = useState<string[]>([])
-  
+
   // const [runId, setRunId] = useState<string>(`runMock`)
   // const testRunsRef = useRef<TTestRuns>(runMock as TTestRuns)
 
@@ -48,15 +53,29 @@ export const useTestRunListen = () => {
     failedLoc
       ? setFailedFiles([...failedFiles, failedLoc])
       : forceUpdate()
-
   })
 
+  useOnEvent(TestRunExecCancelEvt, () => {
+    if(!runId || !testRunsRef.current[runId]) return
+
+    testRunsRef.current[runId] = {...testRunsRef.current[runId], canceled: true}
+    forceUpdate()
+  })
 
   useOnEvent<TTestRunExecEndEvent>(TestRunExecEndEvt, (data) => {
     const { runId } = data
     const testRun = testRunsRef.current[runId]
     // Add the test run to the store after it finishes
     testRun && addTestRun({ runId, data: testRun })
+  })
+
+  useOnEvent<TTestRunExecErrEvent>(TestRunErrEvt, (data) => {
+    const { runId, event } = data
+    const testRun = testRunsRef.current[runId]
+    if(!testRun) return
+    
+    testRun.runError = event
+    forceUpdate()
   })
 
   return {

@@ -14,6 +14,7 @@ export type TKeyConfig = {
   keyCode?:number
   combo?:TExKey[],
   prevent?:boolean
+  description?:ReactNode
   action:(evt:KeyboardEvent) => void
 }
 

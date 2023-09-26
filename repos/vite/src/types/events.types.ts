@@ -37,3 +37,8 @@ export type TTestRunExecEndEvent = {
   runId:TTestRunId
   event?:TTestRunEndEvent
 }
+
+export type TTestRunExecErrEvent = {
+  runId:TTestRunId
+  event?:TTestRunEvent
+}

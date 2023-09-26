@@ -42,6 +42,13 @@ export const decorators = `
     border-bottom: 2px solid ${colors.red10}66;
   }
 
+  .gb-test-runs-line.canceled,
+  .gb-player-line.gb-player-finished.code.canceled {
+    opacity: 0.7;
+    background-color: ${colors.yellow12}33;
+    border-bottom: 2px solid ${colors.yellow12}66;
+  }
+
   .gb-test-runs-deco-spin,
   .gb-player-glyph.gb-player-running.code {
     margin: 0px auto;

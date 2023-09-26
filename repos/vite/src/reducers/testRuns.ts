@@ -14,8 +14,8 @@ import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 
 
 export type TTestRunsState = {
-  runs: TTestRuns
   active?:string
+  runs: TTestRuns
   allTestsRunning: boolean|undefined
 }
 
@@ -28,10 +28,13 @@ const addTestRun = createAction<TAddTestRun>(`addTestRun`)
 const clearTestRuns = createAction<TTestRunsState>(`clearTestRuns`)
 const removeTestRun = createAction<TTestRunId>(`removeTestRun`)
 
-const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
-const addActiveTestRunEvt = createAction<TAddActiveTestRunEvts>(`addActiveTestRunEvt`)
-const addEvtAndMakeActive = createAction<TAddTestRunEvts>(`addEvtAndMakeActive`)
 
+const addTestRunEvt = createAction<TAddTestRunEvts>(`addTestRunEvt`)
+const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
+const cancelTestRun = createAction<TTestRunId|undefined>(`cancelTestRun`)
+const toggleAllTestsRun = createAction<boolean|undefined>(`toggleAllTestsRun`)
+const addEvtAndMakeActive = createAction<TAddTestRunEvts>(`addEvtAndMakeActive`)
+const addActiveTestRunEvt = createAction<TAddActiveTestRunEvts>(`addActiveTestRunEvt`)
 
 const getEvents = (opts:TAddActiveTestRunEvts) => {
   const { events=[], event } = opts
@@ -42,22 +45,25 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 
 
 export const testRunsActions = {
-  clearTestRuns: (state:TTestRunsState, action:TDspAction<TTestRunsState>) => (testRunsState),
-
-  toggleAllTestsRun: (state:TTestRunsState, action:TDspAction<boolean|undefined>) => {
-    return {
-      ...state,
-      allTestsRunning: exists(action?.payload) ? action?.payload : !state.allTestsRunning
-    }
-  },
-
   addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRun>) => {
-    const { runId, data={} } = action?.payload
+    const { runId, data={ files: {} } } = action?.payload
 
     return {
       ...state,
       runs: {...state.runs, [runId]: data}
     }
+  },
+
+  clearTestRuns: (state:TTestRunsState, action:TDspAction<TTestRunsState>) => (testRunsState),
+
+  removeTestRun: (state:TTestRunsState, action:TDspAction<TTestRunId>) => {
+    const runId = action?.payload
+    const copy = {...state}
+
+    if(copy.runs[runId]) delete copy.runs[runId]
+    if(state?.active === runId) delete copy.active
+
+    return copy
   },
 
   setTestRunActive: (state:TTestRunsState, action:TDspAction<TTestRunId>) => {
@@ -73,14 +79,9 @@ export const testRunsActions = {
     } as TTestRunsState
   },
 
-  removeTestRun: (state:TTestRunsState, action:TDspAction<TTestRunId>) => {
-    const runId = action?.payload
-    const copy = {...state}
-
-    if(copy.runs[runId]) delete copy.runs[runId]
-    if(state?.active === runId) delete copy.active
-
-    return copy
+  toggleAllTestsRun: (state:TTestRunsState, action:TDspAction<boolean|undefined>) => {
+    const allTestsRunning = exists(action?.payload) ? action?.payload : !state.allTestsRunning
+    return {...state, allTestsRunning }
   },
 
   addActiveTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddActiveTestRunEvts>) => {
@@ -125,16 +126,40 @@ export const testRunsActions = {
       runs: {...state.runs, [runId]: testRun }
     }
   },
+  
+  cancelTestRun: (state:TTestRunsState, action:TDspAction<TTestRunId|undefined>) => {
+    // If an id is passed validate it's the correct ID
+    const runId = action?.payload
+    if(runId && state?.active) return state
 
+    // If no ID, assume we want the active test run
+    const cancelId = runId || state?.active
 
-
+    return !cancelId || !state?.runs?.[cancelId]
+      ? state
+      : {
+          ...state,
+          runs: {
+            ...state.runs,
+            [cancelId]: {
+              ...state.runs[cancelId],
+              canceled: true
+            }
+          }
+        } as TTestRunsState
+  }
 }
 
 export const testRunsReducer = createReducer(testRunsState, (builder:ActionReducerMapBuilder<TTestRunsState>) => {
   builder.addCase(addTestRun, testRunsActions.addTestRun)
   builder.addCase(clearTestRuns, testRunsActions.clearTestRuns)
   builder.addCase(removeTestRun, testRunsActions.removeTestRun)
+  
+
+  builder.addCase(addTestRunEvt, testRunsActions.addTestRunEvt)
+  builder.addCase(cancelTestRun, testRunsActions.cancelTestRun)
   builder.addCase(setTestRunActive, testRunsActions.setTestRunActive)
+  builder.addCase(toggleAllTestsRun, testRunsActions.toggleAllTestsRun)
   builder.addCase(addActiveTestRunEvt, testRunsActions.addActiveTestRunEvt)
   builder.addCase(addEvtAndMakeActive, testRunsActions.addEvtAndMakeActive)
 })

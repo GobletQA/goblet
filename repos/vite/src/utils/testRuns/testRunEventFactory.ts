@@ -17,7 +17,10 @@ const getUuid = (evt:TPlayerResEvent) => {
 }
 
 const getText = (evt:TPlayerResEvent) => {
-  if(!evt?.data?.metaData) return evt?.data?.description || evt?.message || ``
+  if(!evt?.data?.metaData)
+    return evt.name === TestsToSocketEvtMap.error
+      ? evt?.message || evt?.data?.description || ``
+      : evt?.data?.description || evt?.message || ``
 
   const {
     metaData,
@@ -68,7 +71,9 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
 
   const uuid = name === TestsToSocketEvtMap.results || name === TestsToSocketEvtMap.started
     ? TestRunFileRootEvtRef
-    : metaData?.uuid || getUuid(evt)
+    : name === TestsToSocketEvtMap.error
+      ? `${type}-${runId}`
+      : metaData?.uuid || getUuid(evt)
 
   return {
     id,

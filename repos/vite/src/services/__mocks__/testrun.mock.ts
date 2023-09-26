@@ -15,6 +15,22 @@ const endEvent = {
   "groupId": "goblet"
 }
 
+export const runErrorEvt = {
+  "id": "7617f9ab-1469-4c19-8e7c-7622b1dc7389",
+  "uuid": "error-end-2-end.1695696212754",
+  "type": "error",
+  "runId": "end-2-end.1695696212754",
+  "action": "error",
+  "failed": true,
+  "passed": false,
+  "skipped": false,
+  "text": "Tests could not be found using glob match \"secret\"",
+  "description": "LoaderErr:  Tests could not be found using glob match \"secret\"\n    at Object.NoTests (/goblet/app/repos/exam/src/constants/errors.ts:41:11)\n    at loadFiles (/goblet/app/repos/exam/src/utils/loadFiles.ts:38:14)\n    at initLocal (/goblet/app/repos/exam/src/bin/initLocal.ts:12:21)\n    at <anonymous> (/goblet/app/repos/exam/src/bin/exam.ts:23:9)",
+  "timestamp": 1695696214468,
+  "location": "/",
+  "status": "failed"
+}
+
 
 const secretsFile = {
     "events": {
@@ -468,28 +484,28 @@ const secretsFile = {
 const uploadFile = {
   "events": {
     "Test-Run-File-Root": {
-        "start": {
-          "id": "a22961d7-811c-45da-805a-f2c47354bf1c",
-          "uuid": "Test-Run-File-Root",
-          "type": "feature",
-          "stats": {
-            "runEnd": 0,
-            "failedSpecs": 0,
-            "passedSpecs": 0,
-            "passedSuites": 0,
-            "failedSuites": 0,
-            "runStart": 1695449667984
-          },
-          "runId": "end-2-end.1695449662824",
-          "action": "start",
-          "failed": false,
-          "passed": false,
-          "text": "Feature - running",
-          "description": "Feature - running",
-          "timestamp": 1695449667984,
-          "location": "/bdd/features/Steps/File-Upload.feature",
-          "status": "unknown"
-        }
+      "start": {
+        "id": "a22961d7-811c-45da-805a-f2c47354bf1c",
+        "uuid": "Test-Run-File-Root",
+        "type": "feature",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 0,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449667984
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "Feature - running",
+        "description": "Feature - running",
+        "timestamp": 1695449667984,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "unknown"
+      }
     },
     "feature-1979245909": {
       "start": {
@@ -542,148 +558,148 @@ const uploadFile = {
       },
     },
     "feature-1979245909.scenario.0.given.0": {
-        "start": {
-            "id": "ee7b22b2-4d63-4ee1-9ce2-ad50adf26832",
-            "uuid": "feature-1979245909.scenario.0.given.0",
-            "type": "test",
-            "stats": {
-                "runEnd": 0,
-                "failedSpecs": 0,
-                "passedSpecs": 0,
-                "passedSuites": 0,
-                "failedSuites": 0,
-                "runStart": 1695449667984
-            },
-            "runId": "end-2-end.1695449662824",
-            "action": "start",
-            "failed": false,
-            "passed": false,
-            "text": "I navigate to 'https://testpages.eviltester.com/styled/file-upload-test.html'",
-            "metaType": "given",
-            "description": "Step - running",
-            "timestamp": 1695449668571,
-            "location": "/bdd/features/Steps/File-Upload.feature",
-            "status": "unknown"
+      "start": {
+        "id": "ee7b22b2-4d63-4ee1-9ce2-ad50adf26832",
+        "uuid": "feature-1979245909.scenario.0.given.0",
+        "type": "test",
+        "stats": {
+            "runEnd": 0,
+            "failedSpecs": 0,
+            "passedSpecs": 0,
+            "passedSuites": 0,
+            "failedSuites": 0,
+            "runStart": 1695449667984
         },
-        "end": {
-            "id": "45e9a838-10ac-4469-b5d3-f9001a05d03c",
-            "uuid": "feature-1979245909.scenario.0.given.0",
-            "type": "test",
-            "stats": {
-                "runEnd": 0,
-                "failedSpecs": 0,
-                "passedSpecs": 1,
-                "passedSuites": 0,
-                "failedSuites": 0,
-                "runStart": 1695449667984
-            },
-            "runId": "end-2-end.1695449662824",
-            "action": "end",
-            "failed": false,
-            "passed": true,
-            "text": "I navigate to 'https://testpages.eviltester.com/styled/file-upload-test.html'",
-            "metaType": "given",
-            "description": "Step - passed",
-            "timestamp": 1695449669352,
-            "location": "/bdd/features/Steps/File-Upload.feature",
-            "status": "passed"
-        }
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "I navigate to 'https://testpages.eviltester.com/styled/file-upload-test.html'",
+        "metaType": "given",
+        "description": "Step - running",
+        "timestamp": 1695449668571,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "unknown"
+      },
+      "end": {
+        "id": "45e9a838-10ac-4469-b5d3-f9001a05d03c",
+        "uuid": "feature-1979245909.scenario.0.given.0",
+        "type": "test",
+        "stats": {
+            "runEnd": 0,
+            "failedSpecs": 0,
+            "passedSpecs": 1,
+            "passedSuites": 0,
+            "failedSuites": 0,
+            "runStart": 1695449667984
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "end",
+        "failed": false,
+        "passed": true,
+        "text": "I navigate to 'https://testpages.eviltester.com/styled/file-upload-test.html'",
+        "metaType": "given",
+        "description": "Step - passed",
+        "timestamp": 1695449669352,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "passed"
+      }
     },
     "feature-1979245909.scenario.0.when.1": {
-        "start": {
-            "id": "3df36bfe-5326-4ba0-8d67-322f8a34ac9a",
-            "uuid": "feature-1979245909.scenario.0.when.1",
-            "type": "test",
-            "stats": {
-                "runEnd": 0,
-                "failedSpecs": 0,
-                "passedSpecs": 1,
-                "passedSuites": 0,
-                "failedSuites": 0,
-                "runStart": 1695449667984
-            },
-            "runId": "end-2-end.1695449662824",
-            "action": "start",
-            "failed": false,
-            "passed": false,
-            "text": "I upload the file 'test-upload.txt' to the element '#fileinput'",
-            "metaType": "when",
-            "description": "Step - running",
-            "timestamp": 1695449669353,
-            "location": "/bdd/features/Steps/File-Upload.feature",
-            "status": "unknown"
+      "start": {
+        "id": "3df36bfe-5326-4ba0-8d67-322f8a34ac9a",
+        "uuid": "feature-1979245909.scenario.0.when.1",
+        "type": "test",
+        "stats": {
+            "runEnd": 0,
+            "failedSpecs": 0,
+            "passedSpecs": 1,
+            "passedSuites": 0,
+            "failedSuites": 0,
+            "runStart": 1695449667984
         },
-        "end": {
-            "id": "e66c68cf-62e1-4c6d-b8bc-7ad613f6c099",
-            "uuid": "feature-1979245909.scenario.0.when.1",
-            "type": "test",
-            "stats": {
-                "runEnd": 0,
-                "failedSpecs": 0,
-                "passedSpecs": 2,
-                "passedSuites": 0,
-                "failedSuites": 0,
-                "runStart": 1695449667984
-            },
-            "runId": "end-2-end.1695449662824",
-            "action": "end",
-            "failed": false,
-            "passed": true,
-            "text": "I upload the file 'test-upload.txt' to the element '#fileinput'",
-            "metaType": "when",
-            "description": "Step - passed",
-            "timestamp": 1695449669486,
-            "location": "/bdd/features/Steps/File-Upload.feature",
-            "status": "passed"
-        }
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "I upload the file 'test-upload.txt' to the element '#fileinput'",
+        "metaType": "when",
+        "description": "Step - running",
+        "timestamp": 1695449669353,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "unknown"
+      },
+      "end": {
+        "id": "e66c68cf-62e1-4c6d-b8bc-7ad613f6c099",
+        "uuid": "feature-1979245909.scenario.0.when.1",
+        "type": "test",
+        "stats": {
+            "runEnd": 0,
+            "failedSpecs": 0,
+            "passedSpecs": 2,
+            "passedSuites": 0,
+            "failedSuites": 0,
+            "runStart": 1695449667984
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "end",
+        "failed": false,
+        "passed": true,
+        "text": "I upload the file 'test-upload.txt' to the element '#fileinput'",
+        "metaType": "when",
+        "description": "Step - passed",
+        "timestamp": 1695449669486,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "passed"
+      }
     },
     "feature-1979245909.scenario.0.when.2": {
-        "start": {
-            "id": "1340f2a6-a0a2-48c0-9384-0111fdff3093",
-            "uuid": "feature-1979245909.scenario.0.when.2",
-            "type": "test",
-            "stats": {
-                "runEnd": 0,
-                "failedSpecs": 0,
-                "passedSpecs": 2,
-                "passedSuites": 0,
-                "failedSuites": 0,
-                "runStart": 1695449667984
-            },
-            "runId": "end-2-end.1695449662824",
-            "action": "start",
-            "failed": false,
-            "passed": false,
-            "text": "I click 'internal:text=\"A General File\"i'",
-            "metaType": "when",
-            "description": "Step - running",
-            "timestamp": 1695449669487,
-            "location": "/bdd/features/Steps/File-Upload.feature",
-            "status": "unknown"
+      "start": {
+        "id": "1340f2a6-a0a2-48c0-9384-0111fdff3093",
+        "uuid": "feature-1979245909.scenario.0.when.2",
+        "type": "test",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 2,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449667984
         },
-        "end": {
-            "id": "867ac700-a6fb-4fbf-97b9-34215feded1f",
-            "uuid": "feature-1979245909.scenario.0.when.2",
-            "type": "test",
-            "stats": {
-                "runEnd": 0,
-                "failedSpecs": 0,
-                "passedSpecs": 3,
-                "passedSuites": 0,
-                "failedSuites": 0,
-                "runStart": 1695449667984
-            },
-            "runId": "end-2-end.1695449662824",
-            "action": "end",
-            "failed": false,
-            "passed": true,
-            "text": "I click 'internal:text=\"A General File\"i'",
-            "metaType": "when",
-            "description": "Step - passed",
-            "timestamp": 1695449669615,
-            "location": "/bdd/features/Steps/File-Upload.feature",
-            "status": "passed"
-        }
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "I click 'internal:text=\"A General File\"i'",
+        "metaType": "when",
+        "description": "Step - running",
+        "timestamp": 1695449669487,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "unknown"
+      },
+      "end": {
+        "id": "867ac700-a6fb-4fbf-97b9-34215feded1f",
+        "uuid": "feature-1979245909.scenario.0.when.2",
+        "type": "test",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 3,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449667984
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "end",
+        "failed": false,
+        "passed": true,
+        "text": "I click 'internal:text=\"A General File\"i'",
+        "metaType": "when",
+        "description": "Step - passed",
+        "timestamp": 1695449669615,
+        "location": "/bdd/features/Steps/File-Upload.feature",
+        "status": "passed"
+      }
     },
     "feature-1979245909.scenario.0.when.3": {
       "start": {
@@ -1034,8 +1050,12 @@ const inputsFile = {
 
 export const runMock = {
   [`runMock`]: {
-    [`/bdd/features/Secrets/Secrets-Url.feature`]: {...secretsFile},
-    [`/bdd/features/Tests/form-inputs.feature`]: {...inputsFile},
-    [`/bdd/features/Tests/file-upload.feature`]: {...uploadFile},
+    // runError: runErrorEvt,
+    canceled: true,
+    files: {
+      [`/bdd/features/Secrets/Secrets-Url.feature`]: {...secretsFile},
+      [`/bdd/features/Tests/form-inputs.feature`]: {...inputsFile},
+      [`/bdd/features/Tests/file-upload.feature`]: {...uploadFile},
+    }
   }
 }

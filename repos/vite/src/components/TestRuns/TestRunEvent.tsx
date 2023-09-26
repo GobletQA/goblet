@@ -17,6 +17,7 @@ import {
 export type TTestRunEvt = {
   start:TTestRunEvent
   end?:TTestRunEvent
+  canceled?:boolean
   runState:TTestRunEventState
 }
 
@@ -31,6 +32,7 @@ const withColin = [
 const useClassList = (props:TTestRunEvt, evtState:TTestRunEventState) => {
   const {
     start,
+    canceled,
     runState,
   } = props
 
@@ -42,6 +44,7 @@ const useClassList = (props:TTestRunEvt, evtState:TTestRunEventState) => {
       runState?.status && `gb-run-state-${runState.status}`
     ].filter(Boolean).join(` `)
   }, [
+    canceled,
     start.type,
     start.metaType,
     evtState?.status,
@@ -79,7 +82,7 @@ export const TestRunEvent = (props:TTestRunEvt) => {
     start,
   } = props
 
-  const evtState = useEventState(props)
+  const evtState = useEventState(props, props.canceled)
   const classList = useClassList(props, evtState)
 
   return (

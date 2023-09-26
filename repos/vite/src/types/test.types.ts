@@ -19,7 +19,7 @@ export type TTestRunId = string
 export type TFileLocation = string
 export type TEventUUID = string
 export type TTestRunMetaType = EStepKey|`scenario`|`rule`|`background`|`feature`
-export type TTestRunEvtStatus = EResultStatus|`running`|`loading`|`unknown`
+export type TTestRunEvtStatus = EResultStatus|`running`|`loading`|`unknown`|`canceled`
 
 export type TTestRunEvent = {
   runId:TTestRunId
@@ -99,7 +99,11 @@ export type TAddTestRunEvts = TAddActiveTestRunEvts & {
   runId:TTestRunId
 }
 
-export type TTestRun = Record<TFileLocation, TTestRunFileData>
+export type TTestRun = {
+  canceled?:boolean
+  runError?:TTestRunEvent
+  files: Record<TFileLocation, TTestRunFileData>
+}
 export type TTestRuns = Record<TTestRunId, TTestRun>
 
 export type TAddTestRun = {

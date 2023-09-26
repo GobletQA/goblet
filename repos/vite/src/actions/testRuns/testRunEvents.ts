@@ -2,15 +2,17 @@ import type {
   TPlayerResEvent,
   TTestRunExecEvt,
   TTestRunExecEndEvent,
+  TTestRunExecErrEvent,
 } from '@types'
 
 import {testRunsDispatch} from "@store"
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { testRunEventFactory } from '@utils/testRuns/testRunEventFactory'
 import {
-  PWPlay,
+  TestRunErrEvt,
   TestRunExecEvt,
-  TestRunExecEndEvt
+  TestRunExecEndEvt,
+  TestsToSocketEvtMap,
 } from '@constants'
 
 
@@ -30,13 +32,30 @@ const onTestRunEnd = (event:TPlayerResEvent) => {
   })
 }
 
+const onTestRunError = (evt:TPlayerResEvent) => {
+  const event = testRunEventFactory(evt)
+  EE.emit<TTestRunExecErrEvent>(TestRunErrEvt, {
+    event,
+    runId: event.runId,
+  })
+}
+
 /**
  * Emits a Test Run TestEvt event with just the test run response data
  */
 export const testRunEvents = (evt:TPlayerResEvent) => {
-  evt.name === PWPlay.playEnded
-    ? onTestRunEnd(evt)
-    : onTestEvent(evt)
+
+  switch(evt.name){
+    case TestsToSocketEvtMap.ended: {
+      return onTestRunEnd(evt)
+    }
+    case TestsToSocketEvtMap.error: {
+      return onTestRunError(evt)
+    }
+    default: {
+      return onTestEvent(evt)
+    }
+  }
 
   /**
    * TODO: Redux is to slow to capture all the event updates

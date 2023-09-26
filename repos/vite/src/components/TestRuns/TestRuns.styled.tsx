@@ -10,6 +10,7 @@ import {
   getColor,
   TuneIcon,
   CloseIcon,
+  BlockIcon,
   IconButton,
   WarningIcon,
   ContentPasteIcon,
@@ -58,6 +59,7 @@ export const TestRunsSectionsContainer = styled(Box)(({ theme }) => `
   border-bottom: 1px solid ${getColor(colors.white01, colors.gray15, theme)};
 `)
 
+
 export const TestRunsSection = styled(Box)`
   margin-right: ${gutter.margin.hpx};
 `
@@ -77,31 +79,10 @@ export const TestRunsSectionBtn = styled(Button)(({ theme }) => `
   }
 `)
 
-export const NoTestRunActiveContainer = styled(Box)`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-export const NoTestRunActiveText = styled(H5)(({ theme }) => `
-  font-size: 16px;
-  color: ${getColor(colors.gray15, colors.gray03, theme)};
-`)
-
-export const NoTestRunActiveIcon = styled(WarningIcon)`
-  color: ${colors.warn};
-  margin-right: ${gutter.margin.hpx};
-  font-size: 30px;
-`
-
-
 export const TestRunsCancelButton = styled(IconButton)``
 export const TestRunsCancelButtonIcon = styled(CloseIcon)`
   font-size: 20px;
 `
-
 
 export const TestRunsListIcon = styled(FormatListBulletedIcon)`
   height: 15px;
@@ -117,4 +98,3 @@ export const TestRunsOptsIcon = styled(TuneIcon)`
   height: 15px;
   width: 15px;
 `
-

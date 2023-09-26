@@ -28,6 +28,7 @@ export type TTestRunFileEvents = {
 
 export type TTestRunFile = {
   location:string
+  canceled?:boolean
   file:TTestRunFileData
 }
 
@@ -35,12 +36,16 @@ const TestRunFile = (props:TTestRunFile) => {
   const {
     file,
     location,
+    canceled,
   } = props
 
 
   const [open, setOpen] = useState(true)
   const onClick = () => setOpen(!open)
-  const runState = useEventState(file?.events[TestRunFileRootEvtRef])
+  const runState = useEventState(
+    file?.events[TestRunFileRootEvtRef],
+    canceled
+  )
 
   return (
     <TestRunEventsList
@@ -75,6 +80,7 @@ const TestRunFile = (props:TTestRunFile) => {
         <TestRunEvents
           file={file}
           runState={runState}
+          canceled={canceled}
         />
       </TestRunEventsDropdown>
     </TestRunEventsList>
@@ -88,7 +94,7 @@ export const TestRunFiles = (props:TTestRunFileEvents) => {
   return (
     <>
       {
-        Object.entries(run).map(([location, file]) => {
+        Object.entries(run?.files).map(([location, file]) => {
           return (
             <TestRunFileContainer
               key={location}
@@ -97,6 +103,7 @@ export const TestRunFiles = (props:TTestRunFileEvents) => {
               <TestRunFile
                 file={file}
                 location={location}
+                canceled={run.canceled}
               />
             </TestRunFileContainer>
           )

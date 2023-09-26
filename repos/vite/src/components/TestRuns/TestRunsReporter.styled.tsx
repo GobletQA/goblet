@@ -10,7 +10,7 @@ import {
   DecoFail,
   DecoSpin,
   DecoError,
-  DecoSuccess,
+  DecoCanceled,
 } from '@gobletqa/race'
 
 
@@ -19,7 +19,6 @@ import { styled } from '@mui/material/styles'
 import {
   dims,
   Span,
-  Text,
   gutter,
   colors,
   InText,
@@ -56,6 +55,18 @@ export const TestRunReporterContainer = styled(Box)(({ theme }) => `
   }
 
 `)
+
+export const TestRunLoadingContainer = styled(Box)`
+  flex: 1;
+  width: 100%;
+  display: flex;
+  min-height: 50%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: ${gutter.padding.dpx};
+`
+
 
 export const TestRunFileContainer = styled(Box)`
   width: 100%;
@@ -116,6 +127,10 @@ export const TestRunEventContainer = styled(Box)`
   align-items: flex-start;
   padding-left: ${gutter.padding.hpx};
 
+  &.gb-evt-state-canceled.gb-run-state-canceled {
+    opacity: 0.7;
+  }
+
   &.gb-evt-state-passed.gb-run-state-failed {
     opacity: 0.7;
   }
@@ -156,7 +171,6 @@ export const TestRunEventIconContainer = styled(ListItemIcon)`
   max-width: 20px;
 `
 
-
 export const TestRunDecoContainer = styled(Box)`
   width: 20px;
   height: 25px;
@@ -178,10 +192,21 @@ export const TestRunDecoContainer = styled(Box)`
       top: -3px;
       position: relative;
     }
+
+    & svg.gb-deco-icon.gb-deco-icon-canceled {
+      top: -4px;
+    }
+
   }
 
   & .gb-deco-icon.gb-deco-icon-spin {
     position: initial;
+  }
+
+  & svg.gb-deco-icon.gb-deco-icon-canceled {
+    width: 16px;
+    height: 16px;
+    left: 3px;
   }
 
   & svg.gb-deco-icon {
@@ -191,13 +216,11 @@ export const TestRunDecoContainer = styled(Box)`
   }
 
 `
-export const TestRunDecoPass = styled(DecoPass)`
-
-`
+export const TestRunDecoPass = styled(DecoPass)``
 export const TestRunDecoFail = styled(DecoFail)``
 export const TestRunDecoSpin = styled(DecoSpin)``
 export const TestRunDecoError = styled(DecoError)``
-
+export const TestRunDecoCanceled = styled(DecoCanceled)``
 
 export const TestRunTypeEvtType = styled(Box)`
   font-size: 14px;

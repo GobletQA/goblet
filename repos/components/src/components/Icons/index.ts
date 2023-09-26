@@ -54,6 +54,7 @@ export * from './PasteAfterIcon'
 export * from './PasteBeforeIcon'
 
 export * from './FolderPlayOutlineIcon'
+export * from './SkipIcon'
 
 // export * from './AnimationPlayOutlineIcon'
 
