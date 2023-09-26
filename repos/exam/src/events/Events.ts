@@ -1,6 +1,6 @@
 import type { TExamEvts, TExamEvt } from '@GEX/types'
 
-import { ExamEvtNames } from '@GEX/constants'
+import { TestsToSocketEvtMap } from '@GEX/constants'
 import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 
 export const onExDynEvent = (mainEvt:Partial<TExamEvt>) => {
@@ -11,79 +11,79 @@ export const onExDynEvent = (mainEvt:Partial<TExamEvt>) => {
 
 const __ExamEvents:TExamEvts = {
   specStart: onExDynEvent({
-    name: ExamEvtNames.specStart,
+    name: TestsToSocketEvtMap.specStart,
     message: `Exam - Spec Started`,
   }),
   specDone: onExDynEvent({
-    name: ExamEvtNames.specDone,
+    name: TestsToSocketEvtMap.specDone,
     message: `Exam - Spec Done`,
   }),
   specWarn: onExDynEvent({
-    name: ExamEvtNames.specWarn,
+    name: TestsToSocketEvtMap.specWarn,
     message: `Exam - Warning, Spec failed`,
   }),
   suiteStart: onExDynEvent({
-    name: ExamEvtNames.suiteStart,
+    name: TestsToSocketEvtMap.suiteStart,
     message: `Exam - Suite Started`,
   }),
   suiteDone: onExDynEvent({
-    name: ExamEvtNames.suiteDone,
+    name: TestsToSocketEvtMap.suiteDone,
     message: `Exam - Suite Done`,
   }),
   suiteStartRoot: onExDynEvent({
-    name: ExamEvtNames.suiteStartRoot,
+    name: TestsToSocketEvtMap.suiteStartRoot,
     message: `Exam - Root Suite Started`,
   }),
   suiteDoneRoot: onExDynEvent({
-    name: ExamEvtNames.suiteDoneRoot,
+    name: TestsToSocketEvtMap.suiteDoneRoot,
     message: `Exam - Root Spec Done`,
   }),
   results: onExDynEvent({
-    name: ExamEvtNames.results,
+    name: TestsToSocketEvtMap.results,
     message: `Exam - Suite Results`,
   }),
   started: onExDynEvent({
     message: `Exam started`,
-    name: ExamEvtNames.started,
+    name: TestsToSocketEvtMap.started,
   }),
   stopped: onExDynEvent({
-    name: ExamEvtNames.stopped,
+    name: TestsToSocketEvtMap.stopped,
     message: `Exam stopped`,
   }),
   error: onExDynEvent({
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
     message: `Exam error`,
   }),
   ended: {
     message: `Exam finished`,
-    name: ExamEvtNames.ended,
+    name: TestsToSocketEvtMap.ended,
   },
   canceled: {
-    name: ExamEvtNames.canceled,
+    name: TestsToSocketEvtMap.canceled,
     message: `Exam canceled`,
   },
   alreadyPlaying: {
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
     message: `Exam already inprogress`
   },
   missingTransform: {
     message: `Missing transform for file type`,
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
   },
   missingRunner: {
     message: `Missing runner for file type`,
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
   },
   missingEnvironment: {
     message: `Missing environment for file type`,
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
   },
   dynamic: onExDynEvent({
     message: `Exam event`,
-    name: ExamEvtNames.general,
+    name: TestsToSocketEvtMap.general,
   }),
   missingType: (evt:Partial<TExamEvt> & { type?:string, fileType?:string }) => onExDynEvent({
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
     ...evt,
     message: `Missing ${evt?.type || ``} for file type ${evt?.fileType || ``}`
   })({}),

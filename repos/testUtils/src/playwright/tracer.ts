@@ -12,7 +12,7 @@ import { Logger } from "@gobletqa/logger"
 import { get } from '@keg-hub/jsutils/get'
 import { set } from '@keg-hub/jsutils/set'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { ExamEvtNames } from '@gobletqa/environment/constants'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 import {
@@ -51,7 +51,7 @@ export class TraceRecorder {
     }
 
     this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.suiteDoneRoot,
+      TestsToSocketEvtMap.suiteDoneRoot,
       async (evt:TExamEvt<TExEventData>) => await this.stop(evt, this.context)
     ))
   }

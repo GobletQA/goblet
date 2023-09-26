@@ -7,7 +7,7 @@ import type {
   TPlayerEventData,
 } from '@types'
 
-import { PWPlay } from '@constants'
+import { TestsToSocketEvtMap } from '@constants'
 import { buildDecorationFrom } from '@utils/decorations/buildDecorationFrom'
 
 type TUpdateDecs = {
@@ -25,7 +25,7 @@ export const checkFailedSpec = <R=TBuiltDeco>({
 }:TUpdateDecs):R[] => {
   let decos = [] as R[]
 
-  if(!event || event.name !== PWPlay.playSpecDone || event.data.passed) return decos
+  if(!event || event.name !== TestsToSocketEvtMap.specDone || event.data.passed) return decos
 
   const featDeco = featureRef.current
     && buildDecorationFrom(

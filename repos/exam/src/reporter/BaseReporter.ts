@@ -10,7 +10,7 @@ import type {
 import { Logger } from "@GEX/utils/logger"
 import { filterErrMessage, spaceFromId } from "@GEX/utils/filterErrMessage"
 
-import { TestsResultStatus, ExamEvtNames } from "@GEX/constants"
+import { TestsResultStatus, TestsToSocketEvtMap } from "@GEX/constants"
 import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
 
 const spaceMap = {
@@ -37,8 +37,8 @@ const logParent = (
   const context = evt.data
   const space = spaceFromId(context)
   
-  const isRoot = evt.name === ExamEvtNames.suiteDoneRoot
-    || evt.name === ExamEvtNames.suiteStartRoot
+  const isRoot = evt.name === TestsToSocketEvtMap.suiteDoneRoot
+    || evt.name === TestsToSocketEvtMap.suiteStartRoot
     || space.length === 4
 
 

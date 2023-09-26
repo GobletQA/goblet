@@ -5,18 +5,18 @@ import {
   DefinitionOverrideFolder,
 } from './definitions'
 
-import { ExamEvtNames } from './events'
+import { TestsToSocketEvtMap } from './events'
 import { GitProviders } from './providers'
 
 export {
   GitProviders,
   ExpressionKinds,
   ExpressionTypes,
+  TestsToSocketEvtMap,
   ExpressionNoQuoteTypes,
   DefinitionOverrideFolder
 }
 
-
 export * from './browser'
 export * from './websocket'
-export { PWPlay } from './browser'
+

@@ -17,13 +17,13 @@ import { ENVS } from '@gobletqa/environment'
 import {isArr} from '@keg-hub/jsutils/isArr'
 import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { writeFile, readFile, mkdir, copyFile } from 'node:fs/promises'
-import { PWPlay, InternalPaths } from '@gobletqa/environment/constants'
+import { TestsToSocketEvtMap, InternalPaths } from '@gobletqa/environment/constants'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 
 
 const finishedEvt = {
-  name: PWPlay.playEnded,
   message: `Test Suite finished`,
+  name: TestsToSocketEvtMap.ended,
 }
 
 enum EUIReportType {
@@ -47,9 +47,11 @@ const buildTempLoc = (
 }
 
 const safeLogData = (data:string) => {
+
   ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
   data && Logger.stdout(data)
   ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `1`
+
 }
 
 
@@ -136,6 +138,7 @@ export class ExamUIRun {
       ...this.extraEvt,
       ...extra,
       runId: this.runId,
+      error: !Boolean(code),
       runTimestamp: this.runTimestamp,
     }) as TExTestEventMeta
 

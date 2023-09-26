@@ -1,7 +1,7 @@
 import type { TTestRunEvent, TPlayerResEvent, TPlayerEventData } from '@types'
-import { PWPlay, TestRunFileRootEvtRef } from '@constants'
-import {rmRootFromLoc} from '@utils/repo/rmRootFromLoc'
 
+import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
+import { TestsToSocketEvtMap, TestRunFileRootEvtRef } from '@constants'
 
 const getUuid = (evt:TPlayerResEvent) => {
   const loc = evt?.data?.location || evt?.location
@@ -66,7 +66,7 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
     description,
   } = data
 
-  const uuid = name === PWPlay.playResults || name === PWPlay.playStarted
+  const uuid = name === TestsToSocketEvtMap.results || name === TestsToSocketEvtMap.started
     ? TestRunFileRootEvtRef
     : metaData?.uuid || getUuid(evt)
 

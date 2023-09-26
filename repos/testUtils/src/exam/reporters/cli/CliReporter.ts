@@ -14,7 +14,7 @@ import {
   spaceMap,
   spaceFromId,
   RootSuiteTag,
-  ExamEvtNames,
+  TestsToSocketEvtMap,
   filterErrMessage,
   TestsResultStatus,
 } from "@gobletqa/exam"
@@ -39,8 +39,8 @@ const logParent = (
   const context = evt.data
   const space = spaceFromId(context)
   
-  const isRoot = evt.name === ExamEvtNames.suiteDoneRoot
-    || evt.name === ExamEvtNames.suiteStartRoot
+  const isRoot = evt.name === TestsToSocketEvtMap.suiteDoneRoot
+    || evt.name === TestsToSocketEvtMap.suiteStartRoot
     || space.length === 4
 
   const [first, description=``] = context.description.split(`>`)

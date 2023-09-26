@@ -2,7 +2,7 @@ import type { TExTestEventMeta, TExEventData, TPlayerTestEvent } from '@GSC/type
 import type { TPlayerTestEventMeta } from '@gobletqa/browser'
 
 
-import { PWPlay } from '@GSC/constants'
+import { TestsToSocketEvtMap } from '@GSC/constants'
 import { filterErrMessage } from '@gobletqa/exam'
 import {emptyArr} from '@keg-hub/jsutils/emptyArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
@@ -17,6 +17,7 @@ const getEventParent = (evtData:TPlayerTestEvent) => {
     ? `step`
     : rest.length > 1 ? `scenario` : `feature`
 }
+
 
 const getEventMessage = (evtData:TPlayerTestEvent) => {
   const status = evtData.action === `start`
@@ -49,13 +50,21 @@ export const formatTestEvt = (
   if(data.describes) data.describes = emptyArr
   if(data.failedExpectations) delete data.failedExpectations
 
-  if(event.name === PWPlay.playError && event.message)
+  // TODO: validate if this should be `event.message` || `!event.message`
+  // Pretty sure it should be `!event.message`
+  // If so, we would not need the extra `data.testPath !== `/`` check
+  if(event.name === TestsToSocketEvtMap.error && event.message && data.testPath !== `/`)
     event.message = filterErrMessage(data as TExEventData, PWEventErrorLogFilter)
+
+  const loc = event.location || data?.location
+  if(loc){
+    event.location = loc
+    data.location = loc
+  }
 
   return {
     ...event,
     ...extra,
     data,
-    location: event.location || data?.location
   }
 }

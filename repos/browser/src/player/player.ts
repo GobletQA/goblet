@@ -12,9 +12,9 @@ import type {
   TPlayerStartConfig,
 } from '@GBB/types'
 
-import { PWPlay } from '@GBB/constants'
 import { CodeRunner } from './codeRunner'
 import { noOp } from '@keg-hub/jsutils/noOp'
+import { TestsToSocketEvtMap } from '@GBB/constants'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getInjectScript } from '@GBB/utils/getInjectScript'
@@ -136,7 +136,7 @@ export class Player {
     try {
   
       if(Player.isPlaying){
-        this.fireEvent({ name: PWPlay.playError, message: 'Playing already inprogress' })
+        this.fireEvent({ name: TestsToSocketEvtMap.error, message: 'Playing already inprogress' })
         console.warn('Browser playing already in progress')
         return this
       }
@@ -151,7 +151,7 @@ export class Player {
 
       this.fireEvent({
         message: 'Playing started',
-        name: PWPlay.playStarted,
+        name: TestsToSocketEvtMap.started,
       })
 
       const timeout = this.options?.playOptions?.testTimeout as number
@@ -180,7 +180,7 @@ export class Player {
         && this.fireEvent({
             data: results,
             message: 'Player results',
-            name: PWPlay.playResults,
+            name: TestsToSocketEvtMap.results,
           })
 
     }
@@ -189,7 +189,7 @@ export class Player {
         console.error(err.stack)
         this.fireEvent({
           message: err.message,
-          name: PWPlay.playError,
+          name: TestsToSocketEvtMap.error,
         })
       }
     }
@@ -211,14 +211,14 @@ export class Player {
     try {
       if(!this.context || !Player.isPlaying)
         this.fireEvent({
-          name: PWPlay.playError,
+          name: TestsToSocketEvtMap.error,
           message: `Playing context does not exist`
         })
 
       Player.isPlaying = false
 
       this.fireEvent({
-        name: PWPlay.playEnded,
+        name: TestsToSocketEvtMap.ended,
         message: `Playing stopped`,
       })
     }
@@ -226,7 +226,7 @@ export class Player {
       console.error(err.stack)
 
       this.fireEvent({
-        name: PWPlay.playError,
+        name: TestsToSocketEvtMap.error,
         message: err.message,
       })
     }
@@ -247,7 +247,7 @@ export class Player {
 
   cancel = async () => {
     this.fireEvent({
-      name: PWPlay.playCanceled,
+      name: TestsToSocketEvtMap.canceled,
       message: `Playing canceled`,
     })
 

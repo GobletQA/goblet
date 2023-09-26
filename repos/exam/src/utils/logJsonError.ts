@@ -6,10 +6,9 @@ import {
 } from '@ltipton/parkin'
 
 import { ENVS } from '@gobletqa/environment'
-import { ExamEvtNames } from '@GEX/constants'
+import { TestsToSocketEvtMap } from '@GEX/constants'
 import { CliLogger, stripColors } from './logger'
 import { buildFailedTestResult } from './buildResult'
-import { NoTestsPassId, BuiltTestResultFailed, NoTestsFoundPass } from "@GEX/constants"
 
 export type TLogJsonError = Error & {
   cause?:string
@@ -28,10 +27,10 @@ export const logJsonError = (err:TLogJsonError) => {
   if(!ENVS.EXAM_LOG_ERR_EVENT) return
 
   const jsonErr = {
-    name: err.name,
-    stack: err.stack,
-    message: err.message,
-    type: err?.constructor?.name,
+    type: EAstObject.error,
+    stack: stripColors(err.stack),
+    message: stripColors(err?.message),
+    name: err.name || err?.constructor?.name,
   } as TLogJsonError
 
   err.method && (jsonErr.method = err.method)
@@ -49,14 +48,13 @@ export const logJsonError = (err:TLogJsonError) => {
     error: true,
     location: `/`,
     isRunning: false,
-    name: ExamEvtNames.error,
+    name: TestsToSocketEvtMap.error,
     message: stripColors(err?.message),
     data: {
       ...failedResult,
       testPath: `/`,
       error: jsonErr,
       action: `error`,
-      id: NoTestsPassId,
       type: EAstObject.error,
       status: EResultStatus.failed,
       description: stripColors(err?.stack),

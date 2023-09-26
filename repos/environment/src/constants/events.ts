@@ -1,4 +1,16 @@
-export const ExamEvtNames = {
+/**
+ *
+ * **IMPORTANT**
+ * The value do not match the keys because they are a reference to the websocket methods
+ * Unfortunately a decision was made to use this format
+ * Then convert it to camelCase, and use that as the event name for the socket.io event name
+ * Which means they are tightly coupled and can not change
+ * The socket.io implementation needs to be reworked to decouple the naming format
+ * Until that's done, leave these as they are
+ * **IMPORTANT**
+ *
+ */
+export const TestsToSocketEvtMap = {
   specDone: `PLAY-SPEC-DONE`,
   specWarn: `PLAY-SPEC-WARN`,
   specStart: `PLAY-SPEC-START`,
@@ -16,6 +28,7 @@ export const ExamEvtNames = {
   stopped: `PLAY-STOPPED`,
   warning: `PLAY-WARNING`,
 }
+
 
 export const KillTestRunUIProcEvt = `kill-test-run-ui-proc-event`
 

@@ -66,24 +66,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   }
 
-
-  /**
-   * Bind the location and model data to the event callbacks
-   */
-  #bindEvents = (model:TExFileModel) => {
-    return this.bindEventCallbacks({
-      result: { location: model.location },
-      methods: [
-        `onRunDone`,
-        `onRunStart`,
-        `onSpecDone`,
-        `onSpecStart`,
-        `onSuiteDone`,
-        `onSuiteStart`,
-      ],
-    }, model)
-  }
-
   #buildRunOpts = (model:TExFileModel, state:TStateObj) => {
     const { data } = state
 
@@ -113,7 +95,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
          * Bind Runner event listeners to the currently running model
          * Ensures we can keep track of the test that called the event callback
          */
-        ...this.#bindEvents(model),
+        ...this.bindEvents({ result: { location: model.location }}, model)
       }
     }
 

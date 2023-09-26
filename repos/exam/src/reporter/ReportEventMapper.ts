@@ -1,64 +1,64 @@
 import type { TExamEvt, TExBuiltReporters } from "@GEX/types"
 
 import { Logger } from '@GEX/utils/logger'
-import { ExamEvtNames } from "@GEX/constants"
+import { TestsToSocketEvtMap } from "@GEX/constants"
 import { EvtTag, ExamTag } from '@GEX/constants/tags'
 
 const EvtReporterMap = {
 
   // Event `PLAY-SUITE-DONE`
   // onSuiteResult
-  [ExamEvtNames.suiteDone]: `onSuiteResult`,
+  [TestsToSocketEvtMap.suiteDone]: `onSuiteResult`,
 
   // Event `PLAY-SUITE-DONE` - Top level suite-0 only
   // onTestFileResult
-  [ExamEvtNames.suiteDoneRoot]: `onTestFileResult`,
+  [TestsToSocketEvtMap.suiteDoneRoot]: `onTestFileResult`,
 
   // Event `PLAY-SPEC-DONE`
   // onTestResult
-  [ExamEvtNames.specDone]: `onTestResult`,
+  [TestsToSocketEvtMap.specDone]: `onTestResult`,
 
   //  Event `PLAY-SPEC-START`
   // onTestStart
-  [ExamEvtNames.specStart]: `onTestStart`,
+  [TestsToSocketEvtMap.specStart]: `onTestStart`,
 
   // Event `PLAY-SUITE-START`
   // onSuiteStart
-  [ExamEvtNames.suiteStart]: `onSuiteStart`,
+  [TestsToSocketEvtMap.suiteStart]: `onSuiteStart`,
 
   // Event `PLAY-SUITE-START-ROOT` - Top level suite-0 only
   // onTestFileStart
-  [ExamEvtNames.suiteStartRoot]: `onTestFileStart`,
+  [TestsToSocketEvtMap.suiteStartRoot]: `onTestFileStart`,
  
   // Event `PLAY-RESULTS` - Maybe switch this for `PLAY-ENDED` || `PLAY-STOPPED`
   // onRunResult
-  [ExamEvtNames.results]: `onRunResult`,
+  [TestsToSocketEvtMap.results]: `onRunResult`,
 
   // Event `PLAY-STARTED`,
   // onRunStart
-  [ExamEvtNames.started]: `onRunStart`,
+  [TestsToSocketEvtMap.started]: `onRunStart`,
 
   // Event `PLAY-CANCELED`
   // cancel
-  [ExamEvtNames.canceled]: `onCancel`,
+  [TestsToSocketEvtMap.canceled]: `onCancel`,
 
-  [ExamEvtNames.warning]: `onWarning`,
+  [TestsToSocketEvtMap.warning]: `onWarning`,
 
   // Event `PLAY-ERROR`
   // onError
-  [ExamEvtNames.error]: `PLAY-ERROR`,
+  [TestsToSocketEvtMap.error]: `PLAY-ERROR`,
 
 
 
   // TODO: figure out if these are needed
-  // [ExamEvtNames.ended]: `PLAY-ENDED`,
-  // [ExamEvtNames.action]: `PLAY-ACTION`,
-  // [ExamEvtNames.general]: `PLAY-GENERAL`,
-  // [ExamEvtNames.stopped]: `PLAY-STOPPED`,
+  // [TestsToSocketEvtMap.ended]: `PLAY-ENDED`,
+  // [TestsToSocketEvtMap.action]: `PLAY-ACTION`,
+  // [TestsToSocketEvtMap.general]: `PLAY-GENERAL`,
+  // [TestsToSocketEvtMap.stopped]: `PLAY-STOPPED`,
   
 }
 
-const EvtTags = Object.entries(ExamEvtNames)
+const EvtTags = Object.entries(TestsToSocketEvtMap)
   .reduce((acc, [key, val]) => {
     acc[val] = EvtTag(val)
     return acc

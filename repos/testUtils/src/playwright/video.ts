@@ -16,7 +16,7 @@ import { wait } from '@keg-hub/jsutils/wait'
 import { pathExists } from '@GTU/Utils/fileSys'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
-import { ExamEvtNames } from '@gobletqa/environment/constants'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 import {
@@ -61,7 +61,7 @@ export class VideoRecorder {
     }
 
     this.evtHandlers.push(evtReporter.on(
-      ExamEvtNames.suiteDoneRoot,
+      TestsToSocketEvtMap.suiteDoneRoot,
       async (evt:TExamEvt<TExEventData>) => await this.saveVideo(evt, this.page)
     ))
 
