@@ -27,6 +27,7 @@
     "build": "pnpm -r build",
     "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r ./configs/aliases.js tasks/entry.ts deploy build -- frontend=true",
+    
     "bundle": "node scripts/bundle.js",
     "bundle:compile": "pnpm bundle && pnpm compile",
     "certs": "/bin/bash scripts/shell/generate.sh $@",
@@ -48,6 +49,7 @@
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
     "mkcert": "GB_ROOT_DIR=$(pwd) ./scripts/shell/mkcert/mkcert.sh",
+    "prod:build:deploy": "pnpm bgi && pnpm dprod",
     "pretty": "prettier --ignore-path .root.ignore --config ./configs/prettier.config.js --write",
     "sc": "node -r ./configs/aliases.js tasks/entry.ts screencast",
     "screencast": "node -r ./configs/aliases.js tasks/entry.ts screencast",
