@@ -1,7 +1,7 @@
 ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG GB_BASE_IMAGE_FROM=$GB_IMAGE_FROM
 
-ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.37.1-focal
+ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.38.1-focal
 ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
 # ---- Turbo Stage ---- #

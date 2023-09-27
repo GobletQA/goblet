@@ -1,3 +1,9 @@
+### Keeping this as a reference, but it's not being used
+
+> **IMPORTANT**
+> To use this be sure to install the pacakge `source-map-support` as well
+
+```ts
 import url from 'url'
 import { wrapCallSite } from 'source-map-support'
 
@@ -52,3 +58,4 @@ export const addStackLoc = (func:TAddLocFun):TAddLocReturnFun => {
   }
 
 }
+```

@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import type { User } from "oidc-react"
 
-import { useEffect, createContext } from 'react'
-import { Gitlab } from "@gitbeaker/browser"
+import { useEffect } from 'react'
+
 import { useInline } from '@gobletqa/components'
 import { hasCodeInUrl, AuthProvider, UserManager } from "oidc-react"
 
@@ -41,8 +41,6 @@ const GitlabManager = new UserManager({
     introspection_endpoint: GitlabUrl + "/oauth/introspect",
   },
 })
-
-const GitlabAuthContext = createContext<InstanceType<typeof Gitlab> | null>(null)
 
 const GitlabChildren = (props:TGitlabAuth) => {
   const { children } = props
