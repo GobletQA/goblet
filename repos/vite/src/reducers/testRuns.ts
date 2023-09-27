@@ -4,11 +4,12 @@ import type {
   TTestRunId,
   TDspAction,
   TAddTestRun,
+  TUpsertTestRun,
   TAddTestRunEvts,
   TAddActiveTestRunEvts,
 } from '@types'
 
-import {exists} from '@keg-hub/jsutils'
+import {deepMerge, exists} from '@keg-hub/jsutils'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 
@@ -32,9 +33,9 @@ export const testRunsState = {
 } as TTestRunsState
 
 const addTestRun = createAction<TAddTestRun>(`addTestRun`)
-const clearTestRuns = createAction<TTestRunsState>(`clearTestRuns`)
 const removeTestRun = createAction<TTestRunId>(`removeTestRun`)
-
+const upsertTestRun = createAction<TUpsertTestRun>(`upsertTestRun`)
+const clearTestRuns = createAction<TTestRunsState>(`clearTestRuns`)
 
 const addTestRunEvt = createAction<TAddTestRunEvts>(`addTestRunEvt`)
 const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
@@ -53,11 +54,21 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 
 export const testRunsActions = {
   addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRun>) => {
-    const { runId, data={ files: {}, runId } } = action?.payload
-
+    const { runId, data={ runId, files: {} } } = action?.payload
     return {
       ...state,
       runs: {...state.runs, [runId]: data}
+    }
+  },
+
+  upsertTestRun: (state:TTestRunsState, action:TDspAction<TUpsertTestRun>) => {
+    const { runId, data } = action?.payload
+    return {
+      ...state,
+      runs: {
+        ...state.runs,
+        [runId]: deepMerge({ runId, files: {} }, state.runs[runId], data)
+      }
     }
   },
 
@@ -77,12 +88,12 @@ export const testRunsActions = {
     const runId = action?.payload
     if(state?.active === runId) return state
 
-    const testRun = state.runs?.[runId] || {}
-
     return {
       ...state,
       active: runId,
-      runs: {...state.runs, [runId]: testRun }
+      runs: state.runs?.[runId]
+        ? state.runs
+        : {...state.runs, [runId]: {runId, files: {} }}
     } as TTestRunsState
   },
 
@@ -159,6 +170,8 @@ export const testRunsActions = {
 
 export const testRunsReducer = createReducer(testRunsState, (builder:ActionReducerMapBuilder<TTestRunsState>) => {
   builder.addCase(addTestRun, testRunsActions.addTestRun)
+  builder.addCase(upsertTestRun, testRunsActions.upsertTestRun)
+  
   builder.addCase(clearTestRuns, testRunsActions.clearTestRuns)
   builder.addCase(removeTestRun, testRunsActions.removeTestRun)
   

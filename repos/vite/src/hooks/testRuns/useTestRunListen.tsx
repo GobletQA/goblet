@@ -1,14 +1,14 @@
 import type {
   TTestRuns,
   TTestRunExecEvt,
-  TTestRunExecEndEvent,
   TTestRunExecErrEvent
 } from '@types'
 
 import { useTestRuns } from '@store'
 import {useEffect, useRef, useState} from 'react'
 import { getEvents } from '@utils/testRuns/getEvents'
-import { addTestRun } from '@actions/testRuns/addTestRun'
+
+import { upsertTestRun } from '@actions/testRuns/upsertTestRun'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 import {
   useOnEvent,
@@ -17,89 +17,91 @@ import {
 import {
   TestRunErrEvt,
   TestRunExecEvt,
-  TestRunExecEndEvt,
   TestRunExecCancelEvt,
 } from '@constants'
+import {ife} from '@keg-hub/jsutils'
 
 
 export type TTestRunsReporter = {}
 
 export const useTestRunListen = () => {
-
   const testRuns = useTestRuns()
   const forceUpdate = useForceUpdate()
 
-  const [failedFiles, setFailedFiles] = useState<string[]>([])
-
   const [runId, setRunId] = useState<string|undefined>(testRuns.active)
-  const testRunsRef = useRef<TTestRuns>({...testRuns.runs})
+  const testRunsRef = useRef<TTestRuns>(testRuns.runs)
 
   useOnEvent<TTestRunExecEvt>(TestRunExecEvt, async (data) => {
     const evtRunId = data.runId
     const { events, failedLoc } = getEvents(data)
-    const testRun = addEventsToTestRun(
-      {...testRunsRef.current[evtRunId], runId: evtRunId},
-      events
-    )
 
-    testRunsRef.current[evtRunId] = testRun
+    const tempRun = {...testRunsRef.current[evtRunId], runId: evtRunId}
+    const testRun = addEventsToTestRun(tempRun, events)
+    testRunsRef.current = {...testRunsRef.current, [evtRunId]: testRun}
 
+
+    ife(async () => upsertTestRun({ runId: evtRunId, data: testRun }))
     // If there's a runId change, then update the state with the new ID
     evtRunId !== runId && setRunId(evtRunId)
-
-    // Ensure we update the state, so we get the updates to the testRunsRef
-    failedLoc
-      ? setFailedFiles([...failedFiles, failedLoc])
-      : forceUpdate()
+    forceUpdate()
   })
 
   useOnEvent(TestRunExecCancelEvt, () => {
     if(!runId || !testRunsRef.current[runId]) return
 
-    testRunsRef.current[runId] = {...testRunsRef.current[runId], canceled: true}
+    const testRun = {...testRunsRef.current[runId], canceled: true}
+    testRunsRef.current = {...testRunsRef.current, [runId]: testRun}
+    ife(async () => upsertTestRun({ runId, data: testRun }))
     forceUpdate()
   })
 
-  useOnEvent<TTestRunExecEndEvent>(TestRunExecEndEvt, (data) => {
-    const { runId } = data
-    const testRun = testRunsRef.current[runId]
-
-    // Add the test run to the store after it finishes
-    testRun && addTestRun({ runId, data: testRun })
-  })
 
   useOnEvent<TTestRunExecErrEvent>(TestRunErrEvt, (data) => {
     const { runId:evtRunId, event } = data
-    const testRun = testRunsRef.current[evtRunId] || { files: {}, runId: evtRunId }
+    if(!testRunsRef.current[evtRunId]) return
+
+    const testRun = {...(testRunsRef.current[evtRunId] || { files: {}, runId: evtRunId })}
     testRunsRef.current[evtRunId] = {...testRun, runError: event}
 
+    ife(async () => upsertTestRun({ runId: evtRunId, data: testRunsRef.current[evtRunId] }))
     // If the error event also created a new testRun, set it as the active test run
     evtRunId !== runId && setRunId(evtRunId)
-
     forceUpdate()
   })
 
   useEffect(() => {
+    // Only update externally when not currently running the test suite 
+    if(testRuns.allTestsRunning) return
+
+    const activeId = runId
     const activeEql = testRuns.active === runId
-    if(testRuns.active && runId && !activeEql)
-      return setRunId(testRuns.active)
+    if(testRuns.active && runId && !activeEql) return setRunId(testRuns.active)
 
     const exRuns = testRuns.runs
     const runsRef = testRunsRef.current
 
     if(exRuns && runsRef && exRuns !== runsRef){
-      testRunsRef.current = {...exRuns}
+      testRunsRef.current = exRuns
       forceUpdate()
     }
     
+    return () => {
+      if(!activeId) return
+
+      const testRun = testRunsRef.current[activeId]
+      if(!testRun || testRun?.canceled || testRun?.runError || testRun?.finished) return
+
+      // Add the test run to the store after it finishes
+      testRun && upsertTestRun({ runId: activeId, data: testRun })
+    }
   }, [
     testRuns.runs,
     testRuns.active,
+    testRuns.allTestsRunning,
   ])
 
   return {
     setRunId,
-    failedFiles,
     active: runId,
     runs: testRunsRef.current
   }

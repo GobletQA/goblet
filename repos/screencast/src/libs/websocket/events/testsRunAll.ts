@@ -46,14 +46,8 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
     runTimestamp: new Date().getTime(),
     eventSplit: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
     extraEvt: { group: socket.id, fullTestRun: true },
-    onEvent: (evt) => {
-      Manager.emit(socket, evt.name, evt)
-    },
-    onRunFinish: (evt) => {
-      
-      
-      Manager.emit(socket, evt.name, evt)
-    },
+    onEvent: (evt) => Manager.emit(socket, evt.name, evt),
+    onRunFinish: (evt) => Manager.emit(socket, evt.name, evt),
   })
 
   return {

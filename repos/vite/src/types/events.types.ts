@@ -1,4 +1,4 @@
-import type { TSymAST } from './shared.types'
+import type { TPlayerResEvent, TSymAST } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
 import { TTestRunUICfg } from './test.types'
 import type { TTestRunId, TTestRunEvent } from './shared.types'
@@ -32,7 +32,7 @@ export type TTestRunExecEvt = {
 
 export type TTestRunExecEndEvent = {
   runId:TTestRunId
-  event?:TTestRunEvent
+  event?:TPlayerResEvent
 }
 
 export type TTestRunExecErrEvent = {

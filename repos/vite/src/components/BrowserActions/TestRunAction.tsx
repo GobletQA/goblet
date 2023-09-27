@@ -1,12 +1,19 @@
 import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
-import { useApp } from '@store'
+import { useApp, useTestRuns } from '@store'
 import { PlayTest } from './PlayAction'
 import { RunTestSuite } from './TestSuiteAction'
 
 const TestRun = (props:TBrowserActionProps) => {
   const { testRunsView } = useApp()
-  return testRunsView ? (<RunTestSuite {...props} />) : (<PlayTest {...props} />)
+  const { allTestsRunning } = useTestRuns()
+
+  return (
+    <>
+      {!testRunsView && (<PlayTest {...props} />)}
+      {(testRunsView || allTestsRunning) && (<RunTestSuite {...props} />)}
+    </>
+  )
 }
 
 export const TestRunAction:TBrowserAction = {

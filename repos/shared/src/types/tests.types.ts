@@ -82,6 +82,7 @@ export type TTestRunEvents = {
 export type TTestRun = {
   runId:TTestRunId
   canceled?:boolean
+  finished?:boolean
   runError?:TTestRunEvent
   status?:TTestRunEvtStatus
   files: Record<TFileLocation, TTestRunFileData>

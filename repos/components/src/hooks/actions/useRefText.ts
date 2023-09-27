@@ -5,7 +5,7 @@ import { nanoid } from '@keg-hub/jsutils'
 export type THRefText = {
   id?: string
   name:string
-  actions:TBrowserAction[]
+  actions?:TBrowserAction[]
 }
 
 export const useRefText = ({ id, name, actions }:THRefText) => {

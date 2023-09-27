@@ -64,6 +64,10 @@ export const decorators = `
     border-right: 1em solid ${colors.purple10}33;
     border-bottom: 1em solid ${colors.purple10}33;
   }
+  
+  .gb-test-runs-deco-spin.browser-action {
+    left: 10px !important;
+  }
 
   ${decoratorFinishedHack}
 

@@ -69,7 +69,6 @@ export const TestRuns = () => {
     runs,
     active,
     setRunId,
-    failedFiles,
   } = useTestRunListen()
 
   useOnEvent<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, cb => {
@@ -96,7 +95,6 @@ export const TestRuns = () => {
                 runs={runs}
                 active={active}
                 setRunId={setRunId}
-                failedFiles={failedFiles}
                 onChangeSection={onChangeSection}
               />
             )

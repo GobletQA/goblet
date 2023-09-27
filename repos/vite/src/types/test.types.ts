@@ -29,6 +29,12 @@ export type TAddTestRun = {
   runId:TTestRunId
 }
 
+export type TUpsertTestRun = {
+  runId:TTestRunId
+  data:Partial<TTestRun>
+}
+
+
 
 export type TTestRunsSections = keyof typeof ETestRunsSection
 export enum ETestRunsSection {

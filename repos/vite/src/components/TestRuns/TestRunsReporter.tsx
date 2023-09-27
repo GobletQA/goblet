@@ -11,7 +11,6 @@ import { TestRunLoadingContainer, TestRunReporterContainer } from './TestRunsRep
 export type TTestRunsReporter = {
   runs: TTestRuns
   active?:string
-  failedFiles:string[]
   onChangeSection:(section:ETestRunsSection) => void
 }
 
@@ -26,7 +25,6 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
   const {
     runs,
     active,
-    failedFiles,
     onChangeSection
   } = props
 
@@ -52,12 +50,7 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
           : activeRun?.runError
             ? <TestRunError run={activeRun} />
               : activeRun
-                ? (
-                    <TestRunFiles
-                      run={activeRun}
-                      failedFiles={failedFiles}
-                    />
-                  )
+                ? (<TestRunFiles run={activeRun} />)
                 : (<NoActiveTestRun onChangeSection={onChangeSection} />)
       }
     </TestRunReporterContainer>

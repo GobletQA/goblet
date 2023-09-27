@@ -23,7 +23,6 @@ export type TTestRunEvents = {
 
 export type TTestRunFileEvents = {
   run:TTestRun
-  failedFiles:string[]
 }
 
 export type TTestRunFile = {

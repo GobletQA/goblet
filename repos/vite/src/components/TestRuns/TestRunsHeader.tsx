@@ -8,13 +8,7 @@ import {
   TestRunsCancelButtonIcon
 } from './TestRuns.styled'
 
-
-import { CloseIcon } from '@gobletqa/components'
-
-
-export type TTestRunsHeader = {
-  
-}
+export type TTestRunsHeader = {}
 
 export const TestRunsHeader = (props:TTestRunsHeader) => {
   const { allTestsRunning } = useTestRuns()
@@ -24,13 +18,11 @@ export const TestRunsHeader = (props:TTestRunsHeader) => {
       <TestRunsHeaderText>
         Test Suite
       </TestRunsHeaderText>
-      {!allTestsRunning && (
-        <TestRunsCancelButton
-          color='error'
-          Icon={TestRunsCancelButtonIcon}
-          onClick={() => toggleTestRunsView(false)}
-        />
-      ) || null}
+      <TestRunsCancelButton
+        color='error'
+        Icon={TestRunsCancelButtonIcon}
+        onClick={() => toggleTestRunsView(false)}
+      />
     </TestRunsHeaderContainer>
   )
   

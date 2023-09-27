@@ -1,17 +1,27 @@
-import type { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
+import type { TTestRunGetUICfgEvt, TTestRunUICfg } from '@types'
+import { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
-import { TTestRunGetUICfgEvt, TTestRunUICfg } from '@types'
 import { useMemo } from 'react'
-import { useTestRuns } from '@store'
-import { DangerousIcon } from '@gobletqa/components'
+import { useTestRuns, useApp } from '@store'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { BrowserStateIcon } from './BrowserActions.styled'
 import { runAllTests } from '@actions/testRuns/runAllTests'
-import { BaseAction, FolderPlayOutlineIcon } from '@gobletqa/components'
+import {
+  TestSuiteText,
+  TestSuiteActionStyles,
+  TestSuiteTextContainer,
+} from './BrowserActions.styled'
 import {
   CancelButtonID,
   WSCancelTestRunEvt,
   TestRunGetUICfgEvt,
 } from '@constants'
+import {
+  BaseAction,
+  useThemeType,
+  DangerousIcon,
+  FolderPlayOutlineIcon,
+} from '@gobletqa/components'
 
 const onCancelTestSuite = () => EE.emit(WSCancelTestRunEvt, {})
 const onPlayTestSuite = () => EE.emit<TTestRunGetUICfgEvt>(
@@ -20,6 +30,8 @@ const onPlayTestSuite = () => EE.emit<TTestRunGetUICfgEvt>(
 )
 
 export const useTestSuite = (props:TBrowserActionProps) => {
+  const { type } = useThemeType()
+  const { testRunsView } = useApp()
   const { allTestsRunning } = useTestRuns()
 
   const actProps = useMemo<TBaseActionAction>(() => {
@@ -32,22 +44,41 @@ export const useTestSuite = (props:TBrowserActionProps) => {
           text: `Run Tests`,
           onClick: onPlayTestSuite,
           Icon: FolderPlayOutlineIcon,
-          className: `goblet-browser-run-tests`,
+          className: `gb-browser-run-test-suite`,
           tooltip: `Execute multiple or all tests based on the test configuration`,
         }
       : {
           as: `button`,
           loc: `bottom`,
           color: `error`,
-          text: `Cancel`,
           variant: `text`,
           id: CancelButtonID,
-          Icon: DangerousIcon,
+          containerSx: TestSuiteActionStyles(testRunsView),
+          text: (
+            <TestSuiteTextContainer>
+              <TestSuiteText className='action-text action-normal action-text-normal' >
+                Tests Running
+              </TestSuiteText>
+              <TestSuiteText className='action-text action-hover action-text-hover' >
+                Cancel Tests
+              </TestSuiteText>
+            </TestSuiteTextContainer>
+          ),
           onClick: onCancelTestSuite,
-          tooltip: `Cancel tests execution`,
-          className: `goblet-browser-cancel-recording`,
+          className: `gb-browser-cancel-test-suite`,
+          tooltip: `Test suite running; click to cancel`,
+          Icon: () =>  (
+            <>
+              <DangerousIcon className='action-hover gb-test-runs-cancel-icon browser-action' />
+              <BrowserStateIcon className='action-normal gb-test-runs-deco-spin browser-action'/>
+            </>
+          ),
         }
-  }, [allTestsRunning])
+  }, [
+    type,
+    testRunsView,
+    allTestsRunning
+  ])
 
   return {
     actProps

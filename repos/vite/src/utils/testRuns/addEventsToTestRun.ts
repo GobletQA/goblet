@@ -9,15 +9,15 @@ export const addEventsToTestRun = (
   events:TTestRunEvent[]
 ) => {
 
+  const tRun = {...testRun}
+
   events.forEach(event => {
-    testRun.files = testRun.files || {}
-    testRun.files[event.location] = testRun?.files?.[event.location]
-      || testRunFileFactory(event)
+    tRun.files = {...tRun.files}
+    const exists = tRun?.files?.[event.location]
+    const file = exists ? {...exists} : testRunFileFactory(event)
 
-    const file = {...testRun?.files?.[event.location]}
-
-    testRun.files[event.location] = {...file, events: findMatchingEvent(file.events, event) }
+    tRun.files[event.location] = {...file, events: findMatchingEvent({...file.events}, event) }
   })
 
-  return testRun
+  return tRun
 }
