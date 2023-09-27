@@ -4,6 +4,11 @@
 set -e
 trap 'printf "\nFinished with exit code $?\n\n"' EXIT
 
+cleanup(){
+  gb_error "Script failed, resetting kube ctx..."
+  switchDevKubeCtx
+}
+
 gb_load_stdio(){
   # Ensure the goblet-application root directory env is set
   if [[ -z "$GB_ROOT_DIR" ]]; then
@@ -46,10 +51,11 @@ switchDevKubeCtx(){
 # Does **NOT** push the image to a remote repository
 deployBackend(){
   echo ""
-  gb_message "Deploying backend images to production cluster..."
+  gb_message "Deploying backend chart to production cluster..."
   echo ""
 
   pnpm dep be --env prod --clean
+  gb_success "Backend chart deployed to production cluster succesfully"
 }
 
 # Navigate to the test action repository, and builds a local image
@@ -60,6 +66,7 @@ deployFrontend(){
   echo ""
 
   pnpm dep fe --env prod
+  gb_success "Frontend bundle pushed to firebase succesfully"
 }
 
 
