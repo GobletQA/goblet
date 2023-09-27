@@ -1,11 +1,10 @@
 import type { Response, Request } from 'express'
 
 import { isStr } from '@keg-hub/jsutils/isStr'
-import { jokerAI } from '@gobletqa/joker/jokerAI'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { jokerAI } from '@gobletqa/joker/jokerAI'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-
 
 /**
  * Sends a prompt to Joker AI
@@ -21,7 +20,6 @@ export const askAI = async (req:Request, res:Response) => {
   if(!isStr(question)) throw new Error(`A question is required`)
 
   const [err, resp] = await limbo(jokerAI.ask({ question }))
-
 
   return apiRes(res, resp, 200)
 }

@@ -1,6 +1,6 @@
+import { Joker } from './joker'
 import { EAIProvider } from './types'
 import { ENVS } from '@gobletqa/environment'
-import { Joker } from './joker'
 
 const providerAuth = {
   [EAIProvider.JokerAI]: {
