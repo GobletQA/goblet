@@ -12,9 +12,8 @@ import { Logger } from '@GSC/utils/logger'
 import { latentRepo } from '@gobletqa/repo'
 import { ENVS } from '@gobletqa/environment'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { ExamUIRun } from '@GSC/libs/exam/examUIRun'
+import { TestFromUI } from '@GSC/libs/testsFromUI/TestFromUI'
 import { loadRepoFromSocket } from '@GSC/utils/loadRepoFromSocket'
-import { runExamFromUi } from '@gobletqa/test-utils/exam/runExamFromUi'
 import {
   InternalPaths,
   KillTestRunUIProcEvt,
@@ -42,17 +41,23 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
     remote: repo?.git?.remote
   })
 
-  const examUI = new ExamUIRun({
+  const testFromUI = new TestFromUI({
     repo,
     runTimestamp: new Date().getTime(),
     eventSplit: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
     extraEvt: { group: socket.id, fullTestRun: true },
-    onEvent: (evt) => Manager.emit(socket, evt.name, evt),
-    onRunFinish: (evt) => Manager.emit(socket, evt.name, evt),
+    onEvent: (evt) => {
+      Manager.emit(socket, evt.name, evt)
+    },
+    onRunFinish: (evt) => {
+      
+      
+      Manager.emit(socket, evt.name, evt)
+    },
   })
 
   return {
-    examUI,
+    testFromUI,
     runOpts: {
       ...data.testRunOpts,
       testConfig,
@@ -70,9 +75,9 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
   return new Promise(async (res) => {
 
     let cleanupCalled = false
-    let examRunAborted = false
+    let testRunAborted = false
 
-    const { examUI, runOpts } = await setupUIRun(args)
+    const { testFromUI, runOpts } = await setupUIRun(args)
 
     let childProc:ChildProcessWithoutNullStreams
 
@@ -80,7 +85,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
       if(cleanupCalled) return
       cleanupCalled = true
 
-      examUI.cleanup()
+      testFromUI.cleanup()
       childProc = undefined
     }
 
@@ -94,21 +99,21 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
       procId: childProc?.pid,
     })
 
-    childProc = runExamFromUi(runOpts, {
+    childProc = testFromUI.runTests(runOpts, {
       onStdOut: (data:string) => {
-        if(examRunAborted) return
+        if(testRunAborted) return
 
-        const events = examUI.parseEvent({ data })
-        events?.length && examUI.onEvtsParsed({ events, extra: getExtra() })
+        const events = testFromUI.parseEvent({ data })
+        events?.length && testFromUI.onEvtsParsed({ events, extra: getExtra() })
       },
       onStdErr: (data:string) => {
-        if(examRunAborted) return
+        if(testRunAborted) return
 
-        const events = examUI.parseEvent({ data })
-        events?.length && examUI.onEvtsParsed({ events, extra: getExtra() })
+        const events = testFromUI.parseEvent({ data })
+        events?.length && testFromUI.onEvtsParsed({ events, extra: getExtra() })
       },
       onError: (error:Error) => {
-        if(examRunAborted) return
+        if(testRunAborted) return
 
         Logger.error(`UI-Exam Error:`)
         Logger.log(error)
@@ -116,9 +121,9 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
         cleanup()
       },
       onExit: async (code) => {
-        if(examRunAborted) return res({ code })
+        if(testRunAborted) return res({ code })
 
-        await examUI.runFinish({ code, extra: getExtra() })
+        await testFromUI.runFinish({ code, extra: getExtra() })
         Logger.log(`UI-Exam finished with exit code: ${code}`)
 
         cleanup()
@@ -138,7 +143,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
        */
       // if(procId && childProc?.pid && procId !== childProc?.pid) return
 
-      examRunAborted = true
+      testRunAborted = true
       !childProc?.killed && childProc?.kill?.(`SIGKILL`)
 
       cleanup()

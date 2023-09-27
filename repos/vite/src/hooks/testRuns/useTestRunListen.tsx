@@ -63,6 +63,7 @@ export const useTestRunListen = () => {
   useOnEvent<TTestRunExecEndEvent>(TestRunExecEndEvt, (data) => {
     const { runId } = data
     const testRun = testRunsRef.current[runId]
+
     // Add the test run to the store after it finishes
     testRun && addTestRun({ runId, data: testRun })
   })

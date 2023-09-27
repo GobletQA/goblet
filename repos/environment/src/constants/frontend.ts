@@ -1,3 +1,4 @@
+import { TestRunFileRootEvtRef } from './test'
 import {
   ExpressionKinds,
   ExpressionTypes,
@@ -13,10 +14,12 @@ export {
   ExpressionKinds,
   ExpressionTypes,
   TestsToSocketEvtMap,
+  TestRunFileRootEvtRef,
   ExpressionNoQuoteTypes,
   DefinitionOverrideFolder
 }
 
 export * from './browser'
 export * from './websocket'
+
 

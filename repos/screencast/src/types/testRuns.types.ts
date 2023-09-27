@@ -1,7 +1,8 @@
+import type { TTestRun, TTestRunEvent } from '.'
 import type { Repo } from "@gobletqa/repo"
 import type { TExTestEventMeta } from "@gobletqa/exam"
 
-export type TExamEvtExtra = Partial<TExTestEventMeta> & {
+export type TExamEvtExtra = Partial<TTestRunEvent> & {
   runId:string
   runTimestamp:string|number
   group?:string
@@ -10,10 +11,10 @@ export type TExamEvtExtra = Partial<TExTestEventMeta> & {
 }
 
 
-export type TExamUIRunEvts = Record<string, TExTestEventMeta[]>
-
 export type TExamUIRunEvtCB = (meta:TExTestEventMeta) => void
-export type TExamUIRunFinishCB = (meta:TExTestEventMeta, events?:TExamUIRunEvts) => void
+export type TExamUIRunEvts = Record<string, TExTestEventMeta[]>
+export type TExamUIRunFinishCB = (meta:TExTestEventMeta, testRun?:TTestRun) => void
+
 
 export type TParsedEvtOpts = {
   cb?:TExamUIRunEvtCB
@@ -40,3 +41,17 @@ export type TExamUIRunFinish = {
 export type TKillTestRunUIRunEvtOpts = {
   procId:string|number
 }
+
+
+export enum EUIReportType {
+  json=`json`,
+  html=`html`
+}
+
+
+export type TUITestEvt = TExTestEventMeta & {
+  id:string
+  runId:string
+  timestamp:number
+}
+
