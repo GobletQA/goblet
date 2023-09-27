@@ -201,7 +201,8 @@ export class TestFromUI {
 
     ;[cb, ...this.onRunFinish].forEach(cb => cb && cb?.(event, this.testRun))
 
-    await this.saveTempJsonReport()
+    // Disabled for now because it's not being used
+    // await this.saveTempJsonReport()
   }
 
   parseEvent = ({
