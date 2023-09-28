@@ -7,6 +7,7 @@ import {
   OpenTabsContainer,
   OpenTabsBottomBorder
 } from './OpenedTabs.styled'
+import {TabScrollParentCls} from '@GBC/constants/values'
 
 
 
@@ -15,8 +16,8 @@ export const OpenedTabs = ({ openedTabs, Tab, activeTab, ...rest }:TOpenedTabs) 
   const { scrollRef } = useScrollHor()
 
   return (
-    <OpenTabsContainer ref={scrollRef} className='goblet-editor-opened-tab-wrapper'>
-      <OpenTabsMain className='goblet-editor-opened-tab'>
+    <OpenTabsContainer className='gb-editor-opened-tab-wrapper'>
+      <OpenTabsMain ref={scrollRef} className={`gb-editor-opened-tab ${TabScrollParentCls}`}>
         <OpenTabsBottomBorder />
 
         {openedTabs?.map(tabItem => {
