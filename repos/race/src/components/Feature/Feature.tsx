@@ -81,7 +81,7 @@ export const Feature = (props:TFeature) => {
           Icon={BoltIcon}
           btnText='Create Feature'
           onClick={onCreateFeature}
-          headerText='Goblet Feature Editor'
+          headerText='No-Code Editor'
           subText='Create a new feature, or select an existing feature from the sidebar panel.'
         />
       )

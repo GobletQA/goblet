@@ -47,11 +47,11 @@ export const HeaderNav = [
 
 export const EditorNavItems = {
   [EEditorType.visual]: {
-    title: `Visual Editor`,
+    title: `No-Code Editor`,
     action: setEditor,
     Icon: DesignIcon,
     name: ESideNav.editor,
-    tooltip: `Switch to Code Editor`,
+    tooltip: `Switch to Low-Code Editor`,
   },
   [EEditorType.code]: {
     title: `Code Editor`,
@@ -59,7 +59,7 @@ export const EditorNavItems = {
     action: setEditor,
     Icon: DesignIcon,
     name: ESideNav.editor,
-    tooltip: `Switch to Visual Editor`,
+    tooltip: `Switch to No-Code Editor`,
   },
 }
 

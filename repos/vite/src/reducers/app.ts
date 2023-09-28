@@ -2,10 +2,11 @@ import type { TDspAction } from '@types'
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 
 import { EAppStatus, EEditorType } from '@types'
+import {deepMerge, exists} from '@keg-hub/jsutils'
 import { getQueryData } from '@utils/url/getQueryData'
 import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 import { createReducer, createAction } from '@reduxjs/toolkit'
-import {exists} from '@keg-hub/jsutils'
+
 
 export type TAppState = {
   editor:EEditorType
@@ -73,15 +74,17 @@ export const appActions = {
   }
 }
 
-export const appReducer = createReducer(appState, (builder:ActionReducerMapBuilder<TAppState>) => {
-  builder.addCase(clearApp, appActions.clearApp)
-  builder.addCase(setApp, appActions.setApp)
-  builder.addCase(setStatus, appActions.setStatus)
-  builder.addCase(setEditor, appActions.setEditor)
-  builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
-  builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
-  builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)
-})
+export const appReducer = createReducer(
+  deepMerge(appState),
+  (builder:ActionReducerMapBuilder<TAppState>) => {
+    builder.addCase(clearApp, appActions.clearApp)
+    builder.addCase(setApp, appActions.setApp)
+    builder.addCase(setStatus, appActions.setStatus)
+    builder.addCase(setEditor, appActions.setEditor)
+    builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
+    builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
+    builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)
+  })
 
 
 

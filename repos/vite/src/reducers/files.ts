@@ -112,7 +112,7 @@ export const filesActions = {
 }
 
 export const filesReducer = createReducer(
-  filesState,
+  deepMerge(filesState),
   (builder:ActionReducerMapBuilder<TFilesState>) => {
     builder.addCase(clearFiles, filesActions.clearFiles)
     builder.addCase(setFile, filesActions.setFile)

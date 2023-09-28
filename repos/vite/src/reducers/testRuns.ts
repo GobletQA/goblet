@@ -35,7 +35,7 @@ export const testRunsState = {
 const addTestRun = createAction<TAddTestRun>(`addTestRun`)
 const removeTestRun = createAction<TTestRunId>(`removeTestRun`)
 const upsertTestRun = createAction<TUpsertTestRun>(`upsertTestRun`)
-const clearTestRuns = createAction<TTestRunsState>(`clearTestRuns`)
+const clearTestRuns = createAction(`clearTestRuns`)
 
 const addTestRunEvt = createAction<TAddTestRunEvts>(`addTestRunEvt`)
 const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
@@ -72,7 +72,7 @@ export const testRunsActions = {
     }
   },
 
-  clearTestRuns: (state:TTestRunsState, action:TDspAction<TTestRunsState>) => (testRunsState),
+  clearTestRuns: (state:TTestRunsState, action:TDspAction<any>) => (testRunsState),
 
   removeTestRun: (state:TTestRunsState, action:TDspAction<TTestRunId>) => {
     const runId = action?.payload
@@ -168,19 +168,21 @@ export const testRunsActions = {
   }
 }
 
-export const testRunsReducer = createReducer(testRunsState, (builder:ActionReducerMapBuilder<TTestRunsState>) => {
-  builder.addCase(addTestRun, testRunsActions.addTestRun)
-  builder.addCase(upsertTestRun, testRunsActions.upsertTestRun)
-  
-  builder.addCase(clearTestRuns, testRunsActions.clearTestRuns)
-  builder.addCase(removeTestRun, testRunsActions.removeTestRun)
-  
+export const testRunsReducer = createReducer(
+  deepMerge(testRunsState),
+  (builder:ActionReducerMapBuilder<TTestRunsState>) => {
+    builder.addCase(addTestRun, testRunsActions.addTestRun)
+    builder.addCase(upsertTestRun, testRunsActions.upsertTestRun)
+    
+    builder.addCase(clearTestRuns, testRunsActions.clearTestRuns)
+    builder.addCase(removeTestRun, testRunsActions.removeTestRun)
+    
 
-  builder.addCase(addTestRunEvt, testRunsActions.addTestRunEvt)
-  builder.addCase(cancelTestRun, testRunsActions.cancelTestRun)
-  builder.addCase(setTestRunActive, testRunsActions.setTestRunActive)
-  builder.addCase(toggleAllTestsRun, testRunsActions.toggleAllTestsRun)
-  builder.addCase(addActiveTestRunEvt, testRunsActions.addActiveTestRunEvt)
-  builder.addCase(addEvtAndMakeActive, testRunsActions.addEvtAndMakeActive)
-})
+    builder.addCase(addTestRunEvt, testRunsActions.addTestRunEvt)
+    builder.addCase(cancelTestRun, testRunsActions.cancelTestRun)
+    builder.addCase(setTestRunActive, testRunsActions.setTestRunActive)
+    builder.addCase(toggleAllTestsRun, testRunsActions.toggleAllTestsRun)
+    builder.addCase(addActiveTestRunEvt, testRunsActions.addActiveTestRunEvt)
+    builder.addCase(addEvtAndMakeActive, testRunsActions.addEvtAndMakeActive)
+  })
 

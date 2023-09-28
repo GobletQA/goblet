@@ -31,7 +31,7 @@ export const modalActions = {
 }
 
 export const modalReducer = createReducer(
-  modalState,
+  deepMerge(modalState),
   (builder:ActionReducerMapBuilder<TModalState>) => {
     builder.addCase(clearModal, modalActions.clearModal)
     builder.addCase(setModal, modalActions.setModal)

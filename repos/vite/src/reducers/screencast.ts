@@ -31,7 +31,7 @@ const actions = {
 }
 
 export const screencastReducer = createReducer(
-  screencastState,
+  deepMerge(screencastState),
   (builder:ActionReducerMapBuilder<TScreencastState>) => {
     builder.addCase(setScreencast, actions.setScreencast)
     builder.addCase(clearScreencast, actions.clearScreencast)

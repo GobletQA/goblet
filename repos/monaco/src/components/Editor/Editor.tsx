@@ -257,7 +257,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
             text={emptyText}
             btnText='Create File'
             onClick={onAddEmptyFile}
-            headerText='Goblet Code Editor'
+            headerText='Low-Code Editor'
             subText='Create a new file, or select an existing file from the panel on the right.'
           />
         ) || null}
