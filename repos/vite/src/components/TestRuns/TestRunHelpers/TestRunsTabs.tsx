@@ -9,7 +9,7 @@ import {
   TestRunsSectionBtn,
   TestRunsReporterIcon,
   TestRunsSectionsContainer,
-} from './TestRuns.styled'
+} from '../TestRuns.styled'
 
 
 export type TTestRunsTabs = {

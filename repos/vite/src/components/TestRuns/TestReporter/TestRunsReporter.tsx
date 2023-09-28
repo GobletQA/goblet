@@ -2,10 +2,10 @@ import type { TTestRuns } from "@types"
 
 import { useTestRuns } from "@store"
 import { ETestRunsSection } from "@types"
-import { TestRunError } from './TestRunError'
 import { TestRunFiles } from './TestRunFiles'
 import { Loading } from '@gobletqa/components'
-import { NoActiveTestRun } from './NoActiveTestRun'
+import { TestRunError } from '../TestRunHelpers/TestRunError'
+import { NoActiveTestRun } from '../TestRunHelpers/NoActiveTestRun'
 import { TestRunLoadingContainer, TestRunReporterContainer } from './TestRunsReporter.styled'
 
 export type TTestRunsReporter = {

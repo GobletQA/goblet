@@ -2,7 +2,7 @@ import type { TPlayerResEvent, TTestRun, TTestRunFileData } from '@types'
 
 import { useState } from 'react'
 import { cls } from '@keg-hub/jsutils'
-import { TestRunDeco } from './TestRunDeco'
+import { TestRunDeco } from '../TestRunHelpers/TestRunDeco'
 import { TestRunEvents } from './TestRunEvents'
 import { TestRunFileRootEvtRef } from '@constants'
 import { useEventState } from '@hooks/testRuns/useEventState'

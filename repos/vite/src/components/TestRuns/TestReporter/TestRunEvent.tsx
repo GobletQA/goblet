@@ -2,7 +2,7 @@ import {cls, wordCaps} from '@keg-hub/jsutils'
 import type { TTestRunEvent, TTestRunEventState } from '@types'
 
 import { useMemo } from 'react'
-import { TestRunDeco } from './TestRunDeco'
+import { TestRunDeco } from '../TestRunHelpers/TestRunDeco'
 import { useEventState } from '@hooks/testRuns/useEventState'
 import {
   TestRunEvtText,

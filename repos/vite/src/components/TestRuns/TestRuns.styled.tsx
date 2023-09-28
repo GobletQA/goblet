@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
   H3,
-  H5,
   dims,
   gutter,
   Button,
@@ -10,9 +9,7 @@ import {
   getColor,
   TuneIcon,
   CloseIcon,
-  BlockIcon,
   IconButton,
-  WarningIcon,
   ContentPasteIcon,
   FormatListBulletedIcon
 } from '@gobletqa/components'

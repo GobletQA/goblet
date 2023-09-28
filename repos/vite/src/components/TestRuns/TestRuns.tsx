@@ -1,19 +1,24 @@
 import type { FocusEvent } from 'react'
-import type { TTestRunsState, TTestRunUICfg, TTestRunGetUICfgEvt } from '@types'
+import type {
+  TTestRunsState,
+  TTestRunUICfg,
+  TOnBlurTestCfg,
+  TOnChangeTestCfg,
+  TTestRunGetUICfgEvt
+} from '@types'
 
 import { useState } from 'react'
 import { ETestRunsSection } from '@types'
 import { PastTestRuns } from './PastTestRuns'
-import { TestCfgUpdaters } from './TestCfgUpdaters'
-
-import { TestRunsTabs } from './TestRunsTabs'
 import { TestRunGetUICfgEvt } from '@constants'
-import { TestRunsHeader } from './TestRunsHeader'
-import { TestRunsReporter } from './TestRunsReporter'
 import { TestRunsContainer } from './TestRuns.styled'
-import { TestCfgForm } from '@components/Forms/TestCfgForm'
 import { useRepo, useSettings, useTestRuns } from '@store'
+import { TestCfgForm } from '@components/Forms/TestCfgForm'
+import { TestRunsTabs } from './TestRunHelpers/TestRunsTabs'
+import { TestRunsHeader } from './TestRunHelpers/TestRunsHeader'
 import { buildTestRunCfg } from '@utils/browser/buildTestRunCfg'
+import { TestCfgUpdaters } from './TestRunHelpers/TestCfgUpdaters'
+import { TestRunsReporter } from './TestReporter/TestRunsReporter'
 import { useTestRunListen } from '@hooks/testRuns/useTestRunListen'
 
 import {
@@ -48,19 +53,27 @@ export const TestRuns = () => {
     setTestRunCfg
   } = useTestRunOpts(testRuns)
 
-  const onBlurTestCfg = useInline((evt:FocusEvent, type:keyof typeof TestCfgUpdaters) => {
-    const resp = TestCfgUpdaters[type]?.onBlur?.(evt, testRunCfg)
+  const onBlurTestCfg = useInline<TOnBlurTestCfg>((evt, type) => {
+    const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onBlur?.(evt, testRunCfg)
     resp && setTestRunCfg({...testRunCfg, ...resp })
   })
 
-  const onChangeTestCfg = useInline((args:any[], type:keyof typeof TestCfgUpdaters) => {
+  const onChangeTestCfg = useInline<TOnChangeTestCfg>((args:any[], type) => {
     const [evt, value, reason, opt] = args
-    const resp = TestCfgUpdaters[type]?.onChange?.(evt, value, reason, opt, testRunCfg)
+    const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onChange?.(
+      evt,
+      value,
+      reason,
+      opt,
+      testRunCfg
+    )
+
     resp && setTestRunCfg({...testRunCfg, ...resp })
   })
 
   const [section, setSection] = useState<ETestRunsSection>(
-    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
+    ETestRunsSection.testRuns
+    // testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
   )
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))

@@ -6,7 +6,7 @@ import {
   TestRunsCancelButton,
   TestRunsHeaderContainer,
   TestRunsCancelButtonIcon
-} from './TestRuns.styled'
+} from '../TestRuns.styled'
 
 export type TTestRunsHeader = {}
 

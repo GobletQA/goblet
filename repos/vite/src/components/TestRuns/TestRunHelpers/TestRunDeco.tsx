@@ -10,7 +10,7 @@ import {
   TestRunDecoSpin,
   TestRunDecoCanceled,
   TestRunDecoContainer
-} from './TestRunsReporter.styled'
+} from '../TestReporter/TestRunsReporter.styled'
 
 
 export type TTestRunDeco = {

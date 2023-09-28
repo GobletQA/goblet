@@ -1,8 +1,8 @@
 import type { TTestRuns, TTestRun } from '@types'
 
 import { ETestRunsSection } from '@types'
-import { TestRunsMsg } from './TestRunsMsg'
-import { TestRunDeco } from './TestRunDeco'
+import { TestRunsMsg } from '../TestRunHelpers/TestRunsMsg'
+import { TestRunDeco } from '../TestRunHelpers/TestRunDeco'
 import { usePastTestRun } from '@hooks/testRuns/usePastTestRun'
 import {
   PlayCircleOutlineIcon,
@@ -12,7 +12,7 @@ import {
 import {
   TestRunsButton,
   TestRunsButtonContainer
-} from './TestRunsMsg.styled'
+} from '../TestRunHelpers/TestRunsMsg.styled'
 import {
   PastTestRunListItem,
   PastTestRunsListItems,
@@ -25,7 +25,7 @@ import {
   PastTestRunsListContainer,
   PastTestRunListItemButton,
 } from './PastTestRuns.styled'
-import {toNum, wordCaps} from '@keg-hub/jsutils'
+import {wordCaps} from '@keg-hub/jsutils'
 
 export type TPastTestRuns = {
   runs: TTestRuns
