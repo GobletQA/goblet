@@ -21,7 +21,6 @@ const avgEase = dims.trans.avgEase
 export const PastTestRunsListContainer = styled(Box)`
   padding: ${gutter.padding.dpx};
   padding-top: 0px;
-  margin-top: ${gutter.margin.hpx};
 `
 
 export const PastTestRunsListItems = styled(List)`
@@ -122,10 +121,13 @@ export const PastTestRunListItemText = styled(InText)`
   
   &.header {
     font-weight: bold;
+    font-size: 0.94rem;
   }
   
   &.header.status {
     padding-right: 0px;
+    overflow: initial;
+    white-space: initial;
   }
 
   &.date {

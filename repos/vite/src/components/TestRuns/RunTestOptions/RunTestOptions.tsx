@@ -2,6 +2,7 @@ import type { TTestRunUICfg, TOnBlurRunTestOpts, TOnChangeRunTestOpts } from '@t
 
 import { TestOpts } from './TestOpts'
 import { BrowserOpts } from './BrowserOpts'
+import { TestRunSectionScroll } from '../TestRuns.styled'
 import { RunTestOptsContainer } from './RunTestOptions.styled'
 
 /**
@@ -44,12 +45,12 @@ export type TRunTestOptions = {
 
 export const RunTestOptions = (props:TRunTestOptions) => {
   return (
-    <>
+    <TestRunSectionScroll>
       <RunTestOptsContainer>
         <TestOpts {...props} />
         <BrowserOpts {...props} />
       </RunTestOptsContainer>
-    </>
+    </TestRunSectionScroll>
   )
 }
 

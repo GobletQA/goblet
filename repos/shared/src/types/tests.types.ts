@@ -29,10 +29,10 @@ export type TTestRunEvent = {
   passed?:boolean
   skipped?:boolean
   description:string
-  stats?:TTestRunStats
   type:EPlayerTestType
   action:EResultAction
   location:TFileLocation
+  stats?:TTestRunEvtStats
   status?:TTestRunEvtStatus
   metaType?:TTestRunMetaType
   error?:boolean
@@ -44,7 +44,7 @@ export type TTestRunEvent = {
   runTimestamp:string|number
 }
 
-export type TTestRunStats = {
+export type TTestRunEvtStats = {
   runEnd:number
   runStart:number
   failedSpecs:number
@@ -59,7 +59,7 @@ export type TTestRunFileData = {
   failed?:boolean
   passed?:boolean
   runId:TTestRunId
-  stats:TTestRunStats
+  stats:TTestRunEvtStats
   location:TFileLocation
   events: TTestRunEvents
 }
@@ -78,12 +78,25 @@ export type TTestRunEvents = {
   [key:TEventUUID]: TTestRunEventStages
 }
 
+export type TTestRunTypeStat = {
+  steps:number
+  parents:number
+  features:number
+}
+
+export type TTestRunStats = {
+  failed: TTestRunTypeStat
+  passed: TTestRunTypeStat
+  skipped: TTestRunTypeStat
+}
+
 
 export type TTestRun = {
   runId:TTestRunId
   canceled?:boolean
   finished?:boolean
   runError?:TTestRunEvent
+  stats:TTestRunStats
   status?:TTestRunEvtStatus
   files: Record<TFileLocation, TTestRunFileData>
 }

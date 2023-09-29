@@ -9,6 +9,7 @@ import {useEffect, useRef, useState} from 'react'
 import { getEvents } from '@utils/testRuns/getEvents'
 
 import { upsertTestRun } from '@actions/testRuns/upsertTestRun'
+import { testRunFactory } from '@utils/testRuns/testRunFactory'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 import {
   useOnEvent,
@@ -33,12 +34,11 @@ export const useTestRunListen = () => {
 
   useOnEvent<TTestRunExecEvt>(TestRunExecEvt, async (data) => {
     const evtRunId = data.runId
-    const { events, failedLoc } = getEvents(data)
-
-    const tempRun = {...testRunsRef.current[evtRunId], runId: evtRunId}
+    const { events } = getEvents(data)
+    const tempRun = testRunFactory(testRunsRef.current[evtRunId], evtRunId)
     const testRun = addEventsToTestRun(tempRun, events)
-    testRunsRef.current = {...testRunsRef.current, [evtRunId]: testRun}
 
+    testRunsRef.current = {...testRunsRef.current, [evtRunId]: testRun}
 
     ife(async () => upsertTestRun({ runId: evtRunId, data: testRun }))
     // If there's a runId change, then update the state with the new ID
@@ -103,6 +103,7 @@ export const useTestRunListen = () => {
   return {
     setRunId,
     active: runId,
-    runs: testRunsRef.current
+    runs: testRunsRef.current,
+    allTestsRunning: testRuns.allTestsRunning
   }
 }

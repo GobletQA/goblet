@@ -39,16 +39,15 @@ export const OptionsContainer = styled(Box)``
 
 export const TestOptsHeaderContainer = styled(Box)`
   cursor: pointer;
-  margin-top: ${gutter.margin.hpx};
 `
 export const TestOptsHeaderTitle = styled(H4)`
-  font-size: 14px;
   display: flex;
+  font-size: 0.94rem;
   align-items: center;
   
+  padding-bottom: 8px;
   border-bottom: 1px solid;
   border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
-  padding-bottom: 8px;
   color: ${getColor(colors.gray18, colors.gray01)};
   transition: border-bottom-color ${avgEase}, color ${avgEase};
 

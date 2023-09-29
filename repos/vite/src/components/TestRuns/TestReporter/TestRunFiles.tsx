@@ -2,13 +2,16 @@ import type { TPlayerResEvent, TTestRun, TTestRunFileData } from '@types'
 
 import { useState } from 'react'
 import { cls } from '@keg-hub/jsutils'
-import { TestRunDeco } from '../TestRunHelpers/TestRunDeco'
 import { TestRunEvents } from './TestRunEvents'
 import { TestRunFileRootEvtRef } from '@constants'
+import { TestRunOverview } from './TestRunOverview'
+import { TestRunDeco } from '../TestRunHelpers/TestRunDeco'
 import { useEventState } from '@hooks/testRuns/useEventState'
 
 import {
   TestRunEventsList,
+  TestRunSectionHeader,
+  TestRunSectionHeaderTitle,
   TestRunFileContainer,
   TestRunListHeaderText,
   TestRunEventsDropdown,
@@ -16,19 +19,16 @@ import {
   TestRunEventsListHeaderContainer,
 } from './TestRunsReporter.styled'
 
-export type TTestRunEvents = {
-  name:string
-  events:TPlayerResEvent[]
-}
-
 export type TTestRunFileEvents = {
   run:TTestRun
+  allTestsRunning?:boolean
 }
 
 export type TTestRunFile = {
   location:string
   canceled?:boolean
   file:TTestRunFileData
+  allTestsRunning?:boolean
 }
 
 const TestRunFile = (props:TTestRunFile) => {
@@ -36,8 +36,8 @@ const TestRunFile = (props:TTestRunFile) => {
     file,
     location,
     canceled,
+    allTestsRunning
   } = props
-
 
   const [open, setOpen] = useState(true)
   const onClick = () => setOpen(!open)
@@ -80,6 +80,7 @@ const TestRunFile = (props:TTestRunFile) => {
           file={file}
           runState={runState}
           canceled={canceled}
+          allTestsRunning={allTestsRunning}
         />
       </TestRunEventsDropdown>
     </TestRunEventsList>
@@ -88,10 +89,18 @@ const TestRunFile = (props:TTestRunFile) => {
 }
 
 export const TestRunFiles = (props:TTestRunFileEvents) => {
-  const { run } = props
+  const { run, allTestsRunning } = props
 
   return (
     <>
+      <TestRunOverview run={run} />
+
+      <TestRunSectionHeader>
+        <TestRunSectionHeaderTitle>
+          Results
+        </TestRunSectionHeaderTitle>
+      </TestRunSectionHeader>
+
       {
         Object.entries(run?.files).map(([location, file]) => {
           return (
@@ -103,6 +112,7 @@ export const TestRunFiles = (props:TTestRunFileEvents) => {
                 file={file}
                 location={location}
                 canceled={run.canceled}
+                allTestsRunning={allTestsRunning}
               />
             </TestRunFileContainer>
           )

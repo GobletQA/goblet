@@ -4,13 +4,17 @@ import { useTestRuns } from "@store"
 import { ETestRunsSection } from "@types"
 import { TestRunFiles } from './TestRunFiles'
 import { Loading } from '@gobletqa/components'
+import { TestRunSectionScroll } from '../TestRuns.styled'
 import { TestRunError } from '../TestRunHelpers/TestRunError'
 import { NoActiveTestRun } from '../TestRunHelpers/NoActiveTestRun'
-import { TestRunLoadingContainer, TestRunReporterContainer } from './TestRunsReporter.styled'
+import {
+  TestRunLoadingContainer,
+} from './TestRunsReporter.styled'
 
 export type TTestRunsReporter = {
   runs: TTestRuns
   active?:string
+  allTestsRunning?:boolean
   onChangeSection:(section:ETestRunsSection) => void
 }
 
@@ -32,7 +36,7 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
   const activeRun = runs[active as string]
 
   return (
-    <TestRunReporterContainer
+    <TestRunSectionScroll
       className='test-runs-reporter-container'
     >
       {
@@ -50,9 +54,9 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
           : activeRun?.runError
             ? <TestRunError run={activeRun} />
               : activeRun
-                ? (<TestRunFiles run={activeRun} />)
+                ? (<TestRunFiles run={activeRun} allTestsRunning={allTestsRunning} />)
                 : (<NoActiveTestRun onChangeSection={onChangeSection} />)
       }
-    </TestRunReporterContainer>
+    </TestRunSectionScroll>
   )
 }

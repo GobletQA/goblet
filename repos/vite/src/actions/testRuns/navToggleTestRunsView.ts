@@ -2,9 +2,9 @@ import { getStore } from '@store'
 import { toggleTestRunsView } from './toggleTestRunsView'
 
 /**
- * This method intentionally returns 3 different type
+ * This method intentionally returns 3 different types
  * True / False / Undefined
- * True - the caller should can proceed
+ * True - the caller should proceed
  * False - the caller should NOT proceed
  * Undefined - the caller can decide what to do
  */

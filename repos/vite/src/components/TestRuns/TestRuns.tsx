@@ -72,8 +72,7 @@ export const TestRuns = () => {
   })
 
   const [section, setSection] = useState<ETestRunsSection>(
-    ETestRunsSection.testRuns
-    // testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
+    testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
   )
 
   const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
@@ -82,6 +81,7 @@ export const TestRuns = () => {
     runs,
     active,
     setRunId,
+    allTestsRunning,
   } = useTestRunListen()
 
   useOnEvent<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, cb => {
@@ -108,6 +108,7 @@ export const TestRuns = () => {
                 runs={runs}
                 active={active}
                 setRunId={setRunId}
+                allTestsRunning={allTestsRunning}
                 onChangeSection={onChangeSection}
               />
             )

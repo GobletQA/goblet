@@ -52,7 +52,6 @@ export const TestRunsSectionsContainer = styled(Box)(({ theme }) => `
   height: ${dims.header.hpx};
   margin-left: ${gutter.margin.px};
   margin-right: ${gutter.margin.px};
-  margin-bottom: ${gutter.margin.size * 1.3}px;
   border-bottom: 1px solid ${getColor(colors.white01, colors.gray15, theme)};
 `)
 
@@ -95,3 +94,35 @@ export const TestRunsOptsIcon = styled(TuneIcon)`
   height: 15px;
   width: 15px;
 `
+
+
+export const TestRunSectionScroll = styled(Box)(({ theme }) => `
+  height: 100%;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+
+  padding: 0px;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  scrollbar-gutter: stable both-edges;
+  margin-top: ${gutter.margin.dpx};
+  padding-bottom: ${gutter.padding.size * 15}px;
+
+  ::-webkit-scrollbar-track {
+      background: ${getColor(colors.white, colors.purple23, theme)};
+      box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
+      -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: ${getColor(colors.gray03, `${colors.purple13}66`, theme)};
+    box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
+    -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
+  }
+`)

@@ -1,3 +1,6 @@
+import {TTestRun, TTestRuns} from "@gobletqa/shared/types"
+import { TTestRunEvents, TTestRunFileData } from '@types'
+
 const endEvent = {
   "id": "f77c5353-3dd2-4552-9ec3-eefd3aee5252",
   "message": "Test Suite finished",
@@ -33,453 +36,471 @@ export const runErrorEvt = {
 
 
 const secretsFile = {
-    "events": {
-        "Test-Run-File-Root": {
-            "start": {
-                "id": "b3f5837f-b6e9-4e6b-ab1c-e60715b89262",
-                "uuid": "Test-Run-File-Root",
-                "type": "feature",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 0,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "Feature - running",
-                "description": "Feature - running",
-                "timestamp": 1695449665100,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "2faacbd1-588d-4437-b8e2-e8b23a4a5c5f",
-                "uuid": "Test-Run-File-Root",
-                "type": "root",
-                "stats": {
-                    "runEnd": 1695449667107,
-                    "failedSpecs": 0,
-                    "passedSpecs": 6,
-                    "passedSuites": 2,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "Feature - passed",
-                "description": "Feature - passed",
-                "timestamp": 1695449665100,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
+  "events": {
+    "Test-Run-File-Root": {
+      "start": {
+        "id": "b3f5837f-b6e9-4e6b-ab1c-e60715b89262",
+        "uuid": "Test-Run-File-Root",
+        "type": "feature",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 0,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449665100
         },
-        "feature-82173692": {
-            "start": {
-                "id": "f4e19d84-fca0-468b-a2db-908b9a5e63e2",
-                "uuid": "feature-82173692",
-                "type": "describe",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 0,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "Secrets-Test-goblet-url",
-                "metaType": "feature",
-                "description": "Feature - running",
-                "timestamp": 1695449666355,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "c99da2a4-cf0c-482e-acb6-f4b2b050057d",
-                "uuid": "feature-82173692",
-                "type": "describe",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 6,
-                    "passedSuites": 2,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "Secrets-Test-goblet-url",
-                "metaType": "feature",
-                "description": "Feature - passed",
-                "timestamp": 1695449666355,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "Feature - running",
+        "description": "Feature - running",
+        "timestamp": 1695449665100,
+        "location": "/bdd/features/Secrets/Secrets-Url.feature",
+        "status": "unknown",
+        runTimestamp: 1695449667984,
+      },
+      "end": {
+        "id": "2faacbd1-588d-4437-b8e2-e8b23a4a5c5f",
+        "uuid": "Test-Run-File-Root",
+        "type": "root",
+        "stats": {
+          "runEnd": 1695449667107,
+          "failedSpecs": 0,
+          "passedSpecs": 6,
+          "passedSuites": 2,
+          "failedSuites": 0,
+          "runStart": 1695449665100
         },
-        "feature-82173692.scenario.0": {
-            "start": {
-                "id": "95fb20dc-7d2f-4fc7-9655-fc6d0664fcbd",
-                "uuid": "feature-82173692.scenario.0",
-                "type": "describe",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 0,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "Steps",
-                "metaType": "scenario",
-                "description": "Scenario - running",
-                "timestamp": 1695449666357,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
+        "runId": "end-2-end.1695449662824",
+        "action": "end",
+        "failed": false,
+        "passed": true,
+        "text": "Feature - passed",
+        "description": "Feature - passed",
+        "timestamp": 1695449665100,
+        "location": "/bdd/features/Secrets/Secrets-Url.feature",
+        "status": "passed",
+        runTimestamp: 1695449667984,
+      }
+    },
+    "feature-82173692": {
+        "start": {
+            "id": "f4e19d84-fca0-468b-a2db-908b9a5e63e2",
+            "uuid": "feature-82173692",
+            "type": "describe",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 0,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
             },
-            "end": {
-                "id": "cdd83900-2d00-4f4a-9301-631fbf660bc2",
-                "uuid": "feature-82173692.scenario.0",
-                "type": "describe",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 6,
-                    "passedSuites": 1,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "Steps",
-                "metaType": "scenario",
-                "description": "Scenario - passed",
-                "timestamp": 1695449666357,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
+            "runId": "end-2-end.1695449662824",
+            "action": "start",
+            "failed": false,
+            "passed": false,
+            "text": "Secrets-Test-goblet-url",
+            "metaType": "feature",
+            "description": "Feature - running",
+            "timestamp": 1695449666355,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "unknown",
+            runTimestamp: 1695449667984,
         },
-        "feature-82173692.scenario.0.given.0": {
-            "start": {
-                "id": "bcb7ed8a-d24f-4d63-bbfe-967d6b615eb7",
-                "uuid": "feature-82173692.scenario.0.given.0",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 0,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "I navigate to '$world.secrets.GOBLET_QA_DOCS_URL'",
-                "metaType": "given",
-                "description": "Step - running",
-                "timestamp": 1695449666358,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
+        "end": {
+            "id": "c99da2a4-cf0c-482e-acb6-f4b2b050057d",
+            "uuid": "feature-82173692",
+            "type": "describe",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 6,
+                "passedSuites": 2,
+                "failedSuites": 0,
+                "runStart": 1695449665100
             },
-            "end": {
-                "id": "f4cc3a19-9ba9-4b6e-9314-5424abc33b73",
-                "uuid": "feature-82173692.scenario.0.given.0",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 1,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "I navigate to '$world.secrets.GOBLET_QA_DOCS_URL'",
-                "metaType": "given",
-                "description": "Step - passed",
-                "timestamp": 1695449666852,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
-        },
-        "feature-82173692.scenario.0.when.1": {
-            "start": {
-                "id": "d2cf1800-9aa0-4058-ab93-819f895915d4",
-                "uuid": "feature-82173692.scenario.0.when.1",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 1,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "I wait for the page to load",
-                "metaType": "when",
-                "description": "Step - running",
-                "timestamp": 1695449666853,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "babda7d6-3900-4df2-a240-054cdc3d6c83",
-                "uuid": "feature-82173692.scenario.0.when.1",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 2,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "I wait for the page to load",
-                "metaType": "when",
-                "description": "Step - passed",
-                "timestamp": 1695449666862,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
-        },
-        "feature-82173692.scenario.0.then.2": {
-            "start": {
-                "id": "8ed14aab-33ac-4380-af80-910f8c9a22f8",
-                "uuid": "feature-82173692.scenario.0.then.2",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 2,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "the url should be '$world.secrets.GOBLET_QA_DOCS_URL'",
-                "metaType": "then",
-                "description": "Step - running",
-                "timestamp": 1695449666862,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "50f47a2d-a62e-44f3-85ee-0bceea89afaf",
-                "uuid": "feature-82173692.scenario.0.then.2",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 3,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "the url should be '$world.secrets.GOBLET_QA_DOCS_URL'",
-                "metaType": "then",
-                "description": "Step - passed",
-                "timestamp": 1695449666871,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
-        },
-        "feature-82173692.scenario.0.given.3": {
-            "start": {
-                "id": "0112b1ec-de71-4e8f-aff1-3019502b4e3a",
-                "uuid": "feature-82173692.scenario.0.given.3",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 3,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "I click text \"git cloud provider\"",
-                "metaType": "given",
-                "description": "Step - running",
-                "timestamp": 1695449666872,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "aec98a3f-fd96-4a8a-b3e7-86090b568590",
-                "uuid": "feature-82173692.scenario.0.given.3",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 4,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "I click text \"git cloud provider\"",
-                "metaType": "given",
-                "description": "Step - passed",
-                "timestamp": 1695449667076,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
-        },
-        "feature-82173692.scenario.0.when.4": {
-            "start": {
-                "id": "7a8c9b7f-69c8-421d-8a72-8fb070b7c257",
-                "uuid": "feature-82173692.scenario.0.when.4",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 4,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "I wait for the page to load",
-                "metaType": "when",
-                "description": "Step - running",
-                "timestamp": 1695449667076,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "7befcb33-10c1-4c81-b8eb-c76ed09fde67",
-                "uuid": "feature-82173692.scenario.0.when.4",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 5,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "I wait for the page to load",
-                "metaType": "when",
-                "description": "Step - passed",
-                "timestamp": 1695449667079,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
-        },
-        "feature-82173692.scenario.0.then.5": {
-            "start": {
-                "id": "4f23ec99-2589-445b-a661-9b3e5239ebe9",
-                "uuid": "feature-82173692.scenario.0.then.5",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 5,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "start",
-                "failed": false,
-                "passed": false,
-                "text": "the url should be \"https://docs.gobletqa.app/overview/git-providers\"",
-                "metaType": "then",
-                "description": "Step - running",
-                "timestamp": 1695449667079,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "unknown"
-            },
-            "end": {
-                "id": "a6d4169a-035c-4540-86e5-0d5abfe5dbbf",
-                "uuid": "feature-82173692.scenario.0.then.5",
-                "type": "test",
-                "stats": {
-                    "runEnd": 0,
-                    "failedSpecs": 0,
-                    "passedSpecs": 6,
-                    "passedSuites": 0,
-                    "failedSuites": 0,
-                    "runStart": 1695449665100
-                },
-                "runId": "end-2-end.1695449662824",
-                "action": "end",
-                "failed": false,
-                "passed": true,
-                "text": "the url should be \"https://docs.gobletqa.app/overview/git-providers\"",
-                "metaType": "then",
-                "description": "Step - passed",
-                "timestamp": 1695449667083,
-                "location": "/bdd/features/Secrets/Secrets-Url.feature",
-                "status": "passed"
-            }
+            "runId": "end-2-end.1695449662824",
+            "action": "end",
+            "failed": false,
+            "passed": true,
+            "text": "Secrets-Test-goblet-url",
+            "metaType": "feature",
+            "description": "Feature - passed",
+            "timestamp": 1695449666355,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "passed",
+            runTimestamp: 1695449667984,
         }
     },
-    "runId": "end-2-end.1695449662824",
-    "stats": {
-        "runEnd": 0,
-        "failedSpecs": 0,
-        "passedSpecs": 0,
-        "passedSuites": 0,
-        "failedSuites": 0,
-        "runStart": 1695449665100
+    "feature-82173692.scenario.0": {
+        "start": {
+            "id": "95fb20dc-7d2f-4fc7-9655-fc6d0664fcbd",
+            "uuid": "feature-82173692.scenario.0",
+            "type": "describe",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 0,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "start",
+            "failed": false,
+            "passed": false,
+            "text": "Steps",
+            "metaType": "scenario",
+            "description": "Scenario - running",
+            "timestamp": 1695449666357,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "unknown",
+            runTimestamp: 1695449667984,
+        },
+        "end": {
+            "id": "cdd83900-2d00-4f4a-9301-631fbf660bc2",
+            "uuid": "feature-82173692.scenario.0",
+            "type": "describe",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 6,
+                "passedSuites": 1,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "end",
+            "failed": false,
+            "passed": true,
+            "text": "Steps",
+            "metaType": "scenario",
+            "description": "Scenario - passed",
+            "timestamp": 1695449666357,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "passed",
+            runTimestamp: 1695449667984,
+        }
     },
-    "status": "unknown",
-    "failed": false,
-    "passed": false,
-    "location": "/bdd/features/Secrets/Secrets-Url.feature",
-    "timestamp": 1695449665100
-}
+    "feature-82173692.scenario.0.given.0": {
+        "start": {
+            "id": "bcb7ed8a-d24f-4d63-bbfe-967d6b615eb7",
+            "uuid": "feature-82173692.scenario.0.given.0",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 0,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "start",
+            "failed": false,
+            "passed": false,
+            "text": "I navigate to '$world.secrets.GOBLET_QA_DOCS_URL'",
+            "metaType": "given",
+            "description": "Step - running",
+            "timestamp": 1695449666358,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "unknown",
+            runTimestamp: 1695449667984,
+        },
+        "end": {
+            "id": "f4cc3a19-9ba9-4b6e-9314-5424abc33b73",
+            "uuid": "feature-82173692.scenario.0.given.0",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 1,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "end",
+            "failed": false,
+            "passed": true,
+            "text": "I navigate to '$world.secrets.GOBLET_QA_DOCS_URL'",
+            "metaType": "given",
+            "description": "Step - passed",
+            "timestamp": 1695449666852,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "passed",
+            runTimestamp: 1695449667984,
+        }
+    },
+    "feature-82173692.scenario.0.when.1": {
+        "start": {
+            "id": "d2cf1800-9aa0-4058-ab93-819f895915d4",
+            "uuid": "feature-82173692.scenario.0.when.1",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 1,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "start",
+            "failed": false,
+            "passed": false,
+            "text": "I wait for the page to load",
+            "metaType": "when",
+            "description": "Step - running",
+            "timestamp": 1695449666853,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "unknown",
+            runTimestamp: 1695449667984,
+        },
+        "end": {
+            "id": "babda7d6-3900-4df2-a240-054cdc3d6c83",
+            "uuid": "feature-82173692.scenario.0.when.1",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 2,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "end",
+            "failed": false,
+            "passed": true,
+            "text": "I wait for the page to load",
+            "metaType": "when",
+            "description": "Step - passed",
+            "timestamp": 1695449666862,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "passed",
+            runTimestamp: 1695449667984,
+        }
+    },
+    "feature-82173692.scenario.0.then.2": {
+        "start": {
+            "id": "8ed14aab-33ac-4380-af80-910f8c9a22f8",
+            "uuid": "feature-82173692.scenario.0.then.2",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 2,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "start",
+            "failed": false,
+            "passed": false,
+            "text": "the url should be '$world.secrets.GOBLET_QA_DOCS_URL'",
+            "metaType": "then",
+            "description": "Step - running",
+            "timestamp": 1695449666862,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "unknown",
+            runTimestamp: 1695449667984,
+        },
+        "end": {
+            "id": "50f47a2d-a62e-44f3-85ee-0bceea89afaf",
+            "uuid": "feature-82173692.scenario.0.then.2",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 3,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "end",
+            "failed": false,
+            "passed": true,
+            "text": "the url should be '$world.secrets.GOBLET_QA_DOCS_URL'",
+            "metaType": "then",
+            "description": "Step - passed",
+            "timestamp": 1695449666871,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "passed",
+            runTimestamp: 1695449667984,
+        }
+    },
+    "feature-82173692.scenario.0.given.3": {
+        "start": {
+            "id": "0112b1ec-de71-4e8f-aff1-3019502b4e3a",
+            "uuid": "feature-82173692.scenario.0.given.3",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 3,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "start",
+            "failed": false,
+            "passed": false,
+            "text": "I click text \"git cloud provider\"",
+            "metaType": "given",
+            "description": "Step - running",
+            "timestamp": 1695449666872,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "unknown",
+            runTimestamp: 1695449667984,
+        },
+        "end": {
+            "id": "aec98a3f-fd96-4a8a-b3e7-86090b568590",
+            "uuid": "feature-82173692.scenario.0.given.3",
+            "type": "test",
+            "stats": {
+                "runEnd": 0,
+                "failedSpecs": 0,
+                "passedSpecs": 4,
+                "passedSuites": 0,
+                "failedSuites": 0,
+                "runStart": 1695449665100
+            },
+            "runId": "end-2-end.1695449662824",
+            "action": "end",
+            "failed": false,
+            "passed": true,
+            "text": "I click text \"git cloud provider\"",
+            "metaType": "given",
+            "description": "Step - passed",
+            "timestamp": 1695449667076,
+            "location": "/bdd/features/Secrets/Secrets-Url.feature",
+            "status": "passed",
+            runTimestamp: 1695449667984,
+        }
+    },
+    "feature-82173692.scenario.0.when.4": {
+      "start": {
+        "id": "7a8c9b7f-69c8-421d-8a72-8fb070b7c257",
+        "uuid": "feature-82173692.scenario.0.when.4",
+        "type": "test",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 4,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449665100
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "I wait for the page to load",
+        "metaType": "when",
+        "description": "Step - running",
+        "timestamp": 1695449667076,
+        "location": "/bdd/features/Secrets/Secrets-Url.feature",
+        "status": "unknown",
+        runTimestamp: 1695449667984,
+      },
+      "end": {
+        "id": "7befcb33-10c1-4c81-b8eb-c76ed09fde67",
+        "uuid": "feature-82173692.scenario.0.when.4",
+        "type": "test",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 5,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449665100
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "end",
+        "failed": false,
+        "passed": true,
+        "text": "I wait for the page to load",
+        "metaType": "when",
+        "description": "Step - passed",
+        "timestamp": 1695449667079,
+        "location": "/bdd/features/Secrets/Secrets-Url.feature",
+        "status": "passed",
+        runTimestamp: 1695449667984,
+      }
+    },
+    "feature-82173692.scenario.0.then.5": {
+      "start": {
+        "id": "4f23ec99-2589-445b-a661-9b3e5239ebe9",
+        "uuid": "feature-82173692.scenario.0.then.5",
+        "type": "test",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 5,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449665100
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "start",
+        "failed": false,
+        "passed": false,
+        "text": "the url should be \"https://docs.gobletqa.app/overview/git-providers\"",
+        "metaType": "then",
+        "description": "Step - running",
+        "timestamp": 1695449667079,
+        "location": "/bdd/features/Secrets/Secrets-Url.feature",
+        "status": "unknown",
+        runTimestamp: 1695449667984,
+      },
+      "end": {
+        "id": "a6d4169a-035c-4540-86e5-0d5abfe5dbbf",
+        "uuid": "feature-82173692.scenario.0.then.5",
+        "type": "test",
+        "stats": {
+          "runEnd": 0,
+          "failedSpecs": 0,
+          "passedSpecs": 6,
+          "passedSuites": 0,
+          "failedSuites": 0,
+          "runStart": 1695449665100
+        },
+        "runId": "end-2-end.1695449662824",
+        "action": "end",
+        "failed": false,
+        "passed": true,
+        "text": "the url should be \"https://docs.gobletqa.app/overview/git-providers\"",
+        "metaType": "then",
+        "description": "Step - passed",
+        "timestamp": 1695449667083,
+        "location": "/bdd/features/Secrets/Secrets-Url.feature",
+        "status": "passed",
+        runTimestamp: 1695449667984,
+      }
+    }
+  },
+  "runId": "end-2-end.1695449662824",
+  "stats": {
+    "runEnd": 0,
+    "failedSpecs": 0,
+    "passedSpecs": 0,
+    "passedSuites": 0,
+    "failedSuites": 0,
+    "runStart": 1695449665100
+  },
+  "status": "unknown",
+  "failed": false,
+  "passed": false,
+  "location": "/bdd/features/Secrets/Secrets-Url.feature",
+  "timestamp": 1695449665100
+} as unknown as TTestRunFileData
 
 const uploadFile = {
   "events": {
@@ -504,7 +525,8 @@ const uploadFile = {
         "description": "Feature - running",
         "timestamp": 1695449667984,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       }
     },
     "feature-1979245909": {
@@ -529,7 +551,8 @@ const uploadFile = {
         "description": "Feature - running",
         "timestamp": 1695449668569,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       },
     },
     "feature-1979245909.scenario.0": {
@@ -554,7 +577,8 @@ const uploadFile = {
         "description": "Scenario - running",
         "timestamp": 1695449668570,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       },
     },
     "feature-1979245909.scenario.0.given.0": {
@@ -579,7 +603,8 @@ const uploadFile = {
         "description": "Step - running",
         "timestamp": 1695449668571,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       },
       "end": {
         "id": "45e9a838-10ac-4469-b5d3-f9001a05d03c",
@@ -602,7 +627,8 @@ const uploadFile = {
         "description": "Step - passed",
         "timestamp": 1695449669352,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "passed"
+        "status": "passed",
+        runTimestamp: 1695449667984,
       }
     },
     "feature-1979245909.scenario.0.when.1": {
@@ -627,7 +653,8 @@ const uploadFile = {
         "description": "Step - running",
         "timestamp": 1695449669353,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       },
       "end": {
         "id": "e66c68cf-62e1-4c6d-b8bc-7ad613f6c099",
@@ -650,7 +677,8 @@ const uploadFile = {
         "description": "Step - passed",
         "timestamp": 1695449669486,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "passed"
+        "status": "passed",
+        runTimestamp: 1695449667984,
       }
     },
     "feature-1979245909.scenario.0.when.2": {
@@ -675,7 +703,8 @@ const uploadFile = {
         "description": "Step - running",
         "timestamp": 1695449669487,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       },
       "end": {
         "id": "867ac700-a6fb-4fbf-97b9-34215feded1f",
@@ -698,7 +727,8 @@ const uploadFile = {
         "description": "Step - passed",
         "timestamp": 1695449669615,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "passed"
+        "status": "passed",
+        runTimestamp: 1695449667984,
       }
     },
     "feature-1979245909.scenario.0.when.3": {
@@ -723,10 +753,11 @@ const uploadFile = {
         "description": "Step - running",
         "timestamp": 1695449669615,
         "location": "/bdd/features/Steps/File-Upload.feature",
-        "status": "unknown"
+        "status": "unknown",
+        runTimestamp: 1695449667984,
       },
     }
-  },
+  } as TTestRunEvents,
   "runId": "end-2-end.1695449662824",
   "stats": {
     "runEnd": 0,
@@ -741,7 +772,7 @@ const uploadFile = {
   "passed": false,
   "location": "/bdd/features/Steps/File-Upload.feature",
   "timestamp": 1695449667984
-}
+} as TTestRunFileData
 
 const inputsFile = {
   "events": {
@@ -1046,7 +1077,7 @@ const inputsFile = {
   "passed": false,
   "location": "/bdd/features/Steps/Form-Inputs.feature",
   "timestamp": 1695449669930
-}
+} as unknown as TTestRunFileData
 
 export const runMock = {
   [`end-2-end.1695449662824`]: {
@@ -1073,4 +1104,4 @@ export const runMock = {
       [`/bdd/features/Secrets/Secrets-Url.feature`]: {...secretsFile},
     }
   },
-}
+} as unknown as TTestRuns

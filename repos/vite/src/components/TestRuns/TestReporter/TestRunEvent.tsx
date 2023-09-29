@@ -1,7 +1,7 @@
 import {cls, wordCaps} from '@keg-hub/jsutils'
 import type { TTestRunEvent, TTestRunEventState } from '@types'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { TestRunDeco } from '../TestRunHelpers/TestRunDeco'
 import { useEventState } from '@hooks/testRuns/useEventState'
 import {
@@ -12,12 +12,14 @@ import {
   TestRunEventIconContainer,
   TestRunEventTextContainer,
 } from './TestRunsReporter.styled'
+import { scrollFirstParent } from '@gobletqa/components'
 
 
 export type TTestRunEvt = {
-  start:TTestRunEvent
-  end?:TTestRunEvent
   canceled?:boolean
+  end?:TTestRunEvent
+  start:TTestRunEvent
+  allTestsRunning?:boolean
   runState:TTestRunEventState
 }
 
@@ -79,15 +81,41 @@ const TestRunEventType = (props:TTestRunEvt) => {
 
 export const TestRunEvent = (props:TTestRunEvt) => {
   const {
+    end,
     start,
+    allTestsRunning,
   } = props
 
+  const itemRef = useRef<HTMLDivElement>()
+  const scrolledRef = useRef<boolean>(false)
   const evtState = useEventState(props, props.canceled)
   const classList = useClassList(props, evtState)
 
+  useEffect(() => {
+    if(!allTestsRunning) return
+
+    if(evtState.status !== `running` && !scrolledRef?.current && itemRef.current){
+      scrolledRef.current = true
+      const parent = scrollFirstParent(itemRef.current)
+      if(!parent) return
+
+      const rect = itemRef.current.getBoundingClientRect()
+      parent.scrollBy({
+        // The 145 comes from trial and error. Seems to work when testing. Nothing special about it
+        behavior: `smooth`,
+        top: rect.top - 145,
+      })
+    }
+
+  }, [
+    evtState.status,
+    allTestsRunning
+  ])
+
+
   return (
     <TestRunEventItem className={`gb-test-run-event-item ${classList}`}>
-      <TestRunEventContainer className={`gb-test-run-event-container ${classList}`} >
+      <TestRunEventContainer ref={itemRef} className={`gb-test-run-event-container ${classList}`} >
         <TestRunEventIconContainer className='gb-test-run-event-icon-container' >
           <TestRunDeco
             status={evtState.status}

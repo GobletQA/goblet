@@ -45,7 +45,7 @@ export const useTestSuite = (props:TBrowserActionProps) => {
           onClick: onPlayTestSuite,
           Icon: FolderPlayOutlineIcon,
           className: `gb-browser-run-test-suite`,
-          tooltip: `Execute multiple or all tests based on the test configuration`,
+          tooltip: `Execute multiple or all tests based on the test run options`,
         }
       : {
           as: `button`,

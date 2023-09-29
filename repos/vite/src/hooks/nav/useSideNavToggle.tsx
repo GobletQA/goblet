@@ -60,8 +60,7 @@ export const useSideNavToggle = (
         setActive,
       })
 
-    const doNavAction = navToggleTestRunsView()
-    if(doNavAction === false) return
+    if(!navToggleTestRunsView()) return
 
     if((!name || name === active) && !nextOpen){
       setOpen(nextOpen, true)

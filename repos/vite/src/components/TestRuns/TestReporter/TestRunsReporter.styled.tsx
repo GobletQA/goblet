@@ -1,10 +1,21 @@
+import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 import List from '@mui/material/List'
 import Collapse from '@mui/material/Collapse'
 import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import ListSubheader from '@mui/material/ListSubheader'
-
+import {
+  H4,
+  dims,
+  Span,
+  cmx,
+  gutter,
+  colors,
+  InText,
+  getColor,
+} from '@gobletqa/components'
 import {
   DecoPass,
   DecoFail,
@@ -12,51 +23,6 @@ import {
   DecoError,
   DecoCanceled,
 } from '@gobletqa/race'
-
-
-import Box from '@mui/material/Box'
-import { styled } from '@mui/material/styles'
-import {
-  dims,
-  Span,
-  gutter,
-  colors,
-  InText,
-  getColor,
-} from '@gobletqa/components'
-
-
-export const TestRunReporterContainer = styled(Box)(({ theme }) => `
-  height: 100%;
-  display: flex;
-  overflow-y: auto;
-  flex-direction: column;
-
-  padding: 0px;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  scrollbar-gutter: stable both-edges;
-  margin-top: ${gutter.margin.hpx};
-  padding-bottom: ${gutter.padding.size * 15}px;
-
-  ::-webkit-scrollbar-track {
-      background: ${getColor(colors.white, colors.purple23, theme)};
-      box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-      -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background: ${getColor(colors.gray03, `${colors.purple13}66`, theme)};
-    box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-    -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-  }
-
-`)
 
 export const TestRunLoadingContainer = styled(Box)`
   flex: 1;
@@ -69,6 +35,18 @@ export const TestRunLoadingContainer = styled(Box)`
   padding: ${gutter.padding.dpx};
 `
 
+export const TestRunSectionHeader = styled(Box)`
+  margin-bottom: ${gutter.margin.px};
+  padding-left: ${gutter.padding.px};
+  padding-right: ${gutter.padding.px};
+`
+
+export const TestRunSectionHeaderTitle = styled(H4)`
+  padding-bottom: 8px;
+  border-bottom: 1px solid;
+  color: ${getColor(colors.gray18, colors.gray01)};
+  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10), 30)};
+`
 
 export const TestRunFileContainer = styled(Box)`
   width: 100%;
