@@ -2,11 +2,11 @@
 
 # Exit when any command fails
 set -e
-trap 'printf "\nFinished with exit code $?\n\n"' EXIT
+trap cleanup EXIT
 
 cleanup(){
-  gb_error "Script failed, resetting kube ctx..."
   switchDevKubeCtx
+  gb_message "Finished with exit code $?\n"
 }
 
 gb_load_stdio(){
