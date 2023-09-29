@@ -13,8 +13,9 @@ export type TIconProps = {
 }
 
 export const useIcon = (props:TIcon) => {
-  const styleRef = useRef(props.style)
-  if(props.style && props.style !== styleRef.current) styleRef.current = props.style
+  const style = props.style || props.sx
+  const styleRef = useRef(style)
+  if(style && style !== styleRef.current) styleRef.current = style
 
   return useMemo(() => {
     const iconProps = {

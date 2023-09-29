@@ -2,7 +2,7 @@ import type { Repo, TFeatureFileModel } from '@GSH/types'
 
 import path from 'path'
 import { glob } from 'glob'
-import { fileSys } from '@keg-hub/cli-utils'
+import { readFile } from 'node:fs/promises'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { featuresParser } from './featuresParser'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
@@ -66,7 +66,7 @@ const buildFeatureFileModel = async (repo, ast, content, location) => {
  * @returns {Object} - FileModel of the feature file
  */
 export const loadFeature = async (repo:Repo, location:string) => {
-  const [_, content] = await fileSys.readFile(location)
+  const [__, content] = await limbo(readFile(location, { encoding: `utf8` }))
 
   return await buildFeatureFileModel(
     repo,

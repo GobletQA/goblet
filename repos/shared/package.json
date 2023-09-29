@@ -32,28 +32,26 @@
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
-    "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "6.3.0",
     "express": "4.18.2",
     "express-blacklist": "1.0.3",
     "express-defend": "1.0.9",
-    "express-jwt": "8.3.0",
+    "express-jwt": "8.4.1",
     "express-winston": "4.2.0",
-    "fs-extra": "10.1.0",
-    "glob": "10.3.3",
+    "fs-extra": "11.1.1",
+    "glob": "10.3.10",
     "http-proxy-middleware": "2.0.6",
     "mime": "3.0.0",
-    "module-alias": "2.2.2",
-    "source-map-support": "0.5.21"
+    "module-alias": "2.2.2"
   },
   "devDependencies": {
-    "@types/debug": "4.1.5",
+    "@types/debug": "4.1.9",
     "@types/dockerode": "3.3.9",
-    "@types/express": "4.17.17",
-    "@types/node": "18.15.13",
-    "esbuild": "0.19.2",
-    "socket.io": "4.6.1"
+    "@types/express": "4.17.18",
+    "@types/node": "20.7.1",
+    "esbuild": "0.19.3",
+    "socket.io": "4.7.2"
   }
 }

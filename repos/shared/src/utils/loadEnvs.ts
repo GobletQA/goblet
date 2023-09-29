@@ -2,7 +2,7 @@ import path from 'path'
 
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { addToProcess } from '@keg-hub/cli-utils'
+import { addToProcess } from './addToProcess'
 
 export type TLoadConfigs = {
   env?:string,

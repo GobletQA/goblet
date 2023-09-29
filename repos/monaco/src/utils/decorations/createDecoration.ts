@@ -12,8 +12,8 @@ export const createDecoration = (
 ) => {
 
   const range = match.range
-  const { id, options } = decoration
-  const decoId = id || options?.marginClassName || `${range.startLineNumber}`
+  const { options, search } = decoration
+  const decoId = `${match.range.startLineNumber}-${search}`
 
   decorationsList[decoId] = { options, range }
 

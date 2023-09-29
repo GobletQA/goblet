@@ -43,3 +43,4 @@ export const waitingModal = (props?:TModalProps) => setActiveModal(
   props?.visible,
   props
 )
+

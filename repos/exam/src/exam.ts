@@ -1,28 +1,25 @@
-import type { TExamCliOpts, TExamConfig, TRunResult } from '@GEX/types'
+import type { TInitExamCfg, TInitExamOpts, TExRunResult } from '@GEX/types'
 
+import { updateCLIEnvs } from './bin/helpers'
 import { loadFiles } from '@GEX/utils/loadFiles'
 import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { initPipeline } from './pipelines/initPipeline'
-import { updateCLIEnvs } from './bin/helpers'
-
-export type TInitExamCfg = TExamConfig & { file?:string }
-export type TInitExamOpts = TExamCliOpts & { id?:string }
-
 
 export const exam = async (
   cfg:TInitExamCfg,
   opts:TInitExamOpts,
   forceEnvs?:boolean
 ) => {
-  const resetCLIEnvs = updateCLIEnvs(exam, opts, forceEnvs)
+
+  const resetCLIEnvs = updateCLIEnvs(cfg, opts, forceEnvs)
   const locations = await loadFiles(cfg)
 
   let error:Error
-  let result:TRunResult[]
+  let result:TExRunResult[]
 
   try {
     result = await initPipeline({
-      config: exam,
+      config: cfg,
       testMatch: locations,
       id: opts?.id || nanoid(),
     })

@@ -10,12 +10,14 @@ export const buildDecorationFrom = <T=TBuiltDeco, A=any>(
   editor:EEditorType
 ) => {
 
+  const type = event.eventParent || getTypeFromId(event)
+
   return buildDecoration<T, A>({
+    type,
     editor,
     event: from,
     testPath: event.testPath,
     uuid: event?.metaData?.uuid,
-    description: event.description,
-    type: event.eventParent || getTypeFromId(event),
+    description: event?.metaData?.[type] || event.description,
   })
 }

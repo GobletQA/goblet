@@ -15,7 +15,9 @@ export class Joker {
   #system: TSystemMsg[]=[]
 
   constructor(opts:TJokerOpts) {
-    this.provider = getProvider(opts.provider)
+    const provider = getProvider(opts.provider)
+    if(provider) this.provider = getProvider(opts.provider)
+
     opts?.system?.length && this.setSystem(opts.system)
   }
   

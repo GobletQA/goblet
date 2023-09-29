@@ -9,6 +9,7 @@ export enum ERaceDecoType {
   error=`error`,
   success=`success`,
   unknown=`unknown`,
+  canceled=`canceled`,
 }
 
 export type TAnswerDeco = {

@@ -1,15 +1,16 @@
 import type { MutableRefObject } from "react"
 import { useEffect, useRef} from "react"
 
-
 export type THScrollHor = {
   ref?:MutableRefObject<HTMLElement>
 }
+
 
 export const useScrollHor = (props:THScrollHor={}) => {
   const { ref } = props
   
   const scrollRef = useRef<HTMLElement>(ref?.current || null) as MutableRefObject<HTMLElement>
+
 
   useEffect(() => {
     if(!scrollRef.current && !ref?.current) return
@@ -18,13 +19,14 @@ export const useScrollHor = (props:THScrollHor={}) => {
       scrollRef.current = ref.current
 
     const onScroll = (evt:any) => {
-      if (evt.deltaY == 0) return
+      if (Math.abs(evt.deltaX) >= Math.abs(evt.deltaY) || evt.deltaY == 0 || !scrollRef.current)
+        return
+
       evt.preventDefault()
 
-      const magnitude = evt.deltaX !== 0 ? evt.deltaX : evt.deltaY > 0 ? -100 : 100
-      scrollRef?.current.scrollBy({
-        left: magnitude,
-        behavior: `auto`
+      scrollRef?.current?.scrollBy?.({
+        behavior: `smooth`,
+        left: evt.deltaY * 3,
       })
     }
 

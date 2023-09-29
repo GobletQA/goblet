@@ -67,8 +67,8 @@ export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
       suiteTimeout: runner?.suiteTimeout,
       onSpecDone: runner.onSpecDone.bind(runner),
       onSuiteDone: runner.onSuiteDone.bind(runner),
-      onSpecStart: runner.onSpecStarted.bind(runner),
-      onSuiteStart: runner.onSuiteStarted.bind(runner),
+      onSpecStart: runner.onSpecStart.bind(runner),
+      onSuiteStart: runner.onSuiteStart.bind(runner),
     })
 
   }

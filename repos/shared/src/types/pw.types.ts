@@ -1,7 +1,5 @@
-import type { Express } from 'express'
 
-// Exported from screencast/src/types
-import type { TRepo } from './workflows.types'
+import type { Repo, TGobletConfig } from './repo.types'
 import type { TFileModel } from './models.types'
 import type { Automate } from '@gobletqa/browser'
 import type { TSocketEvtCBProps } from './socket.types'
@@ -165,16 +163,17 @@ export type TBrowserAction = {
 }
 
 export type TSetBrowserDefaults = {
-  repo:TRepo
+  repo:Repo
   headers?:boolean
   url?:boolean|string
+  config:TGobletConfig
   browserConf:TBrowserConf
   pwComponents?:TPWComponents
 }
 
 export type TStartPlaying = {
-  id:string,
-  repo:TRepo,
+  id:string
+  repo:Repo
   action:TBrowserAction,
   onEvent:TActionCallback
   onCleanup:TActionCallback
@@ -184,8 +183,8 @@ export type TStartPlaying = {
 }
 
 export type TStartRecording = {
-  id:string,
-  repo?:TRepo,
+  id:string
+  repo?:Repo
   action:TBrowserAction,
   onCleanup?:TActionCallback
   browserConf: TBrowserConf

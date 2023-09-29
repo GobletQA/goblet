@@ -32,8 +32,9 @@ export enum StatusTypes {
 }
 
 export const SocketMsgTypes = {
-  EXAM_RUN: `examRun`,
-  EXAM_ABORT: `examAbort`,
+  TESTS_RUN_ALL: `testsRunAll`,
+  TESTS_RUN_DONE: `testsRunDone`,
+  TESTS_RUN_ABORT: `testsRunAbort`,
   CMD_RUN: `cmdRun`,
   STD_OUT: `stdOut`,
   STD_ERR: `stdErr`,

@@ -20,10 +20,15 @@ export const validateUser = ({
 }:TMValidateUser) => {
 
   AppRouter.use(route, async (req:JWTRequest, res:Response, next:NextFunction) => {
-    if (bypassRoutes.includes(req.originalUrl) || req.auth && req.auth.userId && req.auth.token)
-      return next()
+    const { body, auth, originalUrl } = req
 
-    resError(`User session is expired, please sign in`, 401)
+    const isValid = Boolean(originalUrl.includes(`container/remove`) && body?.idleSignOut)
+      || Boolean(auth && auth.userId && auth.token)
+      || bypassRoutes.includes(originalUrl)
+
+    isValid
+      ? next()
+      : resError(`User session is expired, please sign in`, 401)
   })
 }
 

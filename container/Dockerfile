@@ -47,6 +47,8 @@ COPY repos/conductor repos/conductor/
 COPY repos/logger repos/logger/
 COPY repos/latent repos/latent/
 COPY repos/goblet repos/goblet/
+COPY repos/git repos/git/
+COPY repos/repo repos/repo/
 COPY repos/workflows repos/workflows/
 COPY repos/browser repos/browser/
 COPY repos/backend repos/backend/
@@ -65,6 +67,8 @@ COPY repos/conductor/package.json repos/conductor/
 COPY repos/logger/package.json repos/logger/
 COPY repos/latent/package.json repos/latent/
 COPY repos/goblet/package.json repos/goblet/
+COPY repos/git/package.json repos/git/
+COPY repos/repo/package.json repos/repo/
 COPY repos/workflows/package.json repos/workflows/
 COPY repos/backend/package.json repos/backend/
 COPY repos/browser/package.json repos/browser/
@@ -99,6 +103,7 @@ COPY --from=goblet-built /goblet/app/ .
 
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \
+    ln -s /ms-playwright /root/.cache/ms-playwright && \
     chmod a+x /goblet/app/container/initialize.sh
 
 CMD [ "container/initialize.sh" ]

@@ -6,6 +6,7 @@ import type { TGobletTestOpts } from '@gobletqa/shared/types'
 
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
+import { limbo } from '@keg-hub/jsutils/limbo'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
   getPage,
@@ -22,7 +23,10 @@ const forceExit = (err?:Error, isCleanup?:boolean) => {
     : Logger.stderr(`\n${Logger.colors.red(`[Goblet Cleanup Error]`)} Playwright could not be shutdown, attempting force close.\n`)
 
   err && Logger.stderr(`\n${err.stack}\n`)
-  setTimeout(() => process.exit(1), 500)
+
+  setTimeout(() => {
+    process.exit(1)
+  }, 500)
 }
 
 /**
@@ -30,17 +34,15 @@ const forceExit = (err?:Error, isCleanup?:boolean) => {
  * Includes shutting down the browser
  */
 const initErrCloseAll = async () => {
-  try { global.browser && await global.browser.close() }
-  catch(err){}
-  global.browser = undefined
 
-  try { global.context && await global.context.close() }
-  catch(err){}
-  global.context = undefined
-  
-  try { await closePage(undefined, 3) }
-  catch(err){}
+  await limbo(closePage(undefined, 3))
   global.page = undefined
+
+  global.context && await limbo(global.context.close())
+  global.context = undefined
+
+  global.browser && await limbo(global.browser.close())
+  global.browser = undefined
 
   delete global.browser
   delete global.context
@@ -59,7 +61,7 @@ const cleanupPageAndContext = async () => {
   } = get<TGobletTestOpts>(global, `__goblet.options`, emptyObj)
 
   if(!reusePage){
-    await closePage(undefined, 3)
+    await limbo(closePage(undefined, 3))
     delete global.page
   }
 
@@ -68,7 +70,7 @@ const cleanupPageAndContext = async () => {
    * Instead we manually close the context and remove it from the global scope
    */
   if(!reuseContext){
-    global.context && await global?.context?.close?.()
+    global.context && await limbo(global?.context?.close?.())
     global.context = undefined
     delete global.context
   }
@@ -82,7 +84,6 @@ const cleanupPageAndContext = async () => {
  * @return <boolean> - true if init was successful
  */
 export const initialize = async () => {
-
   let startError:boolean
   let browser:TBrowser
   let context:TBrowserContext
@@ -94,7 +95,7 @@ export const initialize = async () => {
   }
   catch (err) {
     startError = true
-    await cleanup(true)
+    await limbo(cleanup(true))
     forceExit(err)
   }
   finally {

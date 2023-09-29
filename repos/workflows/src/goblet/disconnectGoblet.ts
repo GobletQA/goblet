@@ -1,7 +1,6 @@
-import { git }from '../git'
 import { TGitMeta } from '@GWF/types'
 import { Logger } from '@gobletqa/logger'
-import { getRepoPath }from '../utils/getRepoPath'
+import { git, getRepoPath }from '@gobletqa/git'
 
 /**
  * Workflow to unmount a repo based on a users name

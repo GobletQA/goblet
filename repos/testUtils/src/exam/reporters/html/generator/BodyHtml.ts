@@ -1,4 +1,4 @@
-import type { TLocEvtData } from "@gobletqa/exam"
+import type { TExEventData } from "@gobletqa/exam"
 import type { TReporterOpts } from "../HtmlReporter"
 
 import { Script } from './Script'
@@ -9,7 +9,7 @@ import { OverviewHtml } from './OverviewHtml'
 type TBodyHtml = TReporterOpts & {
   title?:string
   date?:string
-  data:TLocEvtData
+  data:TExEventData
   totalTime?:string|number
 }
 

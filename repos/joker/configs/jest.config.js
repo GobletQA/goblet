@@ -10,12 +10,12 @@ module.exports = {
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
   moduleNameMapper: {
-    "^@GLT/services$": path.join(__dirname, "../src/services"),
-    "^@GLT/services/(.*)$": path.join(__dirname, "../src/services/$1"),
-    "^@GLT/types$": path.join(__dirname, "../src/types"),
-    "^@GLT/types/(.*)$": path.join(__dirname, "../src/types/$1"),
-    "^@GLT$": path.join(__dirname, "../src"),
-    "^@GLT/(.*)$": path.join(__dirname, "../src/$1"),
+    "^@GJK/services$": path.join(__dirname, "../src/services"),
+    "^@GJK/services/(.*)$": path.join(__dirname, "../src/services/$1"),
+    "^@GJK/types$": path.join(__dirname, "../src/types"),
+    "^@GJK/types/(.*)$": path.join(__dirname, "../src/types/$1"),
+    "^@GJK$": path.join(__dirname, "../src"),
+    "^@GJK/(.*)$": path.join(__dirname, "../src/$1"),
     "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1")
   },
 }

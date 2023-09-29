@@ -1,4 +1,4 @@
-import type { TRepo, TFileType } from '../types'
+import type { Repo, TFileType } from '../types'
 
 import path from 'path'
 
@@ -7,7 +7,7 @@ import path from 'path'
  * If found uses the matching type
  */
 export const resolveFileType = (
-  repo:TRepo,
+  repo:Repo,
   filePath:string
 ) => {
 

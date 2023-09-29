@@ -1,7 +1,7 @@
 import type { FormHelperTextProps } from '@mui/material/FormHelperText'
 import type {
   AutocompleteChangeReason,
-  AutocompleteChangeDetails
+  AutocompleteChangeDetails,
 } from '@mui/material/Autocomplete'
 import type {
   ReactNode,

@@ -2,9 +2,11 @@ import type { TDspAction } from '@types'
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 
 import { EAppStatus, EEditorType } from '@types'
+import {deepMerge, exists} from '@keg-hub/jsutils'
 import { getQueryData } from '@utils/url/getQueryData'
 import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 import { createReducer, createAction } from '@reduxjs/toolkit'
+
 
 export type TAppState = {
   editor:EEditorType
@@ -12,6 +14,7 @@ export type TAppState = {
   examRunning: boolean
   sidebarLocked: boolean
   multiFeatsErr: boolean
+  testRunsView: boolean|undefined
 }
 
 const editor = getQueryData()?.editor
@@ -22,19 +25,19 @@ updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,
-  examRunning: false,
+  testRunsView: false,
   sidebarLocked: false,
   multiFeatsErr: false,
   status:EAppStatus.Active,
 } as TAppState
 
-const clearApp = createAction<TAppState>(`clearApp`)
 const setApp = createAction<TAppState>(`setApp`)
+const clearApp = createAction<TAppState>(`clearApp`)
 const setStatus = createAction<EAppStatus>(`setStatus`)
 const setEditor = createAction<EEditorType>(`setEditor`)
-const toggleExamRunning = createAction<boolean>(`toggleExamRunning`)
 const toggleSidebarLocked = createAction<boolean>(`toggleSidebarLocked`)
 const toggleMultiFeatsErr = createAction<boolean>(`toggleMultiFeatsErr`)
+const toggleTestRunsView = createAction<boolean|undefined>(`toggleTestRunsView`)
 
 export const appActions = {
   clearApp: (state:TAppState, action:TDspAction<TAppState>) => (appState),
@@ -43,10 +46,10 @@ export const appActions = {
     ...state,
     editor: action?.payload,
   }),
-  toggleExamRunning: (state:TAppState, action:TDspAction<boolean>) => {
+  toggleTestRunsView: (state:TAppState, action:TDspAction<boolean|undefined>) => {
     return {
       ...state,
-      examRunning: Boolean(action?.payload)
+      testRunsView: exists(action?.payload) ? action?.payload : !state.testRunsView
     }
   },
   toggleSidebarLocked: (state:TAppState, action:TDspAction<boolean>) => {
@@ -69,15 +72,17 @@ export const appActions = {
   }
 }
 
-export const appReducer = createReducer(appState, (builder:ActionReducerMapBuilder<TAppState>) => {
-  builder.addCase(clearApp, appActions.clearApp)
-  builder.addCase(setApp, appActions.setApp)
-  builder.addCase(setStatus, appActions.setStatus)
-  builder.addCase(setEditor, appActions.setEditor)
-  builder.addCase(toggleExamRunning, appActions.toggleExamRunning)
-  builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
-  builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)
-})
+export const appReducer = createReducer(
+  deepMerge(appState),
+  (builder:ActionReducerMapBuilder<TAppState>) => {
+    builder.addCase(clearApp, appActions.clearApp)
+    builder.addCase(setApp, appActions.setApp)
+    builder.addCase(setStatus, appActions.setStatus)
+    builder.addCase(setEditor, appActions.setEditor)
+    builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
+    builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
+    builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)
+  })
 
 
 

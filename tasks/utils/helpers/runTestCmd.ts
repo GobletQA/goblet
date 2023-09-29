@@ -1,25 +1,52 @@
 import type { SpawnOptionsWithoutStdio } from 'child_process'
-import type {
-  TEnvObject,
-  TTaskParams,
-} from '../../types'
+import type { TTaskParams } from '../../types'
 
-import { runCmd } from '@keg-hub/cli-utils'
+import fs from 'fs'
+import path from 'path'
 import { EBrowserType } from '../../types'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { toBool } from '@keg-hub/jsutils/toBool'
+import { Logger, runCmd } from '@keg-hub/cli-utils'
 import { runCommands } from '@GTasks/utils/helpers/runCommands'
 import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
-import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
+import { InternalPaths } from '@gobletqa/environment/constants'
+
+/**
+ * Clears out the temp folder that contains test artifacts
+ */
+export const clearTestMetaDirs = () => {
+  Logger.log(`Clearing temp folder...`)
+  const tempDir = path.join(InternalPaths.gobletRoot, `temp`)
+
+  Object.entries(InternalPaths)
+    .map(([name, loc]:[string, string]) => {
+      if(!loc) return
+
+      try {
+        if(name === `testMetaFile`) return fs.unlinkSync(loc)
+
+        name.endsWith(`TempDir`) &&
+          loc.startsWith(tempDir) &&
+          fs.rm(loc, { recursive: true }, noOp)
+      }
+      catch(err){
+        Logger.log(`Error cleaning temp dir, skipping!`)
+        Logger.log(err.message)
+      }
+
+    })
+}
+
 
 export type TRunTestCmd = {
   cmdArgs: string[]
   params:TTaskParams
-  envsHelper: (browser:EBrowserType) => { env: TEnvObject }
+  envsHelper: (browser:EBrowserType) => Partial<SpawnOptionsWithoutStdio>
 }
 
 export type TBrowserCmd = {
   cmdArgs:string[]
-  cmdOpts: { env: TEnvObject }
+  cmdOpts: Partial<SpawnOptionsWithoutStdio>
 }
 
 export type TResp = Record<`exitCode`, any>

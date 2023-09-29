@@ -1,5 +1,6 @@
 import {TExAst, TExFileModel } from "./file.types"
 
+import type { TExamCliOpts } from './bin.types'
 import type { TLoaderCfg } from "./loader.types"
 import type { TExEventData } from './results.types'
 import type {
@@ -14,12 +15,17 @@ import {
   TExamTransforms,
   TExamEnvironment,
 }  from './typeMaps.types'
+import type { TExRunnerCfg } from './runner.types'
+import type { TExTransformCfg } from './transform.types'
+import type { TExEnvironmentCfg } from './environment.types'
 import {TExBuiltReporters, TExReporterCfg} from "./reporters.types"
 
 
-export type TExamEvt<T=TExEventData|TExEventData[]> = {
+
+export type TExamEvt<T=TExEventData> = {
   data?:T
   name:string
+  error?:boolean
   message?:string
   location?:string
   isRunning?:boolean
@@ -29,6 +35,8 @@ type TInternalDynEvent =(evt:Partial<TExamEvt>) => TExamEvt
 type TInternalMissingEvent =(evt:Partial<TExamEvt>& { type?:string, fileType?:string }) => TExamEvt
 
 export type TExamEvts = {
+  error:TInternalDynEvent
+  started:TInternalDynEvent
   dynamic:TInternalDynEvent
   results:TInternalDynEvent
   specDone:TInternalDynEvent
@@ -36,8 +44,8 @@ export type TExamEvts = {
   specStart:TInternalDynEvent
   suiteDone:TInternalDynEvent
   suiteStart:TInternalDynEvent
-  rootSuiteDone:TInternalDynEvent
-  rootSuiteStart:TInternalDynEvent
+  suiteDoneRoot:TInternalDynEvent
+  suiteStartRoot:TInternalDynEvent
   missingType:TInternalMissingEvent
   canceled:TExamEvt
   [key:string]:TExamEvt
@@ -60,9 +68,9 @@ export type TExamEvents = {
 }
 
 export type TExamCfg = TLoaderCfg
-  & TExecPassThroughOpts[`runner`]
-  & TExecPassThroughOpts[`transform`]
-  & TExecPassThroughOpts[`environment`]
+  & TExRunnerCfg
+  & TExTransformCfg
+  & TExEnvironmentCfg
   & {
 
     /**
@@ -80,7 +88,7 @@ export type TExamCfg = TLoaderCfg
     reporter?:TExReporterCfg
 
     // These get convert form strings to classes in the Exam Loader
-    runners: TExamRunners
+    runners?: TExamRunners
     reporters?:TExamReporters
     transforms?: TExamTransforms
     environment?: TExamEnvironment
@@ -121,3 +129,6 @@ export type TExamRunOpts<
   & Pick<TExamConfig, `testMatch`|`testIgnore`|`extensions`|`testDir`|`rootDir`>
 
 export type TExamBuilTCfg = Omit<TExamConfig, `reporters`> & { reporters: TExBuiltReporters }
+
+export type TInitExamCfg = TExamConfig & { file?:string }
+export type TInitExamOpts = TExamCliOpts & { id?:string }

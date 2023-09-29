@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import mime from 'mime'
-import {Repo} from '@gobletqa/workflows/repo/repo'
+import {Repo} from '@gobletqa/repo/repo'
 import { __getLastModified, buildFileModel } from '../buildFileModel'
 
 jest.mock('fs')

@@ -1,5 +1,3 @@
-import type { TLocEvtData } from "@gobletqa/exam"
-
 import {
   colors,
   margin,

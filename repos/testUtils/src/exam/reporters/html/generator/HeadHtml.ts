@@ -1,7 +1,7 @@
-import type { TLocEvtData } from "@gobletqa/exam"
+import type { TExEventData } from "@gobletqa/exam"
 import { Styles } from './styles'
 
-export const HeadHtml = (response:TLocEvtData, title:string) => {
+export const HeadHtml = (response:TExEventData, title:string) => {
   return `
   <head>
     <meta charset="utf-8">

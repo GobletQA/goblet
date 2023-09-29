@@ -1,4 +1,4 @@
-import type { TBrowserLaunchOpts } from '@GBB/types'
+import type { TBrowserTaskOpts } from '@GBB/types'
 
 import { ENVS } from '@gobletqa/environment'
 import { isStr } from '@keg-hub/jsutils/isStr'
@@ -7,7 +7,6 @@ import { InternalPaths } from '@gobletqa/environment/constants'
 
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
-
 
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env
@@ -37,7 +36,7 @@ export const taskEnvToBrowserOpts = () => {
   // Save videos to the temp dir, and copy them to the repo dir as needed, I.E. if a test fails
   const { tracesTempDir, downloadsTempDir } = InternalPaths
 
-  return cleanColl<Partial<TBrowserLaunchOpts & { devices?: string[], type?: string }>>({
+  return cleanColl<Partial<TBrowserTaskOpts>>({
     tracesDir: tracesTempDir,
     type: ENVS.GOBLET_BROWSER,
     downloadsPath: downloadsTempDir,
@@ -46,5 +45,5 @@ export const taskEnvToBrowserOpts = () => {
     slowMo: ENVS.GOBLET_BROWSER_SLOW_MO,
     timeout: ENVS.GOBLET_BROWSER_TIMEOUT,
     ...buildDeviceList(ENVS.GOBLET_BROWSER_DEVICES),
-  })
+  }) as TBrowserTaskOpts
 }

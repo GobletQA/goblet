@@ -7,6 +7,7 @@ import type {
 } from '@types'
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 
+import { deepMerge } from '@keg-hub/jsutils'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TDefinitionsState = {
@@ -115,7 +116,7 @@ export const definitionsActions = {
 }
 
 export const definitionsReducer = createReducer(
-  definitionsState,
+  deepMerge(definitionsState),
   (builder:ActionReducerMapBuilder<TDefinitionsState>) => {
     builder.addCase(resetDefs, definitionsActions.resetDefs)
     builder.addCase(setActiveDef, definitionsActions.setActiveDef)

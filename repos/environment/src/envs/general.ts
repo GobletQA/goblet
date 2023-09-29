@@ -9,7 +9,6 @@ const general = () => {
     GB_LOG_LEVEL=`info`,
     GB_SC_LOG_LEVEL=GB_LOG_LEVEL,
     GOBLET_TEST_COLORS=FORCE_COLOR,
-    GOBLET_RUN_FROM_CI,
   } = process.env
 
   return {
@@ -20,7 +19,6 @@ const general = () => {
     GB_SUB_REPO,
     GB_LOG_LEVEL,
     GB_SC_LOG_LEVEL,
-    GOBLET_RUN_FROM_CI,
     GOBLET_TEST_COLORS,
   }
 }

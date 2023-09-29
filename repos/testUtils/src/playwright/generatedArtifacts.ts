@@ -41,7 +41,7 @@ export const getGeneratedName = (args:TGetGenName) => {
 
   if(!location) throw new Error(`Could not resolve test path location`)
 
-  const browser = browserName || get(global, `__goblet.browser.type`, 'browser')
+  const browser = browserName || get(global, `__goblet.browser.type`, `browser`)
 
   const name = formatName(location)
 

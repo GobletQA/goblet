@@ -1,8 +1,7 @@
 import type { TPlayerTestEvent } from '@types'
 
-import { EPlayerTestAction } from '@types'
-import { EAstObject } from '@ltipton/parkin'
 import { ERaceDecoType } from '@gobletqa/race'
+import { EResultAction, EAstObject } from '@ltipton/parkin'
 
 const decoTypeFromItemType = (event:TPlayerTestEvent,type:string)=> {
   const { failed, passed } = event
@@ -28,10 +27,10 @@ export const getDecoType = (event:TPlayerTestEvent, type:string) => {
   const { action, failed, passed } = event
 
   switch(action){
-    case EPlayerTestAction.start:{
+    case EResultAction.start:{
       return ERaceDecoType.spin
     }
-    case EPlayerTestAction.end:{
+    case EResultAction.end:{
       return decoTypeFromItemType(event, type)
     }
     default: {

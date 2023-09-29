@@ -14,29 +14,29 @@
     "start": "vite --clearScreen false -c configs/vite.config.ts --force"
   },
   "dependencies": {
-    "@emotion/react": "11.11.0",
+    "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
     "@gobletqa/components": "workspace:*",
     "@keg-hub/jsutils": "9.8.3",
     "@ltipton/parkin": "6.3.0",
-    "@mui/icons-material": "5.11.16",
-    "@mui/lab": "5.0.0-alpha.129",
-    "@mui/material": "5.12.3",
+    "@mui/icons-material": "5.14.11",
+    "@mui/lab": "5.0.0-alpha.146",
+    "@mui/material": "5.14.11",
     "comlink": "4.4.1",
-    "react-selecto": "1.22.2"
+    "react-selecto": "1.26.0"
   },
   "devDependencies": {
     "@gobletqa/shared": "workspace:*",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "@vitejs/plugin-react-swc": "3.3.2",
-    "esbuild-register": "3.4.2",
+    "@types/react": "18.2.23",
+    "@types/react-dom": "18.2.8",
+    "@vitejs/plugin-react-swc": "3.4.0",
+    "esbuild-register": "3.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "serve": "14.1.2",
-    "vite": "4.3.9",
+    "serve": "14.2.1",
+    "vite": "4.4.9",
     "vite-plugin-comlink": "3.0.5",
     "vite-plugin-svgr-component": "1.0.1",
-    "vite-tsconfig-paths": "4.2.0"
+    "vite-tsconfig-paths": "4.2.1"
   }
 }

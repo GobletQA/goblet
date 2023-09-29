@@ -26,6 +26,7 @@ export type TBaseActionAction = {
   Icon?:ComponentType<any>
   loc?:TooltipProps['placement']
   onClick?:(...args:any[]) => any
+  containerSx?:CSSProperties|string
   variant?:`contained`|`outlined`|`text`
 }
 
@@ -70,6 +71,7 @@ export const BaseAction = (props:TBaseActionAction) => {
     as=`icon`,
     className,
     loc=`right`,
+    containerSx,
     enterDelay=500,
     fontSize=`12px`,
     actionClassName,
@@ -89,7 +91,7 @@ export const BaseAction = (props:TBaseActionAction) => {
       enterDelay={enterDelay}
     >
       <Container
-        sx={style?.box}
+        sx={[style?.box, containerSx]}
         className={cls(
           `goblet-editor-action`,
           className as string

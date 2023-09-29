@@ -4,7 +4,8 @@ import type {
   TTokenUser,
 } from '@GSC/types'
 
-import { Repo } from '@gobletqa/workflows'
+
+import { workflows } from '@gobletqa/workflows'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
 import { getApp } from '@gobletqa/shared/api/express/app'
 
@@ -31,7 +32,7 @@ export const loadRepoFromSocket = async (args:TLoadRepoFromSocket) => {
   if(!user || !user.token || !user.provider)
     throw new Error(`User not authenticated, request can not be completed`)
 
-    const { repo } = await Repo.status(app.locals.config, {
+    const { repo } = await workflows.status(app.locals.config, {
       ...pickKeys(gitData, [
         `name`,
         `local`,

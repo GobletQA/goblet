@@ -1,12 +1,13 @@
 import type { TWFArgs, TWFResp } from '@gobletqa/workflows/types'
 
+import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
-import { git } from '@gobletqa/workflows/git'
-import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
-import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
-import { validateInitArgs } from '@gobletqa/workflows/utils/validateInitArgs'
-import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
-import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
+import { setupGoblet } from './setupGoblet'
+import { getGitApi } from '@GWF/providers/getGitApi'
+import { ensureMounted } from '@gobletqa/repo/ensureMounted'
+import { validateInitArgs } from '@GWF/utils/validateInitArgs'
+import { configureGitOpts } from '@GWF/utils/configureGitOpts'
+import { ensureBranchExists } from '@gobletqa/repo/ensureBranchExists'
 
 /**
  * Workflow for initializing goblet within a git repo
@@ -34,9 +35,11 @@ export const initializeGoblet = async (args:TWFArgs) => {
   if(notValid) return notValid
 
   const branch = await ensureBranchExists(gitApi, gitOpts)
+  const gitState = await ensureMounted(args, {...gitOpts, branch })
 
+  Logger.log(`Setting up Goblet...`)
   const setupResp = branch
-    ? await ensureMounted(args, {...gitOpts, branch })
+    ? await setupGoblet(args, gitOpts, gitState.mounted)
     : {
         setup: false,
         mounted: false,

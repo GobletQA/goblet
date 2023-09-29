@@ -1,4 +1,4 @@
-import type { TPipelineInit, TRunResult } from '@GEX/types'
+import type { TPipelineInit, TExRunResult } from '@GEX/types'
 
 import { RunPipeline } from './RunPipeline'
 import { flatArr } from '@keg-hub/jsutils/flatArr'
@@ -14,5 +14,5 @@ export const initPipeline = async (cfg:TPipelineInit) => {
   cfg?.config?.onShutdown?.length
     && await onShutdownStep(cfg)
 
-  return flatArr<TRunResult>(resp)
+  return flatArr<TExRunResult>(resp)
 }

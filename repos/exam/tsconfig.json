@@ -5,6 +5,7 @@
   },
   "compilerOptions": {
     "outDir": "./dist",
+    "isolatedModules": false,
     "moduleResolution": "node"
   },
   "include": [

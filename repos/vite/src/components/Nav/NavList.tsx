@@ -8,6 +8,7 @@ import { ESideNav, EEditorType } from '@types'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import { EditorNavItems } from '@constants/nav'
+import {cls} from '@keg-hub/jsutils'
 
 
 export type TNavListProps = {
@@ -62,7 +63,10 @@ export const NavList = (props:TNavListProps) => {
   
   const itemLength = items.length - 1
   return (
-    <List sx={groupStyle} className={`${group}-group-nav-list ${className || ``}`.trim()}  >
+    <List
+      sx={groupStyle}
+      className={cls(className, `${group}-group-nav-list`)}
+    >
       {items.map((item:TNavItemProps, idx:number) => {
         return (
           <NavListItem

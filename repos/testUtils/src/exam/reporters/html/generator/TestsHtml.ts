@@ -1,5 +1,5 @@
+import type { TExEventData } from "@gobletqa/exam"
 import type { TReporterOpts } from '../HtmlReporter'
-import type { TLocEvtData, TRunResult } from "@gobletqa/exam"
 
 import { IconsHtml } from './IconsHtml'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
@@ -29,11 +29,11 @@ const keywords = [
 ]
 
 
-const sortByTimestamp = (tests: TRunResult[]): TRunResult[] => {
+const sortByTimestamp = (tests: TExEventData[]): TExEventData[] => {
   return tests?.sort((a: any, b: any) => a.timestamp - b.timestamp) || []
 }
 
-const status = (item:TRunResult) => {
+const status = (item:TExEventData) => {
   return item.status
     ? item.status
     : item.passed ? `passed` : `failed`
@@ -74,7 +74,7 @@ const TitleHtml = (text:string, type:string=``, state:string=``) => {
   `
 }
 
-const FailedList = (test: TRunResult, opts:TReporterOpts) => {
+const FailedList = (test: TExEventData, opts:TReporterOpts) => {
   return test.failedExpectations.map((expectation: any) => {
     return `
       <li class="list-item failed-item step-failed failed">
@@ -89,7 +89,7 @@ const FailedList = (test: TRunResult, opts:TReporterOpts) => {
   }).join('')
 }
 
-const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
+const StepList = (tests: TExEventData[], opts:TReporterOpts) => {
   return sortByTimestamp(tests)
     .map((test, idx) => {
       const state = status(test)
@@ -121,7 +121,7 @@ const StepList = (tests: TRunResult[], opts:TReporterOpts) => {
     }).join('')
 }
 
-const ScenarioList = (scenarios: TRunResult[], opts:TReporterOpts) => {
+const ScenarioList = (scenarios: TExEventData[], opts:TReporterOpts) => {
   return scenarios?.map((scenario) => {
     const state = status(scenario)
     return `
@@ -136,7 +136,7 @@ const ScenarioList = (scenarios: TRunResult[], opts:TReporterOpts) => {
 }
 
 
-const FeatureList = (features: TRunResult[], opts:TReporterOpts) => {
+const FeatureList = (features: TExEventData[], opts:TReporterOpts) => {
   return features.map((feature) => {
     const state = status(feature)
     return `
@@ -267,8 +267,8 @@ const testStyles = () => {
   `
 }
 
-export const TestsHtml = (data:TLocEvtData, opts:TReporterOpts) => {
-  const state = status(data as TRunResult)
+export const TestsHtml = (data:TExEventData, opts:TReporterOpts) => {
+  const state = status(data)
   return `
     ${testStyles()}
     <ul class="root-list list-parent root-${state} ${state}">

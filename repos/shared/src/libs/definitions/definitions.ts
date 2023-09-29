@@ -1,4 +1,4 @@
-import type { TRepo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
+import type { Repo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
 
 import path from 'path'
 import { glob } from 'glob'
@@ -6,7 +6,7 @@ import { getSupportFiles } from './supportFiles'
 import { DefinitionsParser } from './definitionsParser'
 import { InternalPaths } from '@gobletqa/environment/constants'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
-import { getPathFromBase, getDefaultGobletConfig } from '@gobletqa/goblet'
+import { getPathFromBase } from '@gobletqa/goblet'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 /**
@@ -18,7 +18,7 @@ let __CachedGobletDefs:TDefinitionFileModel[]
  * Builds the definitions models from the loaded definitions
  */
 const parseDefinitions = async (
-  repo:TRepo,
+  repo:Repo,
   definitionFiles:string[],
   overrideParkin:(...args:any) => any,
 ) => {
@@ -45,9 +45,8 @@ const parseDefinitions = async (
  * Caches the internal goblet step definitions so they don't have to be reloaded each time
  */
 const getGobletDefs = async (
-  repo:TRepo,
+  repo:Repo,
   overrideParkin:(...args:any) => any,
-  gobletConfig:TDefGobletConfig,
   cache:boolean=true
 ) => {
   if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs 
@@ -72,7 +71,7 @@ const getGobletDefs = async (
  *
  */
 const getRepoDefinitions = async (
-  repo:TRepo,
+  repo:Repo,
   overrideParkin:(...args:any) => any,
 ) => {
 
@@ -93,7 +92,7 @@ const getRepoDefinitions = async (
  */
 const loadDefinition = async (
   location:string,
-  repo:TRepo,
+  repo:Repo,
 ) => {
   await repo.refreshWorld()
   const overrideParkin = parkinOverride(repo)
@@ -107,13 +106,11 @@ const loadDefinition = async (
  * Loads the definitions file from the passed in repo instance
  */
 export const loadDefinitions = async (
-  repo:TRepo,
-  gobletConfig?:TDefGobletConfig,
+  repo:Repo,
   cache:boolean=true
 ) => {
   // Clear out any steps that were already loaded
   DefinitionsParser.clear(repo)
-  gobletConfig = gobletConfig || getDefaultGobletConfig()
 
   // The repo world may have been updated since the last time load definitions was called
   // Call refreshWorld to ensure repo and parkin have an updated world
@@ -121,7 +118,7 @@ export const loadDefinitions = async (
   const overrideParkin = parkinOverride(repo)
   
   const clientDefinitions = await getRepoDefinitions(repo, overrideParkin)
-  const gobletDefinitions = await getGobletDefs(repo, overrideParkin, gobletConfig, cache)
+  const gobletDefinitions = await getGobletDefs(repo, overrideParkin, cache)
 
   // TODO: look into returned the support fileModels to the frontend
   // For now we just load them

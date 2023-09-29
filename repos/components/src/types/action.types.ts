@@ -23,7 +23,7 @@ export type TBrowserAction = {
   onClick?: TBrowserActionCB
   containerSx?:CSSProperties
   containerClassName?: string
-  Component:ComponentType<any>
+  Component?:ComponentType<any>
   sx?:CSSProperties|CSSProperties[]
   [key:string]: any
 }

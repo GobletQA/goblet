@@ -3,8 +3,9 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
 import { Logger } from '@GSC/utils/logger'
+import { workflows } from '@gobletqa/workflows'
+import { loadRepoContent } from '@gobletqa/repo'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { Repo, loadRepoContent } from '@gobletqa/workflows'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
@@ -29,7 +30,7 @@ export const createRepo = async (
 
     const body = req.body as TCreateBody
     const { token, username, provider } = req.auth
-    const { repo, status } = await Repo.create({
+    const { repo, status } = await workflows.create({
       token,
       provider,
       username,
@@ -45,7 +46,7 @@ export const createRepo = async (
     // If the repo mounting fails for some reason
     // Call disconnect incase it throws after the repo was mounted
     config?.server?.environment !== `local`
-      ? await Repo.disconnect({ username: req.auth.username })
+      ? await workflows.disconnect({ username: req.auth.username })
       : Logger.warn(`Skipping repo unmount in local environment`)
 
     throw err

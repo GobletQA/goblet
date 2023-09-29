@@ -10,10 +10,10 @@ export type TExReporterCfg = {
 export interface IExamReporter {
   cleanup?: () => unknown|Promise<unknown>
 
-  // onSpecStarted(result:TExEventData):unknown|Promise<unknown>
+  // onSpecStart(result:TExEventData):unknown|Promise<unknown>
   // onSpecDone(result:TExEventData):unknown|Promise<unknown>
 
-  // onSuiteStarted(result:TExEventData):unknown|Promise<unknown>
+  // onSuiteStart(result:TExEventData):unknown|Promise<unknown>
   // onSuiteDone(result:TExEventData):unknown|Promise<unknown>
   
   // Event `PLAY-SUITE-DONE`

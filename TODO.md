@@ -115,9 +115,3 @@ On every page load
 * Then run the feature
   * 
 
-
-
-Run all tests
-* Simple list of failed tests
-* Disable shutting down session container when running all tests from UI
-

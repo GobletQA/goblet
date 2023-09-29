@@ -1,6 +1,6 @@
  import {
   TExamEvt,
-  TLocEvtData,
+  TExEventData,
 } from "@gobletqa/exam"
 
 export type TTakeShot = {
@@ -15,7 +15,7 @@ type TBuiltSSName = {
   timestamp:string|number
 }
 
-const getNameOpts = (data:TLocEvtData, opts:TTakeShot) => {
+const getNameOpts = (data:TExEventData, opts:TTakeShot) => {
   return {
     id: data.id,
     ext: opts?.ext || `png`,
@@ -55,7 +55,7 @@ export const buildScreenshotName = (opts:TBuiltSSName) => {
 }
 
 
-export const takeScreenshot = async (evt:TExamEvt<TLocEvtData>, opts:TTakeShot) => {
+export const takeScreenshot = async (evt:TExamEvt<TExEventData>, opts:TTakeShot) => {
   const { page } = opts
   const buffer = await page?.screenshot()
 

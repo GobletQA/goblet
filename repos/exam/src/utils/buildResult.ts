@@ -22,7 +22,7 @@ export const buildNoTestsResult = (result:TBuildResult=emptyBuildResult) => {
 }
 
 
-export const buildFailedTestResult = (result:TBuildResult) => {
+export const buildFailedTestResult = (result?:TBuildResult) => {
   return {
     ...BuiltTestResultFailed,
     describes: [],

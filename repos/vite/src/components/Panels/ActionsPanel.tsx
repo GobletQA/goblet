@@ -6,7 +6,6 @@ import { useRepo } from '@store'
 import { LockAction } from './LockAction'
 import { styled } from '@mui/material/styles'
 import { UnmountAction } from './UnmountAction'
-import { ExamRunAction } from './ExamRunAction'
 import { wordCaps, emptyObj } from '@keg-hub/jsutils'
 import { dims, gutter, colors, Span, Tooltip } from '@gobletqa/components'
 
@@ -123,7 +122,6 @@ const ActionsPanelTitle = () => {
 
 export const ActionsPanel:TSidebarPanel = {
   actions: [
-    ExamRunAction,
     UnmountAction,
     LockAction,
   ],

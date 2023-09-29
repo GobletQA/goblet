@@ -1,5 +1,7 @@
 
 export type TEventCB<T=Record<any, any>> = (evtObj:T, ...args:any[]) => void
+export type TOffCB = (() => void)|undefined
+const noOp = () => {}
 
 /**
  * Stores events based on event names, which can then be called at another time in a different location
@@ -11,14 +13,13 @@ export class EventEmitter {
   listeners:Record<string, Set<TEventCB>> = {}
   refKey: Record<string, TEventCB> = {}
 
-  on = <T=Record<any, any>>(event:string, cb:TEventCB<T>, key:string=event) => {
+  on = <T=Record<any, any>>(event:string, cb:TEventCB<T>, key:string=event):TOffCB => {
     if (!this.listeners[event]) this.listeners[event] = new Set<TEventCB<T>>()
 
-    if (this.listeners[event].has(cb))
-      return console.warn(
-        `Listener already exists for router event: \`${event}\``,
-        `error`
-      )
+    if (this.listeners[event].has(cb)){
+      console.warn(`Listener already exists for event: \`${event}\``)
+      return noOp
+    }
 
     this.listeners[event].add(cb)
     key && !this.refKey[key] && (this.refKey[key] = cb)
@@ -26,7 +27,7 @@ export class EventEmitter {
     return () => this.off(event, cb)
   }
 
-  emit = <T=Record<any, any>>(event:string, evtObj:T, ...data:any[]) => {
+  emit = <T=Record<any, any>>(event:string, evtObj?:T, ...data:any[]) => {
     const listeners = this.listeners[event]
     if (!listeners || !listeners.size) return false
 

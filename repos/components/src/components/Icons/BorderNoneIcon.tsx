@@ -1,6 +1,3 @@
-
-
-
 import { Icon, TIconProps } from './Icon'
 import { forwardRef } from 'react'
 

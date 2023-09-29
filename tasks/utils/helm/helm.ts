@@ -1,6 +1,8 @@
-import { command } from '../process/command'
+import type { TTaskParams } from '../../types'
 
-import { noPropArr, noOpObj } from '@keg-hub/jsutils'
+import { command } from '../process/command'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getDevspaceContext } from '../devspace/getDevspaceContext'
 
 type TCallback = (args:string|string[], params?:Record<any, any>) => Promise<any>
@@ -22,8 +24,8 @@ type TRepoObj = {
 const helmCmd = command(`helm`)
 
 export const helm = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => {
 
   const cmdArgs = [...args]
@@ -39,8 +41,8 @@ export const helm = async (
 
 const helmAction = async (
   method:string,
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => {
   return await helm([
     method,
@@ -49,31 +51,31 @@ const helmAction = async (
 }
 
 helm.upgrade = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => helmAction(`upgrade`, args, params)
 
 helm.install = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => helmAction(`install`, args, params)
 
 helm.uninstall = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => helmAction(`uninstall`, args, params)
 
 helm.delete = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => helmAction(`delete`, args, params)
 
 helm.repo = {} as TRepoObj
 
 const repoAction = async (
   method:string,
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => {
   return await helm([
     `repo`,
@@ -83,11 +85,11 @@ const repoAction = async (
 }
 
 helm.repo.add = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => repoAction(`add`, args, params)
 
 helm.repo.update = async (
-  args:string[] = noPropArr,
-  params:Record<any, any> = noOpObj
+  args:string[] = emptyArr,
+  params:TTaskParams = emptyObj as TTaskParams
 ) => repoAction(`update`, args, params)
