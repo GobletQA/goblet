@@ -1,4 +1,4 @@
-import type { TRepo } from '@GSH/types'
+import type { Repo } from '@GSH/types'
 import type { TStepCtx } from '@GTU/Types'
 
 import { wait } from '@keg-hub/jsutils/wait'
@@ -42,7 +42,7 @@ const augmentCtx = async (ctx:TStepCtx) => {
  */
 const waitBuffer = false
 
-const getStepHandler = (repo:TRepo, name:string) => {
+const getStepHandler = (repo:Repo, name:string) => {
   return (...args:any[]) => {
 
     const [match, action, meta] = args
@@ -69,7 +69,7 @@ const getStepHandler = (repo:TRepo, name:string) => {
 /**
  * Override module for Parkin to allow loading the repo specific parkin instance
  */
-export const parkinOverride = (repo:TRepo) => {
+export const parkinOverride = (repo:Repo) => {
   return () => ({
     And: getStepHandler(repo, `And`),
     But: getStepHandler(repo, `But`),

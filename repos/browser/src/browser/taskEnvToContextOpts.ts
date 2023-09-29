@@ -1,4 +1,3 @@
-import type playwright from 'playwright'
 import type {
   TScreenDims,
   TGobletConfig,
@@ -9,13 +8,13 @@ import type {
 
 import { ENVS } from '@gobletqa/environment'
 import { isArr } from '@keg-hub/jsutils/isArr'
-import { toNum } from '@keg-hub/jsutils/toNum'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { exists } from '@keg-hub/jsutils/exists'
 import { ArtifactSaveOpts } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
+import { InternalPaths } from '@gobletqa/environment/constants'
 
 
 /**
@@ -86,7 +85,6 @@ const addEnvToOpts = (opts, key, value) => {
  * Parses the GOBLET_TEST_VIDEO_RECORD env, and sets the height and width if true
  */
 const parseRecord = (
-  config:TGobletConfig,
   opts:Partial<TBrowserContextOpts>,
   screenDims:TScreenDims,
   recordVideoActive:boolean,
@@ -102,7 +100,7 @@ const parseRecord = (
 
   // Save videos to the temp dir, and copy them to the repo dir as needed
   // I.E. a test fails
-  const { videosTempDir } = config.internalPaths
+  const { videosTempDir } = InternalPaths
   opts.recordVideo.dir = videosTempDir
 
   return opts
@@ -127,7 +125,6 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
   const screenDims = getScreenDims()
 
   parseRecord(
-    config,
     opts,
     screenDims,
     shouldRecordVideo(ENVS.GOBLET_TEST_VIDEO_RECORD),

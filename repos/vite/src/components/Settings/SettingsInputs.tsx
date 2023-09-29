@@ -10,13 +10,13 @@ import type {
 } from 'react'
 
 
-import { noOpObj } from '@keg-hub/jsutils'
+import { isStr, ensureArr, emptyObj } from '@keg-hub/jsutils'
 import MuiSwitch from '@mui/material/Switch'
 import TextField from '@mui/material/TextField'
-import { StyledInput } from './Settings.styled'
 import Typography from '@mui/material/Typography'
 import { useColorMap } from '@hooks/theme/useColorMap'
-import { useCallback, useState, useRef, forwardRef } from 'react'
+import { useMemo, useCallback, useState, useRef, forwardRef } from 'react'
+import { SettingContainer, SettingInput, SettingTags } from './Settings.styled'
 
 
 import MuiInput from '@mui/material/Input'
@@ -52,7 +52,7 @@ export const Input = (props:TInput) => {
     postfix,
     disabled,
     className,
-    inputProps=noOpObj as Record<string, any>,
+    inputProps=emptyObj as Record<string, any>,
     ...rest
   } = props
 
@@ -92,7 +92,7 @@ export const Input = (props:TInput) => {
           )
         : null
       }
-      <StyledInput
+      <SettingInput
         {...rest}
         disabled={disabled}
         className={`setting-input ${className || ''}`.trim()}
@@ -181,7 +181,7 @@ export const Select = (props:TSelect) => {
   }, [value, onChange])
 
   return (
-    <div>
+    <SettingContainer>
       <FormControl sx={{ m: 0, padding: `0px`, width: 125 }}>
         <MuiSelect
           input={<MuiInput />}
@@ -203,15 +203,69 @@ export const Select = (props:TSelect) => {
           }
           {item?.options?.map((option:string) => (
             <MenuItem
-              key={option}
+              key={`${option}`}
               value={option}
             >
-              {option}
+              {`${option}`}
             </MenuItem>
           ))}
         </MuiSelect>
       </FormControl>
-    </div>
+    </SettingContainer>
   )
+}
+
+export type TTags = Omit<ComponentProps<typeof SettingTags>, `onChange`|`onBlur`|`options`|`renderInput`>
+  & {
+    item:TSetting
+    options?:string[]
+    inputProps:TInput
+    onBlur: FocusEventHandler<HTMLInputElement>
+    onChange: ChangeEventHandler<HTMLInputElement>
+  }
+
+export const Tags = (props:TTags) => {
+  const {
+    item,
+    value,
+    onBlur,
+    onChange,
+    inputProps,
+    options=[],
+    ...rest
+  } = props
+
+  const onValueChange = useCallback((evt:ChangeEvent|any) => {
+    console.log(`------- tags - on change -------`)
+    // value !== (evt?.target as HTMLInputElement)?.value && onChange?.(evt?.target)
+  }, [value, onChange])
   
+  const onInputBlur = useCallback((evt:FocusEvent) => {
+    console.log(`------- tags - on blur -------`)
+    // value !== evt?.target?.value && onChange?.(evt?.target)
+  }, [value, onChange])
+
+  const val = useMemo(() => {
+    return !value ? [] : isStr(value) ? value.split(` `) : ensureArr(value)
+  }, [value])
+
+  return (
+    <SettingContainer>
+      <SettingTags
+        {...rest}
+        value={val}
+        freeSolo={true}
+        multiple={true}
+        options={options}
+        onBlur={onInputBlur}
+        onChange={onValueChange}
+        renderInput={(params) => (
+          <Input
+            {...params}
+            {...inputProps}
+          />
+        )}
+      />
+    </SettingContainer>
+  )
 }

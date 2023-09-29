@@ -1,22 +1,24 @@
+import type { CSSProperties } from 'react'
 import type { TooltipProps } from '@mui/material/Tooltip'
 
 import Box from '@mui/material/Box'
-import { colors, gutter } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
+type CSS = CSSProperties
 
 export type TTooltipProps = TooltipProps & {
   fontSize?: string
 }
 
 export const MuiTooltip = styled(({ className, fontSize, ...props }: TTooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme, fontSize=14 }) => ({
+  <Tooltip {...props} classes={{ popper: className }} />)
+)(({ theme, fontSize=14, sx }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    fontSize,
-    boxShadow: theme.shadows[3],
-    color: `var(--goblet-editor-foreground)`,
-    backgroundColor: `var(--goblet-editor-background)`,
+    ...sx,
+    fontSize: fontSize ?? (sx as CSS)?.fontSize,
+    boxShadow: (sx as CSS)?.boxShadow ?? theme.shadows[3],
+    color: (sx as CSS)?.color ?? `var(--goblet-editor-foreground)`,
+    backgroundColor: (sx as CSS)?.backgroundColor ?? `var(--goblet-editor-background)`,
   },
 }))
 

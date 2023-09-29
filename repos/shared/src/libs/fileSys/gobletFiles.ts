@@ -1,5 +1,4 @@
-import type { Repo } from '@GSH/types'
-import type { TDefGobletConfig, TFileModel } from '../../types'
+import type { TFileModel, Repo } from '@GSH/types'
 
 import os from 'os'
 import path from 'path'
@@ -9,6 +8,7 @@ import { loadReport } from '@GSH/libs/fileSys/loadReport'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/models/buildFileModel'
 import { resolveFileType } from '@GSH/models/resolveFileType'
+import { InternalPaths } from '@gobletqa/environment/constants'
 import { getPathFromConfig, getRepoGobletDir } from '@gobletqa/goblet'
 import {
   AllowedWorldExtensions,
@@ -328,12 +328,10 @@ const convertDefaultDefToCustomDef = (
  *
  */
 export const getGobletDefaultFile = async (
-  config:TDefGobletConfig,
   repo:Repo,
   location:string
 ) => {
-  const { internalPaths } = config
-  const defaultStepsDir = internalPaths.defaultStepsDir
+  const defaultStepsDir = InternalPaths.defaultStepsDir
 
   if(!location.startsWith(defaultStepsDir))
     throw new Exception(

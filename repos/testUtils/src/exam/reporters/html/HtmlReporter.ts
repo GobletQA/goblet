@@ -1,8 +1,7 @@
 import type { TGobletTestArtifactOption } from '@GTU/Types'
  import {
   TExamEvt,
-  TRunResult,
-  TLocEvtData,
+  TExEventData,
   TExamConfig,
   IExamReporter,
   TExReporterCfg,
@@ -31,7 +30,7 @@ export type TGenHtmlOpts = {
 export type THtmlTemplate = {
   date?:string
   title?:string
-  data:TLocEvtData
+  data:TExEventData
 }
 
 export type TTestTimeCache = {
@@ -42,13 +41,13 @@ export type TTestTimeCache = {
 
 export type TReporterOpts = {
   testTimes:Record<string, TTestTimeCache>
-  onRenderTest?: (data:TRunResult) => string
-  onRenderError?: (data:TRunResult) => string
+  onRenderTest?: (data:TExEventData) => string
+  onRenderError?: (data:TExEventData) => string
 }
 
 
 
-const buildTitle = (response:TLocEvtData, reportTitle?:string) => {
+const buildTitle = (response:TExEventData, reportTitle?:string) => {
   if(reportTitle) return reportTitle
 
   if(response.location)
@@ -151,7 +150,7 @@ export class HtmlReporter implements IExamReporter {
     return this.#page
   }
 
-  #renderImg = (data:TRunResult) => {
+  #renderImg = (data:TExEventData) => {
     const uri = this.#screenshots[data.id]
     return uri
       ? ImgHtml({
@@ -163,7 +162,7 @@ export class HtmlReporter implements IExamReporter {
       : ``
   }
 
-  #onRenderTest = (data:TRunResult) => {
+  #onRenderTest = (data:TExEventData) => {
     return data.failed && (this.#saveScreenshot === ArtifactSaveOpts.failed)
       ? ``
       : this.#renderImg(data)
@@ -197,7 +196,7 @@ export class HtmlReporter implements IExamReporter {
     `
   }
 
-  #saveFile = async (evt:TExamEvt<TLocEvtData>, html:string) => {
+  #saveFile = async (evt:TExamEvt<TExEventData>, html:string) => {
     try {
       const { location, timestamp } = evt.data
       const { dir, nameTimestamp } = getGeneratedName({ location, timestamp })
@@ -213,12 +212,12 @@ export class HtmlReporter implements IExamReporter {
     }
   }
 
-  onTestStart = (evt:TExamEvt<TLocEvtData>) => {
+  onTestStart = (evt:TExamEvt<TExEventData>) => {
     const { id, timestamp } = evt?.data
     this.#testTimes[id] = {start: timestamp}
   }
 
-  onTestResult = async (evt:TExamEvt<TLocEvtData>) => {
+  onTestResult = async (evt:TExamEvt<TExEventData>) => {
     const { id, timestamp, status } = evt?.data
 
     if(this.#testTimes[id]){
@@ -236,7 +235,7 @@ export class HtmlReporter implements IExamReporter {
     resp && (this.#screenshots[resp.id] = resp.uri)
   }
 
-  onRunResult = async (evt:TExamEvt<TLocEvtData>) => {
+  onRunResult = async (evt:TExamEvt<TExEventData>) => {
     const { status } = evt?.data
     if(!shouldSaveArtifact(this.#saveReport, status)) return
 

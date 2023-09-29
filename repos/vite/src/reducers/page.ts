@@ -1,7 +1,7 @@
 import type { TBrowserNavEvt, TDspAction } from '@types'
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 
-
+import { deepMerge } from '@keg-hub/jsutils'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TPageState = TBrowserNavEvt
@@ -15,10 +15,12 @@ export const pageActions = {
   setPage: (state:TPageState, action:TDspAction<TPageState>) => action?.payload,
 }
 
-export const pageReducer = createReducer(pageState, (builder:ActionReducerMapBuilder<TPageState>) => {
-  builder.addCase(clearPage, pageActions.clearPage)
-  builder.addCase(setPage, pageActions.setPage)
-})
+export const pageReducer = createReducer(
+  deepMerge(pageState),
+  (builder:ActionReducerMapBuilder<TPageState>) => {
+    builder.addCase(clearPage, pageActions.clearPage)
+    builder.addCase(setPage, pageActions.setPage)
+  })
 
 
 

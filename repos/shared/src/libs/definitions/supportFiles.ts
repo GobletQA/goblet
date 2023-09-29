@@ -1,4 +1,4 @@
-import type { TRepo, TDefinitionFileModel } from '@GSH/types'
+import type { Repo, TDefinitionFileModel } from '@GSH/types'
 
 import { glob } from 'glob'
 import { getPathFromBase } from '@gobletqa/goblet'
@@ -15,7 +15,7 @@ let __CachedGobletDefs:TDefinitionFileModel[]
  * Builds the definitions models from the loaded definitions
  */
 const parseRepoFiles = async (
-  repo:TRepo,
+  repo:Repo,
   supportFiles:string[],
   overrideParkin:(...args:any) => any,
 ) => {
@@ -47,7 +47,7 @@ const parseRepoFiles = async (
  *
  */
 const loadRepFiles = async (
-  repo:TRepo,
+  repo:Repo,
   overrideParkin:(...args:any) => any,
 ) => {
 
@@ -64,7 +64,7 @@ const loadRepFiles = async (
 
 
 export const getSupportFiles = async (
-  repo:TRepo,
+  repo:Repo,
   overrideParkin:(...args:any) => any,
 ) => {
   try {

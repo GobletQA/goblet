@@ -2,11 +2,14 @@ import type { TGitData } from './repo.types'
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
 import type { TBrowserConf } from './pw.types'
+import type { TExamUIRun } from './exam.types'
 import type {
   SocketManager,
   TWebSocketEvent,
   TWebSocketEvents,
 } from '@gobletqa/screencast/types/socket.types'
+
+
 
 export type TSocketEvent = TWebSocketEvent
 
@@ -42,6 +45,7 @@ export type TSocketData = {
   url?:string
   repo?:TGitData
   browser?:TBrowserConf
+  examOpts?:TExamUIRun
   [key:string]: any
 }
 

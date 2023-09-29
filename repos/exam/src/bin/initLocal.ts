@@ -1,29 +1,14 @@
-import type { TExamCliOpts, TExamConfig, TPipelineInit } from '@GEX/types'
+import type { TExamConfig } from '@GEX/types'
 
-import { loadFiles } from './loadFiles'
+
+import { loadFiles } from '@GEX/utils/loadFiles'
 import { nanoid } from '@keg-hub/jsutils/nanoid'
-import { flatArr } from '@keg-hub/jsutils/flatArr'
 import { timedRun } from '@keg-hub/jsutils/timedRun'
-import { RunPipeline } from '../pipelines/RunPipeline'
-import { onStartupStep } from '../pipelines/steps/onStartupStep'
-import { onShutdownStep } from '../pipelines/steps/onShutdownStep'
+import { initPipeline } from '../pipelines/initPipeline'
 
 type TInitExamCfg = TExamConfig & { file?:string }
 
-const initPipeline = async (cfg:TPipelineInit) => {
-
-  cfg?.config?.onStartup?.length
-    && await onStartupStep(cfg)
-
-  const resp = await RunPipeline(cfg)
-
-  cfg?.config?.onShutdown?.length
-    && await onShutdownStep(cfg)
-
-  return flatArr(resp)
-}
-
-export const initLocal = async (exam:TInitExamCfg, opts:TExamCliOpts) => {
+export const initLocal = async (exam:TInitExamCfg) => {
   const locations = await loadFiles(exam)
 
   return await timedRun(initPipeline, {

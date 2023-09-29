@@ -22,6 +22,7 @@
   ],
   "scripts": {
     "bai": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildActionImgs.sh",
+    "bdi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildDevImgs.sh",
     "bgi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildGobletImgs.sh",
     "build": "pnpm -r build",
     "build:docker": "pnpm -r build:docker",
@@ -31,7 +32,7 @@
     "certs": "/bin/bash scripts/shell/generate.sh $@",
     "clean": "pnpm -r clean",
     "clean:nm": "rimraf -rf ./node_modules; pnpm -r clean:nm",
-    "clean:full": "pnpm clean; pnpm clean:nm; pnpm setup",
+    "clean:full": "pnpm clean; pnpm clean:nm; pnpm local",
     "cz": "cz",
     "compile": "node scripts/compile.js",
     "dev": "node -r ./configs/aliases.js tasks/entry.ts devspace",
@@ -44,9 +45,11 @@
     "format:pretty": "pnpm pretty .",
     "imgs": "node -r ./configs/aliases.js tasks/entry.ts docker images",
     "kube": "node -r ./configs/aliases.js tasks/entry.ts kube",
+    "local": "pnpm install && pnpm cp:tracer",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
     "mkcert": "GB_ROOT_DIR=$(pwd) ./scripts/shell/mkcert/mkcert.sh",
+    "prod:build:deploy": "pnpm bgi && pnpm dprod",
     "pretty": "prettier --ignore-path .root.ignore --config ./configs/prettier.config.js --write",
     "sc": "node -r ./configs/aliases.js tasks/entry.ts screencast",
     "screencast": "node -r ./configs/aliases.js tasks/entry.ts screencast",
@@ -54,7 +57,6 @@
     "task": "node -r ./configs/aliases.js tasks/entry.ts",
     "cp:tracer": "node scripts/js/cpTracer.js",
     "pm2": "pm2 start configs/app.pm2.config.js",
-    "setup": "pnpm install && pnpm cp:tracer",
     "si": "pnpm sync; pnpm install",
     "sync": "syncpack fix-mismatches",
     "test": "pnpm -r test",
@@ -63,7 +65,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@emotion/react": "11.11.0",
+      "@emotion/react": "11.11.1",
       "@keg-hub/args-parse": "10.0.1",
       "@keg-hub/cli-utils": "0.9.0"
     },
@@ -76,6 +78,7 @@
         "react"
       ],
       "allowAny": [
+        "esbuild-register",
         "@ltipton/esdev",
         "dockerode",
         "docker-events",
@@ -99,18 +102,18 @@
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
-    "esbuild": "0.19.2",
-    "esbuild-register": "3.4.2",
+    "esbuild": "0.19.3",
+    "esbuild-register": "3.5.0",
     "module-alias": "2.2.2"
   },
   "devDependencies": {
     "@ltipton/esdev": "0.2.1",
     "@ltipton/parkin": "6.3.0",
-    "@types/jest": "29.1.2",
+    "@types/jest": "29.5.5",
     "esbuild-jest": "0.5.0",
-    "jest": "29.5.0",
-    "playwright": "1.37.1",
-    "typescript": "5.0.4"
+    "jest": "29.7.0",
+    "playwright": "1.38.1",
+    "typescript": "5.2.2"
   },
   "optionalDependencies": {
     "@commitlint/cli": "16.1.0",
@@ -124,7 +127,7 @@
     "husky": "7.0.4",
     "lint-staged": "12.3.4",
     "module-alias": "2.2.2",
-    "nodemon": "2.0.22",
+    "nodemon": "3.0.1",
     "prettier": "2.5.1",
     "semver": "7.3.7",
     "syncpack": "11.2.1"

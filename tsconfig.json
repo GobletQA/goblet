@@ -67,6 +67,28 @@
       "@GEX/utils/*": ["repos/exam/src/utils/*"],
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
+      
+      "@GGT/constants": ["repos/git/src/constants"],
+      "@GGT/constants/*": ["repos/git/src/constants/*"],
+      "@GGT/providers": ["repos/git/src/providers"],
+      "@GGT/providers/*": ["repos/git/src/providers/*"],
+      "@GGT/types": ["repos/git/src/types"],
+      "@GGT/types/*": ["repos/git/src/types/*"],
+      "@GGT/utils": ["repos/git/src/utils"],
+      "@GGT/utils/*": ["repos/git/src/utils/*"],
+      "@GGT": ["repos/git/src"],
+      "@GGT/*": ["repos/git/src/*"],
+
+      "@GJK/constants": ["repos/joker/src/constants"],
+      "@GJK/constants/*": ["repos/joker/src/constants/*"],
+      "@GJK/providers": ["repos/joker/src/providers"],
+      "@GJK/providers/*": ["repos/joker/src/providers/*"],
+      "@GJK/types": ["repos/joker/src/types"],
+      "@GJK/types/*": ["repos/joker/src/types/*"],
+      "@GJK/utils": ["repos/joker/src/utils"],
+      "@GJK/utils/*": ["repos/joker/src/utils/*"],
+      "@GJK": ["repos/joker/src"],
+      "@GJK/*": ["repos/joker/src/*"],
 
       "@GLT/cli/types": ["repos/latent/src/bin/cli.types.ts"],
       "@GLT/templates": ["repos/latent/src/templates"],
@@ -76,6 +98,17 @@
       "@GLT/types/*": ["repos/latent/src/types/*"],
       "@GLT": ["repos/latent/src"],
       "@GLT/*": ["repos/latent/src/*"],
+
+      "@GRP/constants": ["repos/repo/src/constants"],
+      "@GRP/constants/*": ["repos/repo/src/constants/*"],
+      "@GRP/types": ["repos/repo/src/types"],
+      "@GRP/types/*": ["repos/repo/src/types/*"],
+      "@GRP/utils": ["repos/repo/src/utils"],
+      "@GRP/utils/*": ["repos/repo/src/utils/*"],
+      "@GRP": ["repos/repo/src"],
+      "@GRP/*": ["repos/repo/src/*"],
+
+      
 
       "@GSH/libs": ["repos/shared/src/libs"],
       "@GSH/libs/*": ["repos/shared/src/libs/*"],
@@ -160,6 +193,12 @@
       "@gobletqa/goblet": ["repos/goblet/src"],
       "@gobletqa/goblet/*": ["repos/goblet/src/*"],
 
+      "@gobletqa/git": ["repos/git/src"],
+      "@gobletqa/git/*": ["repos/git/src/*"],
+
+      "@gobletqa/joker": ["repos/joker/src"],
+      "@gobletqa/joker/*": ["repos/joker/src/*"],
+
       "@gobletqa/latent": ["repos/latent/src"],
       "@gobletqa/latent/*": ["repos/latent/src/*"],
 
@@ -171,6 +210,9 @@
 
       "@gobletqa/race": ["repos/race/src"],
       "@gobletqa/race/*": ["repos/race/src/*"],
+
+      "@gobletqa/repo": ["repos/repo/src"],
+      "@gobletqa/repo/*": ["repos/repo/src/*"],
 
       "@gobletqa/screencast": [ "repos/screencast/src" ],
       "@gobletqa/screencast/*": [ "repos/screencast/src/*" ],

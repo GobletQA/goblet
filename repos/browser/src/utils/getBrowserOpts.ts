@@ -10,13 +10,14 @@ import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { InternalPaths } from '@gobletqa/environment/constants'
 import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
 
 /**
  * Default browser options
  * @type {Object}
  */
-const getDefOpts = (config?:TGobletConfig) => {
+const getDefOpts = () => {
   const opts =  {
     host: {} as Partial<TBrowserConf>,
     vnc: {
@@ -68,8 +69,8 @@ const getDefOpts = (config?:TGobletConfig) => {
   // TODO: eventually this will be overwritten by the mounted repo 
   // If we have a path to the testUtils dir
   // Then add the fake webcam data
-  if(config?.internalPaths?.testUtilsDir){
-    const webcamLoc = path.join(config.internalPaths.testUtilsDir, `media/webcam.y4m`)
+  if(InternalPaths?.testUtilsDir){
+    const webcamLoc = path.join(InternalPaths.testUtilsDir, `media/webcam.y4m`)
     opts.vnc.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
   }
 
@@ -130,7 +131,7 @@ export const getBrowserOpts = (
     ...argumentOpts
   } = browserConf
 
-  const options = getDefOpts(config)
+  const options = getDefOpts()
 
   const { args: configModeArgs, ...configModeOpts } = vncActive()
     ? options.vnc
@@ -179,7 +180,7 @@ export const getBrowserOpts = (
      * This ensures those options gets set
      * Also, excludes the devices list from the returned Object
      */
-     config ? omitKeys(taskEnvToBrowserOpts(config), ['devices']) : emptyObj,
+     config ? omitKeys(taskEnvToBrowserOpts(), ['devices']) : emptyObj,
 
     {
       /**

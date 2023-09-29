@@ -1,13 +1,13 @@
 import type { MutableRefObject } from 'react'
-
 import { EEditorType } from '@types'
 import type {
   TBuiltDeco,
   TPlayerResEvent,
+  TPlayerTestEvent,
   TPlayerEventData,
 } from '@types'
 
-import { PWPlay } from '@constants'
+import { TestsToSocketEvtMap } from '@constants'
 import { buildDecorationFrom } from '@utils/decorations/buildDecorationFrom'
 
 type TUpdateDecs = {
@@ -25,13 +25,21 @@ export const checkFailedSpec = <R=TBuiltDeco>({
 }:TUpdateDecs):R[] => {
   let decos = [] as R[]
 
-  if(!event || event.name !== PWPlay.playSpecDone || event.data.passed) return decos
+  if(!event || event.name !== TestsToSocketEvtMap.specDone || event.data.passed) return decos
 
   const featDeco = featureRef.current
-    && buildDecorationFrom(event.data, featureRef.current, editor)
+    && buildDecorationFrom(
+        event.data as TPlayerTestEvent,
+        featureRef.current as TPlayerTestEvent,
+        editor
+      )
 
   const sceDeco = scenarioRef.current
-    && buildDecorationFrom(event.data, scenarioRef.current, editor)
+    && buildDecorationFrom(
+        event.data as TPlayerTestEvent,
+        scenarioRef.current as TPlayerTestEvent,
+        editor
+      )
 
   featDeco && decos.push(featDeco as R)
   sceDeco && decos.push(sceDeco as R)

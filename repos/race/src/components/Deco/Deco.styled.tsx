@@ -5,6 +5,7 @@ import {
   Span,
   colors,
   gutter,
+  SkipIcon,
   FailIcon,
   PassIcon,
 } from '@gobletqa/components'
@@ -38,6 +39,11 @@ export const DecoPassContainer = styled(Span)`
   color: ${colors.shinyShamrock};
 `
 
+export const DecoCanceledContainer = styled(Span)`
+  ${shared}
+  color: ${colors.yellow12};
+`
+
 export const DecoSuccessContainer = styled(Span)`
   ${shared}
   color: ${colors.shinyShamrock};
@@ -53,6 +59,11 @@ export const DecoFailIcon = styled(FailIcon)`
 export const DecoPassIcon = styled(PassIcon)`
   color: ${colors.shinyShamrock};
 `
+
+export const DecoCanceledIcon = styled(SkipIcon)`
+  color: ${colors.yellow12};
+`
+
 export const DecoSpinIcon = styled(Span)`
   font-size: 3px;
   border-radius: 50%;
@@ -65,7 +76,6 @@ export const DecoSpinIcon = styled(Span)`
 `
 
 export const DecoLineHighlight = styled(Box)`
-
   z-index: 0;
   left: 0px;
   right: 0px;
@@ -93,7 +103,12 @@ export const DecoLineHighlight = styled(Box)`
     background-color: ${colors.green10}33;
     border-bottom: 2px solid ${colors.green10}66;
   }
-  
+
+  &.canceled {
+    background-color: ${colors.yellow12}33;
+    border-bottom: 2px solid ${colors.yellow12}66;
+  }
+
   &.gb-player-running {
     background-color: ${colors.purple10}33;
     border-bottom: 2px solid ${colors.purple10}66;

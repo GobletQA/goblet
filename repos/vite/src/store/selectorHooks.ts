@@ -5,6 +5,7 @@ import { useSelector as useReduxSelector } from 'react-redux'
 
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector
 export const useApp = () => useSelector((state) => state.app)
+export const useTestRuns = () => useSelector((state) => state.testRuns)
 export const useContainer = () => useSelector((state) => state.container)
 export const useDefs = () => useSelector((state) => state.definitions)
 export const useFiles = () => useSelector((state) => state.files)

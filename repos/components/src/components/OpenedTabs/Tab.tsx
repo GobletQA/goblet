@@ -3,7 +3,8 @@ import type { TTabStyles, TTab, TTabItem } from '../../types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { CloseIcon } from '@GBC/components/Icons'
 import { useEffect, useRef, useMemo } from 'react'
-import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
+import {scrollToTab} from '@GBC/utils/components/scrollToTab'
+import { useTabCallbacks } from '@GBC/hooks/tabs/useTabCallbacks'
 import {
   OpenTab,
   OpenTabTitle,
@@ -63,8 +64,11 @@ export const Tab = (props:TTabItem) => {
   } = useTabCallbacks(props)
 
   useEffect(() => {
-    active && itemRef.current?.scrollIntoView({ block: 'nearest' })
-  }, [active])
+    tab?.active
+      && itemRef.current
+      && setTimeout(() => scrollToTab({ target: itemRef.current }), 100)
+
+  }, [tab?.active])
 
   const styles = useTabStyle(tab, tabStyles)
 

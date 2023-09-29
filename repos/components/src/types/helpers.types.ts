@@ -10,8 +10,9 @@ export type TIcon = {
   color?:string
   fill?:string
   className?:string
-  style?: CSSProperties
-  svgStyle?: CSSProperties
+  sx?:CSSProperties
+  style?:CSSProperties
+  svgStyle?:CSSProperties
 }
 
 export type TTextType = `inherit`

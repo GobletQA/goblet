@@ -1,6 +1,6 @@
 const { addEnv } = require('./addEnv')
-const { buildPWEnvs } = require('./buildPWEnvs')
 const { setNodePath } = require('./setNodePath')
+const { buildPWEnvs } = require('@gobletqa/test-utils/utils/buildPWEnvs')
 
 /**
  * Unit specific ENVs to add to the current process
@@ -14,7 +14,7 @@ const { setNodePath } = require('./setNodePath')
  * @returns {Object} - env object with the ENVs added
  */
 const buildUnitEnvs = (browser, goblet, params, type) => {
-  const env = buildPWEnvs({}, browser, params)
+  const env = buildPWEnvs({...params, browser}, {}, false)
 
   // TODO: Update to use the GOBLET_APP_URL
   // Normalize between GOBLET_APP_URL

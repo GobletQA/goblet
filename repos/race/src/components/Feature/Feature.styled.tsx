@@ -13,6 +13,7 @@ export const FeatureStack = styled(Stack, {
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
+    scroll-behavior: smooth;
     padding: 0px ${gutter.padding.hpx};
     scrollbar-gutter: stable both-edges;
 

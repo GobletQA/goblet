@@ -44,7 +44,7 @@ export const getGobletConfig = (
 
   const baseConfig = loadConfigFromBase(isStr(argsConfig.base) && argsConfig.base)
 
-  if (argsConfig.local && argsConfig.warn) {
+  if (!baseConfig && argsConfig.local && argsConfig.warn) {
     Logger.warn(
       `\n[ WARNING ] ${Logger.colors.red("Can't find a goblet.config file")}\n`
     )
@@ -62,16 +62,12 @@ export const getGobletConfig = (
 
   const defConfig = getDefaultGobletConfig()
   __GOBLET_CONFIG = addConfigFileTypes(
-    deepMerge(
+    deepMerge<TGobletConfig>(
       defConfig,
       // Base if a folder path, not a config file path
       baseConfig,
     )
   )
-
-  // The default config.internalPaths should never be overwritten
-  // So reset it here just in case it was
-  __GOBLET_CONFIG.internalPaths = defConfig.internalPaths
 
   return __GOBLET_CONFIG
 }

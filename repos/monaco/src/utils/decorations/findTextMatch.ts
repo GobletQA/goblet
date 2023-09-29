@@ -47,7 +47,7 @@ export const findTextMatch = ({
   // If only one match, return it
   if(matches.length === 1) return matches[0]
 
-  // Loop the matches, and call the compare function until a match if found
+  // Loop the matches, and call the compare function until a match is found
   return matches.reduce((found:false|editor.FindMatch, match:editor.FindMatch) => {
     return found || compare(match) || found
   }, false)

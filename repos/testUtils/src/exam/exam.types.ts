@@ -1,12 +1,13 @@
 
-import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type {
-  TRepo,
   TBrowser,
   TBrowserPage,
   TBrowserContext,
   TBrowserActionOptions,
 } from '@gobletqa/shared'
+
+import type { Repo } from '@gobletqa/repo'
 
 import type {
   TExamEventCB,
@@ -20,7 +21,7 @@ export type TExamConfig = {}
 export type TExamStartConfig = {}
 
 export type TRepoExamConfig = {
-  repo?:TRepo
+  repo?:Repo
   browser?:TBrowser
   page?:TBrowserPage
   onEvent?:TExamEventCB

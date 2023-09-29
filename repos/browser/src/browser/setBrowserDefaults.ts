@@ -1,12 +1,10 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type {
-  TRepo,
   TBrowserPage,
-  TBrowserContext,
-  TBrowserContextOpts,
   TGobletConfig,
-  TBrowserConf,
-  TPWComponents
+  TBrowserContext,
+  TSetBrowserDefaults,
+  TBrowserContextOpts,
 } from '@GBB/types'
 
 import { isStr } from '@keg-hub/jsutils/isStr'
@@ -19,14 +17,6 @@ import {
   saveContextCookie,
   saveContextStorageState,
 } from '@gobletqa/browser'
-
-export type TSetBrowserDefaults = {
-  headers?:boolean
-  url?:boolean|string
-  config:TGobletConfig
-  browserConf:TBrowserConf
-  pwComponents?:TPWComponents
-}
 
 export type TSetContextSettings = {
   headers?:boolean

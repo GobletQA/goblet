@@ -6,6 +6,7 @@ import { TFilesState } from '@reducers/files'
 import { TReposState } from '@reducers/repos'
 import { TModalState } from '@reducers/modal'
 import { TSettingsState } from '@reducers/settings'
+import { TTestRunsState } from '@reducers/testRuns'
 import { TContainerState } from '@reducers/container'
 import { TScreencastState } from '@reducers/screencast'
 import { TDefinitionsState } from '@reducers/definitions'
@@ -24,12 +25,14 @@ export type {
   TScreencastState,
   TUser,
   TUserState,
+  TTestRunsState,
   TUserEmptyState
 }
 
 export type TCombinedState = {
   app: TAppState
   page: TPageState
+  testRuns: TTestRunsState
   container: TContainerState
   definitions: TDefinitionsState
   files: TFilesState

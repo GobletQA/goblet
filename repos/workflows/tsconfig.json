@@ -8,5 +8,5 @@
     "src",
     "configs",
     "../../configs"
-  ]
+, "../git/src/types/cmd.types.ts"  ]
 }

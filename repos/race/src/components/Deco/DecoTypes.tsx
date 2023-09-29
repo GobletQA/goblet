@@ -4,6 +4,7 @@ import { DecoFail } from './DecoFail'
 import { DecoSpin } from './DecoSpin'
 import { DecoError } from './DecoError'
 import { DecoSuccess } from './DecoSuccess'
+import { DecoCanceled } from './DecoCanceled'
 
 
 export const DecoTypes = {
@@ -12,4 +13,5 @@ export const DecoTypes = {
   [ERaceDecoType.spin]: DecoSpin,
   [ERaceDecoType.error]: DecoError,
   [ERaceDecoType.success]: DecoSuccess,
+  [ERaceDecoType.canceled]: DecoCanceled,
 }

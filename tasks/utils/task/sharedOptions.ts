@@ -341,7 +341,7 @@ const taskOptions = {
     },
     downloads: {
       example: `--downloads`,
-      description: `The accept downloads from visited pages. Downloads automatically cancelled by default`,
+      description: `The accept downloads from visited pages. Downloads automatically canceled by default`,
     },
     geolocation: {
       type: `array`,

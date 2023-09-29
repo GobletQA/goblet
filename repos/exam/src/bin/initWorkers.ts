@@ -1,14 +1,14 @@
-import type { TExamCliOpts, TExamConfig } from '@GEX/types'
+import type { TExamConfig } from '@GEX/types'
 
 import path from 'path'
-import { loadFiles } from './loadFiles'
 import { splitWork } from './splitWork'
 import { runWorkers } from './runWorkers'
 import { WorkerPool } from '@GEX/workerPool'
 import { logWorkBreakdown } from '@GEX/debug'
+import { loadFiles } from '@GEX/utils/loadFiles'
 import { timedRun } from '@keg-hub/jsutils/timedRun'
 
-export const initWorkers = async (exam:TExamConfig & { file?:string }, opts:TExamCliOpts) => {
+export const initWorkers = async (exam:TExamConfig & { file?:string }) => {
   const locations = await loadFiles(exam)
 
   const {

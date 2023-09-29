@@ -13,7 +13,7 @@ import type {
 
 import { useMemo } from 'react'
 import { FileTree } from '../FileTree'
-import { isStr } from '@keg-hub/jsutils/isStr'
+import { isStr } from '@keg-hub/jsutils'
 import {
   Sidebar as GBSidebar,
   SidebarPortal as GBSidebarPortal
@@ -57,7 +57,7 @@ const RenderSidebar = (props:TSidebar) => {
       style={style}
       Panels={Panels}
       PrePanels={PrePanels}
-      className='goblet-editor-sidebar-main'
+      className='gb-editor-sidebar-main'
     >
       <FileTree {...props} />
     </GBSidebar>
@@ -72,8 +72,8 @@ export const Sidebar = (props:TSidebar) => {
     if(!portal) return
     const portalProps = {} as Partial<TPortal>
     isStr(portal)
-      ? portalProps.id = portal
-      : portalProps.elementRef = portal
+      ? (portalProps.id = portal)
+      : (portalProps.elementRef = portal)
 
     return portalProps
   }, [portal])

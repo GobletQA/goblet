@@ -9,10 +9,8 @@ import type {
   TBackgroundParentAst,
 } from '@ltipton/parkin'
 
-import { get } from "@keg-hub/jsutils/get"
-import { findInFeature } from './findInFeature'
 import { EAstObject } from '@ltipton/parkin'
-import { emptyArr } from "@keg-hub/jsutils/emptyArr"
+import { findInFeature } from './findInFeature'
 import {
   findChild,
   findParentStep,
@@ -120,12 +118,12 @@ const IDFinders = {
      */
     const stepParents = [
       feature?.background,
-      ...(feature?.scenarios || emptyArr),
+      ...(feature?.scenarios || []),
 
-      ...(feature?.rules || emptyArr)?.reduce((acc, rule) => {
-        acc.push(...([rule?.background, ...rule?.scenarios]))
+      ...(feature?.rules || [])?.reduce((acc:TStepParentAst[], rule:TRuleAst) => {
+        acc.push(...([rule?.background, ...rule?.scenarios] as TStepParentAst[]))
         return acc
-      }, [])
+      }, [] as Array<TStepParentAst>)
     ].filter(Boolean) as Array<TStepParentAst>
 
     return findParentStep(stepParents, text)
@@ -135,7 +133,6 @@ const IDFinders = {
 export const findTextMatch = (props:TIDFrom) => {
   const { deco, feature } = props
   if(!deco) return
-
 
   if(deco?.type !== EAstObject.feature && deco?.metaId){
     const found = findInFeature({ id: deco?.id, feature })

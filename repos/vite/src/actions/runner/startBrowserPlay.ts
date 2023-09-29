@@ -1,3 +1,6 @@
+// TODO: should add a Promise timeout here to avoid memory leaks
+// Has to be very long, could be based on the global timeout option from Exam / Parkin
+
 import type {
   TGitData,
   TFileModel,
@@ -94,7 +97,7 @@ export const startBrowserPlay = async (
     )
   )
 
-  const promise = PromiseAbort((res, rej) => {
+  let promise = PromiseAbort((res, rej) => {
     WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
 
     // Then listen for the response event fired from the websocket service
@@ -121,6 +124,8 @@ export const startBrowserPlay = async (
         cancelOff?.()
         promise.cancel()
         rej(emptyObj)
+        // @ts-ignore
+        promise = undefined
       }
     )
   })

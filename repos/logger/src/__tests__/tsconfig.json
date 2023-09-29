@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "isolatedModules": false,
+    "moduleResolution": "node",
+    "typeRoots": [
+      "../types",
+      "../../../shared/src/types",
+      "../../node_modules/@types",
+      "../../../../node_modules/@types"
+    ]
+  },
+  "include": [
+    "./*",
+  ]
+}

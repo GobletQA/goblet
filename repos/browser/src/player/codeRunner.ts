@@ -2,11 +2,11 @@ import type { Player } from './player'
 import type { TPlayerEvent, TPlayerEventData } from '@GBB/types'
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 
-import { PWPlay } from '@GBB/constants'
 import { Parkin } from '@ltipton/parkin'
 import { Logger } from '@gobletqa/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ParkinTest } from '@ltipton/parkin/test'
+import { TestsToSocketEvtMap } from '@GBB/constants'
 import {
   setupParkin,
   setupGlobals,
@@ -96,7 +96,7 @@ export class CodeRunner {
     if(this.canceled) return
 
     this.player.fireEvent({
-      name: PWPlay.playSpecDone,
+      name: TestsToSocketEvtMap.specDone,
       message: `Player - Spec Done`,
       // Includes the `failedExpectations` data so we have access to the error messages
       data: {
@@ -135,27 +135,27 @@ export class CodeRunner {
     if(this.canceled) return
 
     this.player.fireEvent({
-      name: PWPlay.playSuiteDone,
+      name: TestsToSocketEvtMap.suiteDone,
       data: clearTestResults(result),
       message: `Player - Suite Done`,
     })
   }
 
-  onSpecStarted = (result:TPlayerEventData) => {
+  onSpecStart = (result:TPlayerEventData) => {
     if(this.canceled) return
 
     this.player.fireEvent({
-      name: PWPlay.playSpecStart,
+      name: TestsToSocketEvtMap.specStart,
       data: clearTestResults(result),
       message: `Player - Spec Start`,
     })
   }
 
-  onSuiteStarted = (result:TPlayerEventData) => {
+  onSuiteStart = (result:TPlayerEventData) => {
     if(this.canceled) return
 
     this.player.fireEvent({
-      name: PWPlay.playSuiteStart,
+      name: TestsToSocketEvtMap.suiteStart,
       data: clearTestResults(result),
       message: `Player - Suite Start`,
     })

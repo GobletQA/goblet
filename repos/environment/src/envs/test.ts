@@ -2,6 +2,7 @@ import type { TGenEnv } from "../types"
 
 import { asNum } from "../utils/asNum"
 import { asBool } from "../utils/asBool"
+import { ExamJsonReporterEvtSplit } from '../constants/exam'
 
 const test = (general:TGenEnv) => {
 
@@ -9,6 +10,12 @@ const test = (general:TGenEnv) => {
     EXAM_LOG_LEVEL,
     EXAM_CLI_DEBUG,
     EXAM_CLI_VERBOSE,
+    EXAM_LOG_ERR_EVENT,
+    EXAM_EVENT_LOG_SPLIT_KEY=ExamJsonReporterEvtSplit,
+    
+    GOBLET_RUN_FROM_UI,
+    GOBLET_RUN_FROM_CI,
+
     GOBLET_TEST_TIMEOUT,
 
     GOBLET_TEST_TYPE,
@@ -27,6 +34,7 @@ const test = (general:TGenEnv) => {
     PARKIN_FEATURE_TAGS,
     GOBLET_FEATURE_TAGS=PARKIN_FEATURE_TAGS,
     GOBLET_FEATURE_NAME=PARKIN_FEATURE_NAME,
+    GB_LOGGER_FORCE_DISABLE_SAFE,
 
   } = process.env
 
@@ -34,9 +42,15 @@ const test = (general:TGenEnv) => {
   const GOBLET_TEST_VERBOSE = asBool(process.env.GOBLET_TEST_VERBOSE)
 
   return {
-    EXAM_LOG_LEVEL: EXAM_LOG_LEVEL?? general.GB_LOG_LEVEL,
+    EXAM_LOG_ERR_EVENT,
+    EXAM_EVENT_LOG_SPLIT_KEY,
+    EXAM_LOG_LEVEL: EXAM_LOG_LEVEL ?? general.GB_LOG_LEVEL,
     EXAM_CLI_DEBUG: asBool(EXAM_CLI_DEBUG ?? GOBLET_TEST_DEBUG),
     EXAM_CLI_VERBOSE: asBool(EXAM_CLI_VERBOSE ?? GOBLET_TEST_VERBOSE),
+
+    GOBLET_RUN_FROM_UI,
+    GOBLET_RUN_FROM_CI,
+    GB_LOGGER_FORCE_DISABLE_SAFE,
 
     GOBLET_FEATURE_TAGS,
     GOBLET_FEATURE_NAME,

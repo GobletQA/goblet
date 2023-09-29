@@ -4,7 +4,7 @@ import type { GlobOptions } from 'glob'
 import path from 'path'
 import { globSync } from 'glob'
 import { uniqArr } from '@keg-hub/jsutils/uniqArr'
-import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
+import { InternalPaths, GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 const getGlobFiles = (
   location:string,
@@ -27,7 +27,7 @@ const getGlobFiles = (
  * @return {Array<string>} file paths
  */
 export const getStepDefinitions = (config:TGobletConfig) => {
-  const { testUtilsDir } = config.internalPaths
+  const { testUtilsDir } = InternalPaths
   const { repoRoot, workDir, stepsDir, supportDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
 
@@ -50,7 +50,7 @@ export const getStepDefinitions = (config:TGobletConfig) => {
  * Loaded in the preEnvironment step, to ensure Parkin exists in the global scope
  */
 export const getParkinTestInit = (config:TGobletConfig) => {
-  const { testUtilsDir } = config.internalPaths
+  const { testUtilsDir } = InternalPaths
   // MUST BE LOADED FIRST - Add the parkin environment setup before all other setup files
   // This ensures we can get access to the Parkin instance on the global object
   return [`${testUtilsDir}/src/parkin/parkinTestInit.ts`]

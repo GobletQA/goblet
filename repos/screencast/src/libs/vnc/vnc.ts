@@ -7,7 +7,7 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
-import { getDefaultGobletConfig } from '@gobletqa/goblet'
+import { InternalPaths } from '@gobletqa/environment/constants'
 import { findProc, killProc } from '@gobletqa/shared/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 
@@ -47,7 +47,6 @@ export const startVNC = async ({
     return status
   }
 
-  const config = getDefaultGobletConfig()
   const { vnc } = screencastConfig.screencast
 
   const cmdArgs = flatUnion(
@@ -68,7 +67,7 @@ export const startVNC = async ({
 
   const cmdOpts = deepMerge({
     stdio: 'inherit',
-    cwd: cwd || config.internalPaths.gobletRoot,
+    cwd: cwd || InternalPaths.gobletRoot,
     env: {
       ...process.env,
       DISPLAY: vnc.display,

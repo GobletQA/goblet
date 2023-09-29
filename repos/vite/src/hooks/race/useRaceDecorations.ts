@@ -1,5 +1,5 @@
 import type { TFeatureAst } from '@ltipton/parkin'
-import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd, TRaceDecoUpdate } from '@gobletqa/race'
+import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd, TRaceDecoUpdate, TRaceDecoMeta } from '@gobletqa/race'
 import type {
   TFileTree,
   TFileModel,
@@ -17,10 +17,10 @@ import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { checkFailedSpec } from '@utils/decorations/checkFailedSpec'
 import { buildDecoration } from '@utils/decorations/buildDecoration'
 import {
-  PWPlay,
   PlayerTestEvt,
   PlayerErrorEvent,
   PlayerEndedEvent,
+  TestsToSocketEvtMap,
   PlayerClearDecorationEvt,
 } from '@constants'
 
@@ -94,7 +94,7 @@ export const useRaceDecorations = ({
   useOnEvent<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
     if(!event) return console.warn(`[Decoration Event] The "PlayerTestEvt" was fired without an event object`)
 
-    if(event.name === PWPlay.playResults) return
+    if(event.name === TestsToSocketEvtMap.results) return
 
     const { data } = event
 
@@ -113,7 +113,6 @@ export const useRaceDecorations = ({
 
     const { location } = event
     const relative = rmRootFromLoc(location, rootPrefix)
-    const meta = { action: event.data.action }
     const dec = buildDecoration<TRaceDeco, TFeatureAst>({
       event: data,
       testPath: data.testPath,
@@ -126,7 +125,9 @@ export const useRaceDecorations = ({
       scenarioRef,
       editor: EEditorType.visual,
     })
-    
+
+    const meta = { action: event.data.action } as TRaceDecoMeta
+
     decos.length
       ? decoRef?.current?.update?.(relative, decos.concat([dec]), meta)
       : decoRef?.current?.add(relative, dec, meta)

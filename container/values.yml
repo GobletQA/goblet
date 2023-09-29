@@ -39,7 +39,7 @@ env:
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
   GB_NODE_VERSION: 20
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.37.1
+  PLAYWRIGHT_BROWSERS_VERSION: 1.38.1
   GB_PNPM_VERSION: 8.7.4
   GB_GIT_GLOBAL_IGNORE: /goblet/.gitignore
 
@@ -57,7 +57,7 @@ env:
   GB_ACT_PORT: ''
   GB_ACT_DEPLOYMENT: goblet-action
   GB_ACT_IMAGE: 'ghcr.io/gobletqa/goblet-action'
-  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.37.1-focal'
+  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.38.1-focal'
 
   GOBLET_MOUNT_ROOT: /goblet/repos
 
@@ -104,7 +104,7 @@ env:
   GB_BS_DEPLOYMENT: goblet-base
   GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
   # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
-  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.37.1-focal'
+  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.38.1-focal'
   # GB_BS_IMAGE_FROM: ubuntu:focal
 
 
@@ -334,7 +334,6 @@ env:
   # --- WORKFLOW ENVs --- #
   GB_GIT_REMOTE_REF: goblet-ref
   GB_SECRETS_TAG_REF: goblet-do-not-delete
-
 
   # --- CHROME Inspector debug port --- #
   GB_REMOTE_DEBUG_PORT: 9020

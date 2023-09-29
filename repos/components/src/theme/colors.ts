@@ -73,7 +73,7 @@ export const yellow = {
   yellow09: `#FFBA0E`,
   yellow10: `#FFB601`,
   yellow11: `#F2AD01`,
-  yellow12: `#D99B01`,
+  yellow12: `#D99B01`, // Test Canceled text and decorator
   yellow13: `#BF8901`,
   yellow14: `#A67601`,
   yellow15: `#8C6401`,

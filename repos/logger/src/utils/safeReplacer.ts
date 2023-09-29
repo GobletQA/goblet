@@ -78,7 +78,7 @@ const shouldHideUnsafe = (value:string) => {
   return unsafeValues.some((regexp) => regexp.test(value))
 }
 
-const safeReplacer = (key:string|number, value:any) => {
+export const safeReplacer = (key:string|number, value:any) => {
   if(key === HIDDEN || value === HIDDEN) return HIDDEN
 
   if (value instanceof Buffer) return value.toString('base64')

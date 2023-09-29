@@ -11,7 +11,7 @@ import { useCallback } from 'react'
 import Grid from '@mui/material/Unstable_Grid2'
 
 import { noOpObj, exists, wordCaps, snakeCase } from '@keg-hub/jsutils'
-import { Input, Switch, Text, Select } from './SettingsInputs'
+import { Input, Switch, Text, Select, Tags } from './SettingsInputs'
 import {
   Button,
   Tooltip,
@@ -113,7 +113,7 @@ const RenderByType = (props:TSettingsListItem) => {
               align={align}
               disabled={disabled}
               sx={sx as CSSProperties}
-              value={wordCaps(snakeCase(value))}
+              value={wordCaps(snakeCase(value || ``))}
             />
           </Tooltip>
         )
@@ -164,13 +164,35 @@ const RenderByType = (props:TSettingsListItem) => {
           onBlur={onChangeValue as FocusEventHandler<HTMLInputElement>}
         />
       )
+    case `tags`:
+      return (
+        <Tags
+          item={item}
+          value={value}
+          disabled={disabled || !item.active}
+          onBlur={onChangeValue as FocusEventHandler<HTMLInputElement>}
+          onChange={onChangeValue as ChangeEventHandler<HTMLInputElement>}
+          inputProps={{
+            size: 'small',
+            align: align,
+            name: item.key,
+            margin: 'normal',
+            fullWidth: false,
+            variant: 'outlined',
+            required: !exists(item?.default),
+            disabled: disabled || !item.active,
+          }}
+        />
+      )
     default:
       return item?.options?.length
         ? (
             <Select
               item={item}
               value={value}
+              name={item.key}
               onChange={onChangeValue}
+              disabled={disabled || !item.active}
             />
           )
         : (

@@ -3,15 +3,14 @@ import type { TExamConfig, TExamCliOpts } from '@GEX/types'
 import path from 'path'
 import { options } from './options'
 import { ENVS } from '@gobletqa/environment'
-import { getRoot, homeDir, cwd, setRoot } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
 import { isArr } from '@keg-hub/jsutils/isArr'
-import { isNum } from '@keg-hub/jsutils/isNum'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isBool } from '@keg-hub/jsutils/isBool'
-import {emptyObj} from '@keg-hub/jsutils/emptyObj'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { getRoot, homeDir, cwd, setRoot } from './paths'
 import { updateLogLevel, Logger } from "@GEX/utils/logger"
 
 
@@ -115,9 +114,15 @@ export const parseArgs = async () => {
 /**
  * Sets updates an env values on the process.env object
  */
-const updateEnv = (key:string, value:any, force?:boolean) => {
-  if(exists(ENVS[key]) && !force) return
+const updateEnv = (
+  OriginalEnvs:Record<string, any>,
+  key:string,
+  value:any,
+  force?:boolean
+) => {
+  if(!exists(value) || exists(ENVS[key]) && !force) return
 
+  OriginalEnvs[key] = ENVS[key]
   ENVS[key] = isStr(value) ? value : `${JSON.stringify(value)}`
 }
 
@@ -126,11 +131,12 @@ const updateEnv = (key:string, value:any, force?:boolean) => {
  */
 const updateLoggerLevel = (
   opts:Partial<TExamCliOpts|TExamConfig>=emptyObj,
-  logLevel=(opts as TExamCliOpts)?.logLevel
+  logLevel=(opts as TExamCliOpts)?.logLevel,
+  logCache?:Record<`level`, any>
 ) => {
-  (opts?.debug && updateLogLevel(Logger.levels.levels.debug))
-    || (opts?.verbose && updateLogLevel(Logger.levels.levels.verbose))
-    || (exists(logLevel) && updateLogLevel(logLevel))
+  (opts?.debug && updateLogLevel(Logger.levels.levels.debug, logCache))
+    || (opts?.verbose && updateLogLevel(Logger.levels.levels.verbose, logCache))
+    || (exists(logLevel) && updateLogLevel(logLevel, logCache))
 }
 
 /**
@@ -139,21 +145,35 @@ const updateLoggerLevel = (
 export const updateCLIEnvs = (
   exam:TExamConfig,
   opts:Partial<TExamCliOpts>=emptyObj,
-  force?:boolean
+  force:boolean=true
 ) => {
 
-  opts?.env && updateEnv(`EXAM_ENV`, 1, force)
-  opts?.env && updateEnv(`NODE_ENV`, opts.env, force)
-  opts?.env && updateEnv(`EXAM_CLI_ENV`, opts.env, force)
-  opts?.workerId && updateEnv(`EXAM_WORKER_ID`, opts.workerId, force)
-  exists(opts?.logLevel) && updateEnv(`EXAM_LOG_LEVEL`, opts?.logLevel, force)
+  let logCache = {} as Record<`level`, any>
+  let OriginalEnvs = {} as Record<string, any>
 
-  exam?.debug && updateEnv(`EXAM_CLI_DEBUG`, 1, force)
-  exam?.verbose && updateEnv(`EXAM_CLI_VERBOSE`, 1, force)
+  opts?.env && updateEnv(OriginalEnvs, `EXAM_ENV`, 1, force)
+  opts?.env && updateEnv(OriginalEnvs, `NODE_ENV`, opts.env, force)
+  opts?.env && updateEnv(OriginalEnvs, `EXAM_CLI_ENV`, opts.env, force)
+  opts?.workerId && updateEnv(OriginalEnvs, `EXAM_WORKER_ID`, opts.workerId, force)
+  exists(opts?.colors) && updateEnv(OriginalEnvs, `GOBLET_TEST_COLORS`, opts.colors, force)
+  exists(opts?.logLevel) && updateEnv(OriginalEnvs, `EXAM_LOG_LEVEL`, opts?.logLevel, force)
+
+  exists(exam?.debug) && updateEnv(OriginalEnvs, `EXAM_CLI_DEBUG`, opts.debug, force)
+  exists(exam?.verbose) && updateEnv(OriginalEnvs, `EXAM_CLI_VERBOSE`, opts.verbose, force)
   
-  exam?.mode && updateEnv(`EXAM_CLI_MODE`, exam.mode, force)
-  exam?.workers && updateEnv(`EXAM_CLI_WORKERS`, exam.workers, force)
-  exam?.concurrency && updateEnv(`EXAM_CLI_CONCURRENCY`, exam.workers, force)
+  exam?.mode && updateEnv(OriginalEnvs, `EXAM_CLI_MODE`, exam.mode, force)
+  exam?.workers && updateEnv(OriginalEnvs, `EXAM_CLI_WORKERS`, exam.workers, force)
+  exam?.concurrency && updateEnv(OriginalEnvs, `EXAM_CLI_CONCURRENCY`, exam.workers, force)
 
-  updateLoggerLevel(exam, opts?.logLevel)
+  updateLoggerLevel(exam, opts?.logLevel, logCache)
+
+  return () => {
+    Object.entries(OriginalEnvs)
+      .forEach(([key, value]) => ENVS[key] = value)
+    OriginalEnvs = undefined
+    
+    logCache?.level && updateLogLevel(logCache.level)
+    logCache = undefined
+  }
+
 }

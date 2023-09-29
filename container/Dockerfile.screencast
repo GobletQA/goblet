@@ -55,6 +55,8 @@ WORKDIR /goblet/app
 COPY repos/latent/src repos/latent/src
 COPY repos/goblet/src repos/goblet/src
 COPY repos/logger/src repos/logger/src
+COPY repos/git/src repos/git/src
+COPY repos/repo/src repos/repo/src
 COPY repos/environment/src repos/environment/src
 COPY repos/workflows/src repos/workflows/src
 COPY repos/browser/src repos/browser/src
@@ -75,7 +77,8 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/. .
 COPY --from=goblet-tasks /goblet/app/. .
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules
+    ln -s /goblet/app/node_modules /goblet/node_modules && \
+    ln -s /ms-playwright /root/.cache/ms-playwright
 
 WORKDIR /goblet/app/repos/screencast
 

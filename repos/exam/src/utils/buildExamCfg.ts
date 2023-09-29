@@ -3,10 +3,9 @@ import type { TExamConfig, TExArrOptsMap } from '@GEX/types'
 import {isArr} from '@keg-hub/jsutils/isArr'
 import {isStr} from '@keg-hub/jsutils/isStr'
 import {mergeCfgArrays} from './mergeCfgArrays'
-// @ts-ignore
-import {emptyArr} from '@keg-hub/jsutils/noOps'
 import { resolveRootDir } from './resolveRootDir'
 import { ExamCfg, RootDirKey } from '@GEX/constants'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 const replaceRootObj = <T=Record<string, string>>(obj:T, rootDir:string) => {
   return Object.entries(obj).reduce((acc, [key, val]) => {
@@ -88,7 +87,7 @@ export const buildExamCfg = (config:TExamConfig):TExamConfig => {
   // TODO: add some validation checks
   // I.E. if running tests in parallel, reuseRunner it forced to false
 
-  return Object.assign(
+  return Object.assign<TExamConfig, TExamConfig>(
     built,
     replaceRootDir(built)
   )

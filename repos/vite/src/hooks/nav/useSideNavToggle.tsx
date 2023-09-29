@@ -8,6 +8,7 @@ import { isFunc, exists } from '@keg-hub/jsutils'
 import { SideNav as SideNavItems } from '@constants/nav'
 import { useOnEvent, useEventEmit } from '@gobletqa/components'
 import { ToggleSideNavEvt, SideNavToggledEvt } from '@constants/events'
+import { navToggleTestRunsView } from '@actions/testRuns/navToggleTestRunsView'
 
 export const findNavItemName = (element:HTMLElement):ESideNav|undefined => {
   const navItem = element?.dataset?.navItem as ESideNav
@@ -24,7 +25,8 @@ const findNavItem = (element:HTMLElement) => {
   const name = findNavItemName(element)
 
   const item = SideNavItems.groups.reduce((found, group) => {
-    return found || group.items.find(item => name === navItemNameToTitle(item.name || item.title))
+    return found
+      || group.items.find(item => name === navItemNameToTitle(item.name || item.title))
   }, undefined as TNavItem|undefined)
 
   return { item, name }
@@ -57,6 +59,8 @@ export const useSideNavToggle = (
         setOpen,
         setActive,
       })
+
+    if(!navToggleTestRunsView()) return
 
     if((!name || name === active) && !nextOpen){
       setOpen(nextOpen, true)

@@ -10,21 +10,24 @@ export type TTooltip = ComponentProps<typeof MuiTooltip> & {
 
 export const Tooltip = (props:TTooltip) => {
   const {
+    sx,
     loc,
     title,
+    children,
     disabled,
     placement=loc,
     enterDelay=500,
     fontSize=`12px`,
-    children,
     ...rest
   } = props
-  
+
+
   return disabled
     ? <>{children}</>
     : (
         <MuiTooltip
           {...rest}
+          sx={sx}
           title={(
             <TooltipTitle>
               {title}

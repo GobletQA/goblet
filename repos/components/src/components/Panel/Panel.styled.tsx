@@ -62,7 +62,8 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   }
 
   & .gb-panel-toggle-icon {
-    font-size: 16px;
+    width: 22px;
+    height: 22px;
     font-weight: bold;
     margin-right: 4px;
     & path {

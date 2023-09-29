@@ -1,3 +1,4 @@
+export * from './eventEmitter'
 export * as proc from './proc'
 export * as shfs from './fileSys'
 export * as crypto from './crypto'

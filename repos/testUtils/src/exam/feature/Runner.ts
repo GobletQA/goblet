@@ -8,12 +8,10 @@ import type {
   TExFileModel,
   TExEventData,
   TExRunnerCfg,
-  TExTestEvent,
 } from '@gobletqa/exam'
 
 import { FeatureEnvironment } from './Environment'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
-import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
@@ -31,8 +29,6 @@ export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
 export type TFeatureData = {
   steps?:TParkinRunStepOptsMap
 }
-
-export type TLocEvt = (TExEventData & { location:string })
 
 export type TRunnerOpts = {
   debug?: boolean
@@ -70,25 +66,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   }
 
-  #bindEvents = (model:TExFileModel) => {
-    return ([
-      `onRunDone`,
-      `onRunStart`,
-      `onSpecDone`,
-      `onSpecStart`,
-      `onSuiteDone`,
-      `onSuiteStart`,
-    ].reduce((acc, cb) => {
-      acc[cb] = (result:TExEventData) => this?.[cb].call(
-        this,
-        {...result, location: model.location},
-        model
-      )
-
-      return acc
-    }, {}))
-  }
-
   #buildRunOpts = (model:TExFileModel, state:TStateObj) => {
     const { data } = state
 
@@ -118,7 +95,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
          * Bind Runner event listeners to the currently running model
          * Ensures we can keep track of the test that called the event callback
          */
-        ...this.#bindEvents(model),
+        ...this.bindEvents({ result: { location: model.location }}, model)
       }
     }
 
@@ -163,14 +140,14 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
         return emptyArr as TExEventData[]
       }
 
-      return results.map(result => this.clearTestResults(result))
+      return results.map(result => this.cleanExResult(result))
 
     }
     catch(err){
 
       if(err.name === EExErrorType.TestErr){
         if(!err.result) return []
-        return [this.clearTestResults(err.result)]
+        return [this.cleanExResult(err.result)]
       }
 
       await this.cleanup()
@@ -178,83 +155,25 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     }
   }
 
-  onRunStart = (result:TLocEvt, model:TExFileModel) => {
-    this.event({
-      ...ExamEvents.started,
+  /**
+   * Override the default method to allow passing the model data
+   */
+  onRunStart = (result:TExEventData, model:TExFileModel) => {
+    this.event(ExamEvents.started({
       data: {
-        ...this.clearTestResults(result),
+        ...this.cleanExResult(result),
         id: model.name,
         testPath: model.location,
         fullName: model.location,
         type: EPlayerTestType.feature,
       }
-    })
-  }
-
-  onRunDone = (result:TLocEvt) => {
-    this.event(ExamEvents.results({ data: result }))
-  }
-
-  onSpecDone = async (result:TLocEvt) => {
-    if(this.canceled) return
-
-    await this.event(ExamEvents.specDone({
-      data: {
-        ...this.clearTestResults(result),
-        failedExpectations: result?.failedExpectations
-      }
     }))
-  }
-
-  onSuiteDone = (result:TLocEvt) => {
-    if(this.canceled) return
-
-    const data = this.clearTestResults(result)
-    result.id === RootSuiteId
-      ? this.event(ExamEvents.rootSuiteDone({ data }))
-      : this.event(ExamEvents.suiteDone({ data }))
-  }
-
-  onSpecStart = (result:TLocEvt) => {
-    if(this.canceled) return
-
-    this.event(ExamEvents.specStart({
-      data: this.clearTestResults(result),
-    }))
-  }
-
-  onSuiteStart = (result:TLocEvt) => {
-    if(this.canceled) return
-
-    const data = this.clearTestResults(result)
-    result.id === RootSuiteId
-      ? this.event(ExamEvents.rootSuiteStart({ data }))
-      : this.event(ExamEvents.suiteStart({ data }))
   }
 
   cancel = async () => {
     this.canceled = true
     this.environment?.test?.abort?.()
     this.cleanup?.()
-  }
-
-  cleanup = async () => {
-    try {
-      this.isRunning = false
-      this.environment?.cleanup?.()
-    }
-    catch(err){}
-  }
-
-  /**
-  * There's a lot of meta-data that is added to the player tests results object
-  * This clears out some of it, because the frontend does not need it
-  */
-  clearTestResults = (result:TExEventData) => {
-    return omitKeys<TExTestEvent>(
-      result,
-      this.omitTestResults
-    )
   }
 
 }

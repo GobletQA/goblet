@@ -6,9 +6,7 @@ import type {
 } from 'react'
 
 import { Fragment } from 'react'
-import { isArr } from '@keg-hub/jsutils/isArr'
-import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-
+import { emptyObj, isArr } from '@keg-hub/jsutils'
 
 type TColorOpt = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | string
 
@@ -65,7 +63,7 @@ const wrapContent = (
   children = children || content
   return !isArr(children)
     ? children
-    : <Fragment>{children.join(`\n`)}</Fragment>
+    : <Fragment>{children ?? null}</Fragment>
 }
 
 /**

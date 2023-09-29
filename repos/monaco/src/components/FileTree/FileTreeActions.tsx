@@ -55,12 +55,12 @@ export const FileTreeActions:TPanelHeaderAction[] = [
     action:noOp,
     id:`add-root-file`,
     Component: AddRootFile,
-    className:`goblet-editor-file-root-icon`,
+    className:`gb-editor-file-root-icon`,
   },
   {
     action:noOp,
     id: `add-root-folder`,
     Component: AddRootFolder,
-    className:`goblet-editor-file-root-icon`,
+    className:`gb-editor-file-root-icon`,
   },
 ]

@@ -1,5 +1,8 @@
 import type { CodeRunner } from './codeRunner'
 import type { TPlayerEventData, TPlayerTestEvent } from '@GBB/types'
+import type { TRunResult, TParkinTestConfig } from '@ltipton/parkin'
+
+type TPTestCallback = (result:TRunResult) => any
 
 /**
  * This is needed so that expect is added to the global context
@@ -9,8 +12,7 @@ import expect from 'expect'
 import { unset } from '@keg-hub/jsutils/unset'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { getDefinitions } from '@gobletqa/workflows'
-import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
+import { Parkin } from '@ltipton/parkin'
 
 import {
   SavedDataWorldPath,
@@ -50,10 +52,16 @@ const setTestGlobals = (Runner:CodeRunner) => {
   const opts:TParkinTestConfig = {
     testTimeout: Runner.timeout,
     suiteTimeout: Runner.suiteTimeout,
-    onSpecDone: Runner.onSpecDone,
-    onSuiteDone: Runner.onSuiteDone,
-    onSpecStart: Runner.onSpecStarted,
-    onSuiteStart: Runner.onSuiteStarted,
+    /**
+      * Typescript is dumb
+      * TPlayerEventData does match TRunResult
+      * It's just too far removed for typescript to know about it
+      * So we recast the callbacks to Parkin test callbacks
+     */
+    onSpecDone: Runner.onSpecDone as TPTestCallback,
+    onSuiteDone: Runner.onSuiteDone as TPTestCallback,
+    onSpecStart: Runner.onSpecStart as TPTestCallback,
+    onSuiteStart: Runner.onSuiteStart as TPTestCallback,
   }
 
   const PTE = new ParkinTest(opts)
@@ -153,7 +161,6 @@ export const setupParkin = async (Runner:CodeRunner) => {
   const PK = Runner?.player?.repo?.parkin
   if(!PK) throw new Error(`Repo is missing a parkin instance`)
 
-  await getDefinitions(Runner?.player?.repo, undefined, false)
   return PK
 }
 

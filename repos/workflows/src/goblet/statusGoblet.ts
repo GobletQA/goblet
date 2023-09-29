@@ -2,16 +2,16 @@ import type { TGobletConfig } from '@gobletqa/shared'
 import type { TWFGobletConfig, TWFResp, TGitOpts, TRepoOpts } from '@GWF/types'
 
 import path from 'path'
-import { git, RepoWatcher } from '../git'
+import {failResp} from './response'
 import { Logger } from '@gobletqa/logger'
 import { fileSys } from '@keg-hub/cli-utils'
 import { RepoLocalMount } from '../constants'
 import { gobletLoader } from '@gobletqa/goblet'
-import { repoSecrets } from '../repo/repoSecrets'
-import { getRepoName } from '../utils/getRepoName'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { createRepoWatcher } from '../repo/mountRepo'
+import { repoSecrets } from '@gobletqa/repo/repoSecrets'
+import { createRepoWatcher } from '@gobletqa/repo/mountRepo'
+import { getRepoName, git, RepoWatcher } from '@gobletqa/git'
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts
@@ -56,8 +56,12 @@ const statusForLocal = async (config:TWFGobletConfig, opts:TGitOpts) => {
     basePath: RepoLocalMount,
   })
 
-  const secretsFail = await repoSecrets(opts, gobletConfig)
-  if(secretsFail) return secretsFail
+  try {
+    await repoSecrets(opts, gobletConfig)
+  }
+  catch(err){
+    return failResp({ setup: false }, err.message)
+  }
 
   return !isValidPath || !gobletConfig
     ? {
