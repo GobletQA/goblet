@@ -1,6 +1,5 @@
 export * from '@gobletqa/environment/constants/frontend'
 import {
-  PWPlay,
   ExpressionKinds,
   ExpressionTypes,
   TestsToSocketEvtMap,
@@ -10,7 +9,6 @@ import {
 } from '@gobletqa/environment/constants/frontend'
 
 export {
-  PWPlay,
   ExpressionKinds,
   ExpressionTypes,
   TestsToSocketEvtMap,
