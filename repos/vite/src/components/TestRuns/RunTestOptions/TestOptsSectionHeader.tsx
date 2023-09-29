@@ -3,11 +3,11 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { cls } from '@keg-hub/jsutils'
 import {
-  TestCfgExpandIcon,
+  RunTestOptsExpandIcon,
   TestOptsHeaderText,
   TestOptsHeaderTitle,
   TestOptsHeaderContainer,
-} from './TestCfgForm.styled'
+} from './RunTestOptions.styled'
 
 export type TTestOpts = {
   initial?:boolean
@@ -47,7 +47,7 @@ export const TestOptsSectionHeader = (props:TTestOpts) => {
           `gb-test-cfg-header-title`
         )}
       >
-        <TestCfgExpandIcon expand={open} />
+        <RunTestOptsExpandIcon expand={open} />
         <TestOptsHeaderText>
           {title}
         </TestOptsHeaderText>

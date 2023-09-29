@@ -2,22 +2,22 @@ import type { FocusEvent } from 'react'
 import type {
   TTestRunsState,
   TTestRunUICfg,
-  TOnBlurTestCfg,
-  TOnChangeTestCfg,
-  TTestRunGetUICfgEvt
+  TOnBlurRunTestOpts,
+  TTestRunGetUICfgEvt,
+  TOnChangeRunTestOpts,
 } from '@types'
 
 import { useState } from 'react'
 import { ETestRunsSection } from '@types'
 import { PastTestRuns } from './PastTestRuns'
 import { TestRunGetUICfgEvt } from '@constants'
+import { RunTestOptions } from './RunTestOptions'
 import { TestRunsContainer } from './TestRuns.styled'
 import { useRepo, useSettings, useTestRuns } from '@store'
-import { TestCfgForm } from '@components/Forms/TestCfgForm'
 import { TestRunsTabs } from './TestRunHelpers/TestRunsTabs'
 import { TestRunsHeader } from './TestRunHelpers/TestRunsHeader'
 import { buildTestRunCfg } from '@utils/browser/buildTestRunCfg'
-import { TestCfgUpdaters } from './TestRunHelpers/TestCfgUpdaters'
+import { TestCfgUpdaters } from './RunTestOptions/TestCfgUpdaters'
 import { TestRunsReporter } from './TestReporter/TestRunsReporter'
 import { useTestRunListen } from '@hooks/testRuns/useTestRunListen'
 
@@ -53,12 +53,12 @@ export const TestRuns = () => {
     setTestRunCfg
   } = useTestRunOpts(testRuns)
 
-  const onBlurTestCfg = useInline<TOnBlurTestCfg>((evt, type) => {
+  const onBlurRunTestOpts = useInline<TOnBlurRunTestOpts>((evt, type) => {
     const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onBlur?.(evt, testRunCfg)
     resp && setTestRunCfg({...testRunCfg, ...resp })
   })
 
-  const onChangeTestCfg = useInline<TOnChangeTestCfg>((args:any[], type) => {
+  const onChangeRunTestOpts = useInline<TOnChangeRunTestOpts>((args:any[], type) => {
     const [evt, value, reason, opt] = args
     const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onChange?.(
       evt,
@@ -112,10 +112,10 @@ export const TestRuns = () => {
               />
             )
           : (
-              <TestCfgForm
+              <RunTestOptions
                 testRunCfg={testRunCfg}
-                onBlurTestCfg={onBlurTestCfg}
-                onChangeTestCfg={onChangeTestCfg}
+                onBlurRunTestOpts={onBlurRunTestOpts}
+                onChangeRunTestOpts={onChangeRunTestOpts}
               />
             )
       }

@@ -1,7 +1,7 @@
 import type {
   TTestRunUICfg,
-  TOnBlurTestCfg,
-  TOnChangeTestCfg,
+  TOnBlurRunTestOpts,
+  TOnChangeRunTestOpts,
 } from '@types'
 
 import { useState } from 'react'
@@ -13,29 +13,29 @@ import {
   InputContainer,
   InputHelperText,
   OptionsContainer,
-  TestCfgSectionDrawer,
-  TestCfgSectionContainer,
-} from './TestCfgForm.styled'
+  RunTestOptsSectionDrawer,
+  RunTestOptsSectionContainer,
+} from './RunTestOptions.styled'
 
 
 export type TBrowserOpts = {
   testRunCfg:TTestRunUICfg
-  onBlurTestCfg:TOnBlurTestCfg
-  onChangeTestCfg:TOnChangeTestCfg
+  onBlurRunTestOpts:TOnBlurRunTestOpts
+  onChangeRunTestOpts:TOnChangeRunTestOpts
 }
 
 export const BrowserOpts = (props:TBrowserOpts) => {
 
   const {
     testRunCfg,
-    onBlurTestCfg,
-    onChangeTestCfg,
+    onBlurRunTestOpts,
+    onChangeRunTestOpts,
   } = props
 
   const [open, setOpen] = useState(true)
 
   return (
-    <TestCfgSectionContainer>
+    <RunTestOptsSectionContainer>
       <TestOptsSectionHeader
         initial={open}
         onChange={setOpen}
@@ -44,7 +44,7 @@ export const BrowserOpts = (props:TBrowserOpts) => {
         titleClass='gb-test-browser-options-header-title'
       />
 
-      <TestCfgSectionDrawer
+      <RunTestOptsSectionDrawer
         in={open}
         unmountOnExit
         timeout="auto"
@@ -58,7 +58,7 @@ export const BrowserOpts = (props:TBrowserOpts) => {
               label='Browser Speed'
               name='tests-run-browser-slowmo'
               className='gb-test-slowmo-input'
-              onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
+              onBlur={(evt) => onBlurRunTestOpts(evt, `testBail`)}
               helperText={
                 <InputHelperText>
                   Speed in which browser actions are executed, a.k.a &nbsp;<b>"slow-mo"</b>
@@ -69,8 +69,8 @@ export const BrowserOpts = (props:TBrowserOpts) => {
           </InputContainer>
 
         </OptionsContainer>
-      </TestCfgSectionDrawer>
-    </TestCfgSectionContainer>
+      </RunTestOptsSectionDrawer>
+    </RunTestOptsSectionContainer>
   )
 }
 

@@ -1,7 +1,7 @@
 import type {
   TTestRunUICfg,
-  TOnBlurTestCfg,
-  TOnChangeTestCfg,
+  TOnBlurRunTestOpts,
+  TOnChangeRunTestOpts,
 } from '@types'
 import { useState } from 'react'
 import { exists } from '@keg-hub/jsutils'
@@ -13,30 +13,30 @@ import {
   InputContainer,
   InputHelperText,
   OptionsContainer,
-  TestCfgSectionDrawer,
-  TestCfgSectionContainer,
-} from './TestCfgForm.styled'
+  RunTestOptsSectionDrawer,
+  RunTestOptsSectionContainer,
+} from './RunTestOptions.styled'
 
 
 
 export type TTestOpts = {
   testRunCfg:TTestRunUICfg
-  onBlurTestCfg:TOnBlurTestCfg
-  onChangeTestCfg:TOnChangeTestCfg
+  onBlurRunTestOpts:TOnBlurRunTestOpts
+  onChangeRunTestOpts:TOnChangeRunTestOpts
 }
 
 export const TestOpts = (props:TTestOpts) => {
 
   const {
     testRunCfg,
-    onBlurTestCfg,
-    onChangeTestCfg,
+    onBlurRunTestOpts,
+    onChangeRunTestOpts,
   } = props
 
   const [open, setOpen] = useState(true)
 
   return (
-    <TestCfgSectionContainer>
+    <RunTestOptsSectionContainer>
       <TestOptsSectionHeader
         initial={open}
         onChange={setOpen}
@@ -45,7 +45,7 @@ export const TestOpts = (props:TTestOpts) => {
         titleClass='gb-test-test-options-header-title'
       />
 
-      <TestCfgSectionDrawer
+      <RunTestOptsSectionDrawer
         in={open}
         unmountOnExit
         timeout="auto"
@@ -57,8 +57,8 @@ export const TestOpts = (props:TTestOpts) => {
               freeSolo={true}
               label={`Test Match`}
               className='gb-test-match-input'
-              onBlur={(evt) => onBlurTestCfg(evt, `testMatch`)}
-              onChange={(...args:any[]) => onChangeTestCfg(args, `testMatch`)}
+              onBlur={(evt) => onBlurRunTestOpts(evt, `testMatch`)}
+              onChange={(...args:any[]) => onChangeRunTestOpts(args, `testMatch`)}
               placeholder={`*.feature      /user-tests/*      *.*`}
               value={testRunCfg.testMatch || ``}
               helperText={
@@ -74,8 +74,8 @@ export const TestOpts = (props:TTestOpts) => {
               freeSolo={true}
               multiple={true}
               className='gb-test-tags-input'
-              onBlur={(evt) => onBlurTestCfg(evt, `tags`)}
-              onChange={(...args:any[]) => onChangeTestCfg(args, `tags`)}
+              onBlur={(evt) => onBlurRunTestOpts(evt, `tags`)}
+              onChange={(...args:any[]) => onChangeRunTestOpts(args, `tags`)}
               label={`Tag Filter`}
               placeholder={`@whitelist   @passing   @user-auth  ...`}
               value={testRunCfg.tags || []}
@@ -100,7 +100,7 @@ export const TestOpts = (props:TTestOpts) => {
                 </InputHelperText>
               }
               placeholder='Enter the step retry amount... ( default: 0 )'
-              onBlur={(evt) => onBlurTestCfg(evt, `testRetry`)}
+              onBlur={(evt) => onBlurRunTestOpts(evt, `testRetry`)}
             />
           </InputContainer>
           <InputContainer className='gb-test-suite-retry-input-container' >
@@ -116,7 +116,7 @@ export const TestOpts = (props:TTestOpts) => {
                 </InputHelperText>
               }
               placeholder='Enter the Feature retry amount... ( default: 0 )'
-              onBlur={(evt) => onBlurTestCfg(evt, `suiteRetry`)}
+              onBlur={(evt) => onBlurRunTestOpts(evt, `suiteRetry`)}
             />
           </InputContainer>
 
@@ -133,7 +133,7 @@ export const TestOpts = (props:TTestOpts) => {
                 </InputHelperText>
               }
               placeholder='Enter a test bail amount... ( default: 5 )'
-              onBlur={(evt) => onBlurTestCfg(evt, `testBail`)}
+              onBlur={(evt) => onBlurRunTestOpts(evt, `testBail`)}
             />
           </InputContainer>
 
@@ -141,7 +141,7 @@ export const TestOpts = (props:TTestOpts) => {
             <ToggleInput
               label='Exit on Fail'
               value={exists(testRunCfg.exitOnFailed) ? `${testRunCfg.exitOnFailed}` : `false`}
-              onChange={(...args) => onChangeTestCfg(args, `exitOnFailed`)}
+              onChange={(...args) => onChangeRunTestOpts(args, `exitOnFailed`)}
               options={[
                 { value: `true`, text: `True` },
                 { value: `false`, text: `False` },
@@ -155,8 +155,8 @@ export const TestOpts = (props:TTestOpts) => {
           </InputContainer>
 
         </OptionsContainer>
-      </TestCfgSectionDrawer>
-    </TestCfgSectionContainer>
+      </RunTestOptsSectionDrawer>
+    </RunTestOptsSectionContainer>
   )
 }
 

@@ -1,8 +1,8 @@
-import type { TTestRunUICfg, TOnBlurTestCfg, TOnChangeTestCfg } from '@types'
+import type { TTestRunUICfg, TOnBlurRunTestOpts, TOnChangeRunTestOpts } from '@types'
 
 import { TestOpts } from './TestOpts'
 import { BrowserOpts } from './BrowserOpts'
-import { TestCfgContainer } from './TestCfgForm.styled'
+import { RunTestOptsContainer } from './RunTestOptions.styled'
 
 /**
  * Add rest of test and browser options
@@ -36,19 +36,19 @@ import { TestCfgContainer } from './TestCfgForm.styled'
  */
 
 
-export type TTestCfgForm = {
+export type TRunTestOptions = {
   testRunCfg:TTestRunUICfg
-  onBlurTestCfg:TOnBlurTestCfg
-  onChangeTestCfg:TOnChangeTestCfg
+  onBlurRunTestOpts:TOnBlurRunTestOpts
+  onChangeRunTestOpts:TOnChangeRunTestOpts
 }
 
-export const TestCfgForm = (props:TTestCfgForm) => {
+export const RunTestOptions = (props:TRunTestOptions) => {
   return (
     <>
-      <TestCfgContainer>
+      <RunTestOptsContainer>
         <TestOpts {...props} />
         <BrowserOpts {...props} />
-      </TestCfgContainer>
+      </RunTestOptsContainer>
     </>
   )
 }
