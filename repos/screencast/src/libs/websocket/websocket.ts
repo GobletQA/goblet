@@ -7,6 +7,8 @@ import { socketInit } from './setup'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 const {
+  testsRunAll,
+  testsRunAbort,
   authToken,
   connection,
   disconnect,
@@ -15,8 +17,6 @@ const {
   browserRestart,
   cancelAutomate,
   browserAutomate,
-  testsRunAll,
-  testsRunAbort,
 } = SocketEvents
 
 const defConfig = emptyObj as TSocketConfig

@@ -11,7 +11,6 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 export type TAppState = {
   editor:EEditorType
   status:EAppStatus
-  examRunning: boolean
   sidebarLocked: boolean
   multiFeatsErr: boolean
   testRunsView: boolean|undefined
