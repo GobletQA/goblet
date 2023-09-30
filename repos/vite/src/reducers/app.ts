@@ -11,9 +11,10 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 export type TAppState = {
   editor:EEditorType
   status:EAppStatus
-  sidebarLocked: boolean
-  multiFeatsErr: boolean
-  testRunsView: boolean|undefined
+  sidebarLocked:boolean
+  multiFeatsErr:boolean
+  jokerAIView:boolean|undefined
+  testRunsView:boolean|undefined
 }
 
 const editor = getQueryData()?.editor
@@ -24,6 +25,7 @@ updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,
+  jokerAIView: true,
   testRunsView: false,
   sidebarLocked: false,
   multiFeatsErr: false,
@@ -34,6 +36,7 @@ const setApp = createAction<TAppState>(`setApp`)
 const clearApp = createAction<TAppState>(`clearApp`)
 const setStatus = createAction<EAppStatus>(`setStatus`)
 const setEditor = createAction<EEditorType>(`setEditor`)
+const toggleJokerAIView = createAction<boolean>(`toggleJokerAIView`)
 const toggleSidebarLocked = createAction<boolean>(`toggleSidebarLocked`)
 const toggleMultiFeatsErr = createAction<boolean>(`toggleMultiFeatsErr`)
 const toggleTestRunsView = createAction<boolean|undefined>(`toggleTestRunsView`)
@@ -45,6 +48,12 @@ export const appActions = {
     ...state,
     editor: action?.payload,
   }),
+  toggleJokerAIView: (state:TAppState, action:TDspAction<boolean|undefined>) => {
+    return {
+      ...state,
+      jokerAIView: exists(action?.payload) ? action?.payload : !state.testRunsView
+    }
+  },
   toggleTestRunsView: (state:TAppState, action:TDspAction<boolean|undefined>) => {
     return {
       ...state,
@@ -78,6 +87,7 @@ export const appReducer = createReducer(
     builder.addCase(setApp, appActions.setApp)
     builder.addCase(setStatus, appActions.setStatus)
     builder.addCase(setEditor, appActions.setEditor)
+    builder.addCase(toggleJokerAIView, appActions.toggleJokerAIView)
     builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
     builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
     builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)

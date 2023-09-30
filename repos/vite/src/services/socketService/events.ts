@@ -93,4 +93,8 @@ export const events = {
   testRunError: function (message:TSocketEvt){
     
   },
+  jokerQuestionResp: function (message:TSocketEvt){
+    console.log(`------- message -------`)
+    console.log(message)
+  },
 }

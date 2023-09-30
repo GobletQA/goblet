@@ -3,6 +3,7 @@ import type { TSideNav } from '@types'
 import { EEditorType, ESideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 import {
+  onJokerAsk,
   onSettings,
   onArtifacts,
   onEnvironments,
@@ -19,6 +20,8 @@ import {
   SettingsIcon,
   CloudOffIcon,
   FunctionsIcon,
+  JokerHatIcon,
+  JokerIcon,
   LabelImportantIcon,
   FolderPlayOutlineIcon,
 } from '@gobletqa/components'
@@ -72,6 +75,11 @@ export const SideNav = deepFreeze({
         {
           title: `Files`,
           Icon: FileTreeIcon,
+        },
+        {
+          Icon: JokerIcon,
+          title: `Ask Joker A.I.`,
+          action: onJokerAsk,
         },
         // {
         //   Icon: InsertChartIcon,

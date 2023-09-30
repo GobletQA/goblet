@@ -2,10 +2,12 @@ import { useApp } from '@store'
 import { EEditorType } from '@types'
 import { SubNavId } from '@constants'
 import { Layout } from '@components/Layout'
+import { JokerAI } from '@components/JokerAI'
 import { TestRuns }  from '@components/TestRuns'
 import { dims } from '@gobletqa/components/theme'
 import { CodeEditor } from '@components/CodeEditor'
 import { VisualEditor } from '@components/VisualEditor'
+
 import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
 const style = {
   maxHeight: `calc( 100% - ${dims.defs.header.hpx} )`
@@ -20,12 +22,32 @@ const EditorComps = {
   }
 }
 
+const SubComponents = {
+  TestRuns:TestRuns,
+  JokerAI:JokerAI,
+  Definitions:DefinitionsSlider
+}
+
+
 export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
-  const { testRunsView, editor, sidebarLocked } = useApp()
-  const { Component, ...rest } = EditorComps[editor]
-  TestRuns
+  const {
+    editor,
+    jokerAIView,
+    testRunsView,
+    sidebarLocked
+  } = useApp()
+  const {
+    Component,
+    ...rest
+  } = EditorComps[editor]
+  
+  const SubComponent = testRunsView
+    ? SubComponents.TestRuns
+    : jokerAIView
+      ? SubComponents.JokerAI
+      : SubComponents.Definitions
 
   return (
     <Layout>
@@ -34,7 +56,7 @@ export default function Editor(props:TEditorProps){
         style={style}
         {...rest}
       />
-      {testRunsView ? (<TestRuns />) : (<DefinitionsSlider />)}
+      <SubComponent />
     </Layout>
   )
 }
