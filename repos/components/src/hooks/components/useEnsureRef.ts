@@ -1,9 +1,9 @@
 import type { MutableRefObject } from "react"
 import { useMemo, useRef } from "react"
 
-export type TEnsureRef = MutableRefObject<HTMLElement | undefined>
+export type TEnsureRef<T=HTMLElement> = MutableRefObject<T | undefined>
 
-export const useEnsureRef = (ensureRef?:TEnsureRef) => {
+export const useEnsureRef = <T>(ensureRef?:TEnsureRef<T>) => {
   const localRef = useRef<TEnsureRef>(null)
-  return useMemo(() => (ensureRef || localRef) as TEnsureRef, [ensureRef])
+  return useMemo(() => (ensureRef || localRef) as TEnsureRef<T>, [ensureRef])
 }

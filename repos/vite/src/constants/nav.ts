@@ -139,3 +139,24 @@ export const DefinitionTabs = [
     name: `Custom Steps`,
   },
 ]
+
+export const JokerTabs = [
+  {
+    id: 0,
+    key: 0,
+    Icon: AppsIcon,
+    name: `Write Feature`,
+  },
+  {
+    id: 1,
+    key: 1,
+    name: `Fix Test`,
+    Icon: FunctionsIcon,
+  },
+  {
+    id: 2,
+    key: 2,
+    Icon: LabelImportantIcon,
+    name: `Ask Joker`,
+  },
+]

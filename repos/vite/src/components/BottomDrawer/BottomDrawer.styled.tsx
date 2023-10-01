@@ -77,13 +77,13 @@ export const BottomDrawerContainer = styled(Box)`
   background-color: ${getColor(colors.gray00, colors.black12)};
 `
 
-export const DrawerSliderActions = styled(Box)(({ theme }) => `
+export const DrawerSliderActions = styled(Box)`
   right: 0px;
   display: flex;
   position: absolute;
-`)
+`
 
-export const DrawerSliderAction = styled(IconButton)(({ theme }) => `
+export const DrawerSliderAction = styled(IconButton)`
   border-radius: 0px;
   place-items: center;
   font-family: inherit;
@@ -91,12 +91,17 @@ export const DrawerSliderAction = styled(IconButton)(({ theme }) => `
   background-color: transparent;
   height: ${dims.defs.header.hpx};
   width: ${dims.defs.header.height + 8}px;
-  background-color: ${getColor(colors.gray01, colors.black11, theme)};
+  background-color: ${getColor(colors.gray01, colors.black11)};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
-  border-left: 1px solid ${getColor(colors.gray02, colors.black13, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray02, colors.black14, theme)};
+  border-left: 1px solid ${getColor(colors.gray02, colors.black13)};
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black14)};
   
   &:hover {
-    background-color: ${getColor(colors.white, colors.black14, theme)};
+    background-color: ${getColor(colors.white, colors.black14)};
   }
-`)
+`
+
+export const DrawerActionIconContainer = styled(Box)`
+`
+
+

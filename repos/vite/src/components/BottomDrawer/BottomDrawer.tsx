@@ -1,31 +1,49 @@
+import type { PaperProps } from '@mui/material/Paper'
 import type { DrawerProps } from '@mui/material/Drawer'
-import type { ReactNode } from 'react'
-import { useState, useCallback } from 'react'
+import type { TBottomDrawerTab } from './BottomDrawerHeader'
+import type {
+  ReactNode,
+  CSSProperties,
+  MutableRefObject,
+  MouseEvent as RMouseEvent,
+  SyntheticEvent
+} from 'react'
 
+import { cls } from '@keg-hub/jsutils'
+import { useState, useCallback, useEffect } from 'react'
+import { BottomDrawerHeader } from './BottomDrawerHeader'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
-import { colors } from '@gobletqa/components/theme'
+import {
+  colors,
+  useEnsureRef,
+} from '@gobletqa/components'
 
 import {
   Drawer,
-  DrawerSliderAction,
-  DrawerSliderActions,
   BottomDrawerContainer,
 } from './BottomDrawer.styled'
 
-export type TDefinitionSlider = {
-  children:ReactNode
+
+export type TBottomDrawerRef = {
+  toggleLock: (state?:boolean) => any
+  toggleDrawer: (state?:boolean) => any
 }
 
-const drawerProps:Partial<DrawerProps> = {
-  elevation: 0,
-  anchor: `bottom`,
-  hideBackdrop: true,
-  disablePortal: true,
-  variant: `permanent`,
-  sx: {
-    width: `100%`,
-  },
-  className: `gb-defs-drawer`,
+export type TDefinitionSlider = {
+  sx?:CSSProperties
+  className?:string
+  activeTab?:number
+  children:ReactNode
+  initialOpen?:boolean
+  initialLocked?:boolean
+  tabs?:TBottomDrawerTab[]
+  paperProps?:Partial<PaperProps>
+  drawerProps?:Partial<DrawerProps>
+  onLock?:(state:boolean) => any
+  onToggle?:(state:boolean) => any
+  onTabClick?:(event:RMouseEvent<HTMLDivElement>) => void
+  drawerRef?:MutableRefObject<TBottomDrawerRef|undefined>
+  onTabChange?:(event: SyntheticEvent, newValue: number) => any
 }
 
 const styles = {
@@ -43,43 +61,98 @@ const styles = {
   }
 }
 
+const DrawerProps:Partial<DrawerProps> = {
+  elevation: 0,
+  anchor: `bottom`,
+  hideBackdrop: true,
+  disablePortal: true,
+  variant: `permanent`,
+  sx: {
+    width: `100%`,
+  },
+  className: `gb-defs-drawer`,
+}
+
+const PaperProps:Partial<PaperProps> = {
+  elevation: 0,
+  sx: styles.paper
+}
+
+
 export const BottomDrawer = (props:TDefinitionSlider) => {
 
   const {
-    children
+    sx,
+    tabs,
+    onLock,
+    onToggle,
+    children,
+    activeTab,
+    className,
+    paperProps,
+    onTabClick,
+    initialOpen,
+    drawerProps,
+    onTabChange,
+    initialLocked,
   } = props
 
-  const [open, setOpen] = useState(false)
-  const [locked, setLocked] = useState(false)
+  const drawerRef = useEnsureRef<TBottomDrawerRef>(props.drawerRef)
+  const [open, setOpen] = useState(initialOpen)
+  const [locked, setLocked] = useState(initialLocked)
 
   const toggleDrawer = useCallback(() => {
-    setOpen(!open)
+    const update = !open
+    onToggle?.(update)
+    setOpen(update)
   }, [open])
 
   const toggleLock = useCallback(() => {
-    setLocked(!locked)
+    const update = !locked
+    onLock?.(update)
+    setLocked(update)
   }, [locked])
-
-  const onTabClick = useCallback(() => {
-    !open && toggleDrawer()
-  }, [open, toggleDrawer])
 
   const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
     !locked && open && setOpen(false)
   }, [open, locked])
 
+  const onTabClickCB = useCallback((evt:RMouseEvent<HTMLDivElement>) => {
+    !open && toggleDrawer()
+    onTabClick?.(evt)
+  }, [open, toggleDrawer])
+
+  useEffect(() => {
+    drawerRef.current = {
+      toggleLock,
+      toggleDrawer
+    }
+  }, [toggleLock, toggleDrawer])
+
   return (
-    <BottomDrawerContainer className='gb-bottom-drawer'>
+    <BottomDrawerContainer
+      sx={sx}
+      className={cls('gb-bottom-drawer', className)}
+    >
       <ClickAwayListener onClickAway={onClickAway} >
         <Drawer
+          {...DrawerProps}
           {...drawerProps}
           open={open}
           onClose={toggleDrawer}
           PaperProps={{
-            elevation: 0,
-            sx: styles.paper
+            ...PaperProps,
+            ...paperProps
           }}
         >
+          {tabs && (
+            <BottomDrawerHeader
+              tabs={tabs}
+              active={activeTab}
+              onChange={onTabChange}
+              onTabClick={onTabClickCB}
+            />
+          ) || null}
           {children}
         </Drawer>
       </ClickAwayListener>
