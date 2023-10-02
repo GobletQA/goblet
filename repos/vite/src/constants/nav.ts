@@ -150,7 +150,7 @@ export const JokerTabs = [
     id: JokerFeatureTab,
     key: JokerFeatureTab,
     Icon: JokerIcon,
-    name: `Joker A.I.`,
+    name: `Joker`,
   },
   {
     name: `Q&A`,

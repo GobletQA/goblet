@@ -5,6 +5,7 @@ import { TPageState } from '@reducers/page'
 import { TFilesState } from '@reducers/files'
 import { TReposState } from '@reducers/repos'
 import { TModalState } from '@reducers/modal'
+import { TJokerState } from '@reducers/joker'
 import { TSettingsState } from '@reducers/settings'
 import { TTestRunsState } from '@reducers/testRuns'
 import { TContainerState } from '@reducers/container'
@@ -17,6 +18,7 @@ export type {
   TContainerState,
   TDefinitionsState,
   TFilesState,
+  TJokerState,
   TModalState,
   TRepoState,
   TReposState,
@@ -36,6 +38,7 @@ export type TCombinedState = {
   container: TContainerState
   definitions: TDefinitionsState
   files: TFilesState
+  joker: TJokerState
   modal: TModalState
   repo: TRepoState
   repos: TReposState

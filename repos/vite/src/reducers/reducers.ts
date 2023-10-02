@@ -9,6 +9,7 @@ import { pageState, pageReducer } from './page'
 import { modalState, modalReducer } from './modal'
 import { reposState, reposReducer } from './repos'
 import { filesState, filesReducer } from './files'
+import { jokerState, jokerReducer } from './joker'
 import { settingsState, settingsReducer } from './settings'
 import { testRunsState, testRunsReducer } from './testRuns'
 import { containerState, containerReducer } from './container'
@@ -23,6 +24,7 @@ export const preloadedState = {
   files: filesState,
   modal: modalState,
   repos: reposState,
+  joker: jokerState,
   testRuns: testRunsState,
   settings: settingsState,
   container: containerState,
@@ -38,6 +40,7 @@ export const reducer = combineReducers<TState>({
   modal: modalReducer,
   repos: reposReducer,
   files: filesReducer,
+  joker: jokerReducer,
   testRuns: testRunsReducer,
   settings: settingsReducer,
   container: containerReducer,

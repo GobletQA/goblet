@@ -65,6 +65,7 @@ import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import TuneIcon from '@mui/icons-material/Tune'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
+import PersonIcon from '@mui/icons-material/Person'
 
 // Icon for playing from a specific point in a feature
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
@@ -144,5 +145,6 @@ export {
   ContentPasteIcon,
   TuneIcon,
   QuestionAnswerIcon,
-  KeyboardArrowRightIcon
+  KeyboardArrowRightIcon,
+  PersonIcon
 }

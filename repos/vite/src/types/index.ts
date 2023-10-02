@@ -21,7 +21,9 @@ export * from './storage.types'
 export * from './websocket.types'
 export * from './editors.types'
 export * from './test.types'
+export * from './joker.types'
 
+// @ts-ignore
 export * from './shared.types'
 
 /**

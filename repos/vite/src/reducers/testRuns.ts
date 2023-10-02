@@ -32,7 +32,6 @@ export const testRunsState = {
   allTestsRunning: false,
 } as TTestRunsState
 
-const addTestRun = createAction<TAddTestRun>(`addTestRun`)
 const removeTestRun = createAction<TTestRunId>(`removeTestRun`)
 const upsertTestRun = createAction<TUpsertTestRun>(`upsertTestRun`)
 const clearTestRuns = createAction(`clearTestRuns`)
@@ -53,13 +52,6 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 
 
 export const testRunsActions = {
-  addTestRun: (state:TTestRunsState, action:TDspAction<TAddTestRun>) => {
-    const { runId, data={ runId, files: {} } } = action?.payload
-    return {
-      ...state,
-      runs: {...state.runs, [runId]: data}
-    }
-  },
 
   upsertTestRun: (state:TTestRunsState, action:TDspAction<TUpsertTestRun>) => {
     const { runId, data } = action?.payload
@@ -171,7 +163,6 @@ export const testRunsActions = {
 export const testRunsReducer = createReducer(
   deepMerge(testRunsState),
   (builder:ActionReducerMapBuilder<TTestRunsState>) => {
-    builder.addCase(addTestRun, testRunsActions.addTestRun)
     builder.addCase(upsertTestRun, testRunsActions.upsertTestRun)
     
     builder.addCase(clearTestRuns, testRunsActions.clearTestRuns)
