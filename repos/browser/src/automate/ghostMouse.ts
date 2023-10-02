@@ -1,4 +1,6 @@
+// @ts-ignore
 import type { GhostCursor, ClickOptions } from "ghost-cursor-pw"
+// @ts-ignore
 import { createCursor } from "ghost-cursor-pw"
 import type { TLocatorOpts, TLocator, TBrowserPage, TLocatorClickOpts } from '@GBB/types'
 

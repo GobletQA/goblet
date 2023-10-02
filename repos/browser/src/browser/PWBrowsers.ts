@@ -14,7 +14,6 @@ import type {
 } from '@GBB/types'
 
 import playwright from 'playwright'
-import { EmptyBrowser } from './emptyBrowser'
 import { inDocker } from '@keg-hub/cli-utils'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { toBool } from '@keg-hub/jsutils/toBool'
@@ -29,7 +28,10 @@ import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
-import { checkInternalPWContext } from './checkInternalPWContext'
+import {
+  EmptyBrowser,
+  checkInternalPWContext
+} from '@GBB/utils/checkInternalPWContext'
 
 const buildStartOpts = (args:TStartBrowser) => {
   const {

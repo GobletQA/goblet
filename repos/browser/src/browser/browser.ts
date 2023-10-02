@@ -21,7 +21,7 @@ import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
-import { checkInternalPWContext } from './checkInternalPWContext'
+import { checkInternalPWContext } from '@GBB/utils/checkInternalPWContext'
 
 export class Browser {
 
