@@ -25,7 +25,13 @@ const a11yProps = (index: number) => {
 }
 
 const styles = {
-  icon: { marginBottom: `0px !important`, marginRight: `5px` }
+  icon: {
+    width: `20px`,
+    height: `20px`,
+    fontSize: `20px`,
+    marginRight: `5px`,
+    marginBottom: `0px !important`,
+  }
 }
 
 export const DefinitionHeader = (props:TDefinitionsProps) => {

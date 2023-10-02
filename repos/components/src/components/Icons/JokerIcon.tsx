@@ -12,6 +12,8 @@ export const JokerIcon = (props:TIconProps) => {
     <svg
       style={{
         fill: `currentColor`,
+        position: `relative`,
+        top: `1px`,
         ...svgStyle,
       }}
       viewBox="0 0 980 788"

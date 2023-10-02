@@ -1,21 +1,20 @@
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { styled } from '@mui/material/styles'
-import {
-  dims,
-  colors,
-  getColor,
-} from '@gobletqa/components'
+import { dims, colors } from '@GBC/theme'
+import { getColor } from '@GBC/utils/theme/getColor'
 
 
-const getActionsWidth = (tabAmt:number) => {
-  const width = (dims.defs.header.height + 8) * 3
-  return Math.round((width / tabAmt + Number.EPSILON) * 100) / 100
+const getActionsWidth = (actAmt:number) => {
+  const width = (dims.defs.header.height + 8) * actAmt
+  return Math.round((width / actAmt + Number.EPSILON) * 100) / 100
 }
 
-const getTabWidth = (tabAmt:number) => {
+const getTabWidth = (tabAmt:number, actAmt:number=0) => {
   const percent = Math.round((100 / tabAmt + Number.EPSILON) * 100) / 100
-  return `calc( ${percent}% - ${getActionsWidth(tabAmt)}px )`
+  const actT =  getActionsWidth(actAmt) / (tabAmt / actAmt)
+
+  return actAmt ? `calc( ${percent}% - ${actT}px )` : `${percent}%`
 }
 
 const tabHeight = `
@@ -40,19 +39,21 @@ export const BottomHeaderTabs = styled(Tabs)(({ theme }) => `
 
 type TTabHeaderProps = {
   tabAmount:number
+  actionAmount?:number
   [key:string]:any
 }
 
 const noProps = [
-  `tabAmount`
+  `tabAmount`,
+  `actionAmount`
 ]
 
 
 export const BottomDrawerHeaderTab = styled(Tab, {
   shouldForwardProp: (prop) => !noProps.includes(prop as any),
 })(
-  ({ theme, tabAmount }:TTabHeaderProps) => {
-    const tabWidth = getTabWidth(tabAmount)
+  ({ theme, tabAmount, actionAmount }:TTabHeaderProps) => {
+    const tabWidth = getTabWidth(tabAmount, actionAmount)
     
     return `
       ${tabHeight}

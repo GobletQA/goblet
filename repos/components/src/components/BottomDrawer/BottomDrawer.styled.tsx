@@ -2,15 +2,11 @@ import type { CSSProperties } from 'react'
 import type { Theme } from '@mui/material/styles'
 
 import Box from '@mui/material/Box'
+import { dims, colors } from '@GBC/theme'
 import MuiDrawer from '@mui/material/Drawer'
 import { styled } from '@mui/material/styles'
-import {
-  dims,
-  colors,
-  getColor,
-  IconButton
-} from '@gobletqa/components'
-
+import { getColor } from '@GBC/utils/theme/getColor'
+import { IconButton } from '@GBC/components/Buttons/IconButton'
 
 const noForwardProps = [
   `open`,

@@ -20,11 +20,13 @@ import {
   SettingsIcon,
   CloudOffIcon,
   FunctionsIcon,
-  JokerHatIcon,
   JokerIcon,
+  QuestionAnswerIcon,
   LabelImportantIcon,
   FolderPlayOutlineIcon,
 } from '@gobletqa/components'
+
+
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 
 export const SubNavId = `gb-nav-subnav-for-portal`
@@ -140,23 +142,20 @@ export const DefinitionTabs = [
   },
 ]
 
+export const JokerQATab = `JokerQATab`
+export const JokerFeatureTab = `JokerFeatureTab`
+
 export const JokerTabs = [
   {
-    id: 0,
-    key: 0,
-    Icon: AppsIcon,
-    name: `Write Feature`,
+    id: JokerFeatureTab,
+    key: JokerFeatureTab,
+    Icon: JokerIcon,
+    name: `Joker A.I.`,
   },
   {
-    id: 1,
-    key: 1,
-    name: `Fix Test`,
-    Icon: FunctionsIcon,
-  },
-  {
-    id: 2,
-    key: 2,
-    Icon: LabelImportantIcon,
-    name: `Ask Joker`,
-  },
+    name: `Q&A`,
+    id: JokerQATab,
+    key: JokerQATab,
+    Icon: QuestionAnswerIcon,
+  }
 ]

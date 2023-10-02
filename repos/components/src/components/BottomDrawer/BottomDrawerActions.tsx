@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
-import { TooltipHoc } from '@gobletqa/components'
+import { TooltipHoc } from '@GBC/hocs/TooltipHoc'
 
 import {
   DrawerSliderAction,
@@ -14,8 +14,11 @@ type TBottomDrawerAction = {
   id?:string
   name?:string
   tooltip?:string
+  active?:boolean
+  Icon?:ReactNode
+  OnIcon?:ReactNode
+  OffIcon?:ReactNode
   onClick:() => any
-  Icon:ReactNode
   sx?:CSSProperties
   className?:string
   iconContainerClass?:string
@@ -32,9 +35,11 @@ export type TBottomDrawerActions = {
 export const BottomDrawerAction = TooltipHoc((props:TBottomDrawerAction) => {
   const {
     sx,
-    Icon,
+    OnIcon,
+    OffIcon,
     onClick,
     className,
+    Icon=OnIcon,
     iconContainerSx,
     iconContainerClass,
   } = props

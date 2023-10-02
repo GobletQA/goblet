@@ -1,21 +1,38 @@
-import type { ComponentType, SyntheticEvent, MouseEvent, CSSProperties } from 'react'
+import type {
+  MouseEvent,
+  CSSProperties,
+  ComponentType,
+  SyntheticEvent,
+} from 'react'
+import type { TIconProps } from '../Icons/Icon'
 
+import {cls, emptyObj} from '@keg-hub/jsutils'
+import { TooltipHoc } from '@GBC/hocs/TooltipHoc'
+import { DrawerSliderAction } from './BottomDrawer.styled'
 import {
   BottomHeaderTabs,
   BottomDrawerHeaderTab
 } from './BottomDrawerHeader.styled'
-import { TooltipHoc } from '@gobletqa/components'
-import {cls, emptyObj} from '@keg-hub/jsutils'
+
 
 export type TBottomDrawerTab = {
   idx?:number
   name?:string
+  active?:number
+  action?:boolean
   tooltip?:string
   id?:string|number
   sx?:CSSProperties
   className?:string
+  showText?:boolean
+  actionAmount?:number
+  iconProps?:TIconProps
+  actionActive?:boolean
   Icon?:ComponentType<any>
-  onClick?:(event:MouseEvent<HTMLDivElement>) => void
+  OnIcon?:ComponentType<any>
+  OffIcon?:ComponentType<any>
+  onAction?:(event:MouseEvent<any>) => void
+  onClick?:(event:MouseEvent<any>, tab?:number) => void
 }
 
 type TBottomDrawerTabAndAmt = TBottomDrawerTab & {
@@ -28,9 +45,9 @@ export type TBottomDrawerHeader = {
   className?:string
   sx?:CSSProperties
   tabs?:TBottomDrawerTab[]
+  onTabClick?:(event:MouseEvent<any>, tab?:number) => void
   indicatorColor?:`secondary` | `primary` | undefined
-  onChange?:(event: SyntheticEvent, value: number) => any
-  onTabClick:(event:MouseEvent<HTMLDivElement>) => void
+  onChange?:(event: SyntheticEvent, value:number) => any
   textColor?:`inherit` | `secondary` | `primary` | undefined
   variant?:`fullWidth` | `standard` | `scrollable` | undefined
 }
@@ -52,25 +69,57 @@ export const BottomDrawerTab = TooltipHoc((props:TBottomDrawerTabAndAmt) => {
   const {
     id,
     sx,
+    idx,
     name,
-    Icon,
+    OnIcon,
+    action,
+    active,
+    OffIcon,
     onClick,
+    showText,
+    onAction,
     tabAmount,
+    iconProps,
     className,
+    Icon=OnIcon,
+    actionActive,
+    actionAmount,
   } = props
 
-  return (
+  return action
+    ? (
+        <DrawerSliderAction
+          sx={sx}
+          onClick={onAction}
+          Icon={actionActive ? OnIcon : (OffIcon || OnIcon)}
+        />
+      )
+    : (
       <BottomDrawerHeaderTab
         sx={sx}
-        label={name}
-        onClick={onClick}
+        onClick={(evt:MouseEvent) => onClick?.(evt, idx)}
         {...a11yProps(id)}
         id={id?.toString?.()}
         tabAmount={tabAmount}
-        icon={(Icon && <Icon sx={styles.icon} />) || undefined}
+        actionAmount={actionAmount}
+        label={showText === false ? `` : name}
+        icon={
+          Icon
+          ? (
+              <Icon
+                {...iconProps}
+                sx={{
+                  ...styles.icon,
+                  ...iconProps?.sx
+                }}
+              />
+            )
+          : undefined
+        }
         className={cls(
           className,
           `gb-bottom-drawer-tab`,
+          idx === active && `Mui-selected`,
           name && `gb-bottom-drawer-tab-${name}`,
         )}
       />
@@ -80,7 +129,7 @@ export const BottomDrawerTab = TooltipHoc((props:TBottomDrawerTabAndAmt) => {
 
 export const BottomDrawerHeader = (props:TBottomDrawerHeader) => {
   const {
-    tabs,
+    tabs=[],
     label,
     active,
     variant,
@@ -91,7 +140,8 @@ export const BottomDrawerHeader = (props:TBottomDrawerHeader) => {
     indicatorColor,
   } = props
 
-  const tabAmt = tabs?.length
+  const tabAmt = tabs?.filter?.(tab => !tab.action)?.length
+  const actAmt = tabs?.length - tabAmt
 
   return (
     <BottomHeaderTabs
@@ -106,11 +156,13 @@ export const BottomDrawerHeader = (props:TBottomDrawerHeader) => {
       {tabs?.map?.((tab, idx:number) => {
         return (
           <BottomDrawerTab
-            idx={idx}
-            key={tab.id || tab.name || tab.tooltip}
+            active={active}
             onClick={onTabClick}
-            {...tab}
             tabAmount={tabAmt || 0}
+            actionAmount={actAmt || 0}
+            key={tab.id || tab.name || tab.tooltip}
+            {...tab}
+            idx={idx}
           />
         )
       }) || (<></>)}

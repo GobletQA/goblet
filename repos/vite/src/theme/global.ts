@@ -34,6 +34,8 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
 
     :root {
       color-scheme: light dark;
+      --focus-border: ${colors.royalPurple};
+      --separator-border: ${colors.royalPurple};
     }
 
     body {

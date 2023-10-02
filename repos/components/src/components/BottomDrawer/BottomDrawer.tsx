@@ -9,14 +9,10 @@ import type {
   SyntheticEvent
 } from 'react'
 
+
 import { cls } from '@keg-hub/jsutils'
-import { useState, useCallback, useEffect } from 'react'
 import { BottomDrawerHeader } from './BottomDrawerHeader'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
-import {
-  colors,
-  useEnsureRef,
-} from '@gobletqa/components'
 
 import {
   Drawer,
@@ -29,37 +25,31 @@ export type TBottomDrawerRef = {
   toggleDrawer: (state?:boolean) => any
 }
 
-export type TDefinitionSlider = {
+export type TBottomDrawer = {
+  open?:boolean
+  locked?:boolean
   sx?:CSSProperties
   className?:string
   activeTab?:number
   children:ReactNode
-  initialOpen?:boolean
-  initialLocked?:boolean
   tabs?:TBottomDrawerTab[]
   paperProps?:Partial<PaperProps>
   drawerProps?:Partial<DrawerProps>
-  onLock?:(state:boolean) => any
-  onToggle?:(state:boolean) => any
-  onTabClick?:(event:RMouseEvent<HTMLDivElement>) => void
+  onToggle?:(state:boolean, fromClickAway?:boolean) => any
   drawerRef?:MutableRefObject<TBottomDrawerRef|undefined>
   onTabChange?:(event: SyntheticEvent, newValue: number) => any
+  onTabClick?:(event:RMouseEvent<any>, tab?:number) => void
 }
 
 const styles = {
-  lock: {
-    closed: { color: colors.cardinal, fontSize: `16px` },
-    open: { color: colors.shinyShamrock, fontSize: `16px` },
-  },
-  toggle: {
-    fontSize: `22px`
-  },
   paper: {
     zIndex: `20`,
     width: `100%`,
     position: `absolute`,
   }
 }
+
+
 
 const DrawerProps:Partial<DrawerProps> = {
   elevation: 0,
@@ -78,68 +68,33 @@ const PaperProps:Partial<PaperProps> = {
   sx: styles.paper
 }
 
-
-export const BottomDrawer = (props:TDefinitionSlider) => {
+export const BottomDrawer = (props:TBottomDrawer) => {
 
   const {
     sx,
     tabs,
-    onLock,
+    open,
     onToggle,
     children,
     activeTab,
     className,
     paperProps,
     onTabClick,
-    initialOpen,
     drawerProps,
     onTabChange,
-    initialLocked,
   } = props
-
-  const drawerRef = useEnsureRef<TBottomDrawerRef>(props.drawerRef)
-  const [open, setOpen] = useState(initialOpen)
-  const [locked, setLocked] = useState(initialLocked)
-
-  const toggleDrawer = useCallback(() => {
-    const update = !open
-    onToggle?.(update)
-    setOpen(update)
-  }, [open])
-
-  const toggleLock = useCallback(() => {
-    const update = !locked
-    onLock?.(update)
-    setLocked(update)
-  }, [locked])
-
-  const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
-    !locked && open && setOpen(false)
-  }, [open, locked])
-
-  const onTabClickCB = useCallback((evt:RMouseEvent<HTMLDivElement>) => {
-    !open && toggleDrawer()
-    onTabClick?.(evt)
-  }, [open, toggleDrawer])
-
-  useEffect(() => {
-    drawerRef.current = {
-      toggleLock,
-      toggleDrawer
-    }
-  }, [toggleLock, toggleDrawer])
 
   return (
     <BottomDrawerContainer
       sx={sx}
       className={cls('gb-bottom-drawer', className)}
     >
-      <ClickAwayListener onClickAway={onClickAway} >
+      <ClickAwayListener onClickAway={() => onToggle?.(false, true)} >
         <Drawer
           {...DrawerProps}
           {...drawerProps}
           open={open}
-          onClose={toggleDrawer}
+          onClose={() => onToggle?.(false)}
           PaperProps={{
             ...PaperProps,
             ...paperProps
@@ -150,7 +105,7 @@ export const BottomDrawer = (props:TDefinitionSlider) => {
               tabs={tabs}
               active={activeTab}
               onChange={onTabChange}
-              onTabClick={onTabClickCB}
+              onTabClick={onTabClick}
             />
           ) || null}
           {children}
