@@ -1,6 +1,6 @@
 import type { TStartRecording } from '@GBB/types'
 
-import { GBrowser } from './browser'
+import { GBrowser } from '../browser/browser'
 import { Recorder }  from '../recorder/recorder'
 
 /**

@@ -41,6 +41,7 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
   const repoContent = await loadRepoContent(foundRepo, config, status)
   try {
     await setBrowserDefaults({
+      repo: foundRepo,
       config: foundRepo,
       browserConf: joinBrowserConf(foundRepo?.screencast?.browser)
     })

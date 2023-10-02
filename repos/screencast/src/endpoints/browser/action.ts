@@ -41,7 +41,8 @@ const browserAction:RequestHandler = async (req:JWTRequest, res:Response) => {
 
     repo
       && await setBrowserDefaults({
-          config: repo,
+          repo,
+          config:repo,
           browserConf,
           pwComponents,
         })
