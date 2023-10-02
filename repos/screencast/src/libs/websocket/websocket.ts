@@ -7,7 +7,6 @@ import { socketInit } from './setup'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 const {
-  askJoker,
   testsRunAll,
   testsRunAbort,
   authToken,
@@ -18,6 +17,7 @@ const {
   browserRestart,
   cancelAutomate,
   browserAutomate,
+  jokerSendMessage,
 } = SocketEvents
 
 const defConfig = emptyObj as TSocketConfig
@@ -62,7 +62,7 @@ export const initSocket:TInitSocket = (
         testsRunAbort: testsRunAbort(app),
 
         // ---- Joker AI Events ----
-        askJoker: askJoker(app),
+        jokerSendMessage: jokerSendMessage(app)
       },
     },
     cmdType

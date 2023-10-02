@@ -1,3 +1,4 @@
+
 import type { TGenEnv } from '../types'
 import type screencast from './screencast'
 
@@ -36,9 +37,9 @@ const browser = (general:TGenEnv, scEnvs:ReturnType<typeof screencast>) => {
     GOBLET_CONTEXT_PERMISSIONS,
     GOBLET_CONTEXT_TOUCH: asBool(GOBLET_CONTEXT_TOUCH),
     GOBLET_CONTEXT_MOBILE: asBool(GOBLET_CONTEXT_MOBILE),
-    GOBLET_CONTEXT_DOWNLOADS: asBool(GOBLET_CONTEXT_DOWNLOADS),
     GOBLET_CONTEXT_WIDTH: asNum(GOBLET_CONTEXT_WIDTH, { exists: true, default: undefined }),
     GOBLET_CONTEXT_HEIGHT: asNum(GOBLET_CONTEXT_HEIGHT, { exists: true, default: undefined }),
+    GOBLET_CONTEXT_DOWNLOADS: asBool(GOBLET_CONTEXT_DOWNLOADS, { exists: true, default: true }),
     GOBLET_FULL_SCREEN_VIDEO: asBool(GOBLET_FULL_SCREEN_VIDEO, { exists: true, default: true }),
   }
 }

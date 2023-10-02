@@ -7,11 +7,11 @@ import type {
 } from '@types'
 
 import { emptyObj } from '@keg-hub/jsutils'
-import { testRunsDispatch } from '@store/dispatchers'
+import { SocketMsgTypes } from '@constants'
 import { WSService } from '@services/socketService'
+import { testRunsDispatch } from '@store/dispatchers'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
-import { SocketMsgTypes } from '@constants'
 import {
   TestRunExecEndEvt,
   TestRunExecCancelEvt,

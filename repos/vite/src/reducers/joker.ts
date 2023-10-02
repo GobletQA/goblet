@@ -6,7 +6,7 @@ import type {
   TUpsertJokerMessage,
 } from '@types'
 
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge, exists } from '@keg-hub/jsutils'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TJokerState = {
@@ -36,7 +36,12 @@ export const jokerActions = {
   },
 
   toggleJokerRunning: (state:TJokerState, action:TDspAction<boolean|undefined>) => {
-    return state
+    const jokerRunning = exists(action.payload) ? action.payload : !state.jokerRunning
+    
+    return {
+      ...state,
+      jokerRunning
+    }
   },
 
 }

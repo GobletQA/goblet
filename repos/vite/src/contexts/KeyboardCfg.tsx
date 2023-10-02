@@ -92,5 +92,16 @@ export const KeyboardCfg:TKeyboard = {
         Attempts to cancel the currently test execution or automation. Works for both single Test files, and the full Test Suite.
       </span>
     ),
-  }
+  },
+  j: {
+    combo:[`shift`, `ctrl`],
+    action: () => {
+      console.log(`------- TODO: Open Joker -------`)
+    },
+    description: (
+      <span>
+        Shortcut to open the Joker A.I. actions and chat window.
+      </span>
+    ),
+  },
 }

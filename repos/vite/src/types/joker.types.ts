@@ -3,6 +3,7 @@ import {ReactNode} from "react"
 export type TJokerMessageId = string|number
 
 export enum EJokerAction {
+  Question=`Question`,
   FixFeature=`FixFeature`,
   CopyFeature=`CopyFeature`,
   GenerateFeature=`GenerateFeature`,
@@ -23,14 +24,12 @@ export enum EJokerMessageType {
   Joker=`Joker`,
 }
 
-
-
 export type TJokerMessage = {
   text:ReactNode
   key?:string|number
   id:TJokerMessageId
-  actions:TJokerAction[]
   type:EJokerMessageType
+  actions?:TJokerAction[]
 }
 
 export type TUpsertJokerMessage = {

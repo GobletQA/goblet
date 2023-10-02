@@ -1,3 +1,4 @@
+import {sendJkrMessage} from '@actions/joker/api/sendJkrMessage'
 import {
   JokerQInput,
   JokerQSubmit,
@@ -8,13 +9,24 @@ import {
   JokerMessagesContainer,
 } from './JokerFeature.styled'
 
+import {
+  EJokerAction,
+  EJokerMessageType
+} from '@types'
+import { useRef } from 'react'
+import { nanoid } from '@keg-hub/jsutils'
 import { JokerPastMessages } from './JokerPastMessages'
+
+
 
 export type TJokerFeature = {
   
 }
 
 export const JokerFeature = (props:TJokerFeature) => {
+  
+  const inputRef = useRef<HTMLInputElement>()
+  
   return (
     <JokerFeatureContainer
       className='gb-joker-messages-feature-container'
@@ -33,8 +45,10 @@ export const JokerFeature = (props:TJokerFeature) => {
           className='gb-joker-messages-q-input-container'
         >
           <JokerQInput
+            inputRef={inputRef}
             className='gb-joker-messages-q-input'
             placeholder='Ask Joker a question...'
+            value={inputRef?.current?.value || ``}
           />
 
         </JokerQInputContainer>
@@ -46,6 +60,13 @@ export const JokerFeature = (props:TJokerFeature) => {
             className='gb-joker-messages-submit-button'
             text={`Submit`}
             variant={`contained`}
+            onClick={() => {
+              sendJkrMessage({
+                id: nanoid(),
+                type: EJokerMessageType.User,
+                text: inputRef?.current?.value,
+              })
+            }}
           />
         </JokerQSubmitContainer>
       </JokerQContainer>
