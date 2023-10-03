@@ -23,10 +23,10 @@ export const ContextItemValWrap = styled(Span)`
 `
 
 
-export const ContextItemVal = styled(Label)`
+export const ContextItemVal = styled(Label)(({ theme }) => `
   font-size: 12px;
   cursor: pointer;
   font-weight: bold;
   letter-spacing: 0.2px;
-  color: ${getColor(colors.gray20, colors.gray03)};
-`
+  color: ${getColor(colors.gray20, colors.gray03, theme)};
+`)

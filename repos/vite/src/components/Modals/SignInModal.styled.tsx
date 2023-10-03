@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 import { Text, GobletIcon, getColor, gutter, colors } from '@gobletqa/components'
 
 export const Container = styled(Box)`
@@ -22,7 +22,7 @@ export const LogoContainer = styled(Box)(({ theme }) => {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    border-left: 1px solid ${theme?.palette?.mode !== `dark` ? colors.white01 : colors.black14};
+    border-left: 1px solid ${getColor(colors.white01, colors.black14, theme)};
   `
 })
 export const LogoIcon = styled(GobletIcon)`
@@ -32,10 +32,10 @@ export const LogoIcon = styled(GobletIcon)`
 export const LogoText = styled(Text)(({ theme }) => `
   margin-top: 0px;
   font-size: 25px;
-  color: ${getColor(`colors.royalPurple`, `colors.white`, theme)}
+  color: ${getColor(colors.royalPurple, colors.white, theme)}
 `)
 
 export const SubText = styled(Text)(({ theme }) => `
   font-size: 14px;
-  color: ${getColor(`colors.gray20`, `colors.gray07`, theme)}
+  color: ${getColor(colors.gray20, colors.gray07, theme)}
 `)

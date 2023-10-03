@@ -1,3 +1,5 @@
+import type { TGobletTheme } from '@gobletqa/components'
+
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
@@ -14,10 +16,10 @@ export const BrowserStateIcon = styled(Box)``
 export const TestSuiteText = styled(InText)``
 export const TestSuiteTextContainer = styled(Box)``
 
-const closedViewStyles = () => `
+const closedViewStyles = (theme:TGobletTheme) => `
   margin-left: ${gutter.margin.hpx};
   padding-left: ${gutter.padding.hpx};
-  border-left: 1px solid ${getColor(colors.white01, colors.black09)};
+  border-left: 1px solid ${getColor(colors.white01, colors.black09, theme)};
 
 
   & .action-text-hover {
@@ -65,7 +67,7 @@ const openedViewStyles = () => `
   }
 `
 
-export const TestSuiteActionStyles = (testRunsView?:boolean) => `
+export const TestSuiteActionStyles = (theme:TGobletTheme, testRunsView?:boolean) => `
   & > button {
     width: 140px;
     height: 35px;
@@ -84,5 +86,5 @@ export const TestSuiteActionStyles = (testRunsView?:boolean) => `
     position: absolute;
   }
 
-  ${!testRunsView ? closedViewStyles() : openedViewStyles()}
+  ${!testRunsView ? closedViewStyles(theme) : openedViewStyles()}
 `

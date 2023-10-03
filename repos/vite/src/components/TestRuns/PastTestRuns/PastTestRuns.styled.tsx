@@ -23,10 +23,10 @@ export const PastTestRunsListContainer = styled(Box)`
   padding-top: 0px;
 `
 
-export const PastTestRunsListItems = styled(List)`
+export const PastTestRunsListItems = styled(List)(({ theme }) => `
   padding-top: 0px;
-  background-color: ${cmx(getColor(colors.white01, colors.black19), 10)};
-`
+  background-color: ${cmx(getColor(colors.white01, colors.black19, theme), 10)};
+`)
 
 export const PastTestRunListItem = styled(ListItem)`
   width: 100%;
@@ -37,7 +37,7 @@ export const PastTestRunListItem = styled(ListItem)`
     padding-top: 0px;
   }
 `
-export const PastTestRunListItemContent = styled(Box)`
+export const PastTestRunListItemContent = styled(Box)(({ theme }) => `
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -45,31 +45,31 @@ export const PastTestRunListItemContent = styled(Box)`
 
   &.header {
     line-height: 35px;
-    color: ${getColor(colors.gray18, colors.gray01)};
+    color: ${getColor(colors.gray18, colors.gray01, theme)};
   }
-  
-`
+`)
+
 export const PastTestRunListItemIcon = styled(ListItemIcon)`
   max-width: 55px;
   justify-content: flex-end;
 `
 
-export const PastTestRunListItemHeader = styled(ListSubheader)`
+export const PastTestRunListItemHeader = styled(ListSubheader)(({ theme }) => `
   flex-grow: 1;
   display: flex;
   border-bottom: 1px solid;
   padding-left: ${gutter.padding.px};
   padding-right: ${gutter.padding.px};
-  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10), 30)};
-`
+  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10, theme), 30)};
+`)
 
-export const PastTestRunListItemButton = styled(ListItemButton)`
+export const PastTestRunListItemButton = styled(ListItemButton)(({ theme }) => `
   padding-left: 0px;
   padding-right: 0px;
   border-bottom: 1px solid;
   background-color: transparent;
   transition: border-bottom-color ${avgEase}, color ${avgEase};
-  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
+  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12, theme), 30)};
 
   &:hover {
 
@@ -108,7 +108,7 @@ export const PastTestRunListItemButton = styled(ListItemButton)`
   }
 
   }
-`
+`)
 
 export const PastTestRunListItemText = styled(InText)`
   width: 30%;

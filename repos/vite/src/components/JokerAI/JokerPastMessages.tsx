@@ -6,20 +6,8 @@ import {
   EJokerMessageType
 } from '@types'
 
-import {
-  JokerMessages,
-  JokerMessageText,
-  JokerMessageAction,
-  JokerMessageContent,
-  JokerMessageIconJoker,
-  JokerMessageIconUser,
-  JokerMessageContainer,
-  JokerMessageActionText,
-  JokerMessageTextContainer,
-  JokerMessageIconContainer,
-  JokerMessageActionsContainer,
-} from './JokerFeature.styled'
-import {cls} from '@keg-hub/jsutils'
+import { JokerMessage } from './JokerMessage'
+import { JokerMessages } from './JokerFeature.styled'
 
 export type TJokerPastMessages = {
   message?:TJokerMessage[]
@@ -70,69 +58,6 @@ const messages:TJokerMessage[] = [
     actions: []
   }
 ]
-
-export const JokerMessage = (props:TJokerMessage) => {
-  const {
-    text,
-    type,
-    actions
-  } = props
-
-
-  return (
-    <JokerMessageContainer className={cls(
-      `gb-joker-message-container`,
-      `gb-joker-message-container-${type}`,
-    )}>
-
-      <JokerMessageContent
-        className={cls(
-          `gb-joker-message-content`,
-          `gb-joker-message-${type}`,
-        )}
-      >
-      
-        <JokerMessageIconContainer>
-          {
-            type === EJokerMessageType.Joker
-              ? (<JokerMessageIconJoker />)
-              : (<JokerMessageIconUser />)
-          }
-        </JokerMessageIconContainer>
-      
-        <JokerMessageTextContainer className='gb-joker-message-text-container' >
-          <JokerMessageText className='gb-joker-message-text' >
-            {text}
-          </JokerMessageText>
-        </JokerMessageTextContainer>
-        
-      </JokerMessageContent>
-
-      {actions?.length && (
-        <JokerMessageActionsContainer className='gb-joker-message-actions-container' >
-          {actions.map(action => {
-            return (
-              <JokerMessageAction
-                key={action.id}
-                variant={action.variant || `contained`}
-                className={cls(
-                  `gb-joker-message-action`,
-                  `gb-joker-message-action-${action.kind}`
-                )}
-                text={(
-                  <JokerMessageActionText className='gb-joker-message-action-text' >
-                    {action.label}
-                  </JokerMessageActionText>
-                )}
-              />
-            )
-          })}
-        </JokerMessageActionsContainer>
-      ) || null}
-    </JokerMessageContainer>
-  )
-}
-
 
 export const JokerPastMessages = (props:TJokerPastMessages) => {
   return (

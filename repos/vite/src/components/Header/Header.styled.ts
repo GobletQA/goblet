@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { getColor, dims, gutter } from '@gobletqa/components'
+import { colors, getColor, dims, gutter } from '@gobletqa/components'
 
 export const AppHeader = styled(AppBar)(({ theme }) => {
   return `
@@ -12,7 +12,7 @@ export const AppHeader = styled(AppBar)(({ theme }) => {
     height: ${dims.header.hpx};
     padding: 0 ${gutter.padding.px};
     padding-left: 0;
-    background-color: ${getColor(`colors.white`, `colors.black14`, theme)};
+    background-color: ${getColor(colors.white, colors.black14, theme)};
 
     & .MuiToolbar-root {
       min-height: ${dims.header.hpx};
@@ -49,5 +49,5 @@ export const LogoText = styled(Typography)(({ theme }) => `
   font-size: 20px;
   margin-left: 6px;
   margin-right: 6px;
-  color: ${getColor(`colors.royalPurple`, `colors.white`, theme)}
+  color: ${getColor(colors.royalPurple, colors.white, theme)}
 `) as typeof Typography

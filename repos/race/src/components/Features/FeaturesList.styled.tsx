@@ -129,8 +129,8 @@ export const FeatureItemName = styled(ListItemText)`
 `
 
 export const FeatureItemActionsContainer = styled(Span)(({ theme }) => {
-  const bgClr = getColor(colors.white, colors.purple23)
-  const textClr = getColor(colors.purple23, colors.white)
+  const bgClr = getColor(colors.white, colors.purple23, theme)
+  const textClr = getColor(colors.purple23, colors.white, theme)
 
   return `
     right: 0px;
@@ -169,8 +169,8 @@ export const FeatureGroupHeaderEdit = styled(Box)`
 `
 
 export const FeatureGroupHeaderActions = styled(Span)(({ theme }) => {
-  const bgClr = getColor(colors.white, colors.purple23)
-  const textClr = getColor(colors.purple23, colors.white)
+  const bgClr = getColor(colors.white, colors.purple23, theme)
+  const textClr = getColor(colors.purple23, colors.white, theme)
 
   // Folder Actions only
   return `

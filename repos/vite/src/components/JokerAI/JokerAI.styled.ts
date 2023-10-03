@@ -6,11 +6,11 @@ import {
 } from '@gobletqa/components'
 
 
-export const JokerAIContainer = styled(Box)`
+export const JokerAIContainer = styled(Box)(({ theme }) => `
   height: 100%;
-  background-color: ${getColor(colors.white, colors.black19)};
+  background-color: ${getColor(colors.white, colors.black19, theme)};
   
   & .MuiPaper-root {
-    background-color: ${getColor(colors.white, colors.black19)};
+    background-color: ${getColor(colors.white, colors.black19, theme)};
   }
-`
+`)

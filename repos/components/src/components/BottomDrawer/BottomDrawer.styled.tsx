@@ -67,11 +67,11 @@ export const Drawer = styled(
 }))
 
 
-export const BottomDrawerContainer = styled(Box)`
+export const BottomDrawerContainer = styled(Box)(({ theme }) => `
   width: 100%;
   height: 100%;
-  background-color: ${getColor(colors.gray00, colors.black12)};
-`
+  background-color: ${getColor(colors.gray00, colors.black12, theme)};
+`)
 
 export const DrawerSliderActions = styled(Box)`
   right: 0px;
@@ -79,7 +79,7 @@ export const DrawerSliderActions = styled(Box)`
   position: absolute;
 `
 
-export const DrawerSliderAction = styled(IconButton)`
+export const DrawerSliderAction = styled(IconButton)(({ theme }) => `
   border-radius: 0px;
   place-items: center;
   font-family: inherit;
@@ -87,15 +87,15 @@ export const DrawerSliderAction = styled(IconButton)`
   background-color: transparent;
   height: ${dims.defs.header.hpx};
   width: ${dims.defs.header.height + 8}px;
-  background-color: ${getColor(colors.gray01, colors.black11)};
+  background-color: ${getColor(colors.gray01, colors.black11, theme)};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
-  border-left: 1px solid ${getColor(colors.gray02, colors.black13)};
-  border-bottom: 1px solid ${getColor(colors.gray02, colors.black14)};
+  border-left: 1px solid ${getColor(colors.gray02, colors.black13, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black14, theme)};
   
   &:hover {
-    background-color: ${getColor(colors.white, colors.black14)};
+    background-color: ${getColor(colors.white, colors.black14, theme)};
   }
-`
+`)
 
 export const DrawerActionIconContainer = styled(Box)`
 `

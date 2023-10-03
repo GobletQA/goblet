@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 
 import { useMemo } from 'react'
 import { deepMerge } from '@keg-hub/jsutils'
-import { colors, getColor } from '@gobletqa/components'
+import { colors, getColor, useTheme } from '@gobletqa/components'
 
 export type THActionStyles = {
   sx?:CSSProperties
@@ -17,11 +17,13 @@ export const useActionStyles = (props:THActionStyles) => {
     styles
   } = props
 
+  const theme = useTheme()
+
   return useMemo(() => {
     return deepMerge<CSSProperties>({
       width: `24px`,
       height: `24px`,
-      color: getColor(colors.gray08, colors.gray15),
+      color: getColor(colors.gray08, colors.gray15, theme),
       [`& svg`]: {
         width: `22px`,
         height: `22px`,
@@ -30,6 +32,6 @@ export const useActionStyles = (props:THActionStyles) => {
         color: colors.green10,
       },
     }, styles, style, sx)
-  }, [])
+  }, [theme])
 
 }
