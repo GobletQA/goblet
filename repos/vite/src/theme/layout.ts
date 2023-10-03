@@ -1,26 +1,16 @@
-
 import { colors, dims } from '@gobletqa/components/theme'
 const { divider } = dims.panel
-
-
-  // .split-view-view:before,
-  // .sash:before {
-  //   border: none !important;
-  //   background: none !important;
-  // }
 
 export const layout = () => `
   .sash {
     opacity: 0;
     z-index: 100;
     position: relative;
-    margin: 0;
-    background: #000;
     box-sizing: border-box;
+    background: ${colors.white};
     background-clip: padding-box;
     transition: opacity 200ms ease-in-out;
-    -webkit-transition: opacity 200ms ease-in-out;
-    background: ${colors.white};
+
 
     &.sash-vertical {
       height: 100%;
@@ -29,7 +19,7 @@ export const layout = () => `
       border-left: ${divider.hvrpx} solid ${colors.royalPurple};
       border-right: ${divider.hvrpx} solid ${colors.royalPurple};
     }
-    
+
     &.sash-horizontal {
         width: 100%;
         cursor: row-resize;
@@ -40,6 +30,12 @@ export const layout = () => `
 
   }
 
+  .split-view-view:before,
+  .sash:before {
+    border: none !important;
+    background: none !important;
+  }
+
   .sash:hover {
     opacity: 1;
   }
@@ -47,4 +43,5 @@ export const layout = () => `
   .sash-active, .sash-hover {
     opacity: 1;
   }
+
 `
