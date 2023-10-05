@@ -7,11 +7,14 @@ import type {
 } from "@gobletqa/race"
 
 import { EAstObject} from "@ltipton/parkin"
-import { get } from "@keg-hub/jsutils/get"
-import { toNum } from "@keg-hub/jsutils/toNum"
-import { exists } from "@keg-hub/jsutils/exists"
-import { emptyArr } from "@keg-hub/jsutils/emptyArr"
-import { omitKeys } from "@keg-hub/jsutils/omitKeys"
+import {
+  get,
+  toNum,
+  exists,
+  omitKeys,
+  emptyArr,
+} from "@keg-hub/jsutils"
+
 
 type TFilterFeature = Omit<TRaceFeature, `path`|`parent`>
 
