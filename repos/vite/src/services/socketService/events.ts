@@ -8,6 +8,7 @@ import { WSAutomateEvent, BrowserNavEvt } from '@constants'
 import { playEvent } from '@actions/socket/local/playEvent'
 import { setPageAst } from '@actions/socket/local/setPageAst'
 import { recordAction } from '@actions/socket/local/recordAction'
+import { jokerResponse } from '@actions/joker/socket/jokerResponse'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 import {clearEditorDecorations} from '@actions/runner/clearEditorDecorations'
 
@@ -68,6 +69,7 @@ export const events = {
   },
   pwAutomateEvent: function(message:TSocketEvt){
     EE.emit(WSAutomateEvent, message.data)
+  
   },
   playCanceled: function(message:TPlayerCancelEvent){
     clearEditorDecorations(message.location)
@@ -84,17 +86,8 @@ export const events = {
   playSuiteStart: playEvent,
   playSuiteDoneRoot: playEvent,
   playSuiteStartRoot: playEvent,
-  testRunDone: function (message:TSocketEvt){
-    
-  },
-  testRunCanceled: function (message:TSocketEvt){
-    
-  },
-  testRunError: function (message:TSocketEvt){
-    
-  },
-  jokerQuestionResp: function (message:TSocketEvt){
-    console.log(`------- message -------`)
-    console.log(message)
-  },
+  testRunDone: function (message:TSocketEvt){},
+  testRunCanceled: function (message:TSocketEvt){},
+  testRunError: function (message:TSocketEvt){},
+  jokerResponse,
 }

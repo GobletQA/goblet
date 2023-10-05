@@ -2,7 +2,6 @@ import type { TColorOpt } from './component.types'
 import type { TModalComponent } from '@gobletqa/components'
 
 
-
 export enum EModalTypes {
   Idle = `idle`,
   IDLE = `idle`,

@@ -8,9 +8,9 @@ import {
 
 export const JokerAIContainer = styled(Box)(({ theme }) => `
   height: 100%;
-  background-color: ${getColor(colors.white, colors.black19, theme)};
+  background-color: ${getColor(colors.white, colors.black11, theme)};
   
   & .MuiPaper-root {
-    background-color: ${getColor(colors.white, colors.black19, theme)};
+    background-color: ${getColor(colors.white, colors.black11, theme)};
   }
 `)

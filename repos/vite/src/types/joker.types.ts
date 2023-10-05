@@ -1,15 +1,15 @@
 import {ReactNode} from "react"
 
+import {
+  TJokerRes,
+  EJokerAction,
+  EJokerMessageType,
+  TJokerReq as TJokerReqEx,
+} from './shared.types'
+import {TSocketEvt} from "./socket.types"
+
 export type TJokerMessageId = string|number
-
-export enum EJokerAction {
-  Question=`Question`,
-  FixFeature=`FixFeature`,
-  CopyFeature=`CopyFeature`,
-  GenerateFeature=`GenerateFeature`,
-  CancelAction=`CancelAction`,
-}
-
+export type TTimestamp = number
 
 export type TJokerAction = {
   label:string
@@ -19,20 +19,25 @@ export type TJokerAction = {
   variant?:`outlined`|`text`|`contained`
 }
 
-export enum EJokerMessageType {
-  User=`User`,
-  Joker=`Joker`,
-}
-
 export type TJokerMessage = {
   text:ReactNode
   key?:string|number
   id:TJokerMessageId
   type:EJokerMessageType
   actions?:TJokerAction[]
+  requestId?:TJokerMessageId
 }
 
-export type TUpsertJokerMessage = {
-  id:TJokerMessageId
-  data:TJokerMessage
+
+export type TJokerUsage = {
+  prompt_tokens?:number
+  total_tokens?:number
+  completion_tokens?:number
 }
+
+
+export type TJokerReq = TJokerReqEx & {
+  cb?:(res:TJokerSocketRes) => void
+}
+
+export type TJokerSocketRes = TSocketEvt<TJokerRes>

@@ -78,6 +78,7 @@ export const Input = (props:TInput) => {
   } = useInputCallbacks({
     required,
     autoFocus,
+    multiline,
     onBlur: onBlurIn,
     onFocus: onFocusIn,
     onChange: onChangeIn,

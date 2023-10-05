@@ -24,10 +24,10 @@ export const JokerMessageContainer = styled(Box)(({ theme }) => `
     align-self: end;
     justify-content: start;
     flex-direction: row-reverse;
-    background-color: ${getColor(colors.white01, colors.purple20, theme)};
+    background-color: ${getColor(colors.gray02, colors.black08, theme)};
   }
   &.gb-joker-message-container-Joker {
-    background-color: ${cmx(getColor(colors.shinyShamrock, colors.green18, theme), 40)};
+    background-color: ${getColor(cmx(colors.shinyShamrock, 30), colors.purple17, theme)};
   }
 `)
 
@@ -55,8 +55,8 @@ export const JokerMessageIconJoker = styled(JokerIcon)(({ theme }) => `
   margin-top: -${gutter.margin.qpx};
   margin-left: -${gutter.margin.hpx};
   margin-bottom: ${gutter.margin.hpx};
-  color: ${getColor(colors.green00, colors.green20, theme)};
-  background-color: ${getColor(colors.gray19, colors.gray03, theme)};
+  background-color: ${getColor(colors.gray19, colors.black08, theme)};
+  color: ${getColor(colors.green00, colors.purple00, theme)};
 `)
 
 export const JokerMessageIconUser = styled(PersonIcon)(({ theme }) => `
@@ -66,8 +66,8 @@ export const JokerMessageIconUser = styled(PersonIcon)(({ theme }) => `
   margin-top: -${gutter.margin.qpx};
   margin-right: -${gutter.margin.hpx};
   margin-bottom: ${gutter.margin.hpx};
-  color: ${getColor(colors.green19, colors.gray03, theme)};
-  background-color: ${cmx(getColor(colors.gray04, colors.green20, theme), 80)};
+  color: ${getColor(colors.green19, colors.gray01, theme)};
+  background-color: ${getColor(colors.gray05, colors.black09, theme)};
 `)
 
 
@@ -90,7 +90,10 @@ export const JokerMessageActionContainer = styled(Button)(({ theme }) => `
   padding: ${gutter.padding.qpx} ${gutter.padding.hpx};
   
   &.MuiButton-contained {
-    background-color: ${getColor(colors.gray19, colors.gray03, theme)};
+    background-color: ${getColor(colors.gray19, colors.black08, theme)};
+    &:hover {
+      background-color: ${getColor(colors.gray21, colors.black06, theme)};
+    }
   }
   
   &.MuiButton-text {

@@ -27,7 +27,7 @@ export class BaseProvider {
   }
 
   protected toPrompt = (question:TQuestion) => {
-    const { messages } = question
+    const { messages, id, ...rest } = question
     
     const msgs = messages.map(message => {
       return isStr(message)
@@ -37,7 +37,7 @@ export class BaseProvider {
 
     return {
       ...this.defaults,
-      ...question,
+      ...rest,
       messages: msgs
     } as TPrompt
   }

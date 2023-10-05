@@ -1,16 +1,19 @@
 import type { CSSProperties } from 'react'
 import type { Theme } from '@mui/material/styles'
+import type { DrawerProps } from '@mui/material/Drawer'
 
 import Box from '@mui/material/Box'
 import { dims, colors } from '@GBC/theme'
 import MuiDrawer from '@mui/material/Drawer'
+
 import { styled } from '@mui/material/styles'
 import { getColor } from '@GBC/utils/theme/getColor'
 import { IconButton } from '@GBC/components/Buttons/IconButton'
 
 const noForwardProps = [
   `open`,
-  `disablePortal`
+  `disablePortal`,
+  `drawerHeight`,
 ] as any[]
 
 const shared:CSSProperties = {
@@ -19,52 +22,63 @@ const shared:CSSProperties = {
   overflowY: `hidden`,
 }
 
-const openedStyles = (theme: Theme): CSSProperties => ({
+const openedStyles = (theme: Theme, height:string): CSSProperties => ({
   ...shared,
-  height: dims.defs.openedHeight,
+  height,
   transition: theme.transitions.create('height', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
 })
 
-const closedStyles = (theme: Theme): CSSProperties => ({
+const closedStyles = (theme: Theme, height:string): CSSProperties => ({
   ...shared,
-  height: dims.defs.closedHeight,
+  height,
   transition: theme.transitions.create('height', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
 })
 
+type TDrawerProps = DrawerProps & {
+  drawerHeight?:string
+}
+
 export const Drawer = styled(
   MuiDrawer,
   { shouldForwardProp: (prop) => !noForwardProps.includes(prop) }
-)(({ theme, open }) => ({
-  flexShrink: 0,
-  whiteSpace: `nowrap`,
-  boxSizing: `border-box`,
-  height: dims.defs.openedHeight,
-  ...(open && {
-    ...openedStyles(theme),
-    '& .MuiDrawer-paper': openedStyles(theme),
-  }),
-  ...(!open && {
-    ...closedStyles(theme),
-    '& .MuiDrawer-paper': closedStyles(theme),
-  }),
-  ...(!open && {
-    [`& button.MuiTab-root.Mui-selected`]: {
-      color: getColor(colors.gray05, colors.purple02, theme),
-      backgroundColor: getColor(colors.gray00, colors.purple17, theme),
+)<TDrawerProps>(({ theme, open, drawerHeight }) => {
 
-      [`&:hover`]: {
-        color: getColor(colors.royalPurple, colors.purple02, theme),
-        backgroundColor: getColor(colors.white, colors.purple17, theme)
+  const height = open
+    ? drawerHeight || dims.defs.openedHeight
+    : dims.defs.closedHeight
+  
+  return {
+    height,
+    flexShrink: 0,
+    whiteSpace: `nowrap`,
+    boxSizing: `border-box`,
+    ...(open && {
+      ...openedStyles(theme, height),
+      '& .MuiDrawer-paper': openedStyles(theme, height),
+    }),
+    ...(!open && {
+      ...closedStyles(theme, height),
+      '& .MuiDrawer-paper': closedStyles(theme, height),
+    }),
+    ...(!open && {
+      [`& button.MuiTab-root.Mui-selected`]: {
+        color: getColor(colors.gray05, colors.purple02, theme),
+        backgroundColor: getColor(colors.gray00, colors.purple17, theme),
+
+        [`&:hover`]: {
+          color: getColor(colors.royalPurple, colors.purple02, theme),
+          backgroundColor: getColor(colors.white, colors.purple17, theme)
+        }
       }
-    }
-  }),
-}))
+    })
+  }
+})
 
 
 export const BottomDrawerContainer = styled(Box)(({ theme }) => `

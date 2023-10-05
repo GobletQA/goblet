@@ -135,6 +135,7 @@ export const JokerAI = (props:TJokerAI) => {
         open={open}
         tabs={tabs}
         activeTab={active}
+        drawerHeight={`60%`}
         onToggle={toggleDrawer}
         onTabClick={onTabClick}
       >

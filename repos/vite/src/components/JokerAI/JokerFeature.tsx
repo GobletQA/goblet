@@ -1,76 +1,75 @@
-import {sendJkrMessage} from '@actions/joker/api/sendJkrMessage'
+import type { FocusEvent } from 'react'
+
+import {nanoid} from '@keg-hub/jsutils'
+import { useRef, useState } from 'react'
+import { JokerQuestion } from './JokerQuestion'
+import { JokerPastMessages } from './JokerPastMessages'
+import {useEffectOnce, useInline} from '@gobletqa/components'
+import { jokerRequest } from '@actions/joker/socket/jokerRequest'
 import {
-  JokerQInput,
-  JokerQSubmit,
-  JokerQContainer,
-  JokerQInputContainer,
   JokerFeatureContainer,
-  JokerQSubmitContainer,
   JokerMessagesContainer,
 } from './JokerFeature.styled'
 
-import {
-  EJokerAction,
-  EJokerMessageType
-} from '@types'
-import { useRef } from 'react'
-import { nanoid } from '@keg-hub/jsutils'
-import { JokerPastMessages } from './JokerPastMessages'
 
+export type TJokerFeature = {}
 
-
-export type TJokerFeature = {
-  
-}
 
 export const JokerFeature = (props:TJokerFeature) => {
-  
-  const inputRef = useRef<HTMLInputElement>()
-  
+
+  const buttonRef = useRef<HTMLButtonElement>(undefined as any)
+  const inputRef = useRef<HTMLInputElement|HTMLTextAreaElement|undefined>()
+  const [question, setQuestion] = useState(``)
+  const [loading, setLoading] = useState(false)
+
+  // Auto focus the button element on blur of the question input
+  const onBlur = useInline((evt:FocusEvent) => {
+    const val = (inputRef?.current?.value || ``).trim()
+    setQuestion(val)
+    val && setTimeout(() => buttonRef?.current?.focus?.(), 100)
+  })
+
+  const onClick = useInline(async () => {
+    if(!inputRef?.current) return
+    
+    const text = inputRef?.current?.value
+    if(!text) return
+
+    // Reset the input on submit to the backend
+    inputRef.current.value = ``
+
+    setLoading(true)
+    await jokerRequest({
+      text,
+      id: nanoid(),
+    })
+    setLoading(false)
+
+    buttonRef?.current?.blur?.()
+  })
+
+  const [rows, setRows] = useState(4)
+  useEffectOnce(() => setRows(0))
+
   return (
     <JokerFeatureContainer
       className='gb-joker-messages-feature-container'
     >
-
       <JokerMessagesContainer
         className='gb-joker-messages-container'
       >
         <JokerPastMessages />
       </JokerMessagesContainer>
 
-      <JokerQContainer
-        className='gb-joker-messages-q-container'
-      >
-        <JokerQInputContainer
-          className='gb-joker-messages-q-input-container'
-        >
-          <JokerQInput
-            inputRef={inputRef}
-            className='gb-joker-messages-q-input'
-            placeholder='Ask Joker a question...'
-            value={inputRef?.current?.value || ``}
-          />
-
-        </JokerQInputContainer>
-
-        <JokerQSubmitContainer
-          className='gb-joker-messages-submit-container'
-        >
-          <JokerQSubmit
-            className='gb-joker-messages-submit-button'
-            text={`Submit`}
-            variant={`contained`}
-            onClick={() => {
-              sendJkrMessage({
-                id: nanoid(),
-                type: EJokerMessageType.User,
-                text: inputRef?.current?.value,
-              })
-            }}
-          />
-        </JokerQSubmitContainer>
-      </JokerQContainer>
-
+      <JokerQuestion
+        rows={rows}
+        onBlur={onBlur}
+        loading={loading}
+        onClick={onClick}
+        question={question}
+        inputRef={inputRef}
+        buttonRef={buttonRef}
+      />
     </JokerFeatureContainer>
   )
 

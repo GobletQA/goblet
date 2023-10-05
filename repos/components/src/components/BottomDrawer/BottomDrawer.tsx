@@ -32,6 +32,7 @@ export type TBottomDrawer = {
   className?:string
   activeTab?:number
   children:ReactNode
+  drawerHeight?:string
   tabs?:TBottomDrawerTab[]
   paperProps?:Partial<PaperProps>
   drawerProps?:Partial<DrawerProps>
@@ -81,6 +82,7 @@ export const BottomDrawer = (props:TBottomDrawer) => {
     paperProps,
     onTabClick,
     drawerProps,
+    drawerHeight,
     onTabChange,
   } = props
 
@@ -94,6 +96,7 @@ export const BottomDrawer = (props:TBottomDrawer) => {
           {...DrawerProps}
           {...drawerProps}
           open={open}
+          drawerHeight={drawerHeight}
           onClose={() => onToggle?.(false)}
           PaperProps={{
             ...PaperProps,

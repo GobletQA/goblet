@@ -22,7 +22,7 @@ export class OpenAI extends BaseProvider {
     const completion = await this.ai.chat.completions.create(prompt)
     console.log(`Answer:`, require('util').inspect(completion, false, null, true))
 
-    return completion
+    return completion as TPromptResp
   }
 
 }
