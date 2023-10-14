@@ -9,30 +9,11 @@ import {
   gutter,
   getColor,
   BlockIcon,
+  scrollbarStyle,
   HelpOutlineIcon,
 } from '@gobletqa/components'
 
-const sidebarStyle = (theme:Theme) => `
-  ::-webkit-scrollbar-track {
-      background: ${getColor(colors.white, colors.purple23, theme)};
-      box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-      -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background: ${getColor(colors.gray03, `${colors.purple13}66`, theme)};
-    box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-    -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
-  }
-
-`
-
-export const JokerFeatureContainer = styled(Box)(({ theme }) => `
+export const JokerQAContainer = styled(Box)(({ theme }) => `
   width: 100%;
   height: 100%;
   display: flex;
@@ -50,7 +31,7 @@ export const JokerMessagesContainer = styled(Box)(({ theme }) => `
   height: 100%;
   display: flex;
   overflow-y: auto;
-  ${sidebarStyle(theme)}
+  ${scrollbarStyle(theme)}
 `)
 
 export const JokerMessages = styled(Box)(({ theme }) => `

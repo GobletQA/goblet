@@ -11,7 +11,7 @@ import {
   JokerQCancelIcon,
   JokerQInputContainer,
   JokerQSubmitContainer,
-} from './JokerFeature.styled'
+} from './JokerQA.styled'
 
 export type TJokerQuestion = {
   rows?:number

@@ -7,15 +7,15 @@ import { JokerPastMessages } from './JokerPastMessages'
 import {useEffectOnce, useInline} from '@gobletqa/components'
 import { jokerRequest } from '@actions/joker/socket/jokerRequest'
 import {
-  JokerFeatureContainer,
+  JokerQAContainer,
   JokerMessagesContainer,
-} from './JokerFeature.styled'
+} from './JokerQA.styled'
 
 
-export type TJokerFeature = {}
+export type TJokerQA = {}
 
 
-export const JokerFeature = (props:TJokerFeature) => {
+export const JokerQA = (props:TJokerQA) => {
 
   const buttonRef = useRef<HTMLButtonElement>(undefined as any)
   const inputRef = useRef<HTMLInputElement|HTMLTextAreaElement|undefined>()
@@ -54,7 +54,7 @@ export const JokerFeature = (props:TJokerFeature) => {
   useEffectOnce(() => setRows(0))
 
   return (
-    <JokerFeatureContainer
+    <JokerQAContainer
       className='gb-joker-messages-feature-container'
     >
       <JokerMessagesContainer
@@ -72,7 +72,7 @@ export const JokerFeature = (props:TJokerFeature) => {
         inputRef={inputRef}
         buttonRef={buttonRef}
       />
-    </JokerFeatureContainer>
+    </JokerQAContainer>
   )
 
 }

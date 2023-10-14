@@ -143,12 +143,13 @@ export const DefinitionTabs = [
 ]
 
 export const JokerQATab = `JokerQATab`
-export const JokerFeatureTab = `JokerFeatureTab`
+export const JokerActionsTab = `JokerActionsTab`
+
 
 export const JokerTabs = [
   {
-    id: JokerFeatureTab,
-    key: JokerFeatureTab,
+    id: JokerActionsTab,
+    key: JokerActionsTab,
     Icon: JokerIcon,
     name: `Joker`,
   },

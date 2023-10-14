@@ -4,11 +4,9 @@ import type { TBottomDrawerTab } from '@gobletqa/components'
 
 import {
   JokerTabs,
-  JokerQATab,
-  JokerFeatureTab,
 } from '@constants/nav'
-import { JokerQandA } from './JokerQandA'
-import { JokerFeature } from './JokerFeature'
+import { JokerQA } from './JokerQA/JokerQA'
+import { JokerActions } from './JokerActions/JokerActions'
 
 import { JokerAIContainer } from './JokerAI.styled'
 import { useCallback, useMemo, useState } from 'react'
@@ -43,8 +41,8 @@ const styles = {
 }
 
 const TabMap = {
-  JokerQATab: JokerQandA,
-  JokerFeatureTab: JokerFeature
+  JokerQATab: JokerQA,
+  JokerActionsTab: JokerActions,
 }
 
 const useJokerTabs = () => {
@@ -127,7 +125,7 @@ export const JokerAI = (props:TJokerAI) => {
     !open && toggleDrawer(true)
   }, [open, active])
 
-  const Component = TabMap[tabs[active]?.id as keyof typeof TabMap] || JokerFeature
+  const Component = TabMap[tabs[active]?.id as keyof typeof TabMap] || JokerActions
 
   return (
     <JokerAIContainer  className='gb-joker-container' >

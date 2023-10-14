@@ -1,14 +1,8 @@
-import type {ReactNode} from 'react'
 import type { TJokerMessage } from '@types'
 
-import {
-  EJokerAction,
-  EJokerMessageType
-} from '@types'
-
-import {useJoker} from '@store'
+import { useJoker } from '@store'
 import { JokerMessage } from './JokerMessage'
-import { JokerMessages, JokerMessagesList } from './JokerFeature.styled'
+import { JokerMessages, JokerMessagesList } from './JokerQA.styled'
 
 export type TJokerPastMessages = {
   message?:TJokerMessage[]
