@@ -33,39 +33,39 @@ const mockQResp = () => {
   return new Promise((res) => {
     setTimeout(() => {
       res(jokerMessage)
-    }, 1000)
+    }, 3000)
   })
 }
 
 export const askQuestion = async (props:TJokerReq) => {
 
-  // return await mockQResp()
+  return await mockQResp()
 
-  const {
-    id,
-    text,
-  } = props
+  // const {
+  //   id,
+  //   text,
+  // } = props
 
-  if(!isStr(text)){
-    Logger.log(`Can not ask Joker, a question is required!`, props)
-    return {
-      error: true,
-      data: { id: nanoid(), requestId: id } as TJokerRes,
-      message: `Can not ask Joker, a question is required!`
-    }
-  }
+  // if(!isStr(text)){
+  //   Logger.log(`Can not ask Joker, a question is required!`, props)
+  //   return {
+  //     error: true,
+  //     data: { id: nanoid(), requestId: id } as TJokerRes,
+  //     message: `Can not ask Joker, a question is required!`
+  //   }
+  // }
 
-  const [err, resp] = await limbo<TJokerRes>(jokerAI.ask({ question: text, id }))
+  // const [err, resp] = await limbo<TJokerRes>(jokerAI.ask({ question: text, id }))
 
-  if(err){
-    err && Logger.log(err.stack)
-    return {
-      error: true,
-      message: err.message,
-      data: { id: nanoid(), requestId: id, ...resp } as TJokerRes,
-    }
-  }
+  // if(err){
+  //   err && Logger.log(err.stack)
+  //   return {
+  //     error: true,
+  //     message: err.message,
+  //     data: { id: nanoid(), requestId: id, ...resp } as TJokerRes,
+  //   }
+  // }
   
-  return resp
+  // return resp
 
 }

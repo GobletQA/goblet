@@ -1,6 +1,7 @@
 import type { FocusEvent } from 'react'
 
-import {nanoid} from '@keg-hub/jsutils'
+import { EJokerAction } from '@types'
+import { nanoid } from '@keg-hub/jsutils'
 import { useRef, useState } from 'react'
 import { JokerQuestion } from './JokerQuestion'
 import { JokerPastMessages } from './JokerPastMessages'
@@ -42,6 +43,7 @@ export const JokerQA = (props:TJokerQA) => {
     await jokerRequest({
       text,
       id: nanoid(),
+      action: EJokerAction.Question
     })
     setLoading(false)
 

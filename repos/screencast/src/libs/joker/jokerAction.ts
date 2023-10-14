@@ -4,17 +4,23 @@ import { fixFeature } from './fixFeature'
 import { askQuestion } from './askQuestion'
 import { EJokerAction } from '@gobletqa/joker'
 import { generateFeature } from './generateFeature'
+import { stepFromBrowserAndPrompt } from './stepFromBrowserAndPrompt'
+import { featureFromBrowserAndStory } from './featureFromBrowserAndStory'
+
+
+
+const JokerActions = {
+  [EJokerAction.Question]: askQuestion,
+  [EJokerAction.FixFeature]: fixFeature,
+  [EJokerAction.GenerateFeature]: generateFeature,
+  [EJokerAction.StepFromBrowserAndPrompt]: stepFromBrowserAndPrompt,
+  [EJokerAction.FeatureFromBrowserAndStory]: featureFromBrowserAndStory,
+}
 
 export const jokerAction = async (props:TJokerReq) => {
-  switch(props.action){
-    case EJokerAction.Question:
-      return await askQuestion(props)
-    case EJokerAction.GenerateFeature:
-      return await generateFeature(props)
-    case EJokerAction.FixFeature:
-      return await fixFeature(props)
-    default:
-      throw new Error(`Unknown Joker action ${props.action}`)
-  }
+  const method = props.action && JokerActions[props.action]
+  if(!method) throw new Error(`Unknown Joker action ${props.action}`)
+
+  return await method(props)
 
 }

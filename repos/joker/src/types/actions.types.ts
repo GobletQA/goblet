@@ -5,4 +5,6 @@ export enum EJokerAction {
   CopyFeature=`CopyFeature`,
   CancelAction=`CancelAction`,
   GenerateFeature=`GenerateFeature`,
+  StepFromBrowserAndPrompt=`StepFromBrowserAndPrompt`,
+  FeatureFromBrowserAndStory=`FeatureFromBrowserAndStory`
 }

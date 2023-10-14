@@ -16,7 +16,9 @@ export const isValidFuncComp = (Component:any): Component is ElementType<any> =>
       )
     || (
           isObj(Component)
+            && !(`props` in Component)
             && (`type` in Component)
+            && isObj(Component.type)
             && (`render` in Component.type)
             && (`$$typeof` in Component.type)
       )

@@ -57,7 +57,7 @@ export const BottomDrawerAction = TooltipHoc((props:TBottomDrawerAction) => {
         >
           {Icon}
         </DrawerActionIconContainer>
-      )}
+      )|| null}
     </DrawerSliderAction>
   )
 })
