@@ -8,6 +8,8 @@ import {
   colors,
   gutter,
   getColor,
+  BlockIcon,
+  HelpOutlineIcon,
 } from '@gobletqa/components'
 
 const sidebarStyle = (theme:Theme) => `
@@ -102,3 +104,6 @@ export const JokerQSubmitContainer = styled(Box)`
 `
 export const JokerQSubmit = styled(Button)``
 
+export const JokerQSubIcon = styled(HelpOutlineIcon)``
+
+export const JokerQCancelIcon = styled(BlockIcon)``

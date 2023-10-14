@@ -29,6 +29,10 @@ export class Joker {
     })
   }
 
+  abort = async () => {
+    // TODO: add abort to joker AI request
+  }
+
   ask = async (args:TJokerAsk|string):Promise<TJokerRes> => {
     const question = buildQuestion(args, this.#system)
     const resp = await this.provider.prompt(question)

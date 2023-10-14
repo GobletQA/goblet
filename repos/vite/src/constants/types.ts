@@ -32,8 +32,8 @@ export enum StatusTypes {
 }
 
 export const SocketMsgTypes = {
+  JOKER_ABORT: `jokerAbort`,
   JOKER_REQUEST: `jokerRequest`,
-  JOKER_RESPONSE: `jokerResponse`,
   TESTS_RUN_ALL: `testsRunAll`,
   TESTS_RUN_DONE: `testsRunDone`,
   TESTS_RUN_ABORT: `testsRunAbort`,

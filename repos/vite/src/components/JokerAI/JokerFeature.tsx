@@ -48,7 +48,9 @@ export const JokerFeature = (props:TJokerFeature) => {
     buttonRef?.current?.blur?.()
   })
 
-  const [rows, setRows] = useState(4)
+  // There's a bug in mui that causes a waring when this is set to 0 by default
+  // So we have to set to 0, after it's rendered
+  const [rows, setRows] = useState(10)
   useEffectOnce(() => setRows(0))
 
   return (

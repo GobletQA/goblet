@@ -1,16 +1,19 @@
 import type { SocketService } from './socketService'
-import type { TBrowserNavEvt, TSocketEvt } from '@types'
+import type { TBrowserNavEvt, TJokerSocketRes, TSocketEvt } from '@types'
 
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { WSAutomateEvent, BrowserNavEvt } from '@constants'
 import { playEvent } from '@actions/socket/local/playEvent'
 import { setPageAst } from '@actions/socket/local/setPageAst'
 import { recordAction } from '@actions/socket/local/recordAction'
-import { jokerResponse } from '@actions/joker/socket/jokerResponse'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
-import {clearEditorDecorations} from '@actions/runner/clearEditorDecorations'
+import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
+import {
+  WSJokerResEvt,
+  BrowserNavEvt,
+  WSAutomateEvent,
+} from '@constants'
 
 type TPlayerCancelEvent = TSocketEvt & {
   location:string
@@ -89,5 +92,9 @@ export const events = {
   testRunDone: function (message:TSocketEvt){},
   testRunCanceled: function (message:TSocketEvt){},
   testRunError: function (message:TSocketEvt){},
-  jokerResponse,
+  /**
+   * Fire event to the listener in the actions/joker/jokerRequest.ts method
+   * This ensures we can clean up the promise that's waiting for the response
+   */
+  jokerResponse: (message:TJokerSocketRes) => EE.emit<TJokerSocketRes>(WSJokerResEvt, message)
 }

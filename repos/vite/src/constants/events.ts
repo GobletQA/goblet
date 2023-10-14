@@ -27,5 +27,6 @@ export const WSCancelTestRunEvt = `ws-cancel-test-run-event`
 export const TestRunGetUICfgEvt = `test-run-get-ui-cfg-event`
 export const TestRunExecCancelEvt = `test-run-exec-cancel-event`
 
+export const WSJokerResEvt = `ws-joker-res-event`
 export const CancelJokerReqEvt = `cancel-joker-req-event`
 export const WSCancelJokerReqEvt = `ws-cancel-joker-req-event`

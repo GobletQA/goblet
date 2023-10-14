@@ -2,8 +2,6 @@ import type { TJokerSocketRes, TJokerRes } from '@types'
 
 import {jokerDispatch} from "@store"
 import { EJokerMessageType } from "@types"
-import { SocketMsgTypes } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 const onSetRespChoices = (data:TJokerRes) => {
   data.choices.forEach((choice)=>{
@@ -27,9 +25,12 @@ const onError = (resp:TJokerSocketRes) => {
   })
 }
 
-export const jokerResponse = (resp:TJokerSocketRes) => {
-  EE.emit<TJokerSocketRes>(SocketMsgTypes.JOKER_RESPONSE, resp)
 
+/**
+ * Called from the jokerRequest actions promise, when the websocket jokerResponse event is fired
+ * Is not called when the jokerRequest actions promise is canceled
+*/
+export const jokerResponse = (resp:TJokerSocketRes) => {
   resp.error
     ? onError(resp)
     : onSetRespChoices(resp?.data)

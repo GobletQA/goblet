@@ -41,7 +41,6 @@
 
 
 * Add ability to restart session container from UI
-* Add scroll to position step
 
 * Keeping the feature file open when switching editors
 
@@ -53,15 +52,6 @@
 * Fix bug with race decorators
   * Rules seem to fail when running
     * Looks to be related to the decorators issues
-  * Steps not getting the correct decorator
-  * Steps with same step text cause decorator to only use the first step
-  * Needs an update to Parkin to keep a consistent uuid for feature items
-  * Needs to pass on feature test meta data
-    * This is mostly done, but needs to be published
-
-* Add cover over browser
-  * Must intentionally click the browser to interact with it
-  * Add message hover over the 
 
 
 ## To Investigate
@@ -93,7 +83,6 @@ On every page load
 * Add step to set the sizes of the browser
   * Works in tandem with the move mouse to x-y position
 * Add step to reset the browser context
-* Add step to upload video
 * Be able to reuse blocks
 
 * When grabbing a selector from the browser

@@ -7,7 +7,9 @@ import { emptyObj } from "@keg-hub/jsutils"
 import { WSService } from '@services/socketService'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
+import { jokerResponse } from '@actions/joker/socket/jokerResponse'
 import {
+  WSJokerResEvt,
   SocketMsgTypes,
   CancelJokerReqEvt,
   WSCancelJokerReqEvt,
@@ -18,6 +20,7 @@ export const jokerRequest = (props:TJokerReq) => {
   const { cb, ...rest } = props
   
   let promise = PromiseAbort((res, rej) => {
+    let aborted = false
 
     // Enable global tests running flag
     jokerDispatch.toggleJokerRunning(true)
@@ -27,9 +30,15 @@ export const jokerRequest = (props:TJokerReq) => {
 
     // Then listen for the response event fired from the websocket service
     let onJokerRespOff = EE.on<TJokerSocketRes>(
-      SocketMsgTypes.JOKER_RESPONSE,
+      WSJokerResEvt,
       (resp=emptyObj as TJokerSocketRes) => {
         jokerDispatch.toggleJokerRunning(false)
+        // This should not be needed, but I noticed some cases where it's still called
+        // Could be due to a race condition during the time the listener is removed from EE
+        // So, if the promise was already aborted, just return, because it's already handled
+        if(aborted) return
+
+        jokerResponse(resp)
         cb?.(resp)
         res(resp)
       }
@@ -44,13 +53,14 @@ export const jokerRequest = (props:TJokerReq) => {
     const cancelOff = EE.on(
       WSCancelJokerReqEvt,
       () => {
+        aborted = true
         jokerDispatch.toggleJokerRunning(false)
 
         // Send event to cancel locally
         EE.emit(CancelJokerReqEvt)
 
         // Send event to cancel on the backend
-        WSService.emit(SocketMsgTypes.TESTS_RUN_ABORT)
+        WSService.emit(SocketMsgTypes.JOKER_ABORT)
 
         // Finally stop listening, cancel and reject
         cancelOff?.()

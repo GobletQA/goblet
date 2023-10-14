@@ -20,6 +20,6 @@ export const jokerRequest = (app:Express) => async ({
 
   if(!resp) return
 
-  Manager.emit(socket, JokerResponse, resp)
+  Manager.emit(socket, JokerResponse, {data: resp})
 
 }

@@ -17,6 +17,7 @@ const {
   browserRestart,
   cancelAutomate,
   browserAutomate,
+  jokerAbort,
   jokerRequest,
 } = SocketEvents
 
@@ -62,6 +63,7 @@ export const initSocket:TInitSocket = (
         testsRunAbort: testsRunAbort(app),
 
         // ---- Joker AI Events ----
+        jokerAbort: jokerAbort(app),
         jokerRequest: jokerRequest(app)
       },
     },
