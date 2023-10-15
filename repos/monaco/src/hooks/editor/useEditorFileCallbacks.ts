@@ -4,6 +4,7 @@ import type {
   TFilelist,
   TAutoSave,
   TAddFileCB,
+  TPathChange,
   TCodeEditorRef,
   TEditorDeleteFile,
   TEditorRenameFile,
@@ -18,20 +19,20 @@ import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
 export type TUseEditorFileCallbacks = {
   curPath:string
-  autoSave: TAutoSave
-  onAddFile?: TAddFileCB
+  autoSave:TAutoSave
+  onAddFile?:TAddFileCB
+  pathChange:TPathChange
   editorRef:TCodeEditorRef
-  openedFiles: TEditorOpenFiles
-  onDeleteFile?: TEditorDeleteFile
-  onRenameFile?: TEditorRenameFile
-  pathChange: (path: string) => void
-  deleteModel: (path: string) => void
-  filesRef: MutableRefObject<TFilelist>
-  openedPathRef: MutableRefObject<string | null>
-  onSaveFile?: (path: string, content: string) => void
-  setCurPath: (content: SetStateAction<string>) => void
-  restoreModel: (path: string) => false | editor.ITextModel
-  setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
+  openedFiles:TEditorOpenFiles
+  onDeleteFile?:TEditorDeleteFile
+  onRenameFile?:TEditorRenameFile
+  deleteModel:(path:string) => void
+  filesRef:MutableRefObject<TFilelist>
+  openedPathRef:MutableRefObject<string | null>
+  onSaveFile?:(path:string, content:string) => void
+  setCurPath:(content:SetStateAction<string>) => void
+  restoreModel:(path:string) => false | editor.ITextModel
+  setOpenedFiles:(content:SetStateAction<TEditorOpenFiles>) => void
 }
 
 export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
@@ -77,7 +78,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     curPath,
     autoSave,
     filesRef,
-    setCurPath,
+    pathChange,
     openedFiles,
     restoreModel,
     openedPathRef,

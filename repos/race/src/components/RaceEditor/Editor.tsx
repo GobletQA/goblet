@@ -1,4 +1,4 @@
-import type { TRaceEditorProps } from '@GBR/types'
+import type { TRaceInternal } from '@GBR/types'
 
 import { Container } from './Container'
 import { EditorProvider, DecorationsProvider } from '@GBR/contexts'
@@ -6,7 +6,7 @@ import { EditorProvider, DecorationsProvider } from '@GBR/contexts'
 import { useRaceTheme } from '@GBR/hooks/useRaceTheme'
 import { useRaceSetup } from '@gobletqa/race/hooks/useRaceSetup'
 
-export const Editor = (props:TRaceEditorProps) => {
+export const Editor = (props:TRaceInternal) => {
 
   useRaceTheme()
 

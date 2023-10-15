@@ -38,6 +38,10 @@ import type {
 
 import type { TRaceMenuActions } from './menu.types'
 
+export type TFeatureLoc = string
+
+export type TOpenedFeatures = TFeatureLoc[]
+
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
 }
@@ -66,6 +70,10 @@ export type TWorldChange = {
 
 export type TOnWorldChange = (props:TWorldChange) => void
 
+export type TRaceInternal = TRaceEditorProps & {
+  initialFeature?:TRaceFeature
+}
+
 export type TRaceEditorProps = TEditorShared & {
   rootPrefix: string
   world?:TWorldConfig
@@ -79,13 +87,12 @@ export type TRaceEditorProps = TEditorShared & {
   expressionOptions?:TExpOpts
   firstFeatureActive?:boolean
   onFeatureSave?:TOnFeatureCB
-  initialFeature?:TRaceFeature
   onWorldChange?:TOnWorldChange
   onFeatureChange?:TOnFeatureCB
   onSettingChange?:TOnSettingCB
+  openedFeatures?:TOpenedFeatures
   onFeatureCreate?:TOnFeatureItemCB
 }
-
 
 export type TEditorShared = TRaceMenuActions & {
   onTabDown?:TTabAction

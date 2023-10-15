@@ -1,4 +1,5 @@
 export * from './useEditorFiles'
+export * from './useLastOpened'
 export * from './useOnRenameFile'
 export * from './useOnLoadFile'
 export * from './useOnSaveFile'

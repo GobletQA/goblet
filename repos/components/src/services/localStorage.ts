@@ -60,6 +60,15 @@ export class LocalStorage {
   }
 
   /**
+   * Gets data from local storage by key using window.localStorage synchronously
+   * @function
+   *
+   */
+  getItemSync = (key:string) => {
+    return window.localStorage.getItem(key)
+  }
+
+  /**
    * Saves data to local storage by key using using window.localStorage
    * @function
    */
@@ -96,6 +105,21 @@ export class LocalStorage {
 
     try {
       const savedData = await this.getItem(name)
+      return !savedData
+        ? undefined
+        : parse
+          ? JSON.parse(savedData)
+          : savedData
+    }
+    catch (err) {}
+  }
+  
+  getSync = (key:string, parse:boolean=true) => {
+    const name = StorageKeys[key] || key
+    if(!name) return console.error(`A key is required to get a local storage item, instead got "${name}"`)
+
+    try {
+      const savedData = this.getItemSync(name)
       return !savedData
         ? undefined
         : parse

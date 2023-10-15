@@ -1,8 +1,14 @@
 import type { TStorageSetting, TStorageSettings } from '@types'
 
+import { emptyObj } from '@keg-hub/jsutils'
 import { noAuthService } from './noAuthService'
 import { StorageKeys, LocalStorage } from '@gobletqa/components'
-import { AuthActive, Environment } from '@constants/environment'
+import {
+  AuthActive,
+  Environment,
+  LastOpenedFilesAmount
+} from '@constants/environment'
+
 
 export type TWrapperFunc = (...args:any[]) => void
 
@@ -42,6 +48,7 @@ class Storage extends LocalStorage {
     try {
       await this.removeJwt()
       await this.removeHeaders()
+      await this.removeAllLastOpened()
     }
     catch(err){
       console.error(`Error cleaning up local-storage`, err)
@@ -119,6 +126,61 @@ class Storage extends LocalStorage {
     return await this.set(StorageKeys.SETTINGS, removed)
   }
 
+  getLastOpenedSync = () => (this.getSync(StorageKeys.LAST_OPENED_FILES) || []) as string[]
+  getLastOpened = async () => (await this.get(StorageKeys.LAST_OPENED_FILES) || []) as string[]
+
+  addLastOpened = async (loc:string) => {
+    if(!loc) return
+
+    let lastOpened = await this.getLastOpened() as string[]
+
+    // If it's already in opened, then remove it, and add it to the start
+    // Otherwise, just add to the start
+    lastOpened.includes(loc)
+      ? (lastOpened = [loc, ...lastOpened.filter(ext => ext !== loc)])
+      : lastOpened.unshift(loc)
+
+    // If over the allowed last opened limit, remove the oldest entry
+    lastOpened.length > LastOpenedFilesAmount && lastOpened.pop()
+
+    await this.set(StorageKeys.LAST_OPENED_FILES, lastOpened)
+  }
+
+  opLastOpened = async (opts:{ add?:string, remove?:string, isFolder?:boolean}=emptyObj) => {
+    const {
+      add,
+      remove,
+      isFolder,
+    } = opts
+
+    let lastOpened = await this.getLastOpened() as string[]
+    if(remove && (isFolder || lastOpened.includes(remove)))
+      lastOpened = lastOpened.filter(ext => isFolder ? !ext.startsWith(remove) : ext !== remove)
+    
+    if(add)
+      lastOpened.includes(add)
+        ? (lastOpened = [add, ...lastOpened.filter(ext => ext !== add)])
+        : lastOpened.unshift(add)
+    
+    if(!add && !remove) return
+
+    await this.set(StorageKeys.LAST_OPENED_FILES, lastOpened)
+  }
+
+  removeLastOpened = async (loc:string, isFolder?:boolean) => {
+    if(!loc) return
+
+    const lastOpened = await this.getLastOpened() as string[]
+    if(!isFolder && !lastOpened.includes(loc)) return
+
+    const updated = lastOpened.filter(ext => isFolder ? !ext.startsWith(loc) : ext !== loc)
+
+    await this.set(StorageKeys.LAST_OPENED_FILES, updated)
+  }
+
+  removeAllLastOpened = async () => {
+    await this.remove(StorageKeys.LAST_OPENED_FILES)
+  }
 }
 
 export const localStorage = new Storage()

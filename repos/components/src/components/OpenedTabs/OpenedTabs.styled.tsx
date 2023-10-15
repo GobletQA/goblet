@@ -108,7 +108,7 @@ export const OpenTab = styled(Box)`
 
 export const OpenTabTitle = styled(Span)`
   flex: 1;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 30px;
   paddingRight: 5px;
 `

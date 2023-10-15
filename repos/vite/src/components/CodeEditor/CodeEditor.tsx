@@ -25,6 +25,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     options,
     onAddFile,
     onSaveFile,
+    lastOpened,
     onRenameFile,
     onDeleteFile,
     onPathChange,
@@ -51,6 +52,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onSaveFile={onSaveFile}
           rootPrefix={rootPrefix}
           onLoadFile={onLoadFile}
+          openedPaths={lastOpened}
           onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}

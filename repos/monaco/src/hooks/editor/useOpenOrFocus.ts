@@ -2,11 +2,12 @@ import type { SetStateAction, RefObject, MutableRefObject } from 'react'
 import type {
   TEditorOpts,
   TCodeEditorRef,
-  TEditorOpenFiles
+  TEditorOpenFiles,
 } from '../../types'
-import { handleCommentCmd } from '@GBM/utils/gherkin/commentCmd'
 
 import { useEffect, useCallback } from 'react'
+import { handleCommentCmd } from '@GBM/utils/gherkin/commentCmd'
+
 
 export type TUseOpenOrFocus = {
   editorRef: TCodeEditorRef
@@ -76,6 +77,6 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
       editorRef.current && editorRef.current.dispose()
     }
   }, [openOrFocusPath])
-  
+
   return openOrFocusPath
 }
