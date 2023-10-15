@@ -1,7 +1,6 @@
 import type {
   TFileTree,
   TRepoState,
-  TFilesState,
 } from '@types'
 
 import { useCallback } from 'react'

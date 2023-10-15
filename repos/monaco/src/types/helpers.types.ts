@@ -19,6 +19,9 @@ export type TEditorRenameFile = (oldLoc:string, newLoc: string) => void
 export type TEditorDeleteFile = (path:string, isFolder?: boolean) => void
 export type TEditorFileCBRef = MutableRefObject<TEditorFileCB | undefined>
 export type TEditorFileCB = (location:string, content: string|null) => void
+export type TEditorPathCB = (location:string, content: string|null, opts:TPathChangeOpts) => void
+export type TEditorPathCBRef = MutableRefObject<TEditorPathCB | undefined>
+
 export type TOnEditorLoaded = (editor:TCodeEditor, monaco:typeof Monaco) => void
 export type TEditorOpts = editor.IStandaloneEditorConstructionOptions & {
   autoSave?: TAutoSave
@@ -34,3 +37,11 @@ export type TAddFileCB = ({
   isFolder?:boolean
   location:string
 }) => void
+
+
+export type TPathChangeOpts = {
+  oldLoc?:string
+  openLoc?:boolean
+}
+
+export type TPathChange = (loc:string, opts?:TPathChangeOpts) => void
