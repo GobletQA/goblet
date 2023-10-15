@@ -11,9 +11,10 @@ import {
 } from '@GBR/contexts'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
+
   const initialFeature = useInitialFeature({
-    feature: props.feature,
     features: props.features,
+    openedFeatures: props.openedFeatures,
     firstFeatureActive: props?.settings?.firstFeatureActive,
   })
 

@@ -1,26 +1,26 @@
-import type { MutableRefObject } from 'react'
 import type { TStepDefsList } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type {
+  TRaceInternal,
   TRaceFeatures,
   TGetOpenedTabs,
-  TRaceEditorProps,
 } from '@GBR/types'
 
 import { noOp } from '@keg-hub/jsutils'
-import { useRef, useEffect, useMemo, createRef } from 'react'
-import { useInline } from '@gobletqa/components'
+import { useRef, useEffect } from 'react'
 import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
 import { useFeatureGroups } from '@GBR/hooks/featureGroups/useFeatureGroups'
+import { useEffectOnce, useInline, useEnsureRef } from '@gobletqa/components'
 
-export const useRaceSetup = (props:TRaceEditorProps) => {
+export const useRaceSetup = (props:TRaceInternal) => {
   const {
     features,
     rootPrefix,
     definitions,
     menuContext,
-    initialFeature
+    openedFeatures,
+    initialFeature,
   } = props
 
   const stepDefsRef = useRef<TStepDefsList>(definitions)
@@ -31,7 +31,7 @@ export const useRaceSetup = (props:TRaceEditorProps) => {
     openedTabs,
     setOpenedTabs,
     updateEmptyTab,
-  } = useInitTabs({ feature:initialFeature })
+  } = useInitTabs({ features, openedFeatures })
 
   const {
     featureGroups,
@@ -55,14 +55,7 @@ export const useRaceSetup = (props:TRaceEditorProps) => {
   const getOpenedTabs = useInline<TGetOpenedTabs>(() => openedTabs)
 
   const containerRef = useRef<HTMLDivElement|HTMLElement>()
-
-  const localEditorRef = useRef<TEditorCtx>(null) as MutableRefObject<TEditorCtx>
-  const editorRef = useMemo(
-    () => (props.editorRef || localEditorRef),
-    [props.editorRef, localEditorRef]
-  )
-
-  
+  const editorRef = useEnsureRef<TEditorCtx>(props.editorRef)
 
   const curPathRef = useRef<string>(initialFeature?.path || ``)
   const curValueRef = useRef<string>(initialFeature?.content || ``)
@@ -72,10 +65,10 @@ export const useRaceSetup = (props:TRaceEditorProps) => {
     onFeatureSave
   })
 
-  useEffect(() => {
+  useEffectOnce(() => {
     initialFeature
       && onFeatureActive?.(initialFeature)
-  }, [])
+  })
 
   /**
    * TODO: Would be good to track updates to featuresRefs outside of Race

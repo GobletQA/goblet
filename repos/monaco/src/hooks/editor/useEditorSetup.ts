@@ -1,3 +1,4 @@
+import type { editor } from 'monaco-editor'
 import type { ForwardedRef, MutableRefObject } from 'react'
 import type {
   TMonaco,
@@ -5,6 +6,7 @@ import type {
   TFilelist,
   TEditorOpts,
   TCodeEditor,
+  TPathChange,
   TEditorTheme,
   IMultiRefType,
   TEditorConfig,
@@ -17,9 +19,10 @@ import type {
 } from '@GBM/types'
 
 import { THEMES } from '@GBM/constants'
-import { isStr } from '@keg-hub/jsutils/isStr'
+import { isStr } from '@keg-hub/jsutils'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
-import { GetActiveFileEvent, useOnEvent } from '@gobletqa/components'
+import { useEffectOnce, GetActiveFileEvent, useOnEvent } from '@gobletqa/components'
+import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
 import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
@@ -29,6 +32,7 @@ export type TUseEditorSetup = {
   saveFile: () => void
   options: TEditorOpts
   config: TEditorConfig
+  pathChange:TPathChange
   editorRef:TCodeEditorRef
   decoration: TDecorationFns
   openedFiles: TEditorOpenFiles
@@ -39,7 +43,6 @@ export type TUseEditorSetup = {
   onEditorFocusRef: TEditorFileCBRef
   filesRef: MutableRefObject<TFilelist>
   resizeSidebar: (width:number) => void
-  pathChange:(key: string, content?:string) => void
   setTheme: (name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }
 
@@ -106,6 +109,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   // Function exposed to the host application
   // Allows opening files externally to the editor
   const openFile = useCallback((path:string, content?:string) => {
+
     if(isStr(content)){
       createOrUpdateModel(path, content)
       filesRef.current[path] = content
@@ -132,17 +136,30 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   // Creates monaco models for each of the defaultFiles
   // that get set to the filesRef in the editor component
   // Finally calls the onEditorLoaded callback if it exists
-  useEffect(() => {
+  useEffectOnce(() => {
     Object.keys(filesRef.current).forEach(key => {
       const content = filesRef.current[key]
 
-      ;(typeof content === 'string' || content === null)
+      ;(isStr(content) || content === null)
         && createOrUpdateModel(key, content)
     })
+    
+    if(!editorRef.current) return
 
-    editorRef.current
-      && onEditorLoaded?.(editorRef.current as TCodeEditor, window.monaco)
-  }, [])
+    onEditorLoaded?.(editorRef.current as TCodeEditor, window.monaco)
+
+    // TODO: fix this
+    // Model value does not get set in time
+    // So the file is opened, but the content is empty
+    openedFiles?.length
+      && setTimeout(() => {
+        openedFiles.map((file, idx) => {
+            const model = getModelFromPath(file.path)
+            model && pathChange(file.path)
+          })
+    }, 0)
+
+  })
 
   useEffect(() => {
     if (editorRef.current) {

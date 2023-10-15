@@ -1,22 +1,24 @@
-import type { TRaceFeatureAsts, TRaceFeature } from '@GBR/types'
+import type { TRaceFeatureAsts, TFeatureLoc } from '@GBR/types'
 
 import { useMemo } from 'react'
 import {isObj} from '@keg-hub/jsutils'
 
 export type THInitialFeature = {
-  feature?:TRaceFeature,
-  features:TRaceFeatureAsts,
+  features?:TRaceFeatureAsts,
   firstFeatureActive?:boolean
+  openedFeatures?:TFeatureLoc[]
 }
 
 export const useInitialFeature = ({
-  feature,
   features,
+  openedFeatures,
   firstFeatureActive
 }:THInitialFeature) => {
   return useMemo(() => {
+    if(openedFeatures?.length && features)
+      return features[openedFeatures[0]]
+
     if(!firstFeatureActive) return undefined
-    if(feature && isObj<TRaceFeature>(feature)) return feature
 
     return isObj<TRaceFeatureAsts>(features)
       ? Object.values(features)[0]

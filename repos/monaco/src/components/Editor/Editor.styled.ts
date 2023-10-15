@@ -43,3 +43,5 @@ export const Container = styled(Box)`
 `
 
 export const Editor = styled(Box)``
+
+export const EditorLoading = styled(Box)``

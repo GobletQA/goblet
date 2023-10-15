@@ -120,7 +120,7 @@ export const useEditorActions = (props:THEditorActions) => {
     featureGroups,
     onFeatureActive
   ])
-  
+
   const {
     onTabDown,
     onTabHover,

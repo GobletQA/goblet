@@ -18,7 +18,7 @@ export type TRemoveFileLoc = {
  */
 export const removeFile = async (fileModel:TFileModel|TRemoveFileLoc) => {
   addToast({
-    type: 'warn',
+    type: `warn`,
     message: `Removing file ${fileModel.name}!`,
   })
 

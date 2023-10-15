@@ -9,13 +9,11 @@ import type {
   TEditorPromiseCB,
 } from '../../types'
 
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useLintWorker } from '@GBM/hooks/editor/useLintWorker'
 import { useTypesWorker } from '@GBM/hooks/editor/useTypesWorker'
-import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 
 export type THEditorRefs = {
-  curPath:string
   options: TEditorOpts
   defaultFiles: TFilelist
   onValueChange?: TEditorCB
@@ -29,7 +27,6 @@ export type THEditorRefs = {
 
 export const useEditorRefs = (props:THEditorRefs) => {
   const {
-    curPath,
     options,
     onLoadFile,
     defaultFiles,
@@ -70,12 +67,6 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const editorNodeRef = useRef<HTMLDivElement>(null)
   const [lintWorkerRef] = useLintWorker({ editorRef })
   const [typesWorkerRef] = useTypesWorker({ editorRef })
-
-  useEffect(() => {
-    onPathChangeRef?.current
-      && curPath
-      && onPathChangeRef.current(curPath, getContentFromPath(curPath) || filesRef.current[curPath])
-  }, [curPath])
 
   return {
     rootRef,
