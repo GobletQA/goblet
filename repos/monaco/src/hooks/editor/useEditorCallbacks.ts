@@ -62,7 +62,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   } = props
 
   const [openedFiles, setOpenedFiles] = useState<TEditorOpenFiles>(
-    openedPaths?.length ? openedPaths.reverse().map(loc => ({ path: loc })) : []
+    openedPaths?.length ? openedPaths.map(loc => ({ path: loc })) : []
   )
 
   const decoration = useDecorations({
@@ -99,7 +99,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
       const model = restoreModel(loc)
       if(model)
         opts?.openLoc !== false
-          ? openOrFocusPath(loc)
+          ? openOrFocusPath(loc, opts)
           : setCurPath(loc)
 
       const content = getContentFromPath(loc) || filesRef.current[loc]

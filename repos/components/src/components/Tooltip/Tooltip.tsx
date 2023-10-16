@@ -1,9 +1,11 @@
 import type { TooltipProps } from '@mui/material/Tooltip'
 
-import type { ComponentProps } from 'react'
-import { MuiTooltip, TooltipTitle } from './Tooltip.styled'
+import type { ComponentProps, ComponentType } from 'react'
+import { MuiTooltip, TooltipTitle, TooltipWrap } from './Tooltip.styled'
 
 export type TTooltip = ComponentProps<typeof MuiTooltip> & {
+  wrap?:boolean
+  Wrap?:ComponentType<any>
   disabled?: boolean
   loc?: TooltipProps['placement']
 }
@@ -12,9 +14,11 @@ export const Tooltip = (props:TTooltip) => {
   const {
     sx,
     loc,
+    wrap,
     title,
     children,
     disabled,
+    Wrap=TooltipWrap,
     placement=loc,
     enterDelay=500,
     fontSize=`12px`,
@@ -37,7 +41,7 @@ export const Tooltip = (props:TTooltip) => {
           enterDelay={enterDelay}
           placement={placement || `bottom`}
         >
-          {children}
+          {wrap ? (<Wrap>{children}</Wrap>) : children}
         </MuiTooltip>
       )
 }

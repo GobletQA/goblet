@@ -5,9 +5,8 @@ import type {
   TEditorOpenFiles,
 } from '../../types'
 
+import {emptyObj} from '@keg-hub/jsutils'
 import { useEffect, useCallback } from 'react'
-import { handleCommentCmd } from '@GBM/utils/gherkin/commentCmd'
-
 
 export type TUseOpenOrFocus = {
   editorRef: TCodeEditorRef
@@ -15,6 +14,10 @@ export type TUseOpenOrFocus = {
   optionsRef: MutableRefObject<TEditorOpts>
   setCurPath: (content: SetStateAction<string>) => void
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
+}
+
+type TOpenOpts = {
+  setLoc?:boolean
 }
 
 export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
@@ -26,17 +29,14 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
     setOpenedFiles,
   } = props
 
-  const openOrFocusPath = useCallback((path: string) => {
+  const openOrFocusPath = useCallback((loc: string, opts:TOpenOpts=emptyObj) => {
     setOpenedFiles(openedFiles => {
       let exist = false
-      openedFiles.forEach(file => file.path === path && (exist = true))
-      return exist ? openedFiles : [...openedFiles, { path: path }]
+      openedFiles.forEach(file => file.path === loc && (exist = true))
+      return exist ? openedFiles : [...openedFiles, { path: loc }]
     })
-    setCurPath(path)
-    
-    setTimeout(() => {
-      handleCommentCmd(window.monaco, editorRef?.current)
-    }, 0)
+
+    opts?.setLoc !== false && setCurPath(loc)
   }, [])
 
 
