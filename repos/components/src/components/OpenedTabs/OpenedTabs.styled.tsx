@@ -1,64 +1,79 @@
 import { Span } from '../Text'
+import { dims } from '@GBC/theme'
 import Box from '@mui/material/Box'
-import { dims, colors } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
+import { TabsAllowXScrollCls } from '@GBC/constants/values'
+
+const scrollbar = 10
+const scrollHpx = `${dims.editor.tabs.height + scrollbar}px`
+
+const scrollStyle = `
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+
+  &.${TabsAllowXScrollCls} {
+    scroll-behavior: auto;
+    overflow-x: auto !important;
+  }
+
+  &::-webkit-scrollbar {
+    width: ${scrollbar}px;
+    height: ${scrollbar}px;
+    background:transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--goblet-scrollbarSlider-hoverBackground);
+    box-shadow: inset 0 0 8px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 8px var(--goblet-scrollbar-shadow);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: var(--goblet-scrollbarSlider-background);
+    box-shadow: inset 0 0 8px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 8px var(--goblet-scrollbar-shadow);
+  }
+
+  &:hover {
+    cursor: pointer;
+    overflow-x: auto;
+    overflow-y: hidden;
+    
+    & .gb-editor-opened-tabs-background {
+      background-color: transparent;
+    }
+
+  }
+`
 
 export const OpenTabsContainer = styled(Box)`
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  width: calc( 100% - ${dims.editor.tabs.px} );
+  max-width: calc( 100% - ${dims.editor.tabs.px} );
   position: relative;
   box-sizing: border-box;
-  height: ${dims.editor.tabs.px};
-  min-height: ${dims.editor.tabs.px};
-  padding-right: ${dims.editor.tabs.px};
-  background-color: var(--goblet-editorGroupHeader-tabsBackground);
+  height: ${scrollHpx};
+  min-height: ${scrollHpx};
+  background-color: var(--goblet-editor-background);
+
+  ${scrollStyle}
 `
 
-export const OpenTabsBottomBorder = styled(Box)`
-  z-index: 1;
-  width: 100%;
-  height: 1px;
-  bottom: 0px;
-  position: absolute;
-  background-color: var(--goblet-editorGroupHeader-tabsBorder);
-`
-
-/**
- * TODO: Investigate the scrollbar when multiple files open
- * Need to ensure you can still scroll left and right 
- */
 export const OpenTabsMain = styled(Box)`
   width: 100%;
   display: flex;
-  font-size: 14px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  font-size: 12px;
   align-items: start;
   white-space: nowrap;
   flex-direction: row;
-  scrollbar-width: none;
   box-sizing: border-box;
   justify-content: flex-start;
-  height: ${dims.editor.tabs.px};
-  min-height: ${dims.editor.tabs.px};
-
-  &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-    opacity: 0.75;
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--goblet-editorGroupHeader-tabsBackground);
-    box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
-    -webkit-box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background: var(--goblet-scrollbarSlider-background);
-    box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
-    -webkit-box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
-  }
+  height: ${scrollHpx};
+  min-height: ${scrollHpx};
+  background-color: var(--goblet-editorGroupHeader-tabsBackground);
+  border-bottom: ${scrollbar}px solid var(--goblet-editor-background);;
 `
 
 export const OpenTab = styled(Box)`
@@ -72,7 +87,8 @@ export const OpenTab = styled(Box)`
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
-  height: ${dims.editor.tabs.px};
+  height: ${dims.editor.tabs.height - 1}px;
+  border-bottom: 2px solid transparent;
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-tab-inactiveBackground);
   border-right: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
@@ -82,7 +98,7 @@ export const OpenTab = styled(Box)`
     z-index: 2;
     color: var(--goblet-tab-activeForeground);
     background-color: var(--goblet-tab-activeBackground);
-    border-bottom: 1px solid var(--goblet-tab-activeBackground);
+    border-bottom: 2px solid var(--goblet-tab-activeBorder);
   }
 
   &:hover {
@@ -111,6 +127,7 @@ export const OpenTabTitle = styled(Span)`
   font-size: 12px;
   line-height: 30px;
   paddingRight: 5px;
+  pointer-events: none;
 `
 
 export const OpenTabEditing = styled(Span)`

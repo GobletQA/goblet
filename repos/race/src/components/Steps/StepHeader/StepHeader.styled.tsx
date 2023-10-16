@@ -12,6 +12,9 @@ const header = {
 
 export const StepHeaderText = styled(Span)`
   font-size: 13.5px;
+  text-wrap: balance;
+  word-break: break-all;
+  overflow-wrap: break-word;
   padding: ${gutter.padding.hpx};
 `
 

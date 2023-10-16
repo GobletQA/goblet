@@ -79,6 +79,7 @@ export const useMonacoHooks = (
   const onPathChange = useCallback(
     (loc:string, content?:string|null, opts?:{ oldLoc?:string }) => {
       return onPathChangeCB(loc, {
+        ...opts,
         fullLoc: loc && addRootToLoc(loc, rootPrefix),
         oldLoc: opts?.oldLoc && addRootToLoc(opts?.oldLoc, rootPrefix),
       })

@@ -25,3 +25,5 @@ export const MuiTooltip = styled(({ className, fontSize, ...props }: TTooltipPro
 export const TooltipTitle = styled(Box)`
   white-space: pre-line;
 `
+
+export const TooltipWrap = styled(`span`)``

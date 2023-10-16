@@ -203,7 +203,7 @@ export const lightTheme = {
     [`editor.foreground`]: colors.black08,
 
     [`tab.border`]: colors.white,
-    [`tab.activeBorder`]: colors.white,
+    [`tab.activeBorder`]: colors.purple10,
     [`tab.activeBackground`]: colors.white,
     [`tab.activeForeground`]: colors.black09,
     [`tab.inactiveBackground`]: colors.white01,
@@ -252,7 +252,7 @@ export const lightTheme = {
 
     [`scrollbar.shadow`]: `${colors.gray07}00`,
     [`scrollbarSlider.background`]: colors.gray03,
-    [`scrollbarSlider.hoverBackground`]: colors.gray04,
+    [`scrollbarSlider.hoverBackground`]: colors.gray01,
     [`scrollbarSlider.activeBackground`]: colors.gray05,
 
     [`selection.background`]: colors.purple12,

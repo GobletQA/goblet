@@ -142,7 +142,14 @@ export const Dropdown = (props:TDropdown) => {
         >
           {
             HeaderComp
-              ?? (headerText && (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>))
+              ?? (headerText && (
+                  <HeaderText
+                    sx={headerTextSx}
+                    className='gb-dropdown-header-text'
+                  >
+                    {headerText}
+                  </HeaderText>
+                ))
               ?? null
           }
           {actions}

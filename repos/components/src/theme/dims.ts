@@ -9,7 +9,7 @@ const tHeaderH = 30
 
 const divider = 1
 const headerH = 40
-const editorTabs = 45
+const editorTabs = 40
 const sectionHeaderH = 40
 const raceEditorHeader = 45
 const raceSectionHeaderH = 40
