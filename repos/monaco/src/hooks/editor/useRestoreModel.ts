@@ -11,7 +11,8 @@ import type {
 
 import { useCallback } from 'react'
 import { isStr } from '@keg-hub/jsutils'
-import { getModelFromPath } from '../../utils/editor/getModelFromPath'
+import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
+// import { updateLinter, resetTimer } from '@GBM/utils/editor/linterListener'
 
 export type TUseRestoreModel = {
   editorRef: TCodeEditorRef
@@ -27,32 +28,6 @@ export type TUseRestoreModel = {
   onValueChangeRef: MutableRefObject<((loc: string) => void) | undefined>
   onLoadFileRef:MutableRefObject<((loc: string) => Promise<string|null>) | undefined>
   onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
-}
-
-const updateLinter = (
-  loc:string,
-  model:editor.ITextModel,
-  lintWorkerRef?:MutableRefObject<TLinter>,
-) => {
-  lintWorkerRef?.current?.postMessage({
-    path: loc,
-    code: model.getValue(),
-    version: model.getVersionId(),
-  })
-
-}
-
-const resetTimer = (
-  timer:any,
-  loc:string,
-  model:editor.ITextModel,
-  lintWorkerRef?:MutableRefObject<TLinter>
-) => {
-  if (timer) clearTimeout(timer)
-  timer = setTimeout(() => {
-    timer = null
-    updateLinter(loc, model, lintWorkerRef)
-  }, 500)
 }
 
 
@@ -99,7 +74,7 @@ const restoreContentListener = (
     onValueChangeRef.current
       && onValueChangeRef.current(content)
     
-    resetTimer(timer, loc, model, lintWorkerRef)
+    // resetTimer(timer, loc, model, lintWorkerRef)
 
   })
 }
@@ -159,7 +134,7 @@ const modelRestore = (
   loc !== openedPathRef.current
     && locationRestore(loc, model, props)
 
-  updateLinter(loc, model, lintWorkerRef)
+  // updateLinter(loc, model, lintWorkerRef)
 
   openedPathRef.current = loc
   return model

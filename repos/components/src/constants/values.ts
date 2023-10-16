@@ -12,3 +12,5 @@ export const DndDragHandleCls = `gb-dnd-drag-handle`
 export const ActionsControlId = `gb-editor-actions-menu`
 
 export const TabScrollParentCls = `gb-scroll-tabs`
+
+export const TabsAllowXScrollCls = `gb-overflow-x-auto`

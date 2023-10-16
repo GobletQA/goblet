@@ -41,7 +41,9 @@ export type TAddFileCB = ({
 
 export type TPathChangeOpts = {
   oldLoc?:string
+  setLoc?:boolean
   openLoc?:boolean
+  storage?:boolean
 }
 
 export type TPathChange = (loc:string, opts?:TPathChangeOpts) => void
