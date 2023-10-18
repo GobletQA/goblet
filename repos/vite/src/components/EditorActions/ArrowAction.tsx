@@ -1,26 +1,25 @@
 import type { TMenuItem } from '@gobletqa/components'
 
-import { ModeEditIcon } from '@gobletqa/components'
+import { ArrowForwardIcon } from '@gobletqa/components'
 import type { TSnapshotEvt } from '@types'
 
 import { ESnapTool } from '@types'
 import { SnapshotToolEvt } from '@constants/events'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
-export const DrawAction:TMenuItem = {
+export const ArrowAction:TMenuItem = {
   closeMenu:true,
-  dividerTop: true,
-  Icon: ModeEditIcon,
-  id:`free-draw-in-editor-action`,
-  key:`free-draw-in-editor-action`,
-  text: `Pencil`,
+  Icon: ArrowForwardIcon,
+  id:`arrow-draw-in-editor-action`,
+  key:`arrow-draw-in-editor-action`,
+  text: `Arrow`,
   tooltip: {
     loc: `right`,
     describeChild: true,
-    title: `Free draw over the browser`,
+    title: `Draw an arrow over the browser`,
   },
   onClick: async (event, editor, loc, content) => {
-    console.log(`Emit snapshot draw event`)
-    EE.emit<TSnapshotEvt>(SnapshotToolEvt, { type: ESnapTool.draw })
+    console.log(`Emit snapshot arrow event`)
+    EE.emit<TSnapshotEvt>(SnapshotToolEvt, { type: ESnapTool.arrow })
   }
 }

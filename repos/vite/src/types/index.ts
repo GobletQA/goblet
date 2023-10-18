@@ -20,8 +20,8 @@ export * from './socket.types'
 export * from './storage.types'
 export * from './websocket.types'
 export * from './editors.types'
+export * from './snapshot.types'
 export * from './test.types'
-
 export * from './shared.types'
 
 /**

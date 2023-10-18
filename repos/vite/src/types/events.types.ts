@@ -1,8 +1,7 @@
-import type { TPlayerResEvent, TSymAST } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
-import { TTestRunUICfg } from './test.types'
-import type { TTestRunId, TTestRunEvent } from './shared.types'
-
+import type { ESnapTool } from './snapshot.types'
+import type { TTestRunUICfg } from './test.types'
+import type { TPlayerResEvent, TSymAST, TTestRunId, TTestRunEvent } from './shared.types'
 
 
 export type TGlobalCopyEvent = {
@@ -20,6 +19,10 @@ export type TBrowserIsLoadedEvent = {
 
 export type TVncConnected = {
   rfb:RFB|null
+}
+
+export type TSnapshotEvt = {
+  type:ESnapTool
 }
 
 export type TTestRunGetUICfgEvt = (cfg:TTestRunUICfg) => void

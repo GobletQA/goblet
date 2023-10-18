@@ -69,6 +69,8 @@ import TuneIcon from '@mui/icons-material/Tune'
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 // Icon for playing all or a group of features
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
+import TextFieldsIcon from '@mui/icons-material/TextFields'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
@@ -136,6 +138,8 @@ export {
   KeyIcon,
   PlaylistPlayIcon,
   SubscriptionsIcon,
+  TextFieldsIcon,
+  DeleteForeverIcon
   AdsClickIcon,
   UploadFileIcon,
   DirectionsRunIcon,
@@ -144,3 +148,4 @@ export {
   TuneIcon,
   KeyboardArrowRightIcon
 }
+
