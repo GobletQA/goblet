@@ -345,11 +345,7 @@ export const clickElement = async ({
 }:TClickEl, ctx?:TStepCtx) => {
 
   locator = locator || getLocator(selector)
-
   timeout = timeout || getLocatorTimeout(ctx)
-
-  // TODO: figure out if trial should be used to ensure the element exists
-  // await locator.click({ ...opts, trial: true, timeout })
 
   await locator.click({ ...opts, timeout })
 
@@ -398,8 +394,8 @@ export const typeInput = async (props:TFillInput, ctx?:TStepCtx) => {
   const { locator } = await clickElement(props, ctx)
 
   //clear value before setting otherwise data is appended to end of existing value
-  await locator.type('')
-  await locator.type(text)
+  await locator.fill('')
+  await locator.pressSequentially(text, { delay: 100 })
 
   return { locator }
 }

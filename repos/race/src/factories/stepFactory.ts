@@ -32,6 +32,10 @@ export const stepFactory = ({
 }:TStepFactory) => {
 
   const index = findIndex({ parent, feature, type:EAstObject.steps })
+  // TODO: update this to dynamically figure out the whitespace based on the number of parents
+  // I.E. (feature - scenario - step === 4 spaces)
+  // I.E. (feature - rule - scenario - step === 6 spaces)
+  // Can use the uuid to figure out where in the chain it is and add 2 spaces per parent
   const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `    `
   const uuid = `${parent.uuid}.${step?.type || EAstObject.step}.${parent?.steps?.length || 0}`
 

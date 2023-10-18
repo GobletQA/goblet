@@ -1,12 +1,13 @@
 import type { TTab } from '@gobletqa/components'
-import type { TRaceFeature } from './features.types'
 import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type { TSettingsCtx } from '@GBR/contexts/SettingsContext'
+import type { TRaceFeature, TUpdateFeatureCB } from './features.types'
 import type { EOperations, TOperationsUpdate } from './operations.types'
 
 export type TOnFeatureEvt = {
   feature:TRaceFeature|undefined
+  updateFeature?:TUpdateFeatureCB
 }
 
 export type TAskForFeature = {
