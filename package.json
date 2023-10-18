@@ -21,6 +21,9 @@
     "repos/*"
   ],
   "scripts": {
+    "bai": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildActionImgs.sh",
+    "bdi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildDevImgs.sh",
+    "bgi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildGobletImgs.sh",
     "build": "pnpm -r build",
     "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r ./configs/aliases.js tasks/entry.ts deploy build -- frontend=true",
@@ -29,23 +32,24 @@
     "certs": "/bin/bash scripts/shell/generate.sh $@",
     "clean": "pnpm -r clean",
     "clean:nm": "rimraf -rf ./node_modules; pnpm -r clean:nm",
-    "clean:full": "pnpm clean; pnpm clean:nm; pnpm setup",
+    "clean:full": "pnpm clean; pnpm clean:nm; pnpm local",
     "cz": "cz",
     "compile": "node scripts/compile.js",
     "dev": "node -r ./configs/aliases.js tasks/entry.ts devspace",
     "doc": "node -r ./configs/aliases.js tasks/entry.ts docker",
     "dep": "node -r ./configs/aliases.js tasks/entry.ts deploy",
+    "dprod": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/deployToProd.sh",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:all": "pnpm format && pnpm -r format",
     "format:lint": "pnpm lint .",
     "format:pretty": "pnpm pretty .",
     "imgs": "node -r ./configs/aliases.js tasks/entry.ts docker images",
     "kube": "node -r ./configs/aliases.js tasks/entry.ts kube",
-    "json:rm": "dot-json package.json devDependencies -d",
-    "json:rm-all": "pnpm json:rm && pnpm -r json:rm",
+    "local": "pnpm install && pnpm cp:tracer",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
     "mkcert": "GB_ROOT_DIR=$(pwd) ./scripts/shell/mkcert/mkcert.sh",
+    "prod:build:deploy": "pnpm bgi && pnpm dprod",
     "pretty": "prettier --ignore-path .root.ignore --config ./configs/prettier.config.js --write",
     "sc": "node -r ./configs/aliases.js tasks/entry.ts screencast",
     "screencast": "node -r ./configs/aliases.js tasks/entry.ts screencast",
@@ -53,28 +57,34 @@
     "task": "node -r ./configs/aliases.js tasks/entry.ts",
     "cp:tracer": "node scripts/js/cpTracer.js",
     "pm2": "pm2 start configs/app.pm2.config.js",
-    "setup": "pnpm install && pnpm cp:tracer",
+    "si": "pnpm sync; pnpm install",
+    "sync": "syncpack fix-mismatches",
     "test": "pnpm -r test",
     "test:ci": "pnpm -r test:ci",
     "validate": "pnpm -r validate"
   },
   "pnpm": {
     "overrides": {
-      "@emotion/react": "11.11.0",
+      "@emotion/react": "11.11.1",
       "@keg-hub/args-parse": "10.0.1",
       "@keg-hub/cli-utils": "0.9.0"
     },
     "peerDependencyRules": {
-      "onlyBuiltDependencies": ["esbuild"],
-      "ignoreMissing": ["dockerode", "react"],
+      "onlyBuiltDependencies": [
+        "esbuild"
+      ],
+      "ignoreMissing": [
+        "dockerode",
+        "react"
+      ],
       "allowAny": [
+        "esbuild-register",
         "@ltipton/esdev",
         "dockerode",
         "docker-events",
         "esbuild",
         "react",
         "react-dom"
-        
       ],
       "allowedDeprecatedVersions": {
         "har-validator": "*",
@@ -89,35 +99,38 @@
     }
   },
   "dependencies": {
-    "esbuild": "0.19.2",
-    "esbuild-register": "3.4.2",
-    "module-alias": "2.2.2",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": ">=9.8.0"
+    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/parse-config": ">=2.1.0",
+    "esbuild": "0.19.3",
+    "esbuild-register": "3.5.0",
+    "module-alias": "2.2.2"
   },
   "devDependencies": {
-    "@keg-hub/parse-config": ">=2.1.0",
-    "@keg-hub/spawn-cmd": ">=0.3.2",
+    "@ltipton/esdev": "0.2.1",
+    "@ltipton/parkin": "6.3.0",
+    "@types/jest": "29.5.5",
+    "esbuild-jest": "0.5.0",
+    "jest": "29.7.0",
+    "playwright": "1.38.1",
+    "typescript": "5.2.2"
+  },
+  "optionalDependencies": {
     "@commitlint/cli": "16.1.0",
     "@commitlint/config-conventional": "16.0.0",
-    "@ltipton/esdev": "0.2.1",
-    "@ltipton/parkin": "5.1.1",
     "@types/node": "18.15.13",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
-    "dot-json": "1.2.2",
-    "esbuild-jest": "0.5.0",
     "eslint": "8.7.0",
     "husky": "7.0.4",
     "lint-staged": "12.3.4",
     "module-alias": "2.2.2",
-    "nodemon": "2.0.22",
-    "playwright": "1.36.1",
+    "nodemon": "3.0.1",
     "prettier": "2.5.1",
     "semver": "7.3.7",
-    "typescript": "5.0.4"
+    "syncpack": "11.2.1"
   },
   "config": {
     "commitizen": {

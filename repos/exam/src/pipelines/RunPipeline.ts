@@ -1,4 +1,4 @@
-import type { TPipelineInit } from '@GEX/types'
+import type { TExRunResult, TPipelineInit } from '@GEX/types'
 
 import pPipe from 'p-pipe'
 import {
@@ -20,11 +20,11 @@ import {Errors} from '@GEX/constants/errors'
 import {formatArgsTask} from './tasks/formatArgsTask'
 
 export const RunPipeline = async (args:TPipelineInit) => {
-  const pipArgs = formatArgsTask(args)
-
   try {
+    const pipeArgs = formatArgsTask(args)
+
     const pipeline = pPipe(
-      pipelineHoc(setupPipeStep, pipArgs),
+      pipelineHoc(setupPipeStep, pipeArgs),
       pipelineHoc(aliasStep),
       pipelineHoc(esbuildStep),
       pipelineHoc(reportersStep),
@@ -37,11 +37,10 @@ export const RunPipeline = async (args:TPipelineInit) => {
       pipelineHoc(rewindStep()),
     )
 
-    return await pipeline()
+    return await pipeline() as TExRunResult[]
   }
   catch(err){
     Errors.PipelineFailed(err)
-    return []
+    return [] as TExRunResult[]
   }
-
 }

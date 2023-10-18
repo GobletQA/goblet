@@ -6,9 +6,11 @@ import type {
   TExReporterCfg,
 } from "@GEX/types"
 
-import { Logger } from "@GEX/utils/logger"
 
-import { TestsResultStatus, ExamEvtNames } from "@GEX/constants"
+import { Logger } from "@GEX/utils/logger"
+import { filterErrMessage, spaceFromId } from "@GEX/utils/filterErrMessage"
+
+import { TestsResultStatus, TestsToSocketEvtMap } from "@GEX/constants"
 import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
 
 const spaceMap = {
@@ -33,10 +35,10 @@ const logParent = (
   isStart:boolean
 ) => {
   const context = evt.data
-  const space = spaceFromId(evt)
+  const space = spaceFromId(context)
   
-  const isRoot = evt.name === ExamEvtNames.rootSuiteDone
-    || evt.name === ExamEvtNames.rootSuiteStart
+  const isRoot = evt.name === TestsToSocketEvtMap.suiteDoneRoot
+    || evt.name === TestsToSocketEvtMap.suiteStartRoot
     || space.length === 4
 
 
@@ -53,21 +55,6 @@ const logParent = (
           ` > `,
           `${Logger.colors.gray(context.description)}\n`
         ].join(``))
-
-}
-
-const spaceFromId = (evt:TExamEvt<TExEventData>) => {
-  const { id, testPath } = evt.data
-  if(id.startsWith(`suite`)){
-    let spacer = spaceMap.suite
-    const [name, ...rest] = id.split(`-`)
-    rest.map(num => spacer+=`  `)
-    return spacer
-  }
-
-  let spacer = spaceMap.spec
-  testPath.split(`/`).map(num => spacer+=`  `)
-  return spacer
 
 }
 
@@ -94,7 +81,7 @@ const logResult = (
 
   const space = context.type === `error`
     ? spaceMap.error
-    : spaceFromId(evt)
+    : spaceFromId(context)
 
   const prefix = hasStepErr
     ? `${space || ``}${Logger.colors.yellow(`○`)}`
@@ -128,35 +115,11 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
   const failed = context?.failedExpectations?.[0]
   if(!failed || !failed?.description) return {}
 
-  // TODO: add better handling of error description
-  // Include the error.matcherResult data colorized
-  // failed?.error?.matcherResult.actual vs failed?.error?.matcherResult.expected
-
-  const duplicates = []
-  const startsWith = [`===========================`]
-  const extSpace = spaceFromId(evt)
-
   return {
-    message: `${failed.description}`.split(`\n`)
-      .map(line => {
-        const trimmed = line.trim()
-
-        if(!trimmed) return false
-        if(duplicates.includes(line)) return false
-        if(startsWith.find(filter => trimmed.startsWith(filter))) return false
-
-        duplicates.push(line)
-        return `${extSpace}${spaceMap.error}${line}`
-      })
-      .concat([
-        context?.testPath && `\n${extSpace}${spaceMap.error}Test Path: ${context.testPath}`
-      ])
-      .filter(Boolean)
-      .join(`\n`)
+    message: filterErrMessage(context)
   }
 
 }
-
 
 export class BaseReporter implements IExamReporter {
   config:TExamConfig
@@ -182,7 +145,7 @@ export class BaseReporter implements IExamReporter {
   }
 
   // Event `PLAY-SUITE-START`
-  onTestStart = (evt:TExamEvt<TExEventData>) => {
+  onSuiteStart = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
   }
 
@@ -191,15 +154,15 @@ export class BaseReporter implements IExamReporter {
    * Not called for `skipped` and `todo` specs
    */
   //  Event `PLAY-SPEC-START`
-  onTestCaseStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
+  onTestStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
 
 
   // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
+  onTestResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
 
 
   // Event `PLAY-SUITE-DONE`
-  onTestResult = (evt:TExamEvt<TExEventData>) => {
+  onSuiteResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
   }
 
@@ -211,7 +174,7 @@ export class BaseReporter implements IExamReporter {
 
 
   // Event `PLAY-RESULTS`
-  onRunComplete = () => {
+  onRunResult = () => {
     Logger.empty()
   }
 

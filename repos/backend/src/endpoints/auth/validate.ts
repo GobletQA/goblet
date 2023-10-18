@@ -5,9 +5,9 @@ import type { TValidateUser } from '@GBE/services/firebase'
 
 import {authService} from '@GBE/services/firebase'
 import { hashString } from '@keg-hub/jsutils/hashString'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { generateTokens } from '@GBE/utils/generateTokens'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export type TValidateReq = TBEBodyReq<TValidateUser>
@@ -75,4 +75,4 @@ export const validate = async (req:TValidateReq, res:TBEResp<TValidateResp>) => 
 }
 
 
-AsyncRouter.post(`/auth/validate`, validate)
+AppRouter.post(`/auth/validate`, validate)

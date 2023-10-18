@@ -1,12 +1,10 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type {
-  TRepo,
   TBrowserPage,
-  TBrowserContext,
-  TBrowserContextOpts,
   TGobletConfig,
-  TBrowserConf,
-  TPWComponents
+  TBrowserContext,
+  TSetBrowserDefaults,
+  TBrowserContextOpts,
 } from '@GBB/types'
 
 import { isStr } from '@keg-hub/jsutils/isStr'
@@ -19,14 +17,6 @@ import {
   saveContextCookie,
   saveContextStorageState,
 } from '@gobletqa/browser'
-
-export type TSetBrowserDefaults = {
-  headers?:boolean
-  url?:boolean|string
-  config:TGobletConfig
-  browserConf:TBrowserConf
-  pwComponents?:TPWComponents
-}
 
 export type TSetContextSettings = {
   headers?:boolean
@@ -63,8 +53,8 @@ export const setContextHeaders = async (
 
   await context.setExtraHTTPHeaders(headers)
   // TODO: Hack to store extraHTTPHeaders, Need to update this at some point
-  context.__goblet = context.__goblet || {}
-  context.__goblet.extraHTTPHeaders = headers
+  context.__contextGoblet = context.__contextGoblet || {}
+  context.__contextGoblet.extraHTTPHeaders = headers
 }
 
 const setContextSettings = async ({
@@ -76,9 +66,8 @@ const setContextSettings = async ({
   
   if(headers !== false)
     await setContextHeaders(context, {
-      ...context?.__goblet?.extraHTTPHeaders,
+      ...context?.__contextGoblet?.extraHTTPHeaders,
       ...config?.world?.$context?.extraHTTPHeaders,
-      ...config?.world?.$headers
     })
 
   const contextSettings = config?.world?.$context

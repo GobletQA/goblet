@@ -1,11 +1,10 @@
 import type { TBrowserConf } from '@GSC/types'
-import type { Response, Request, RequestHandler } from 'express'
+import type { Response, Request } from 'express'
 
 import { parseJSON } from '@keg-hub/jsutils/parseJSON'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { statusScreencast } from '@GSC/utils/statusScreencast'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 export type TStatusSCParams = {
   browser?:TBrowserConf|string
@@ -14,7 +13,7 @@ export type TStatusSCParams = {
 /**
  * Endpoint to get the current status  of the browser
  */
-export const scStatus:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+export const scStatus = async (req:Request, res:Response) => {
   const query = req.query as TStatusSCParams
 
   const status = await statusScreencast({
@@ -25,6 +24,6 @@ export const scStatus:RequestHandler = asyncWrap(async (req:Request, res:Respons
   status.lastCheck = new Date().getTime()
 
   return apiRes(res, status, 200)
-})
+}
 
-AppRouter.get('/screencast/status', scStatus)
+AppRouter.get(`/screencast/status`, scStatus)

@@ -77,7 +77,7 @@ export class LatentFile {
       format: ELoadFormat.string,
     })
 
-    return !content
+    return !content?.trim?.()
       ? ``
       : type === EFileType.secrets
         ? this.latent.crypto.decrypt(content, token || this.latent.encoded, true)
@@ -182,8 +182,11 @@ export class LatentFile {
       location,
     } = options
 
-    const current = opts.current
-      || env.parse(this.#readFile({...options, token }))
+    let current = opts.current
+    if(!current){
+      const content = this.#readFile({...options, token })
+      current = env.parse(content)
+    }
 
     const {
       failed,

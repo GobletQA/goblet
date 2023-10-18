@@ -270,7 +270,7 @@ export const darkTheme = {
 
     [`scrollbar.shadow`]: `#${colors.purple19}00`,
     [`scrollbarSlider.background`]: `${colors.purple13}66`,
-    [`scrollbarSlider.hoverBackground`]: `${colors.purple13}99`,
+    [`scrollbarSlider.hoverBackground`]: colors.black09,
     [`scrollbarSlider.activeBackground`]: `${colors.purple13}b3`,
 
     [`selection.background`]: colors.purple12,

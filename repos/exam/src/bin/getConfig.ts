@@ -2,6 +2,7 @@ import type { TExamCliOpts } from "@GEX/types/bin.types"
 import type { EExTestMode, TExamConfig } from '@GEX/types/exam.types'
 
 import { fullLoc } from './helpers'
+import { LoaderErr } from "@GEX/utils/error"
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { isNum } from '@keg-hub/jsutils/isNum'
@@ -14,19 +15,27 @@ import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { buildExamCfg } from "@GEX/utils/buildExamCfg"
 import {mergeCfgArrays} from "@GEX/utils/mergeCfgArrays"
 
-
-
 const getCfgObj = async (opts:TExamCliOpts) => {
-  const mod = require(fullLoc(opts.config, opts.rootDir))
-  const found = isFunc(mod)
-    ? await mod(opts)
-    : isObj(mod.default)
-      ? mod.default
-      : isFunc(mod.default)
-        ? await mod.default(opts)
-        : mod
+  const configLog = fullLoc(opts.config, opts.rootDir)
+  try {
+    const mod = require(configLog)
+    const found = isFunc(mod)
+      ? await mod(opts)
+      : isObj(mod.default)
+        ? mod.default
+        : isFunc(mod.default)
+          ? await mod.default(opts)
+          : mod
 
-  return found || {}
+    return found || {}
+  }
+  catch(err){
+    throw new LoaderErr(
+      `Error loading Exam config at location; ${configLog}`,
+      err,
+      true
+    )
+  }
 }
 
 const getRunMode = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>) => {
@@ -42,15 +51,11 @@ const getRunMode = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>) 
   return (ExamCfgModeTypes.includes(final) ? final : `serial`) as EExTestMode
 }
 
-const atLeastOne = (base:number, override:number, runInBand?:boolean) => {
-  if(runInBand) return 1
-
-  const num = toNum(override ?? base)
-  return num || 1
-}
-
-
 const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>):TExamConfig => {
+
+  /**
+   * --- These options come from the exam config, and should be overridden by passed in cli options ---
+   */
   const {
 
     // --- Don't include in the cli config --- //
@@ -96,20 +101,26 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     runInBand: bRunInBand,
     suiteRetry: bSuiteRetry,
     concurrency: bConcurrency,
+    reuseRunner: bReuseRunner,
+    exitOnFailed: bExitOnFailed,
+    skipAfterFailed: bSkipAfterFailed,
 
     rootDir: bRootDir,
     testDir: bTestDir,
 
     debug:bDebug,
     verbose: bVerbose,
-    timeout: bTimeout,
     extensions: bExtensions,
-    globalTimeout: bGlobalTimeout,
+    testTimeout: bTestTimeout,
+    suiteTimeout: bSuiteTimeout,
     
     
     ...baseRest
   } = base
 
+  /**
+   * --- These options come from the CLI, and should override any default config options ---
+   */
   const {
 
     // --- Don't include in the cli config --- //
@@ -157,20 +168,26 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     runInBand,
     suiteRetry,
     concurrency,
+    reuseRunner,
+    exitOnFailed,
+    skipAfterFailed,
 
     rootDir,
     testDir,
 
     debug,
     verbose,
-    timeout,
     extensions,
-    globalTimeout,
+    testTimeout,
+    suiteTimeout,
 
   } = override
 
   const rIB = toBool(runInBand ?? bRunInBand)
 
+  /**
+   * --- Final config used for executing the tests ---
+   */
   const examCfg = {
     ...baseRest,
     runInBand:rIB,
@@ -179,15 +196,19 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     debug: toBool(debug ?? bDebug),
     mode: getRunMode(base, override),
     colors: toBool(colors ?? bColors),
+
     silent: toBool(silent ?? bSilent),
-    timeout: toNum(timeout ?? bTimeout),
     workers: toNum(workers ?? bWorkers),
     verbose: toBool(verbose ?? bVerbose),
     testRetry: toNum(testRetry ?? bTestRetry),
     suiteRetry: toNum(suiteRetry ?? bSuiteRetry),
+    testTimeout: toNum(testTimeout ?? bTestTimeout),
     concurrency: toNum(concurrency ?? bConcurrency),
-    globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
+    reuseRunner: toBool(reuseRunner ?? bReuseRunner),
+    suiteTimeout: toNum(suiteTimeout ?? bSuiteTimeout),
+    exitOnFailed: toBool(exitOnFailed ?? bExitOnFailed),
     bail: isBool(bail) ? bail : isNum(bail) ? bail : bBail,
+    skipAfterFailed: toBool(skipAfterFailed ?? bSkipAfterFailed),
     extensions: flatUnion([...(bExtensions||emptyArr), ...(extensions||emptyArr)]),
     ...mergeCfgArrays(base, override),
   } as TExamConfig
@@ -210,10 +231,17 @@ const buildNoConfig = (opts:TExamCliOpts):TExamConfig => {
   return {...rest, mode: getRunMode(opts, opts)}
 }
 
-export const getConfig = async (opts:TExamCliOpts) => {
-  const built = !opts.config
+/**
+ * Merges the cli config options, loaded exam.config options, and the default options
+ * Fist merges the cli and loaded exam.config options, then merges that with the default options
+ * Priority follows the same order. The cli options override the exam.config options
+ * Which overrides teh exam default options
+ */
+export const getConfig = async (opts:TExamCliOpts):Promise<TExamConfig> => {
+  const built:TExamConfig = !opts.config
     ? buildNoConfig(opts)
     : mergeConfig(await getCfgObj(opts), opts)
 
+  // Merge the merged cli and exam.config options with the default config options
   return buildExamCfg(built)
 }

@@ -53,8 +53,8 @@ export const setContextCookie = async (
 
   const cookie = await promises.readFile(loadLoc, 'utf8')
   await context.addCookies(JSON.parse(cookie))
-  context.__goblet = context.__goblet || {}
-  context.__goblet.cookie = loadLoc
+  context.__contextGoblet = context.__contextGoblet || {}
+  context.__contextGoblet.cookie = loadLoc
 
   return true
 }

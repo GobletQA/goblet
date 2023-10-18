@@ -27,7 +27,7 @@ export const onConnect = (
   Manager:SocketManager,
 ) => {
   // Setup the socket listener, and add socket commands listener
-  io.on('connection', socket => {
+  io.on(`connection`, socket => {
     try {
       const { token } = socket.handshake.auth
       if(!token) throw new Error(`Missing auth token`)
@@ -40,7 +40,7 @@ export const onConnect = (
       setupEvents(Manager, socket, config, io, user)
 
       // Call the connection event if it exists
-      checkCall<TSocketEvtCBProps>(get(config, 'events.connection'), {
+      checkCall<TSocketEvtCBProps>(get(config, `events.connection`), {
         io,
         user,
         socket,

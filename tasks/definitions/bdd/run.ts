@@ -1,42 +1,66 @@
-import { TTask, TTaskActionArgs } from '../../types'
+import { TTask, TTaskActionArgs, TTaskParams } from '../../types'
+import type { TBuildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import type { TBuildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
 
+import { appRoot } from '../../paths'
 import { ETestType } from '../../types'
+import { isArr } from '@keg-hub/jsutils/isArr'
 import { sharedOptions, Logger } from '@keg-hub/cli-utils'
+import { getDebugEnv } from '@GTasks/utils/envs/getDebugEnv'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
-import { buildBddEnvs } from '@GTasks/utils/envs/buildBddEnvs'
-import { buildTestArgs } from '@GTasks/utils/test/buildTestArgs'
 import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
-// import {runExam} from '@GTasks/utils/exam/runExam'
+import { buildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
+import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
 
+const logPair = (name:string, item:string) => {
+  Logger.log(
+    `  `,
+    Logger.colors.gray(name),
+    Logger.colors.cyan(item),
+  )
+}
+
+const logInputParams = (params:TTaskParams) => {
+  Logger.log(Logger.colors.magenta(`Task Params: `))
+  const filtered = Object.entries(params)
+    .map(([key, val]) => {
+      const addVal = isArr(val)
+        ? Boolean(val?.length)
+        : Boolean(val)
+
+      if(!addVal) return
+
+      const print = isArr(val) ? val.join(`, `) : `${val}`
+      logPair(`${key}:`, print)
+    })
+
+  Logger.empty()
+}
 
 /**
  * Run parkin tests in container
  */
 const runBdd = async (args:TTaskActionArgs) => {
-  const { params, goblet, task } = args
+  const { params, task } = args
 
-  process.env.GOBLET_TEST_DEBUG &&
-    Logger.stdout(`runBdd Task Params:\n${JSON.stringify(params, null, 2)}\n`)
+  ;(params.testVerbose || params.debug || process.env.GOBLET_TEST_DEBUG)
+    && logInputParams(params)
 
   filterTaskEnvs(params, task)
   const testConfig = await getTestConfig(params, ETestType.feature)
 
-  // TODO: this will replace `runTestCmd` in the future
-  // const exitCode = await runExam({
-  //   params,
-  //   goblet,
-  //   config: testConfig,
-  //   type: ETestType.bdd,
-  // })
-
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
-    goblet,
-    type: ETestType.bdd,
-    cmdArgs: buildTestArgs(params, testConfig, ETestType.bdd),
-    envsHelper: (browser, reportPath) => buildBddEnvs(browser, params, reportPath, ETestType.feature)
+    cmdArgs: buildTestArgs(params as TBuildTestArgs, testConfig, ETestType.bdd),
+    envsHelper: (browser) => {
+      const debugVal = getDebugEnv(params)
+      const props = {...params, cwd: appRoot} as TBuildBddEnvs
+      if(debugVal) props.debugBrowser = debugVal
+
+      return buildBddEnvs(props, browser, ETestType.feature, false,)
+    }
   })
 
   process.exit(exitCode)
@@ -72,9 +96,9 @@ export const run:TTask = {
       `testSync`,
       `testDebug`,
       `testRetry`,
+      `suiteRetry`,
       `testCache`,
       `testReport`,
-      `testReportName`,
       `testColors`,
       `testTimeout`,
       `testVerbose`,
@@ -97,10 +121,13 @@ export const run:TTask = {
       `hasTouch`,
       `isMobile`,
       `permissions`,
-      `record`,
+      `video`,
       `storageState`,
       `timezone`,
+      `suiteTimeout`,
       `artifactsDebug`,
+      `exitOnFailed`,
+      `skipAfterFailed`,
     ]
   ),
 }

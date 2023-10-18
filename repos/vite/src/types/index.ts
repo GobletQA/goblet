@@ -12,15 +12,17 @@ export * from './novnc.types'
 export * from './reducer.types'
 export * from './repo.types'
 export * from './files.types'
+export * from './helper.types'
 export * from './keyboard.types'
 export * from './screencast.types'
 export * from './setting.types'
-export * from './shared.types'
 export * from './socket.types'
 export * from './storage.types'
 export * from './websocket.types'
 export * from './editors.types'
 export * from './snapshot.types'
+export * from './test.types'
+export * from './shared.types'
 
 /**
  * And overrides should eventually be removed

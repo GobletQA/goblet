@@ -1,7 +1,7 @@
-import type { Response, Request, RequestHandler } from 'express'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import type { Response, Request } from 'express'
+
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { deleteGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
 
 /**
@@ -9,11 +9,11 @@ import { deleteGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  *
  * @returns {Object} - response object model
  */
-export const deleteFile:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+export const deleteFile = async (req:Request, res:Response) => {
   const { location } = req.body
   const meta = await deleteGobletFile(res.locals.repo, location as string)
 
   return apiRes(res, meta || {}, 200)
-})
+}
 
-AppRouter.delete('/repo/:repo/files/delete', deleteFile)
+AppRouter.delete(`/repo/:repo/files/delete`, deleteFile)

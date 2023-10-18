@@ -11,7 +11,6 @@ import { filterAstFromId } from '@utils/features/filterAstFromId'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 import {
   PlaylistPlayIcon,
-  SubscriptionsIcon,
   PlayCircleOutlineIcon
 } from '@gobletqa/components'
 
@@ -43,17 +42,6 @@ const playFromStep:TCustomMenuOnClick<TRaceStep> = (evt, ctx) => {
   startBrowserPlay(fileModel, { ast })
 }
 
-const featureActions = [
-  {
-    closeMenu: true,
-    id: `play-all-features`,
-    Icon: SubscriptionsIcon,
-    type: EAstObject.feature,
-    text: `Play All Features`,
-    onClick: () => console.log(`Not Implemented`),
-  }
-]
-
 const stepActions:TStepMenuAction[] = [
   {
     closeMenu: true,
@@ -78,6 +66,5 @@ export const useRaceActions = () => {
 
   return {
     stepActions,
-    // featureActions
   }
 }

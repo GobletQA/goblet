@@ -9,7 +9,7 @@ export class JestReporter {
     
   }
   
-  onTestResult: (
+  onSuiteResult: (
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
@@ -29,14 +29,14 @@ export class JestReporter {
    * Called before running a spec (prior to `before` hooks)
    * Not called for `skipped` and `todo` specs
    */
-  onTestCaseStart: (
+  onTestStart: (
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => {
     
   }
 
-  onTestCaseResult: (
+  onTestResult: (
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => {
@@ -48,7 +48,7 @@ export class JestReporter {
     // options: ReporterOnStartOptions,
   ) => Promise<void> | void;
 
-  onTestStart?: (
+  onSuiteStart?: (
     // test: Test
   ) => {
     
@@ -60,7 +60,7 @@ export class JestReporter {
     
   }
 
-  onRunComplete: (
+  onRunResult: (
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => {

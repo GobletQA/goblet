@@ -4,12 +4,15 @@ import { ArrowAction } from './ArrowAction'
 import { ClearAction } from './ClearAction'
 import { SquareAction } from './SquareAction'
 import { PictureAction } from './PictureAction'
+
+import { TestRunsAction } from './TestRunsAction'
 import { DecorationAction } from './DecorationAction'
 import { WorldEditorAction } from './WorldEditorAction'
 
 export const RaceActions = [
   DecorationAction,
   WorldEditorAction,
+  TestRunsAction,
   DrawAction,
   SquareAction,
   PictureAction,
@@ -17,6 +20,7 @@ export const RaceActions = [
 
 export const MonacoActions = [
   DecorationAction,
+  TestRunsAction,
   DrawAction,
   TextAction,
   ArrowAction,

@@ -7,7 +7,7 @@ export type TActionFunc = (...args:any[]) => void
 
 const tryAction = (action:TActionFunc, name:string, ...args:any[]) => {
   try {
-    action(...args)
+    return action(...args)
   }
   catch (err: any) {
     console.warn(`Error calling ${name} in "removeRepo" action`)
@@ -25,5 +25,8 @@ export const removeRepo = async () => {
   tryAction(clearDefinitions, `clearDefinitions`)
   tryAction(clearFileTree, `clearFileTree`)
 
-  await localStorage.removeRepo()
+  await tryAction(async () => {
+    await localStorage.removeRepo()
+    await localStorage.removeAllLastOpened()
+  }, `localStorage.removeRepo`)
 }

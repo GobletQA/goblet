@@ -1,9 +1,7 @@
-import type { Response, Request, RequestHandler } from 'express'
-import type { TDefGobletConfig } from '@gobletqa/shared/types'
+import type { Response, Request } from 'express'
 
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { getGobletDefaultFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
 
 /**
@@ -11,13 +9,11 @@ import { getGobletDefaultFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  *
  * @returns {Object} - response object model containing the loaded fileModel
  */
-export const loadGobletDefinition:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+export const loadGobletDefinition = async (req:Request, res:Response) => {
   const filePath = req.query.location
-  const config:TDefGobletConfig = req.app.locals.config
-  
-  const file = await getGobletDefaultFile(config, res.locals.repo, filePath as string)
+  const file = await getGobletDefaultFile(res.locals.repo, filePath as string)
 
   return apiRes(res, (file ? {file} : {}), 200)
-})
+}
 
-AppRouter.get('/repo/:repo/goblet/files/definition', loadGobletDefinition)
+AppRouter.get(`/repo/:repo/goblet/files/definition`, loadGobletDefinition)

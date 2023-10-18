@@ -1,3 +1,6 @@
+// TODO: should add a Promise timeout here to avoid memory leaks
+// Has to be very long, could be based on the global timeout option from Exam / Parkin
+
 import type {
   TGitData,
   TFileModel,
@@ -13,10 +16,10 @@ import { pickKeys, emptyObj } from '@keg-hub/jsutils'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { getRepoData } from '@utils/store/getStoreData'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
 import { filterFileContext } from '@utils/files/filterFileContext'
-import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
 import {
   BrowserStateEvt,
   PlayerEndedEvent,
@@ -94,7 +97,7 @@ export const startBrowserPlay = async (
     )
   )
 
-  const promise = PromiseAbort((res, rej) => {
+  let promise = PromiseAbort((res, rej) => {
     WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
 
     // Then listen for the response event fired from the websocket service
@@ -121,6 +124,8 @@ export const startBrowserPlay = async (
         cancelOff?.()
         promise.cancel()
         rej(emptyObj)
+        // @ts-ignore
+        promise = undefined
       }
     )
   })

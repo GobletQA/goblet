@@ -133,16 +133,19 @@ const findCssSelector = (el) => {
 }
 
 if(typeof window !== 'undefined'){
-  window.__gobletFindCssSelector = findCssSelector
 
-  window.__gobletTest && (
-    window.__gobletTest.selector = {
-      uniqueById: uniqueById,
-      uniqueByTag: uniqueByTag,
-      findCssSelector: findCssSelector,
-      uniqueByClassName: uniqueByClassName,
-    }
-  )
+  if(!window.__gobletFindCssSelector) window.__gobletFindCssSelector = findCssSelector
+
+  window.__gobletTest
+    && !window.__gobletTest.selector
+    && (
+        window.__gobletTest.selector = {
+          uniqueById: uniqueById,
+          uniqueByTag: uniqueByTag,
+          findCssSelector: findCssSelector,
+          uniqueByClassName: uniqueByClassName,
+        }
+      )
 
 }
 

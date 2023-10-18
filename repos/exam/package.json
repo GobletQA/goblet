@@ -42,7 +42,6 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "format": "pnpm lint && pnpm pretty",
-    "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
@@ -55,27 +54,23 @@
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@keg-hub/args-parse": "10.0.1",
-    "@keg-hub/jsutils": ">=9.8.0",
+    "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "5.1.1",
-    "esbuild": "0.19.2",
+    "@ltipton/parkin": "6.3.0",
+    "esbuild": "0.19.3",
+    "esbuild-register": "3.5.0",
     "esbuild-plugin-path-alias": "1.0.7",
-    "esbuild-register": "3.4.2",
-    "expect": "29.6.1",
-    "glob": "10.3.3",
+    "expect": "29.7.0",
+    "glob": "10.3.10",
     "micromatch": "4.0.5",
     "module-alias": "2.2.2",
-    "p-map": "6.0.0",
     "p-map-series": "3.0.0",
-    "p-pipe": "4.0.0",
-    "p-queue": "7.3.4"
+    "p-pipe": "4.0.0"
   },
   "devDependencies": {
     "@ltipton/esdev": "0.2.1",
-    "@types/debug": "4.1.5",
-    "@types/jest": "29.1.2",
-    "@types/node": "18.15.13",
-    "jest": "29.5.0",
-    "nodemon": "2.0.22"
+    "@types/debug": "4.1.9",
+    "@types/node": "20.7.1",
+    "nodemon": "3.0.1"
   }
 }

@@ -49,9 +49,14 @@ export * from './PassIcon'
 
 export * from './CutIcon'
 export * from './PasteIcon'
+export * from './BugPlayIcon'
 export * from './PasteAfterIcon'
 export * from './PasteBeforeIcon'
 
+export * from './FolderPlayOutlineIcon'
+export * from './SkipIcon'
+
+// export * from './AnimationPlayOutlineIcon'
 
 // export * from './TextboxOutlineIcon'
 // export * from './CancelIcon'

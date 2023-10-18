@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
-import { getPage, getLocator, getLocatorByText } from '@GTU/Playwright'
+import { getLocatorByText } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
@@ -11,9 +11,7 @@ import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
  */
 export const clickTextHandler = async (selector:string, ctx:TStepCtx) => {
   const locator = await getLocatorByText(selector)
-
-  // TODO: add way to pull in options for click
-  return await locator.click({})
+  return await clickElement({ locator }, ctx)
 }
 
 const meta = {

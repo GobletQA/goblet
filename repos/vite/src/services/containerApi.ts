@@ -8,6 +8,7 @@ import { getContainerData } from '@utils/store/getStoreData'
 
 export type TContainerRemove = {
   id?:string
+  idleSignOut?:boolean
 }
 
 export class ContainerApi {

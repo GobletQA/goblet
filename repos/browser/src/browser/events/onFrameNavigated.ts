@@ -2,7 +2,6 @@ import type { Frame } from 'playwright'
 import type { TBrowserEventArgs, TBrowserPage } from '@GBB/types'
 
 import { EBrowserEvent } from '@GBB/types'
-// import { symParse } from '@GBB/libs/symplasm'
 import { WSPwUrlChange } from '@GBB/constants'
 
 export const onFrameNavigated = ({ socket, Manager }:TBrowserEventArgs) => {
@@ -16,8 +15,6 @@ export const onFrameNavigated = ({ socket, Manager }:TBrowserEventArgs) => {
     if(frame.parentFrame()) return
 
     const url = frame.url()
-    // const content = await frame.locator(`body`).innerHTML()
-    // const ast = symParse(content)
 
     Manager.emit(
       socket,

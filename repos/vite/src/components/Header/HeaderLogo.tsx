@@ -3,7 +3,9 @@ import { GobletIcon } from '@gobletqa/components'
 import { LogoContainer, LogoBtn, LogoText } from './Header.styled'
 
 const gotoHome = () => {
-  console.log(`------- TODO: goto home -------`)
+  const { search, pathname } = window.location
+
+  pathname !== `/` && (window.location.href = `/${search}`)
 }
 
 const style = {

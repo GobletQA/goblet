@@ -32,6 +32,7 @@ export const VisualEditor = (props:TVisualEditor) => {
     settings,
     features,
     connected,
+    lastOpened,
     rootPrefix,
     definitions,
     onWorldChange,
@@ -64,6 +65,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             rootPrefix={rootPrefix}
             menuContext={menuContext}
             definitions={definitions}
+            openedFeatures={lastOpened}
             onWorldChange={onWorldChange}
             sidebarStatus={sidebarLocked}
             onFeatureClose={onFeatureClose}

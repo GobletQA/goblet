@@ -59,6 +59,11 @@ import KebabIcon from '@mui/icons-material/MoreVert'
 import ClockIcon from '@mui/icons-material/AccessTime'
 import GradingIcon from '@mui/icons-material/Grading'
 import KeyIcon from '@mui/icons-material/Key'
+import AdsClickIcon from '@mui/icons-material/AdsClick'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import TuneIcon from '@mui/icons-material/Tune'
 
 // Icon for playing from a specific point in a feature
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
@@ -66,6 +71,8 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import ContentPasteIcon from '@mui/icons-material/ContentPaste'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 export {
   Settings,
@@ -133,4 +140,12 @@ export {
   SubscriptionsIcon,
   TextFieldsIcon,
   DeleteForeverIcon
+  AdsClickIcon,
+  UploadFileIcon,
+  DirectionsRunIcon,
+  FormatListBulletedIcon,
+  ContentPasteIcon,
+  TuneIcon,
+  KeyboardArrowRightIcon
 }
+

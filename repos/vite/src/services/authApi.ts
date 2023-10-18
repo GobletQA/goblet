@@ -25,7 +25,7 @@ export type TValidateUserReq = TFormattedUser & {
 export class AuthApi {
 
   authPath = `/auth`
-  refreshTimer?:NodeJS.Timer
+  refreshTimer?:NodeJS.Timeout
 
   clearRefreshTimer = () => {
     if(!this.refreshTimer) return

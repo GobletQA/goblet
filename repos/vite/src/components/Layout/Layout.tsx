@@ -1,24 +1,18 @@
 import type { ReactNode } from 'react'
 
-import { EBrowserState } from '@types'
-import { cls } from '@keg-hub/jsutils'
+import "allotment/dist/style.css"
+import { Allotment } from "allotment"
+import { LayoutCover } from './LayoutCover'
+import { ActionBar } from '@gobletqa/components'
 import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
-import { ActionBar, dims } from '@gobletqa/components'
-import { useBrowserState } from '@hooks/screencast/useBrowserState'
+import {useLayoutResize} from '@hooks/components/useLayoutResize'
 import {
   LContainer,
   RContainer,
   RTSection,
   LayoutContainer,
-  LAutomationCover,
 } from './Layout.styled'
-
-
-import "allotment/dist/style.css"
-import { Allotment } from "allotment"
-import {useLayoutResize} from '@hooks/components/useLayoutResize'
-
 
 const styles = {
   container: {
@@ -32,13 +26,7 @@ export type TLayout = {
 }
 
 export const Layout = (props:TLayout) => { 
-  
-  const {
-    onDragEnd 
-  } = useLayoutResize()
-  
-  const { browserState } = useBrowserState()
-  const automationActive = (browserState !== EBrowserState.idle)
+  const { onDragEnd  } = useLayoutResize()
 
   return (
     <LayoutContainer
@@ -55,12 +43,7 @@ export const Layout = (props:TLayout) => {
             className='gb-layout-left-container gb-container-editor'
           >
             {props.children}
-            <LAutomationCover
-              className={cls(
-                `gb-automation-cover`,
-                automationActive && `active`
-              )}
-            />
+            <LayoutCover />
           </LContainer>
         </Allotment.Pane>
 

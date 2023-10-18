@@ -11,14 +11,24 @@ export const setupBuildX = async (
   allEnvs:TEnvObject
 ) => {
   // Create the buildx goblet context if it does not exist
-  await docker([`buildx`, `create`, `--name`, builder], {
+  await docker([
+    `buildx`,
+    `create`,
+    `--name`,
+    builder,
+    `--platform`,
+    `linux/amd64,linux/arm64`,
+    `--driver`,
+    `docker-container`,
+    `--bootstrap`,
+  ], {
     cwd: appRoot,
     env: allEnvs,
     exec: true,
   })
 
   // Then try to use it, if we don't get an exitCode 0 response, then throw an error
-  const { exitCode } = await docker([`buildx`, `use`, builder], {
+  const { exitCode, ...rest } = await docker([`buildx`, `use`, builder], {
     exec: true,
     cwd: appRoot,
     env: allEnvs,

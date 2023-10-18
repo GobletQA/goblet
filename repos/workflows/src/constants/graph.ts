@@ -14,12 +14,12 @@ export const Graph = deepFreeze({
     AuthHeader: { Ref: `token`, Key: `Authorization` },
     Opts: {
       Affiliations: [
-        'OWNER',
-        'COLLABORATOR',
-        'ORGANIZATION_MEMBER'
+        `OWNER`,
+        `COLLABORATOR`,
+        `ORGANIZATION_MEMBER`
       ],
       SortDirection: {
-        ASC: 'ASC',
+        ASC: `ASC`,
       }
     },
     Endpoints: {

@@ -1,6 +1,6 @@
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type {
-  TRepo,
+  Repo,
   TBrowser,
   TPlayerOpts,
   TBrowserPage,
@@ -12,9 +12,9 @@ import type {
   TPlayerStartConfig,
 } from '@GBB/types'
 
-import { PWPlay } from '@GBB/constants'
 import { CodeRunner } from './codeRunner'
 import { noOp } from '@keg-hub/jsutils/noOp'
+import { TestsToSocketEvtMap } from '@GBB/constants'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getInjectScript } from '@GBB/utils/getInjectScript'
@@ -32,7 +32,7 @@ import { getInjectScript } from '@GBB/utils/getInjectScript'
  */
 export class Player {
 
-  repo:TRepo
+  repo:Repo
   id:string = null
   browser:TBrowser
   page:TBrowserPage
@@ -60,15 +60,16 @@ export class Player {
   fireEvent = (event:Omit<TPlayerEvent, 'isPlaying'>) => {
     if(this.canceled) return this
     
-    this.onEvents.map(func => checkCall(
-      func,
-      {
-        ...event,
-        isPlaying: Player.isPlaying,
-        location: this.options?.file?.location,
-        fileType: this.options?.file?.fileType,
-      }
-    ))
+    this.onEvents.map(func => checkCall(func, {
+      ...event,
+      isPlaying: Player.isPlaying,
+      location: this.options?.file?.location,
+      fileType: this.options?.file?.fileType,
+      data: {
+        ...event?.data,
+        location: event?.data?.location ?? this.options?.file?.location,
+      },
+    }))
 
     return this
   }
@@ -135,7 +136,7 @@ export class Player {
     try {
   
       if(Player.isPlaying){
-        this.fireEvent({ name: PWPlay.playError, message: 'Playing already inprogress' })
+        this.fireEvent({ name: TestsToSocketEvtMap.error, message: 'Playing already inprogress' })
         console.warn('Browser playing already in progress')
         return this
       }
@@ -150,20 +151,20 @@ export class Player {
 
       this.fireEvent({
         message: 'Playing started',
-        name: PWPlay.playStarted,
+        name: TestsToSocketEvtMap.started,
       })
 
       const timeout = this.options?.playOptions?.testTimeout as number
-      const globalTimeout = this.options?.playOptions?.globalTimeout as number
+      const suiteTimeout = this.options?.playOptions?.suiteTimeout as number
       this.page.setDefaultTimeout(timeout || 15000)
 
-      const extraHTTPHeaders = this.repo?.world?.$headers
+      const extraHTTPHeaders = this.repo?.world?.$context?.extraHTTPHeaders
       extraHTTPHeaders &&
         await this.page.setExtraHTTPHeaders({...extraHTTPHeaders})
 
       this.codeRunner = new CodeRunner(this, {
         timeout,
-        globalTimeout,
+        suiteTimeout,
         debug: this.options?.playOptions?.debug as boolean,
         slowMo: this.options?.playOptions?.slowMo as number,
       })
@@ -179,7 +180,7 @@ export class Player {
         && this.fireEvent({
             data: results,
             message: 'Player results',
-            name: PWPlay.playResults,
+            name: TestsToSocketEvtMap.results,
           })
 
     }
@@ -188,7 +189,7 @@ export class Player {
         console.error(err.stack)
         this.fireEvent({
           message: err.message,
-          name: PWPlay.playError,
+          name: TestsToSocketEvtMap.error,
         })
       }
     }
@@ -210,14 +211,14 @@ export class Player {
     try {
       if(!this.context || !Player.isPlaying)
         this.fireEvent({
-          name: PWPlay.playError,
+          name: TestsToSocketEvtMap.error,
           message: `Playing context does not exist`
         })
 
       Player.isPlaying = false
 
       this.fireEvent({
-        name: PWPlay.playEnded,
+        name: TestsToSocketEvtMap.ended,
         message: `Playing stopped`,
       })
     }
@@ -225,7 +226,7 @@ export class Player {
       console.error(err.stack)
 
       this.fireEvent({
-        name: PWPlay.playError,
+        name: TestsToSocketEvtMap.error,
         message: err.message,
       })
     }
@@ -246,7 +247,7 @@ export class Player {
 
   cancel = async () => {
     this.fireEvent({
-      name: PWPlay.playCanceled,
+      name: TestsToSocketEvtMap.canceled,
       message: `Playing canceled`,
     })
 
@@ -271,10 +272,12 @@ export class Player {
     }
 
     this.page = undefined
+    this.repo = undefined
     this.context = undefined
     this.browser = undefined
     this.codeRunner = undefined
     delete this.page
+    delete this.repo
     delete this.context
     delete this.browser
     delete this.codeRunner

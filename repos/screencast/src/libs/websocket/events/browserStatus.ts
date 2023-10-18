@@ -5,7 +5,7 @@ import { Logger } from '@GSC/utils/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { GBrowser } from '@gobletqa/browser'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 let prevStatus
 let watchInterval:ReturnType<typeof setTimeout>

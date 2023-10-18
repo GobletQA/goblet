@@ -1,50 +1,27 @@
-import type { TStartBrowser } from './PWBrowsers'
 import type {
   TBrowser,
+  TGetCtx,
+  TGetPage,
+  TGetPageCB,
   TBrowserPage,
   TBrowserConf,
   EBrowserType,
-  TGobletConfig,
+  TBrowserOnly,
   TPWComponents,
+  TStartBrowser,
   TBrowserContext,
+  TGetPWComponents,
 } from '@GBB/types'
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
-import { ghostMouse } from './ghostMouse'
-import { Logger } from '@GBB/utils/logger'
-import { ENVS } from '@gobletqa/environment'
+import { logEnvMsg } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
 import { checkInternalPWContext } from './checkInternalPWContext'
-
-export type TGetPWComponents = {
-  initialUrl?:string
-  config?:TGobletConfig
-  browserConf?:TBrowserConf,
-}
-
-export type TBrowserOnly = {
-  config?:TGobletConfig
-  browserServer?:boolean
-  browserConf?:TBrowserConf
-}
-
-export type TGetPage = TGetPWComponents & {
-  overrides?:Partial<TBrowserConf>
-}
-export type TGetPageCB = ((props:TGetPage) => Promise<TPWComponents>) & {
-  creatingPage:boolean
-}
-
-export type TGetCtx = {
-  config?:TGobletConfig
-  browserConf:TBrowserConf
-  overrides?:Partial<TBrowserConf>
-}
 
 export class Browser {
 
@@ -59,6 +36,7 @@ export class Browser {
   }
 
   #getPage = async ({
+    world,
     config,
     browserConf,
     initialUrl=GobletQAUrl,
@@ -68,19 +46,21 @@ export class Browser {
     try {
 
       const { context, browser } = await this.#getContext({
+        world,
         config,
         overrides,
         browserConf,
       })
+
       const pages = context.pages()
       
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+      logEnvMsg(`getPage - Found ${pages.length} pages open on the context`)
       
       const hasPages = Boolean(pages.length)
       const hasMultiplePages = pages.length > 1
 
       if(hasMultiplePages){
-        Logger.verbose(`getPage - Closing extra pages on the context`)
+        logEnvMsg(`getPage - Closing extra pages on the context`)
         await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
       }
 
@@ -91,7 +71,7 @@ export class Browser {
       // To allow consecutive calls on start up
       if(!hasPages && this.creatingPage)
         return new Promise((res, rej) => {
-          Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
+          logEnvMsg(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`, `info`)
           setTimeout(() => res(this.#getPage({
             initialUrl,
             browserConf
@@ -109,8 +89,7 @@ export class Browser {
       }
       else {
 
-        const pg = await context.newPage()
-        page = ghostMouse(pg)
+        page = await context.newPage()
 
         try {
           await page.goto(initialUrl)
@@ -123,12 +102,9 @@ export class Browser {
       this.creatingPage = false
       const browserType = browser.browserType?.().name?.()
 
-      if(!ENVS.GOBLET_RUN_FROM_CI){
-        hasPages
-          ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
-          : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
-      }
-
+      hasPages
+        ? logEnvMsg(`getPage - Found page on context for browser ${browserType}`)
+        : logEnvMsg(`getPage - New page created on context for browser ${browserType}`)
 
       return { context, browser, page } as TPWComponents
     }
@@ -141,13 +117,14 @@ export class Browser {
 
   #getContext = async (args:TGetCtx) => {
     const {
+      world,
       config,
       browserConf,
       overrides=emptyObj as TBrowserConf,
     } = args
 
 
-    const resp = await pwBrowsers.getBrowser({ config, browserConf })
+    const resp = await pwBrowsers.getBrowser({ world, config, browserConf })
 
     let context = resp.context
     const browser = resp.browser
@@ -158,43 +135,45 @@ export class Browser {
       const hasMultipleContexts = contexts.length > 1
 
       if(hasMultipleContexts){
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Closing extra contexts on the browser`)
+        logEnvMsg(`getContext - Closing extra contexts on the browser`)
         await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
       }
 
       const options = getContextOpts({
+        world,
         config,
         overrides: overrides.context,
         contextOpts: browserConf.context,
       })
       
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`Context Options`, options)
+      logEnvMsg(`Context Options`, `verbose`, options)
 
       if(hasContexts){
-        context = contexts[0]
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+        context = contexts[0] as TBrowserContext
+        logEnvMsg(`getContext - Found existing context on browser ${browserConf.type}`)
       }
       else {
         context = await browser.newContext(options) as TBrowserContext
-        context.__goblet = { options }
+        context.__contextGoblet = { options }
 
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+        logEnvMsg(`getContext - New context created for browser ${browserConf.type}`)
 
         Automate.bind({ parent: context })
       }
 
     }
     else {
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+      logEnvMsg(`getContext - Found Persistent context for browser ${browserConf.type}`)
     }
 
     return { context, browser }
   }
 
   #getBrowser = async (args:TBrowserOnly) => {
-    const { config, browserServer } = args
+    const { world, config, browserServer } = args
 
     const resp = await pwBrowsers.getBrowser({
+      world,
       config,
       opts: { browserServer },
       browserConf: buildBrowserConf(args),
@@ -205,12 +184,13 @@ export class Browser {
 
   server = async (args:TBrowserOnly) => this.#getBrowser(args)
 
-  start = async (props:TStartBrowser):Promise<TPWComponents> => {
-    return await pwBrowsers.startBrowser(props, this.#getPage as TGetPageCB)
+  start = async (args:TStartBrowser):Promise<TPWComponents> => {
+    return await pwBrowsers.startBrowser(args, this.#getPage as TGetPageCB)
   }
 
   get = async (args:TGetPWComponents) => {
     const {
+      world,
       config,
       initialUrl=GobletQAUrl,
       browserConf=emptyObj as TBrowserConf,
@@ -221,6 +201,7 @@ export class Browser {
     return pwComponents?.page
       ? pwComponents
       : await this.#getPage({
+          world,
           config,
           initialUrl,
           browserConf,

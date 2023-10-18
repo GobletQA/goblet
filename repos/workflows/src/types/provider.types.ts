@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
-import type { TGitCreateRepoOpts } from './git.types'
+import type { TGitCreateRepoOpts } from '@gobletqa/git'
 import type { TRepoData, TBranchData } from './restapi.types'
 import type { GitlabApi } from '@gobletqa/workflows/providers/gitlabApi'
 import type { GithubApi } from '@gobletqa/workflows/providers/githubApi'

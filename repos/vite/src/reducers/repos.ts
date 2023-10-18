@@ -21,7 +21,7 @@ export const reposActions = {
 }
 
 export const reposReducer = createReducer(
-  reposState,
+  deepMerge(reposState),
   (builder:ActionReducerMapBuilder<TReposState>) => {
     builder.addCase(setRepos, reposActions.setRepos)
     builder.addCase(clearRepos, reposActions.clearRepos)

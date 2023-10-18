@@ -1,13 +1,15 @@
 import type { TTask, TTaskActionArgs } from '../../types'
+import type { TBuildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+
 
 import { ETestType } from '../../types'
 import constants from '../../constants'
 import { sharedOptions } from '@keg-hub/cli-utils'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
-import { buildTestArgs } from '@GTasks/utils/test/buildTestArgs'
 import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
 import { buildWaypointEnvs } from '@GTasks/utils/envs/buildWaypointEnvs'
+import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
 
 const { testTypes } = constants
 
@@ -24,14 +26,11 @@ const runWp = async (args:TTaskActionArgs) => {
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
-    goblet,
-    type: testTypes.waypoint,
-    cmdArgs: buildTestArgs(params, testConfig, ETestType.waypoint),
-    envsHelper: (browser, reportPath) => buildWaypointEnvs(
+    cmdArgs: buildTestArgs(params as TBuildTestArgs, testConfig, ETestType.waypoint),
+    envsHelper: (browser) => buildWaypointEnvs(
       browser,
       goblet,
       params,
-      reportPath,
       testTypes.waypoint
     )
   })
@@ -76,20 +75,24 @@ export const run:TTask = {
       `isMobile`,
       `permissions`,
       `tracing`,
-      `record`,
+      `video`,
       `storageState`,
       `timezone`,
       `testCI`,
       `testDebug`,
       `testCache`,
       `testReport`,
-      `testReportName`,
+      `testRetry`,
+      `suiteRetry`,
       `testColors`,
       `testTimeout`,
       `testVerbose`,
       `testWorkers`,
       `testOpenHandles`,
+      `suiteTimeout`,
       `artifactsDebug`,
+      `exitOnFailed`,
+      `skipAfterFailed`,
     ]
   ),
 }

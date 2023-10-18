@@ -7,6 +7,8 @@ import { socketInit } from './setup'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 const {
+  testsRunAll,
+  testsRunAbort,
   authToken,
   connection,
   disconnect,
@@ -48,6 +50,9 @@ export const initSocket:TInitSocket = (
         browserRestart: browserRestart(app),
         cancelAutomate: cancelAutomate(app),
         browserAutomate: browserAutomate(app),
+
+        testsRunAll: testsRunAll(app),
+        testsRunAbort: testsRunAbort(app),
       },
     },
     cmdType

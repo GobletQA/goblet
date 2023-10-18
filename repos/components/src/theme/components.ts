@@ -1,8 +1,5 @@
 import type { TPaletteOpts } from '../types'
 import type { Theme } from '@mui/material/styles'
-import type { AutocompleteClasses } from '@mui/material'
-
-import { gutter } from './gutter'
 import { EThemeMode } from '../types'
 
 

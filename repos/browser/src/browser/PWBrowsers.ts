@@ -1,20 +1,22 @@
 import type {
   TBrowser,
+  TGetPageCB,
   TPWBrowser,
+  TGetBrowser,
   TBrowserConf,
   EBrowserType,
   EBrowserName,
-  TGobletConfig,
   TPWComponents,
+  TStartBrowser,
   TBrowserContext,
+  TPWBrowsersOpts,
+  TCreateBrowserOpts,
 } from '@GBB/types'
-import type { TGetPageCB } from './browser'
 
 import playwright from 'playwright'
-import { Logger } from '@GBB/utils/logger'
-import { ENVS } from '@gobletqa/environment'
 import { EmptyBrowser } from './emptyBrowser'
 import { inDocker } from '@keg-hub/cli-utils'
+import { logEnvMsg } from '@GBB/utils/logger'
 import { toBool } from '@keg-hub/jsutils/toBool'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { CreateBrowserRetry } from '@GBB/constants'
@@ -29,58 +31,22 @@ import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
 
-
-type TGetBrowserOpts = {
-  browserServer?:boolean,
-}
-
-export type TStartBrowser = {
-  initialUrl?:string
-  config?:TGobletConfig
-  browserServer?:boolean,
-  _isLoopedCalled?:boolean
-  _loopedType?:EBrowserName
-  browserConf?:TBrowserConf
-  overrides?:Partial<TBrowserConf>
-}
-
-export type TBrowserOnly = {
-  browserServer?:boolean
-  browserConf?:TBrowserConf
-}
-
-
-export type TPWBrowsersOpts = {
-  browsers:Record<EBrowserName, TBrowser>
-}
-
-export type TCreateBrowserOpts = {
-  type:EBrowserName
-  config?:TGobletConfig
-  browserConf:TBrowserConf
-}
-
-export type TGetBrowser = {
-  opts?:TGetBrowserOpts
-  config?:TGobletConfig
-  browserConf:TBrowserConf
-}
-
-
-const buildStartOpts = (props:TStartBrowser) => {
+const buildStartOpts = (args:TStartBrowser) => {
   const {
+    world,
     config,
     overrides,
     initialUrl,
     _loopedType,
     _isLoopedCalled,
-  } = props
+  } = args
 
-  const browserConf = _isLoopedCalled ? props.browserConf : buildBrowserConf(props)
+  const browserConf = _isLoopedCalled ? args.browserConf : buildBrowserConf(args)
   const type = _loopedType || getBrowserType(browserConf.type as EBrowserType)
 
   return {
     type,
+    world,
     config,
     overrides,
     initialUrl,
@@ -130,8 +96,7 @@ export class PWBrowsers {
         : endpoint
 
     const browser = await playwright[type].connect(browserEndpoint)
-    !ENVS.GOBLET_RUN_FROM_CI
-      && Logger.verbose(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
+    logEnvMsg(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
 
     this.#setBrowser(browser, { type })
 
@@ -147,21 +112,22 @@ export class PWBrowsers {
   #createPersistentBrowser = async (args:TCreateBrowserOpts) => {
     const {
       type,
+      world,
       config,
       browserConf= emptyObj as TBrowserConf
     } = args
 
 
     const opts = deepMerge(
-      getBrowserOpts(browserConf, config),
-      getContextOpts({config, contextOpts: browserConf.context })
+      getBrowserOpts(browserConf, config, world),
+      getContextOpts({config, contextOpts: browserConf.context, world})
     )
-    !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`Browser-PersistentContext options`, opts)
+    logEnvMsg(`Browser-PersistentContext options`, `verbose`, opts)
     
     const context = await playwright[type].launchPersistentContext(opts)
 
     const browser = new EmptyBrowser(context, type)
-    !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`createPersistentBrowser - Browser ${type} was started`)
+    logEnvMsg(`createPersistentBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, browserConf)
 
     return { browser, context } as TPWBrowser
@@ -176,13 +142,12 @@ export class PWBrowsers {
   ) => {
 
     if(!browser){
-      !ENVS.GOBLET_RUN_FROM_CI
-        && Logger.warn(`Attempted to set non-existing browser in private #setBrowsers method.`)
+      logEnvMsg(`Attempted to set non-existing browser in private #setBrowsers method.`, `warn`)
 
       return this.#browsers
     }
 
-    browser.__goblet = {...browser?.__goblet, ...browserConf}
+    browser.__browserGoblet = {...browser?.__browserGoblet, ...browserConf}
 
     const bType = browser.browserType().name()
 
@@ -209,14 +174,16 @@ export class PWBrowsers {
   #createBrowser = async (args:TCreateBrowserOpts) => {
     const {
       type,
+      world,
       config,
       browserConf=emptyObj as TBrowserConf,
     } = args
 
-    const opts = getBrowserOpts(browserConf, config)
+    const opts = getBrowserOpts(browserConf, config, world)
+
     const browser = await playwright[type].launch(opts)
 
-    !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`createBrowser - Browser ${type} was started`)
+    logEnvMsg(`createBrowser - Browser ${type} was started`, `verbose`, opts)
     this.#setBrowser(browser, { ...browserConf, ...opts })
 
     return { browser } as TPWBrowser
@@ -233,7 +200,7 @@ export class PWBrowsers {
       browser && await browser?.close()
     }
     catch (err) {
-      Logger.warn(err.stack)
+      logEnvMsg(err.stack, `warn`)
     }
     finally {
       this.#browsers[browserType] = undefined
@@ -253,6 +220,7 @@ export class PWBrowsers {
   getBrowser = async (args:TGetBrowser):Promise<TPWBrowser> => {
     
     const {
+      world,
       config,
       browserConf= emptyObj as TBrowserConf,
     } = args
@@ -263,7 +231,7 @@ export class PWBrowsers {
       const pwBrowser = this.fromCache(type)
 
       if (pwBrowser) {
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getBrowser - Using existing browser ${type}`)
+        logEnvMsg(`getBrowser - Using existing browser ${type}`)
         return { browser: pwBrowser } as TPWBrowser
       }
 
@@ -273,8 +241,7 @@ export class PWBrowsers {
         // So this re-calls the same method when this.#creatingBrowser is set
       if(this.#creatingBrowser)
         return new Promise((res, rej) => {
-          !ENVS.GOBLET_RUN_FROM_CI
-            && Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
+          logEnvMsg(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
           setTimeout(() => res(this.getBrowser(args)), CreateBrowserRetry)
         })
 
@@ -293,18 +260,18 @@ export class PWBrowsers {
           ? await createWSBrowser(type)
           : await createBrowser(browserConf, type)
         fromWs
-          ? Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
-          : Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+          ? logEnvMsg(`getBrowser - New Websocket Browser ${type} created`)
+          : logEnvMsg(`getBrowser - New Standalone Browser ${type} created`)
 
       
         await createWSBrowser(type)
-        Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+        logEnvMsg(`getBrowser - New Websocket Browser ${type} created`)
 
         const browserResp = await this.#createPersistentBrowser({
           type,
           browserConf,
         })
-        Logger.verbose(`getBrowser - New Persistent Context Browser ${type} created`)
+        logEnvMsg(`getBrowser - New Persistent Context Browser ${type} created`)
 
       ------------------------------------ */
 
@@ -313,10 +280,11 @@ export class PWBrowsers {
       // Should be faster then going over a websocket
       const browserResp = await this.#createBrowser({
         type,
+        world,
         config,
         browserConf,
       })
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+      logEnvMsg(`getBrowser - New Standalone Browser ${type} created`)
 
       this.#creatingBrowser = false
       return browserResp
@@ -337,7 +305,7 @@ export class PWBrowsers {
   * @public
   */
   startBrowser = async (
-    props:TStartBrowser,
+    args:TStartBrowser,
     getPage:TGetPageCB
   ):Promise<TPWComponents> => {
 
@@ -345,12 +313,13 @@ export class PWBrowsers {
 
       const {
         type,
+        world,
         config,
         overrides,
         initialUrl,
         internalPW,
         browserConf
-      } = buildStartOpts(props)
+      } = buildStartOpts(args)
 
       let pwComponents = internalPW
       if(pwComponents?.browser)
@@ -360,7 +329,7 @@ export class PWBrowsers {
         )
 
       if(!pwComponents?.page){
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`startBrowser - Getting browser type ${type}`)
+        logEnvMsg(`startBrowser - Getting browser type ${type}`)
 
         const pwBrowser = pwBrowsers.fromCache(type)
 
@@ -371,13 +340,11 @@ export class PWBrowsers {
         if(!pwBrowser && this.#startingBrowser)
           return new Promise((res, rej) => {
 
-            !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(
-              `startBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`
-            )
+            logEnvMsg(`startBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
 
             setTimeout(() => res(
               this.startBrowser({
-                ...props,
+                ...args,
                 config,
                 browserConf,
                 _loopedType: type,
@@ -390,6 +357,7 @@ export class PWBrowsers {
 
         this.#startingBrowser = true
         pwComponents = await getPage({
+          world,
           config,
           overrides,
           initialUrl,
@@ -397,7 +365,7 @@ export class PWBrowsers {
         })
         this.#startingBrowser = false
 
-        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`startBrowser - Browser ${type} and child components found`)
+        logEnvMsg(`startBrowser - Browser ${type} and child components found`)
       }
 
       const hasComponents = Boolean(

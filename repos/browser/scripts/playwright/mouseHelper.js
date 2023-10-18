@@ -7,6 +7,10 @@
  * Init script that checks if the script should run based on recording state
  */
 async function initGobletMouseTracking(){
+  if(initGobletMouseTracking.init) return
+
+  initGobletMouseTracking.init = true
+  
   // Check if the browser events should be recorder
   // Calls a globally injected script via playwright
   const isPlaying = await window.isGobletPlaying()

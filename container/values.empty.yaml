@@ -26,7 +26,7 @@ ingress:
 # Defines image pull secrets
 # DevSpace CLI will append all pull secrets which are automatically created
 # More infos on: https://devspace.cloud/docs/cli/image-building/workflow-basics#8-create-image-pull-secret
-pullSecrets: []
+# pullSecrets: []
 
 
 env:

@@ -11,7 +11,7 @@ import {
 } from '@constants'
 
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
+import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
 /**

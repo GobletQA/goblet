@@ -12,121 +12,110 @@
 // Must load this first because it loads the alias
 import { aliases } from './setupTestAliases'
 
-import type { TBrowserConf } from '../types'
-import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import type { TExamConfig } from '@gobletqa/exam'
-
+import type { TGobletConfig, TBrowserConf, TExamCfgArgs } from '@GTU/Types'
 
 import path from 'path'
-import { ENVS } from '@gobletqa/environment'
 import { EExTestMode } from '@gobletqa/exam'
-import { getContextOpts } from '@gobletqa/browser'
+import { ENVS } from '@gobletqa/environment'
+import { getWorld } from '@gobletqa/repo/world'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { flatUnion} from '@keg-hub/jsutils/flatUnion'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { getExamTimeouts } from '@GTU/Utils/getExamTimeouts'
 import { getParkinOptions } from '@GTU/Parkin/parkinTestInit'
+import { getReporters } from '@GTU/Exam/reporters/getReporters'
 import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
-import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
+import { buildTestMatchFiles } from '@GTU/Utils/buildTestMatchFiles'
+import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
+import { taskEnvToBrowserOpts, getContextOpts } from '@gobletqa/browser'
 import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
-import { taskEnvToBrowserOpts } from '@gobletqa/browser'
-import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
-
+// Default to 20 seconds test timeout
+// Default to 1hr global suite timeout
+const defTimeouts = {testTimeout: 20000, suiteTimeout: 60000 * 60}
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
-const RunnerLoc = path.resolve(__dirname, './FeatureRunner.ts')
-const ReporterLoc = path.resolve(__dirname, './FeatureReporter.ts')
-const EnvironmentLoc = path.resolve(__dirname, './FeatureEnvironment.ts')
+const RunnerLoc = path.resolve(__dirname, './feature/Runner.ts')
+const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
 
-export type TExamConfOpts = TTestMatch & {
-  title?:string
-  rootDir?:string
-  testDir?:string
-  extensions?:string[]
-  reportOutputPath?:string
-  globals?:Record<any, any>
-}
 
-const ExamConfig = ():TExamConfig => {
+const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
 
-  const config = getGobletConfig()
+  const config = getGobletConfig(cfgArgs)
+  const world = getWorld(config)
+  const examConfig = (config?.testConfig || emptyObj) as Partial<TExamConfig>
 
   ENVS.GOBLET_TEST_DEBUG &&
     process.stdout.write(`\n[Goblet] Loaded Config:\n${JSON.stringify(config, null, 2)}\n`)
 
   const baseDir = getRepoGobletDir(config)
-  const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
-  const browserConf = browserOpts as TBrowserConf
+  const { devices, ...browserOpts } = taskEnvToBrowserOpts()
+  // Any options passed from the task should override options in the world config
+  const browserConf = {...world?.$browser, ...browserOpts} as TBrowserConf
+  const contextOpts = getContextOpts({ config, world })
 
-  const contextOpts = getContextOpts({ config })
-  const parkinRunOpts = getParkinOptions()
   const gobletOpts = buildTestGobletOpts(config, browserConf)
-
-  // @ts-ignore
-  const examConfig = config?.testConfig || emptyObj
-
-  const rootDir = examConfig?.rootDir
-    || config.paths.repoRoot
-    || ENVS.GOBLET_CONFIG_BASE
-    || ENVS.GOBLET_MOUNT_ROOT
-    || `/goblet`
-
-  const testMatch = examConfig.testMatch
-    || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
-    || emptyArr
+  const rootDir = examConfig?.rootDir || config.paths.repoRoot
 
   return {
-    envs: {
-      EXAM_ENV: 1,
-      // GB_REPO_NO_SECRETS: 1,
-      GOBLET_CONFIG_BASE: baseDir
-    },
-    timeout: 15000,
-    // testIgnore: [],
-    // reporter: {},
-    // loaderIgnore:[],
-    // globalTimeout: 0,
-    // transformIgnore: [],
+    // debug: true,
     // esbuild: {},
+    // verbose: true,
+    // testIgnore: [],
+    // loaderIgnore:[],
+    // transformIgnore: [],
+    // exitOnFail: false,
+    // skipAfterFailed: true,
     rootDir,
-    testMatch,
     bail: 5,
     workers: 1,
-    // debug: true,
-    // verbose: true,
+    testRetry: 1,
+    suiteRetry: 0,
     colors: false,
     concurrency: 1,
     runInBand: true,
+    reuseRunner: true,
     passWithNoTests: false,
     mode: EExTestMode.serial,
+    ...examConfig,
+    transforms: {...examConfig.transforms},
     aliases: {...aliases, ...examConfig?.aliases},
-    extensions: flatUnion([...ensureArr(examConfig?.extensions), `.feature`]),
+    ...getExamTimeouts({ examConfig, defs: defTimeouts }),
+    reporters: getReporters(examConfig, gobletOpts),
+    extensions: flatUnion([
+      ...ensureArr(examConfig?.extensions),
+      `.feature`
+    ]),
+    testMatch: examConfig.testMatch
+      || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
+      || emptyArr,
+    envs: {
+      // GB_REPO_NO_SECRETS: 1,
+      GOBLET_FULL_SCREEN_VIDEO: 1,
+      ...examConfig?.envs,
+      EXAM_ENV: 1,
+      GOBLET_CONFIG_BASE: baseDir,
+    },
     /** Pass on the browser options defined from the task that started the process */
     globals: {
-      __DEV__: true,
       ...examConfig?.globals,
       __goblet: {
         config,
+        repoDir: rootDir,
         options: gobletOpts,
-        browser: browserOpts,
-        paths: {...config.paths},
-        parkin: { run: parkinRunOpts },
-        context: { options: contextOpts },
+        browser: browserConf,
+        context: { options: contextOpts }
       },
-    },
-    reporters: [
-      ...ensureArr(examConfig.reporters),
-      [ReporterLoc, {}]
-    ].filter(Boolean) as any,
-    transforms: {
-      ...examConfig.transforms,
     },
     preEnvironment:flatUnion([
       ...ensureArr(examConfig.preEnvironment),
       ...getParkinTestInit(config),
     ]),
-    environment: [EnvironmentLoc, {}],
+    environment: [EnvironmentLoc, {
+      parkin: getParkinOptions()
+    }],
     /** Add all support and step files and ensure they are loaded before running the tests */
     postEnvironment: flatUnion([
       ...ensureArr(examConfig.postEnvironment),
@@ -137,11 +126,10 @@ const ExamConfig = ():TExamConfig => {
     runners: {
       ...examConfig.runners,
       [`.feature`]: [RunnerLoc, {
+        // TODO: these values should come from ENVS / config
         slowMo: 100,
         debug: false,
-        timeout:15000,
         verbose: true,
-        globalTimeout:60000,
         omitTestResults: [],
       }]
     },

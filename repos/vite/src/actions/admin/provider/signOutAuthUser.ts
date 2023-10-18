@@ -3,10 +3,12 @@ import { GitUser } from '@services/gitUser'
 // import { account } from '@services/appwrite'
 import { authApi } from '@services/authApi'
 import { emptyObj } from '@keg-hub/jsutils'
+
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
+import { clearTestRuns } from '@actions/testRuns/clearTestRuns'
 import { WSService } from '@services/socketService/socketService'
 import { clearContainerRoutes } from '@actions/container/local/clearContainerRoutes'
 
@@ -18,6 +20,7 @@ export type TSignOutOpts = {
   repo?:boolean
   session?:boolean
   container?:boolean
+  testRuns?:boolean
 }
 
 /**
@@ -51,6 +54,12 @@ export const signOutAuthUser = async (opts:TSignOutOpts=emptyObj) => {
   if(opts.container !== false){
     try { await clearContainerRoutes() }
     catch(err:any){ console.error(`Error clearing container routes.\n${err.message}`) }
+  }
+
+  // Remove the container routes from redux store
+  if(opts.testRuns !== false){
+    try { clearTestRuns() }
+    catch(err:any){ console.error(`Error clearing test runs.\n${err.message}`) }
   }
 
   // Disconnect from the web-socket server

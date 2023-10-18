@@ -1,64 +1,64 @@
 import type { TExamEvt, TExBuiltReporters } from "@GEX/types"
 
 import { Logger } from '@GEX/utils/logger'
-import { ExamEvtNames } from "@GEX/constants"
+import { TestsToSocketEvtMap } from "@GEX/constants"
 import { EvtTag, ExamTag } from '@GEX/constants/tags'
 
 const EvtReporterMap = {
 
   // Event `PLAY-SUITE-DONE`
-  // onTestResult
-  [ExamEvtNames.suiteDone]: `onTestResult`,
+  // onSuiteResult
+  [TestsToSocketEvtMap.suiteDone]: `onSuiteResult`,
 
   // Event `PLAY-SUITE-DONE` - Top level suite-0 only
   // onTestFileResult
-  [ExamEvtNames.rootSuiteDone]: `onTestFileResult`,
+  [TestsToSocketEvtMap.suiteDoneRoot]: `onTestFileResult`,
 
   // Event `PLAY-SPEC-DONE`
-  // onTestCaseResult
-  [ExamEvtNames.specDone]: `onTestCaseResult`,
+  // onTestResult
+  [TestsToSocketEvtMap.specDone]: `onTestResult`,
 
   //  Event `PLAY-SPEC-START`
-  // onTestCaseStart
-  [ExamEvtNames.specStart]: `onTestCaseStart`,
+  // onTestStart
+  [TestsToSocketEvtMap.specStart]: `onTestStart`,
 
   // Event `PLAY-SUITE-START`
-  // onTestStart
-  [ExamEvtNames.suiteStart]: `onTestStart`,
+  // onSuiteStart
+  [TestsToSocketEvtMap.suiteStart]: `onSuiteStart`,
 
   // Event `PLAY-SUITE-START-ROOT` - Top level suite-0 only
   // onTestFileStart
-  [ExamEvtNames.rootSuiteStart]: `onTestFileStart`,
+  [TestsToSocketEvtMap.suiteStartRoot]: `onTestFileStart`,
  
   // Event `PLAY-RESULTS` - Maybe switch this for `PLAY-ENDED` || `PLAY-STOPPED`
-  // onRunComplete
-  [ExamEvtNames.results]: `onRunComplete`,
+  // onRunResult
+  [TestsToSocketEvtMap.results]: `onRunResult`,
 
   // Event `PLAY-STARTED`,
   // onRunStart
-  [ExamEvtNames.started]: `onRunStart`,
+  [TestsToSocketEvtMap.started]: `onRunStart`,
 
   // Event `PLAY-CANCELED`
   // cancel
-  [ExamEvtNames.canceled]: `onCancel`,
+  [TestsToSocketEvtMap.canceled]: `onCancel`,
 
-  [ExamEvtNames.warning]: `onWarning`,
+  [TestsToSocketEvtMap.warning]: `onWarning`,
 
   // Event `PLAY-ERROR`
   // onError
-  [ExamEvtNames.error]: `PLAY-ERROR`,
+  [TestsToSocketEvtMap.error]: `PLAY-ERROR`,
 
 
 
   // TODO: figure out if these are needed
-  // [ExamEvtNames.ended]: `PLAY-ENDED`,
-  // [ExamEvtNames.action]: `PLAY-ACTION`,
-  // [ExamEvtNames.general]: `PLAY-GENERAL`,
-  // [ExamEvtNames.stopped]: `PLAY-STOPPED`,
+  // [TestsToSocketEvtMap.ended]: `PLAY-ENDED`,
+  // [TestsToSocketEvtMap.action]: `PLAY-ACTION`,
+  // [TestsToSocketEvtMap.general]: `PLAY-GENERAL`,
+  // [TestsToSocketEvtMap.stopped]: `PLAY-STOPPED`,
   
 }
 
-const EvtTags = Object.entries(ExamEvtNames)
+const EvtTags = Object.entries(TestsToSocketEvtMap)
   .reduce((acc, [key, val]) => {
     acc[val] = EvtTag(val)
     return acc
@@ -70,23 +70,12 @@ export class ReportEventMapper {
 
   constructor(){}
 
-  event = (evt:TExamEvt) => {
-
+  event = async (evt:TExamEvt) => {
     const method = EvtReporterMap[evt.name]
-
     if(!method)
       return Logger.verbose(`${ExamTag} Missing reporter method for event ${EvtTags[evt.name]}`)
 
-    this.reporters.map(reporter => reporter?.[method]?.(evt))
-
-    // console.log(`------- reporters -------`)
-    // console.log(this.reporters)
-    
-    // TODO: figure out the event type,
-    // Then use that to call the correct method on the recorders array
-    
-    // Also need to add `default` and `silent` lookups to the buildReports helper method
-    // Should load in the default and silent report classes, which I need to create
+    return await Promise.all(this.reporters.map(reporter => reporter?.[method]?.(evt)))
   }
   
   cleanup = async () => {

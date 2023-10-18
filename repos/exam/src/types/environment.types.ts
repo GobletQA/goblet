@@ -38,18 +38,17 @@ export type TEnvironmentCache = {
   envs: Record<string, string>
 }
 
-
-export type TExEnvironmentCfg = {
+export type TExEnvironmentCfg<T extends Record<string, any>=unknown> = (T & {
   globals?:TSerializeObj
   envs?:Record<string, TEnvironmentEnvVal>
-}
+})
 
 export interface IExamEnvironment<R extends ExamRunner<IExamEnvironment>=ExamRunner<any>> {
   globals?:TSerializeObj
   envs?:Record<string, TEnvironmentEnvVal>
   setup(runner:R, ctx:TExCtx):void|Promise<void>
   reset():void|Promise<void>
-  cleanup(args:any):void|Promise<void>
+  cleanup(...args:any[]):void|Promise<void>
 }
 
 export type IExEnvironment<

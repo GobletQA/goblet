@@ -9,9 +9,14 @@ import {TExFileModel} from './file.types'
 export type TExRunnerCfg = {
   bail?:number
   debug?: boolean
-  timeout?: number
   verbose?:boolean
-  globalTimeout?:number
+  testRetry?:number
+  suiteRetry?:number
+  reuseRunner?:boolean
+  testTimeout?: number
+  suiteTimeout?:number
+  exitOnFailed?:boolean
+  skipAfterFailed?:boolean
   omitTestResults?:string[]
 }
 
@@ -33,22 +38,34 @@ export type TTestExecutor<T extends TBaseExecutor=TBaseExecutor> = T
 
 export interface IExamRunner<E extends IExamEnvironment> {
   environment:E
-  failed:number
-  debug?: boolean
-  timeout?:number
+
+  debug?:boolean
   verbose?:boolean
-  globalTimeout?:number
+  reuseRunner:boolean
+
+  bail:number
+  testRetry:number
+  suiteRetry:number
+
+  testTimeout?:number
+  suiteTimeout?:number
+  exitOnFailed?:boolean
+  skipAfterFailed?:boolean
+
+  canceled?:boolean
+  isRunning?:boolean
 
   run(model:TExFileModel, state:TStateObj): Promise<TExEventData[]>
 
   cancel:() => void|Promise<void>
   cleanup:() => void|Promise<void>
 
-  onSpecStarted(result:TExEventData):void
-  onSpecDone(result:TExEventData):void
-
-  onSuiteStarted(result:TExEventData):void
-  onSuiteDone(result:TExEventData):void
+  onRunDone(result:TExEventData, ...args:any[]):void
+  onRunStart(result:TExEventData, ...args:any[]):void
+  onSpecDone(result:TExEventData, ...args:any[]):void
+  onSpecStart(result:TExEventData, ...args:any[]):void
+  onSuiteStart(result:TExEventData, ...args:any[]):void
+  onSuiteDone(result:TExEventData, ...args:any[]):void
 }
 
 
@@ -58,5 +75,5 @@ export type IExRunner<
 > = R & IExamRunner<E>
 export type TRunnerCls<
   E extends IExamEnvironment,
-  R extends IExamRunner<E>
+  R extends IExamRunner<E>=IExamRunner<E>
 > = IConstructable<IExRunner<E, R>>

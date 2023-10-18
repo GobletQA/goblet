@@ -1,7 +1,5 @@
-import type { Express } from 'express'
 
-// Exported from screencast/src/types
-import type { TRepo } from './workflows.types'
+import type { Repo, TGobletConfig } from './repo.types'
 import type { TFileModel } from './models.types'
 import type { Automate } from '@gobletqa/browser'
 import type { TSocketEvtCBProps } from './socket.types'
@@ -26,7 +24,7 @@ import type {
  */
 export type TWithGuid = {
   _guid?:string
-  __goblet?:TBrowserConf
+  __browserGoblet?:TBrowserConf
 }
 
 export type TLocatorOpts = {
@@ -42,7 +40,7 @@ export type TLocatorClickOpts = Parameters<Locator[`click`]>[`0`] & {
 
 export type TLocator = Locator & {
   // Click handler for ghost cursor, which is currently disabled
-  ghClick: (options:TLocatorClickOpts) => Promise<void>
+  // ghClick: (options:TLocatorClickOpts) => Promise<void>
 }
 
 export type TBrowser = Omit<Browser, `newContext`> & TWithGuid & {
@@ -54,7 +52,8 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
   pages: () => Array<TBrowserPage>
   newPage: () => Promise<TBrowserPage>
   __GobletAutomateInstance?: Automate
-  __goblet?: {
+  __contextGoblet?: {
+    tracer?:any
     cookie?:string
     tracing?:Boolean
     extraHTTPHeaders?:Record<string, string>
@@ -65,6 +64,9 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
 export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   locator:(selector: string, options?: TLocatorOpts) => TLocator
   __GobletAutomateInstance?: Automate
+  __pageGoblet?: {
+    video?:any
+  }
 }
 
 export type TScreenDims = ViewportSize
@@ -161,16 +163,17 @@ export type TBrowserAction = {
 }
 
 export type TSetBrowserDefaults = {
-  repo:TRepo
+  repo:Repo
   headers?:boolean
   url?:boolean|string
+  config:TGobletConfig
   browserConf:TBrowserConf
   pwComponents?:TPWComponents
 }
 
 export type TStartPlaying = {
-  id:string,
-  repo:TRepo,
+  id:string
+  repo:Repo
   action:TBrowserAction,
   onEvent:TActionCallback
   onCleanup:TActionCallback
@@ -180,8 +183,8 @@ export type TStartPlaying = {
 }
 
 export type TStartRecording = {
-  id:string,
-  repo?:TRepo,
+  id:string
+  repo?:Repo
   action:TBrowserAction,
   onCleanup?:TActionCallback
   browserConf: TBrowserConf

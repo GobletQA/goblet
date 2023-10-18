@@ -1,11 +1,13 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
+  Text,
   dims,
   colors,
   gutter,
   getColor,
-  IconButton
+  IconButton,
+  AdsClickIcon
 } from '@gobletqa/components'
 
 export const BrowserNav = styled('nav')(({ theme }) => `
@@ -161,4 +163,44 @@ export const BrowserShadowBottom = styled(Box)`
   &.recording {
     box-shadow: 0px -3px 0px ${colors.recordRed};
   }
+`
+
+export const BrowserCoverClick = styled(Box)`
+  display: flex;
+  top: ${dims.browser.nav.hpx};
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  
+  &.follow {
+    cursor: pointer;
+  }
+
+  &.playing {
+    cursor: wait;
+  }
+
+  &:hover {
+    .gb-browser-mouse-follow {
+      opacity: 1 !important;
+    }
+  }
+`
+
+export const BrowserMouseContainer = styled(Box)`
+  display: flex;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: ${colors.white};
+  background-color: ${colors.fadeDark70};
+`
+
+export const BrowserMouseIcon = styled(AdsClickIcon)`
+ font-size: 14px;
+`
+
+export const BrowserMouseText = styled(Text)`
+  font-size: 12px;
+  margin-left: ${gutter.margin.qpx};
 `

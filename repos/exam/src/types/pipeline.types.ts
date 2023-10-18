@@ -6,9 +6,9 @@ import type {
   TExamConfig,
   TExEventData,
   TExFileModel,
-  TTypeFromFileMap,
   IExamEnvironment,
   TExecPassThroughOpts,
+  TRunnerCls,
 } from '@GEX/types'
 
 export type TPipeStepFunc = (args:TPipelineArgs, manager:TStateManager, input:any) => any|Promise<any>
@@ -32,7 +32,7 @@ export type TStateObj = {
   ExamEnvironment:ExamEnvironment
   passthrough:TExecPassThroughOpts
   BaseEnvironment:IExamEnvironment<any>
-  RunnerClasses: TTypeFromFileMap<IExamRunner<any>>
+  RunnerClasses: Record<string, TRunnerCls<any>>
 }
 
 export type TPipelineArgs = TPipelineInit & {

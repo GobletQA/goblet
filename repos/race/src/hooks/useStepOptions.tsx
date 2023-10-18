@@ -1,6 +1,6 @@
 import type { TRaceStep } from '@GBR/types'
 import type { TStepDef } from '@ltipton/parkin'
-import type { TAutoOptVal } from '@gobletqa/components'
+import type { TAutoOpt } from '@gobletqa/components'
 
 import { useMemo, useRef } from 'react'
 import { NoStepActionSelected } from '@GBR/constants/values'
@@ -21,41 +21,19 @@ const emptyAction = {
 }
 
 export const useStepOptions = (props?:THStepOptions) => {
-  const {defs} = useStepDefs()
+  const { options:opts } = useStepDefs()
   const step = props?.step
   const definition = props?.def
-  const activeRef = useRef<TAutoOptVal>(emptyAction)
+  const activeRef = useRef<TAutoOpt>(emptyAction)
 
   const options = useMemo(() => {
-    const opts = Object.entries(defs).reduce((acc, [key, def], idx) => {
-      const {
-        info,
-        race,
-        name,
-        alias,
-        description,
-      } = def.meta
-
-      if(!race || !name) return acc
-
-      const option = {
-        alias,
-        id: key,
-        label: name,
-        type: def.type,
-        info: info || description,
-      }
-
-      if(definition?.uuid === def?.uuid) activeRef.current = option
-
-      acc.push(option)
-
-      return acc
-    }, [emptyAction] as TAutoOptVal[])
+    const found = opts.find(opt => definition?.uuid === opt?.uuid)
+    if(found) activeRef.current = found
+    else opts.push(activeRef.current)
 
     return opts
   }, [
-    defs,
+    opts,
     step?.step,
     emptyAction,
     step?.definition,

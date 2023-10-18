@@ -28,10 +28,12 @@ export const BarAction = (props:TBrowserAction) => {
       )}
       id={`gb-bar-action-container-${refText}`}
     >
-      <Component
-        {...rest}
-        sx={styles}
-      />
+      {Component && (
+        <Component
+          {...rest}
+          sx={styles}
+        />
+      ) || null}
     </ActionContainer>
   )
 }

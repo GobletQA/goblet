@@ -110,6 +110,9 @@ const elementSelectEvent = (options, e) => {
 
 
 const initElementHover = async () => {
+  if(initElementHover.init) return
+  initElementHover.init = true
+
   console.log(`[Goblet] - Start initElementHover`)
   
   let removeListener

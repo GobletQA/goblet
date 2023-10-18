@@ -1,4 +1,4 @@
-import type { IExReporter, TExReporterCfg, TReporterCls } from "./reporters.types"
+import type { IExReporter, TExReporterCfg } from "./reporters.types"
 import type {
   TExTypeOpts,
   TExArrOptsMap,

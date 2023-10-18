@@ -1,26 +1,32 @@
-import type { TTabAction, TTabItem } from '@gobletqa/components'
-import type {
-  TFeaturesRef,
-  TRaceFeature,
-  TOnFeatureCB,
-} from '@GBR/types'
+import type { TRaceFeatureAsts, TRaceFeature, TOpenedFeatures } from '@GBR/types'
+import type { TTabItem } from '@gobletqa/components'
 
 import { useMemo, useState } from 'react'
+import { eitherArr } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { setTabActive, featureToTab } from '@GBR/utils/features/featureTabs'
 
 export type THInitTabs = {
-  feature?:TRaceFeature
+  features?:TRaceFeatureAsts
+  openedFeatures?:TOpenedFeatures
 }
 
 export const useInitTabs = (props:THInitTabs) => {
   const {
-    feature
+    features,
+    openedFeatures
   } = props
   
   const initialTabs = useMemo(() => {
-    return feature?.uuid ? [featureToTab(feature, { active: true })] : []
+    if(!openedFeatures?.length || !features) return []
+
+    return openedFeatures.reduce((acc, loc, idx) => {
+      const feat = features[loc]
+      feat && acc.push(featureToTab(feat, { active: !idx }))
+
+      return acc
+    }, [] as TTabItem[])
   }, [])
 
   const [openedTabs, setOpenedTabs] = useState<TTabItem[]>(initialTabs)

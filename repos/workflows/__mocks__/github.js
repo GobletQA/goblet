@@ -11,6 +11,15 @@ export const repos = {
           ]
         },
         {
+          name: "end-2-end",
+          id: "https://github.com/GobletQA/end-2-end",
+          url: "https://github.com/GobletQA/end-2-end",
+          "branches": [
+            "main",
+            "goblet-lancetipton"
+          ]
+        },
+        {
           "url": 'https://github.com/GobletQA/use-verb',
           "name": 'use-verb',
           "branches": [

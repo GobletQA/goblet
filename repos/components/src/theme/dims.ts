@@ -9,7 +9,7 @@ const tHeaderH = 30
 
 const divider = 1
 const headerH = 40
-const editorTabs = 45
+const editorTabs = 40
 const sectionHeaderH = 40
 const raceEditorHeader = 45
 const raceSectionHeaderH = 40
@@ -114,8 +114,9 @@ export const dims = {
     }
   },
   trans: {
-    fastest: `50ms`, 
     avg: `300ms`,
+    fastest: `50ms`,
+    halfAvg: `150ms`,
     avgEase: `300ms ease`
   }
 }

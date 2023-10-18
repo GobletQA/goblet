@@ -41,8 +41,13 @@ export const FeatureGroupHeader = (props:TFeatureGroupHeader) => {
 
   return (
     <>
-      <DropdownHeaderText sx={textSx} >{text}</DropdownHeaderText>
-      <FeatureGroupHeaderActions>
+      <DropdownHeaderText
+        sx={textSx}
+        className='feature-group-drp-down-txt'
+      >
+        {text}
+      </DropdownHeaderText>
+      <FeatureGroupHeaderActions className='feature-group-header-actions'>
         <Tooltip
           {...toolTipProps}
           title={`Edit the group name`}

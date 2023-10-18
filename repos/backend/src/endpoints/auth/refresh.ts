@@ -1,8 +1,8 @@
 import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { resError } from '@gobletqa/shared/express/resError'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { resError } from '@gobletqa/shared/api/express/resError'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { validateRefreshToken } from '@GBE/utils/validateRefreshToken'
 import {authService} from '@GBE/services/firebase'
 
@@ -38,4 +38,4 @@ export const refresh = async (req:JWTRequest, res:Response) => {
 }
 
 
-AsyncRouter.post(`/auth/refresh`, refresh)
+AppRouter.post(`/auth/refresh`, refresh)

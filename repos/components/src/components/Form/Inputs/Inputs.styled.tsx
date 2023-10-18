@@ -1,5 +1,7 @@
-import { gutter } from '@GBC/theme'
 import Box from '@mui/material/Box'
+import { gutter, colors } from '@GBC/theme'
+import { getColor } from '@GBC/utils/theme'
+import { Text } from '@GBC/components/Text'
 import { styled } from '@mui/material/styles'
 import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
@@ -260,6 +262,19 @@ export const ToggleBtn = styled(ToggleButton)`
 `
 export const ToggleGrp = styled(ToggleButtonGroup)``
 
+export const ToggleHelperText = styled(Text)(({ theme }) => {
+  return `
+    font-weight: 400;
+    text-align: left;
+    margin-top: 3px;
+    line-height: 1.66;
+    font-size: 0.75rem;
+    font-family: Manrope,sans-serif;
+    margin-left: ${gutter.margin.qpx};
+    margin-right: ${gutter.margin.qpx};
+    color: ${getColor(colors.gray15, colors.gray03)};
+  `
+})
 
 
 // ----- Shared Input Label Component ---- //

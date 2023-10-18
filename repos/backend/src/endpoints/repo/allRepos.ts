@@ -2,9 +2,9 @@ import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoGraphRepos } from '@GBE/types'
 
-import { Repo } from '@gobletqa/workflows'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
+import { workflows } from '@gobletqa/workflows'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * **IMPORTANT** - Only repo endpoints that DO NOT interact with repo content are allowed in backend
@@ -16,9 +16,9 @@ export const allRepos = async (req:JWTRequest, res:Response) => {
   // Get the users repos from the git provider
   // Does not need to be from the container
   const { iat, exp, ...opts } = req.auth
-  const repos = await Repo.getUserRepos(opts as TRepoGraphRepos)
+  const repos = await workflows.getUserRepos(opts as TRepoGraphRepos)
 
   return apiRes(res, {repos}, 200)
 }
 
-AsyncRouter.get(`/repo/all`, allRepos)
+AppRouter.get(`/repo/all`, allRepos)

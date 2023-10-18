@@ -8,6 +8,7 @@ import { formatUser } from '@utils/admin/formatUser'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
+import {containerApi} from '@services/containerApi'
 
 /**
  * Called when a user is authorized to access Goblet-Admin

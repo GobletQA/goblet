@@ -1,5 +1,5 @@
 import type { TGobletConfig } from '../types'
-import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
+import type { TTestMatch } from '@GTU/Utils/buildTestMatchFiles'
 
 import os from "os"
 import path from 'path'
@@ -12,7 +12,7 @@ import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
-import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
+import { buildTestMatchFiles } from '@GTU/Utils/buildTestMatchFiles'
 
 
 export type TJestConfOpts = TTestMatch & {

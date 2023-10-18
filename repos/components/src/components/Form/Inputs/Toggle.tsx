@@ -1,13 +1,14 @@
-import type { CSSProperties, ComponentProps, MouseEvent } from 'react'
+import type { ReactNode, CSSProperties, ComponentProps, MouseEvent } from 'react'
 
 import { useMemo } from 'react'
-import { isStr } from '@keg-hub/jsutils'
+import { cls, isStr } from '@keg-hub/jsutils'
 import {
   ToggleGrp,
   ToggleBtn,
   ToggleWrap,
   ToggleLabel,
   ToggleContainer,
+  ToggleHelperText,
 } from './Inputs.styled'
 
 type TToggleOpt = {
@@ -22,6 +23,8 @@ export type TToggle = {
   label?:string
   exclusive?:boolean
   onChange?:TOnToggle
+  helperText?:ReactNode
+  helperTextClass?:string
   value?: string|TToggleOpt
   options:string[]|TToggleOpt[]
   sx?:CSSProperties
@@ -37,6 +40,8 @@ export const Toggle = (props:TToggle) => {
     value,
     labelSx,
     toggleSx,
+    helperText,
+    helperTextClass,
     toggleGrpSx,
     options,
     onChange,
@@ -90,6 +95,20 @@ export const Toggle = (props:TToggle) => {
           })}
         </ToggleGrp>
       </ToggleWrap>
+      
+      {helperText && (
+        <ToggleHelperText
+          className={cls(
+            helperTextClass,
+            `MuiFormHelperText-root`,
+            `MuiFormHelperText-sizeMedium`,
+            `MuiFormHelperText-contained`,
+          )}
+        >
+          {helperText}
+        </ToggleHelperText>
+      )}
+      
     </ToggleContainer>
   )
 }

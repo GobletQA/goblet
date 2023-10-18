@@ -12,3 +12,7 @@ export type TEnvFun<T extends TAnyFun> = (obj?:TEnvArg<T>) => any
 
 export type TEnvF = TEnvFun<typeof general>
 export type TGenEnv = TEnvArg<typeof general>
+
+export type TGobletExtEnvs = {
+  GB_LT_TOKEN_SECRET?: string
+}

@@ -63,6 +63,7 @@ const buildImg = async (args:TTaskActionArgs) => {
     ...labels,
     ...dockerFile,
     ...buildArgsArr,
+    // `--progress=plain`,
     `.`,
   ].filter((arg) => arg)
 

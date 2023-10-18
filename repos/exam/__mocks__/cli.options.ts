@@ -1,25 +1,30 @@
 
 export const cliOpts = {
   // --- Not Implemented
-  testRetry:0,
-  suiteRetry:0,
   silent: false,
   colors: true,
   // --- Not Implemented
 
 
   bail:0,
+  testRetry:0,
+  suiteRetry:0,
+  skipAfterFailed: true,
+  exitAfterFailed: false,
   cache: true,
   workers: 1,
   concurrency: 1,
   testMatch: [],
   testIgnore: [],
   runInBand: false,
+  reuseRunner:true,
   transformIgnore: [],
   loaderIgnore: [],
-  timeout: 15000,
   passWithNoTests: false,
-  globalTimeout: 1200000,
+  // 15 second test timeout
+  testTimeout: 15000,
+  // 1hr global test timeout
+  suiteTimeout: 60000 * 60,
   extensions: [
     `.js`,  `.jsx`,
     `.cjs`, `.mjs`,

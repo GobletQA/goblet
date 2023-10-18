@@ -1,7 +1,6 @@
 const { addEnv } = require('./addEnv')
-const { buildPWEnvs } = require('./buildPWEnvs')
 const { setNodePath } = require('./setNodePath')
-const { buildTestEnvs } = require('../test/buildTestEnvs')
+const { buildPWEnvs } = require('@gobletqa/test-utils/utils/buildPWEnvs')
 
 /**
  * Waypoint specific ENVs to add to the current process
@@ -14,8 +13,8 @@ const { buildTestEnvs } = require('../test/buildTestEnvs')
  * 
  * @returns {Object} - env object with the ENVs added
  */
-const buildWaypointEnvs = (browser, goblet, params, reportPath, type) => {
-  const env = buildPWEnvs({}, browser, params)
+const buildWaypointEnvs = (browser, goblet, params, type) => {
+  const env = buildPWEnvs({...params, browser}, {}, false)
 
   // TODO: Update to use the GOBLET_APP_URL
   // Normalize between GOBLET_APP_URL
@@ -24,9 +23,6 @@ const buildWaypointEnvs = (browser, goblet, params, reportPath, type) => {
   addEnv(env, 'GOBLET_CONFIG_BASE', params.base)
   addEnv(env, 'GOBLET_BROWSER_LAUNCH_TYPE', params.launchType)
   addEnv(env, 'APP_ROOT_PATH', params.base || goblet.paths.repoRoot)
-
-  // Set up html test reporting ENV for test
-  buildTestEnvs(browser, env, params.context, reportPath, type)
 
   // Set the NODE_PATH env, defaults setting it to /goblet/app/node_modules
   setNodePath(env, true)

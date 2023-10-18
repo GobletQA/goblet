@@ -52,5 +52,5 @@ export const findInFeature = (props:TFindFromId) => {
 
   const item = get(feature, loc)
 
-  return item.uuid === id && item
+  return item?.uuid === id && item
 }

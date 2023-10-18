@@ -1,5 +1,5 @@
+import type { TWorldConfig } from '@ltipton/parkin'
 import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
-import type playwright from 'playwright'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
@@ -10,45 +10,72 @@ import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { InternalPaths } from '@gobletqa/environment/constants'
 import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
-
 
 /**
  * Default browser options
  * @type {Object}
  */
-const options = {
-  host: {} as Partial<TBrowserConf>,
-  vnc: {
-    slowMo: 100,
-    headless: false,
-    ignoreDefaultArgs: [
-      `--enable-automation`
-    ],
-    args: [
-        // `--disable-extensions-except=${pathToExtension}`,
-        // `--load-extension=${pathToExtension}`,
+const getDefOpts = () => {
+  const opts =  {
+    host: {} as Partial<TBrowserConf>,
+    vnc: {
+      slowMo: 100,
+      headless: false,
+      ignoreDefaultArgs: [
+        `--enable-automation`
+      ],
+      args: [
+          // `--disable-extensions-except=${pathToExtension}`,
+          // `--load-extension=${pathToExtension}`,
 
-      `--disable-gpu`,
-      `--start-maximized`,
-      `--start-fullscreen`,
-      // Hides the top-bar header. Should validate this this is what we want
-      `--window-position=0,-74`,
-      // `--window-position=0,0`,
-      `--allow-insecure-localhost`,
-      `--unsafely-treat-insecure-origin-as-secure`,
+        `--disable-gpu`,
+        `--start-maximized`,
+        `--start-fullscreen`,
+        // Hides the top-bar header. Should validate this this is what we want
+        `--window-position=0,-75`,
+        `--allow-insecure-localhost`,
+        `--unsafely-treat-insecure-origin-as-secure`,
+        `--use-fake-ui-for-media-stream`,
+        `--use-fake-device-for-media-stream`,
+        `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
 
-      // TODO - Investigate this - may be needed in some context
-      // `--deny-permission-prompts`
-      // Investigate this - May allow keeping the browser alive in goblet UI app
-      // Don't want this when running in CI or other environments
-      // `--keep-alive-for-test`
-    ],
-  } as Partial<TBrowserConf>,
-  ci: {
-    args: [],
-    headless: true,
-  } as Partial<TBrowserConf>,
+
+        // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this
+        // `--kiosk`, // -- Use to disable right click
+
+        // TODO - Investigate this - may be needed in some context
+        // `--deny-permission-prompts`
+
+
+        // --disable-web-security
+        // Don't enforce the same-origin policy; meant for website testing only. This switch has no effect unless --user-data-dir (as defined by the content embedder) is also present.
+        // --process-per-site
+        // --site-per-process
+
+        // To allow trace reporting to work
+        // Look into always adding <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+        // Or try using new Browser({ bypassCSP: true }) option in playwright
+
+      ],
+    } as Partial<TBrowserConf>,
+    ci: {
+      args: [],
+      headless: true,
+    } as Partial<TBrowserConf>,
+  }
+
+  // TODO: eventually this will be overwritten by the mounted repo 
+  // If we have a path to the testUtils dir
+  // Then add the fake webcam data
+  if(InternalPaths?.testUtilsDir){
+    const webcamLoc = path.join(InternalPaths.testUtilsDir, `media/webcam.y4m`)
+    opts.vnc.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
+  }
+
+
+  return opts
 }
 
 
@@ -65,24 +92,13 @@ const fromBaseDir = (config:TGobletConfig) => {
 
 const getConfigOpts = (config:TGobletConfig) => {
   const {
-    tracesDir = `artifacts/traces`,
+    tracesDir = `artifacts/reports`,
     downloadsDir = `artifacts/downloads`,
   } = config.paths
 
   const baseDir = fromBaseDir(config)
 
   return {
-
-    // TODO: FIX THIS - should not set the context config from screencast config
-    ...config?.screencast?.screencast?.browser,
-    // TODO: FIX THIS - should not set the context config from screencast config
-
-    // TODO: look at add $world.browser
-
-    /**
-     * The config options from the repos goblet config
-     */
-    ...config?.playwright?.context,
     ...(baseDir && {
       tracesDir: path.join(baseDir, tracesDir),
       downloadsPath: path.join(baseDir, downloadsDir),
@@ -96,6 +112,7 @@ const getConfigOpts = (config:TGobletConfig) => {
 export const getBrowserOpts = (
   browserConf:TBrowserConf=emptyObj as TBrowserConf,
   config?:TGobletConfig,
+  world?:TWorldConfig
 ) => {
   const {
     ws,
@@ -114,6 +131,8 @@ export const getBrowserOpts = (
     ...argumentOpts
   } = browserConf
 
+  const options = getDefOpts()
+
   const { args: configModeArgs, ...configModeOpts } = vncActive()
     ? options.vnc
     : options.host
@@ -122,7 +141,6 @@ export const getBrowserOpts = (
     args:ciArgs,
     ...ciConfigModeOpts
   } = (process.env.GOBLET_RUN_FROM_CI ? options.ci : {}) as Partial<TBrowserConf>
-
 
   return deepMerge<TBrowserLaunchOpts>(
     /**
@@ -144,6 +162,13 @@ export const getBrowserOpts = (
       ...(exists(channel) && { channel }),
       colorScheme: colorScheme || `no-preference`,
     },
+
+    /**
+     * Custom config options defined in the repos world object
+     * Should not override passed in options, or task env options
+     */
+    world?.$browser,
+
     /**
      * Options passed to this function as the first argument
      * Should override all except for options set by a task via ENVs
@@ -155,8 +180,8 @@ export const getBrowserOpts = (
      * This ensures those options gets set
      * Also, excludes the devices list from the returned Object
      */
-     config ? omitKeys(taskEnvToBrowserOpts(config), ['devices']) : emptyObj,
-     
+     config ? omitKeys(taskEnvToBrowserOpts(), ['devices']) : emptyObj,
+
     {
       /**
        * By default envs from process.env are passed to the browser

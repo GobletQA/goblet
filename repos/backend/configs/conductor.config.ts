@@ -12,8 +12,8 @@ import { toBool } from '@keg-hub/jsutils/toBool'
 import { exists } from '@keg-hub/jsutils/exists'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
-import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
+import { getKindHost } from '@gobletqa/conductor/utils/getKindHost'
+import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
 
 const {
   NODE_ENV=`local`,
@@ -37,6 +37,7 @@ const {
 
   GB_SC_PORT,
   GB_SC_IMAGE,
+  GB_SC_ACTIVE,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
   GB_NO_VNC_PORT,
@@ -91,36 +92,47 @@ const controllerHost = isDockerHost
   : getKindHost()
 
 
+// Enable this to use a locally running screencast container
+// Can be used when testing a new screencast docker image build
+const screencastManual = false
+const screencastHost = screencastManual ? `host.docker.internal` : GB_SC_DEPLOYMENT
+
 // TODO: look into passing the GB_*_ACTIVE envs to the pods on deployment
 // That and update GB_LOCAL_DEV_MODE env to be set via a argument when starting
 // When running without auto-starting the screencast pod
-const devRouter = NODE_ENV === `local`
-  && toBool(GB_LOCAL_DEV_MODE)
-  && exists(GOBLET_SCREENCAST_SERVICE_HOST)
-  && exists(GOBLET_SCREENCAST_PORT)
+const devRouter = screencastManual
+  || (
+      NODE_ENV === `local`
+        && toBool(GB_LOCAL_DEV_MODE)
+        && exists(GOBLET_SCREENCAST_SERVICE_HOST)
+        && exists(GOBLET_SCREENCAST_PORT)
+    )
     ? {
         meta: {
           state: `Running`,
           id: GB_SC_DEPLOYMENT,
-          host: GB_SC_DEPLOYMENT,
+          host: screencastHost,
           name: GB_SC_DEPLOYMENT,
         },
         routes: {
           [GB_SC_PORT]: {
             port: GB_SC_PORT,
-            host: GB_SC_DEPLOYMENT,
+            host: screencastHost,
             containerPort: GB_SC_PORT,
             protocol: 'http:' as TProtocol,
           },
           [GB_NO_VNC_PORT]: {
             port: GB_NO_VNC_PORT,
-            host: GB_SC_DEPLOYMENT,
+            host: screencastHost,
             containerPort: GB_NO_VNC_PORT,
             protocol: 'http:' as TProtocol,
           }
         }
       }
     : {}
+
+
+
 
 /**
 * Loads the envs and filters out all except for the those the match the whiteList prefix

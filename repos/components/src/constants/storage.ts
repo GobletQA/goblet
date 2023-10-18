@@ -7,4 +7,5 @@ export const StorageKeys = deepFreeze({
   SETTINGS: `goblet-settings`,
   THEME_TYPE: `goblet-theme-type`,
   ROUTE_HEADERS: `goblet-route-headers`,
+  LAST_OPENED_FILES: `goblet-last-opened-files`,
 })

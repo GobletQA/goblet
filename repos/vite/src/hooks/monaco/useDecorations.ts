@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react'
-import type { TEditorRefHandle, TDecoration } from '@gobletqa/monaco'
+import type { TEditorRefHandle, TDecoration, TDecorationMeta } from '@gobletqa/monaco'
 import type {
   TRepoState,
   TPlayerResEvent,
@@ -62,7 +62,8 @@ export const useDecorations = ({
 
   useOnEvent<TPlayerResEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
     const { location } = event
-    
+    if(!location) return
+
     const relative = rmRootFromLoc(location, rootPrefix)
     const decoration = editorRef?.current?.decoration
     relative && decoration?.clear(relative)
@@ -76,8 +77,9 @@ export const useDecorations = ({
 
   useOnEvent<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
     const id = event?.data?.id
+    const location = event?.location
     const decoration = editorRef?.current?.decoration
-    if(!decoration || !id) return
+    if(!decoration || !id || !location) return
 
     updateRefs({
       event,
@@ -87,8 +89,8 @@ export const useDecorations = ({
     })
 
     const dec = buildDecoration<TDecoration>({ event: event.data, editor: EEditorType.code })
-    const relative = rmRootFromLoc(event.location, rootPrefix)
-    const meta = { action: event.data.action }
+    const relative = rmRootFromLoc(location, rootPrefix)
+    const meta = { action: event?.data?.action }
     const decos = checkFailedSpec<TDecoration>({
       event,
       featureRef,
@@ -97,8 +99,8 @@ export const useDecorations = ({
     })
 
     decos.length
-      ? decoration?.update(relative, decos.concat([dec]), meta)
-      : decoration?.add(relative, dec, meta)
+      ? decoration?.update(relative, decos.concat([dec]), meta as TDecorationMeta)
+      : decoration?.add(relative, dec, meta as TDecorationMeta)
   })
 
 }

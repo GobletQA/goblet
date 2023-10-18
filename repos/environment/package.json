@@ -26,7 +26,6 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "format": "pnpm lint && pnpm pretty",
-    "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
@@ -35,9 +34,8 @@
     "validate": "tsc --noEmit"
   },
   "devDependencies": {
-    "@keg-hub/jsutils": ">=9.8.0",
-    "esbuild": "0.19.2",
-    "esbuild-register": "3.4.2"
+    "@keg-hub/jsutils": "9.8.3",
+    "esbuild": "0.19.3",
+    "esbuild-register": "3.5.0"
   }
 }
-

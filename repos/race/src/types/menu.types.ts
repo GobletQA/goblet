@@ -46,6 +46,7 @@ export type TRaceMenuItem = {
   type:EAstObject
   text?:ReactNode
   label?:ReactNode
+  filter?:string[]
   closeMenu?:boolean
   tooltip?:ReactNode
   children?:ReactNode

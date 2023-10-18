@@ -7,6 +7,7 @@ import {
   onArtifacts,
   onEnvironments,
 } from '@actions/nav'
+
 import {
   setEditor
 } from '@actions/app'
@@ -18,10 +19,10 @@ import {
   SettingsIcon,
   CloudOffIcon,
   FunctionsIcon,
-  InsertChartIcon,
   LabelImportantIcon,
-  SettingsEthernetIcon,
+  FolderPlayOutlineIcon,
 } from '@gobletqa/components'
+import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 
 export const SubNavId = `gb-nav-subnav-for-portal`
 
@@ -46,11 +47,11 @@ export const HeaderNav = [
 
 export const EditorNavItems = {
   [EEditorType.visual]: {
-    title: `Visual Editor`,
+    title: `No-Code Editor`,
     action: setEditor,
     Icon: DesignIcon,
     name: ESideNav.editor,
-    tooltip: `Switch to Code Editor`,
+    tooltip: `Switch to Low-Code Editor`,
   },
   [EEditorType.code]: {
     title: `Code Editor`,
@@ -58,7 +59,7 @@ export const EditorNavItems = {
     action: setEditor,
     Icon: DesignIcon,
     name: ESideNav.editor,
-    tooltip: `Switch to Visual Editor`,
+    tooltip: `Switch to No-Code Editor`,
   },
 }
 
@@ -92,6 +93,11 @@ export const SideNav = deepFreeze({
         position: `absolute`,
       },
       items: [
+        {
+          title: `Run Test Suite`,
+          Icon: FolderPlayOutlineIcon,
+          action: () => toggleTestRunsView(),
+        },
         EditorNavItems[EEditorType.code],
         EditorNavItems[EEditorType.visual],
         {

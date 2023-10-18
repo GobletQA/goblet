@@ -31,7 +31,7 @@ export const userActions = {
 }
 
 export const userReducer = createReducer(
-  userState,
+  deepMerge(userState),
   (builder:ActionReducerMapBuilder<TUserState>) => {
     builder.addCase(clearUser, userActions.clearUser)
     builder.addCase(upsertUser, userActions.upsertUser)

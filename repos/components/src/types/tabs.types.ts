@@ -29,12 +29,14 @@ export type TTabItem = TTabActions & {
   tab:TTab
   active?:boolean
   styles?:TTabStyles
+  scrollToClick?:boolean
   Icon?:ComponentType<any>
 }
 
 export type TOpenedTabs = TTabActions & {
   openedTabs?: TTabItem[]
   activeTab?:string|number
+  scrollToClick?:boolean
   Tab?:ComponentType<typeof Tab>
   [key:string]:any
 }

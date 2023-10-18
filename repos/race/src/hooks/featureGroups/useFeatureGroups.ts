@@ -61,7 +61,6 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
     setFeatureGroups
   ])
 
-
   return {
     featureGroups,
     setTabsAndGroups,

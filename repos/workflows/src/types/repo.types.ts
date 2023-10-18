@@ -1,11 +1,6 @@
 
-import type { Repo } from '@GWF/repo'
 import type { Graph } from '../constants'
 
-export type {
-  Repo,
-  Repo as TRepo
-}
 
 // ----- Graph API ----- //
 
@@ -24,6 +19,7 @@ export type TGraphApiEndpoint = {
 export type TGetData = <T>(data:any) => TGraphApiResp<T>
 
 export type TGraphApiVars = TRepoGraphRepos & {
+  cacheKey?:string
   getData?:TGetData
   endpoint: TGraphApiEndpoint
 }
@@ -88,9 +84,12 @@ export type TRepoGraphRepos = {
   first?: number
   after?: string
   offset?:number
+  userId?:string
+  force?:boolean
   username?:string
   fullPath?:string
   provider?:string
+  subdomain?:string
   searchPattern?:string
   sortDirection?: string
   affiliations?: string[]

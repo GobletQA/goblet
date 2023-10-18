@@ -35,7 +35,6 @@ const repoPaths = getDirectories(reposDir, { REPOS_PATH: reposDir })
 const {
   GOBLET_WORK_DIR = `goblet`,
   GOBLET_ARTIFACTS_DIR = `artifacts`,
-  // TODO: figure out how this are overwritten by repo config ??? 
   GOBLET_ENVIRONMENTS_DIR = `environments`,
   GOBLET_REPORTS_DIR = `artifacts/reports`,
   GOBLET_FEATURES_DIR = `bdd/features`,

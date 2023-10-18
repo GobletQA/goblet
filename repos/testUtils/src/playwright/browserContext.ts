@@ -9,7 +9,6 @@ import type {
 
 import os from 'os'
 import path from 'path'
-import { startTracing } from './tracing'
 import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
@@ -45,7 +44,6 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
         extraHTTPHeaders: {
           ...gCtx?.extraHTTPHeaders,
           ...parkin?.world?.$context?.extraHTTPHeaders,
-          ...parkin?.world?.$headers
         }
       }
     }
@@ -57,6 +55,9 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
   if(!context)
     throw new Error(`Failed to create ${GOBLET_BROWSER} browser context`)
 
+  context.on(`close`, () => global.context = undefined)
+  browser.on(`disconnected`, () => global.browser = undefined)
+
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext
 
@@ -64,33 +65,6 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
 
 }
 
-/**
- * Sets up the global context for the test environment
- *
- * @returns {Object} - Playwright Context object
- */
-export const setupContext = async () => {
-  // const context = await getContext()
-  // const page = await getPage()
-  // const parkin = global.getParkinInstance()
-
-  await startTracing(global.context)
-
-  
-  
-  // import { setBrowserDefaults } from '@gobletqa/repo'
-  // setBrowserDefaults({
-  //   config: { world: parkin.world },
-  //   browserConf: global.browser.__goblet,
-  //   pwComponents: {
-  //     page,
-  //     context,
-  //     browser: global.browser
-  //   }
-  // })
-
-  return global.context as TBrowserContext
-}
 
 /**
  * Gets the storage location from the temp-directory
@@ -116,7 +90,7 @@ export const saveContextState = async (
  * Gets the browser context instance, or else creates a new one
  *
  */
-export const getContext = async () => {
+export const getContext = () => {
   if(!global.context)
     throw new Error(`Failed to find browser context. Did it one get created?`)
 
@@ -129,43 +103,65 @@ export const getContext = async () => {
  *
  * @return {Object} - Playwright browser page object
  */
-export const getPage = async (num = 0) => {
-  const context = await getContext()
+export const getPage = async (num = 0, fromClosePage:boolean=false) => {
+  const context = getContext()
 
   const pages = context.pages() || []
-  const page = pages.length ? pages[num] : await context.newPage()
+  const page = pages.length
+    ? pages[num]
+    : fromClosePage
+      ? undefined
+      : await context.newPage()
+
+  global.page = page
   LAST_ACTIVE_PAGE = page
-  // LAST_ACTIVE_PAGE = ghostMouse(page)
+  page.on(`close`, () => {
+    if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
+    if(page === global.page) global.page = undefined
+  })
+  page.on(`crash`, (data) => {
+    console.error(`ERROR - Browser page crashed`)
+    console.log(data)
+  })
 
   return LAST_ACTIVE_PAGE as TBrowserPage
 }
 
 export const getLastActivePage = () => LAST_ACTIVE_PAGE as TBrowserPage
-export const setLastActivePage = (page:TBrowserPage) => {
-  LAST_ACTIVE_PAGE = page
+global.getLastActivePage = getLastActivePage
+
+export const setLastActivePage = (page:TBrowserPage) => (LAST_ACTIVE_PAGE = page)
+global.setLastActivePage = setLastActivePage
+
+export const closePages = async () => {
+  const context = getContext()
+  const pages = context.pages() || []
+  return await Promise.all(pages.map(async (page) => await page.close()))
 }
 
-export const closePage = async (page:TBrowserPage) => {
-  const pg = page || await getPage()
-  
-  if (!pg) return console.warn(`Could not close browser page, because it does not exist.`)
+export const closePage = async (pg?:TBrowserPage, retry:number=1) => {
+  const page = pg
+    || LAST_ACTIVE_PAGE
+    || global.page
+    || await getPage(0, true)
 
-  await pg.close()
-  LAST_ACTIVE_PAGE = undefined
+  if(!page) return
 
+  page && await page.close()
+
+  if(page === global.page) global.page = undefined
+  if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
 }
 
 export const closeContext = async () => {
   const context = await getContext()
-
-  await context.close()
-  global.context = undefined
+  await context?.close()
 }
 
 export const closeBrowser = async () => {
   if (!global.browser)
     return console.warn(`Could not close browser, because it does not exist.`)
 
+  await closeContext()
   await global.browser.close()
-  global.browser = undefined
 }

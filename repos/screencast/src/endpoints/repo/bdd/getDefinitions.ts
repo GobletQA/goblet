@@ -1,17 +1,17 @@
-import type { Response, Request, RequestHandler } from 'express'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
-import { fileModelArrayToObj } from '@gobletqa/shared/utils/fileModelArrayToObj'
+import type { Response, Request } from 'express'
 
-export const getDefinitions:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
+import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj'
+
+export const getDefinitions= async (req:Request, res:Response) => {
   const definitions = await loadDefinitions(
     res.locals.repo,
     req.app.locals.config
   )
 
   return apiRes(res, { definitions: fileModelArrayToObj(definitions) }, 200)
-})
+}
 
-AppRouter.get('/repo/:repo/definitions', getDefinitions)
+AppRouter.get(`/repo/:repo/definitions`, getDefinitions)

@@ -1,32 +1,31 @@
 import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
+import { initStatus } from '@actions/init'
+import {setStatus} from '@actions/app/setStatus'
 import { EAppStatus, EModalTypes } from '@types'
+import {toggleModal} from '@actions/modals/toggleModal'
 import { ClockIcon, gutter } from '@gobletqa/components'
 import { signOutManually } from '@actions/admin/user/signOutManually'
 import {
-  IdleText,
-  IdleText2,
-  IdleTitle,
-  IdleContainer
-} from './IdleModal.styled'
-import { initStatus } from '@actions/init'
-import {setStatus} from '@actions/app/setStatus'
-import {toggleModal} from '@actions/modals/toggleModal'
-
+  ModalTitle,
+  ModalSubText,
+  ModalSubText2,
+  ModalContainer
+} from './Modal.styled'
 
 export const IdleModal:TModalRef = (props:TModalComponent) => {
   return (
-    <IdleContainer>
-      <IdleTitle>
+    <ModalContainer>
+      <ModalTitle>
         Your session is about to expire.
-      </IdleTitle>
-      <IdleText>
+      </ModalTitle>
+      <ModalSubText>
         All unsaved work will be permanently lost, without the possibility of recovery.
-      </IdleText>
-      <IdleText2>
+      </ModalSubText>
+      <ModalSubText2>
         Would you like to continue?
-      </IdleText2>
-    </IdleContainer>
+      </ModalSubText2>
+    </ModalContainer>
   )
 }
 

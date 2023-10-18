@@ -23,7 +23,7 @@ export const containerActions = {
 }
 
 export const containerReducer = createReducer(
-  containerState,
+  deepMerge(containerState),
   (builder:ActionReducerMapBuilder<TContainerState>) => {
     builder.addCase(clearContainer, containerActions.clearContainer)
     builder.addCase(setContainer, containerActions.setContainer)

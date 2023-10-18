@@ -4,7 +4,7 @@ import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { recordBrowser } from '@gobletqa/browser'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 /**
  * Stats a the browser recorder from a socket.io event

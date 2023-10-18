@@ -17,7 +17,7 @@ export class ExamReporter implements IExamReporter {
   }
 
   // Event `PLAY-SUITE-DONE`
-  onTestResult = (
+  onSuiteResult = (
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
@@ -39,7 +39,7 @@ export class ExamReporter implements IExamReporter {
    * Not called for `skipped` and `todo` specs
    */
   //  Event `PLAY-SPEC-START`
-  onTestCaseStart = (
+  onTestStart = (
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => {
@@ -47,7 +47,7 @@ export class ExamReporter implements IExamReporter {
   }
 
   // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = (
+  onTestResult = (
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => {
@@ -63,7 +63,7 @@ export class ExamReporter implements IExamReporter {
   }
 
   // Event `PLAY-SUITE-START`
-  onTestStart = (
+  onSuiteStart = (
     // test: Test
   ) => {
     
@@ -78,7 +78,7 @@ export class ExamReporter implements IExamReporter {
   }
 
   // Event `PLAY-RESULTS`
-  onRunComplete = (
+  onRunResult = (
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => {

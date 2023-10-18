@@ -1,41 +1,52 @@
 import type { SpawnOptionsWithoutStdio } from 'child_process'
-import type {
-  ETestType,
-  TEnvObject,
-  TTaskParams,
-  TGobletConfig,
-  TGetBrowsers,
-} from '../../types'
+import type { TTaskParams } from '../../types'
 
-
+import fs from 'fs'
 import path from 'path'
 import { EBrowserType } from '../../types'
-import { runCmd } from '@keg-hub/cli-utils'
-import { noPropArr, toBool } from '@keg-hub/jsutils'
+import { noOp } from '@keg-hub/jsutils/noOp'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { Logger, runCmd } from '@keg-hub/cli-utils'
 import { runCommands } from '@GTasks/utils/helpers/runCommands'
 import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
-import { shouldSaveArtifact, ArtifactSaveOpts } from '@gobletqa/browser'
-import { buildReportPath } from '@gobletqa/test-utils/reports/buildReportPath'
-import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
-import { appendToLatest, commitTestMeta } from '@gobletqa/test-utils/testMeta/testMeta'
-import { copyArtifactToRepo } from '@gobletqa/test-utils/playwright/generatedArtifacts'
+import { InternalPaths } from '@gobletqa/environment/constants'
+
+/**
+ * Clears out the temp folder that contains test artifacts
+ */
+export const clearTestMetaDirs = () => {
+  Logger.log(`Clearing temp folder...`)
+  const tempDir = path.join(InternalPaths.gobletRoot, `temp`)
+
+  Object.entries(InternalPaths)
+    .map(([name, loc]:[string, string]) => {
+      if(!loc) return
+
+      try {
+        if(name === `testMetaFile`) return fs.unlinkSync(loc)
+
+        name.endsWith(`TempDir`) &&
+          loc.startsWith(tempDir) &&
+          fs.rm(loc, { recursive: true }, noOp)
+      }
+      catch(err){
+        Logger.log(`Error cleaning temp dir, skipping!`)
+        Logger.log(err.message)
+      }
+
+    })
+}
+
 
 export type TRunTestCmd = {
-  type: ETestType
   cmdArgs: string[]
   params:TTaskParams
-  goblet: TGobletConfig
-  envsHelper: (browser:EBrowserType, reportPath:string) => { env: TEnvObject }
+  envsHelper: (browser:EBrowserType) => Partial<SpawnOptionsWithoutStdio>
 }
 
 export type TBrowserCmd = {
-  type:ETestType
   cmdArgs:string[]
-  reportPath:string
-  params:TTaskParams
-  browser:EBrowserType
-  goblet: TGobletConfig
-  cmdOpts: { env: TEnvObject }
+  cmdOpts: Partial<SpawnOptionsWithoutStdio>
 }
 
 export type TResp = Record<`exitCode`, any>
@@ -55,17 +66,12 @@ export type TResp = Record<`exitCode`, any>
  */
 const buildBrowserCmd = (args:TBrowserCmd) => {
   const {
-    type,
-    params,
-    goblet,
     cmdOpts,
     cmdArgs,
-    browser,
-    reportPath
   } = args
   
   return async () => {
-    const resp = await new Promise<TResp>(async (res) => {
+    return await new Promise<TResp>(async (res) => {
       const cmd = cmdArgs.shift()
       const exitCode = await runCmd(
         cmd,
@@ -73,38 +79,8 @@ const buildBrowserCmd = (args:TBrowserCmd) => {
         cmdOpts as SpawnOptionsWithoutStdio
       )
 
-      res({ exitCode })
+      res(exitCode)
     })
-
-    const testStatus = resp.exitCode
-      ? ArtifactSaveOpts.failed
-      : ArtifactSaveOpts.passed
-
-    await appendToLatest(`${type}.browsers.${browser}`, {
-      name: browser,
-      status: testStatus,
-      exitCode: resp.exitCode,
-    })
-
-    // Only copy the reports if testReport option is set, otherwise just return
-    const saveArtifact = shouldSaveArtifact(params.testReport, testStatus)
-    if(!saveArtifact) return resp.exitCode
-
-    // Copy the report after the tests have run, because it doesn't get created until the very end
-    await copyArtifactToRepo(
-      reportPath,
-      undefined,
-      path.join(goblet.internalPaths.reportsTempDir, `${browser}-html-report.html`)
-    )
-
-    // Update the testMeta with the path to the report file for the specific browser
-    await appendToLatest(`${type}.reports.${browser}`, {
-      browser: browser,
-      path: reportPath,
-      name: reportPath.split(`/`).pop(),
-    })
-
-    return resp.exitCode
   }
 }
 
@@ -119,8 +95,6 @@ const buildBrowserCmd = (args:TBrowserCmd) => {
  */
 export const runTestCmd = async (args:TRunTestCmd) => {
   const {
-    type,
-    goblet,
     params,
     cmdArgs,
     envsHelper,
@@ -131,40 +105,21 @@ export const runTestCmd = async (args:TRunTestCmd) => {
   // For now only do it when developing locally
   toBool(process.env.LOCAL_DEV) && clearTestMetaDirs()
 
-  let reportPaths = []
-  
   // - TODO: --- FIX THIS -- For now just default to using chromium
   // const { getBrowsers } = require('@gobletqa/browser')
   // const browsers = getBrowsers(params as unknown as TGetBrowsers)
-
   const browsers = [EBrowserType.chromium]
 
   const commands = browsers.map((browser) => {
-      const reportPath = buildReportPath(
-        type,
-        params as Record<any, any>,
-        goblet,
-        browser
-      )
-      reportPaths.push(reportPath)
-
-      return buildBrowserCmd({
-        type,
-        goblet,
-        params,
-        browser,
-        reportPath,
-        cmdArgs: [...cmdArgs],
-        cmdOpts: envsHelper(browser, reportPath),
-      })
-    }
-  )
+    return buildBrowserCmd({
+      cmdArgs: [...cmdArgs],
+      cmdOpts: envsHelper(browser),
+    })
+  })
 
   // Run each of the test command and capture the exit-codes
   const codes = await runCommands(commands, params)
 
-  await commitTestMeta()
-
   // Calculate the exit codes so we know if all runs were successful
-  return handleTestExit(codes, params.testReport ? reportPaths : noPropArr)
+  return handleTestExit(codes, [])
 }

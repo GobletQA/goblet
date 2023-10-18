@@ -70,7 +70,7 @@ export const DirectoryItem = ({
           <PencilIcon
             onClick={onEdit}
             styles={styles.altIcon}
-            className='goblet-editor-file-item-icon'
+            className='gb-editor-file-item-icon'
           />
         </Tooltip>
         <Tooltip
@@ -80,7 +80,7 @@ export const DirectoryItem = ({
           <TrashIcon
             onClick={onDelete}
             styles={styles.altIcon}
-            className='goblet-editor-file-item-icon'
+            className='gb-editor-file-item-icon'
           />
         </Tooltip>
         <Tooltip
@@ -90,7 +90,7 @@ export const DirectoryItem = ({
           <NewFileIcon
             onClick={onAddFile}
             styles={styles.altIcon}
-            className='goblet-editor-file-item-icon'
+            className='gb-editor-file-item-icon'
           />
         </Tooltip>
         <Tooltip
@@ -100,7 +100,7 @@ export const DirectoryItem = ({
           <NewFolderIcon
             onClick={onAddFolder}
             styles={styles.altIconLast}
-            className='goblet-editor-file-item-icon'
+            className='gb-editor-file-item-icon'
           />
         </Tooltip>
       </TreeItemActionsContainer>

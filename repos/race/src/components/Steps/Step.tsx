@@ -144,6 +144,7 @@ export const Step = (props:TStep) => {
               step={step}
               parent={parent}
               onChange={onStepChange}
+              expressions={expressions}
             />
             {hasDef && (
               <Expressions

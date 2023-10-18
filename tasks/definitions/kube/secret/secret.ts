@@ -3,6 +3,7 @@ import type { TTask, TTaskActionArgs, TTaskParams } from '../../../types'
 import path from 'path'
 import { auth } from './auth'
 import { fbsa } from './fbsa'
+import { goblet } from './goblet'
 import { provider } from './provider'
 import { uuid } from '@keg-hub/jsutils'
 import { tempDir } from '../../../paths'
@@ -199,6 +200,7 @@ export const secret:TTask = {
   tasks: {
     fbsa,
     auth,
+    goblet,
     provider,
   },
   example: `pnpm kube secret <options>`,

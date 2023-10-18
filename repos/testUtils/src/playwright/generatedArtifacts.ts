@@ -1,10 +1,15 @@
-import type { TJasmine } from '@ltipton/parkin'
+import type { EBrowserName, ETestType } from '@GTU/Types'
 
 import fs from 'fs'
 import path from 'path'
+import { get } from '@keg-hub/jsutils/get'
 import { mkDir, removeFile } from '@GTU/Utils/fileSys'
 
-import { get } from '@keg-hub/jsutils/get'
+export type TGetGenName = {
+  location:string,
+  timestamp?:string|number
+  browserName?:EBrowserName
+}
 
 const nameCache = {}
 
@@ -24,35 +29,35 @@ const formatName = (location:string) => {
 }
 
 /**
- * Gets the name of the most recently run test
- * @param {string} override - Override the name pulled from jasmine global object
- *
+ * Gets the name of the most recently run test *
  * @returns <Object> - Contains the short name and full generated path name
  */
-export const getGeneratedName = (
-  testLoc?:string,
-  type?:string,  // TODO - Update to test type enum
-  browserName?:string // TODO - Update to browser type enum
-) => {
-  const testPath = testLoc || (global?.jasmine as unknown as TJasmine)?.testPath
-  const testType = type || get(global, `__goblet.options.testType`)
-  const browser = browserName || get(global, `__goblet.browser.type`, 'browser')
+export const getGeneratedName = (args:TGetGenName) => {
 
-  const timestamp = new Date().getTime()
-  const name = formatName(testPath)
+  const {
+    location,
+    browserName,
+  } = args
+
+  if(!location) throw new Error(`Could not resolve test path location`)
+
+  const browser = browserName || get(global, `__goblet.browser.type`, `browser`)
+
+  const name = formatName(location)
 
   // Use a cache name to ensure all generated artifacts use the same timestamp
-  const cacheName = browser ? `${testType}-${browser}-${name}` : `${testType}-${name}`
+  const cacheName = browser ? `${browser}-${name}` : name
   if(nameCache[cacheName]) return nameCache[cacheName]
 
+  const timestamp = args.timestamp || new Date().getTime()
   const nameTimestamp = browser ? `${name}-${browser}-${timestamp}` : `${name}-${timestamp}`
 
   nameCache[cacheName] = {
     name,
-    testPath,
+    dir: name,
     nameTimestamp,
-    dir: `${testType}/${name}`,
-    full: `${testType}/${name}/${nameTimestamp}`,
+    testLoc: location,
+    full: `${name}/${nameTimestamp}`,
   }
 
   return nameCache[cacheName]

@@ -1,25 +1,25 @@
+import type { Response } from 'express'
 import type { TGitOpts } from '@gobletqa/workflows'
-import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
+import { workflows } from '@gobletqa/workflows'
+import { loadRepoContent } from '@gobletqa/repo'
 import { setBrowserDefaults } from '@gobletqa/browser'
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { Repo, loadRepoContent } from '@gobletqa/workflows'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
+export const statusRepo = async (req:JWTRequest, res:Response) => {
 
   const { query } = req
   const { token, username, provider } = req.auth
   const { config } = req.app.locals
-  const { repo, status } = await Repo.status(config, {
+  const { repo, status } = await workflows.status(config, {
     token,
     provider,
     username,
@@ -50,7 +50,7 @@ export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Re
   }
 
   return apiRes(res, repoContent)
-})
+}
 
 
 AppRouter.get(`/repo/status`, statusRepo)

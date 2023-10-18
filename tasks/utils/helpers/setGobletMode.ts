@@ -1,8 +1,29 @@
 import type { TTaskParams } from '../../types'
 
-import { exists } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
-import { setVncENV } from '@gobletqa/shared/utils/vncActiveEnv'
+import { exists } from '@keg-hub/jsutils/exists'
+
+/**
+ * Adds and removes envs from the current process
+*/
+const envUpdates = (toAdd:string, toRemove:string) => {
+  delete process.env[toRemove]
+  process.env[toAdd] = (true as unknown as string)
+}
+
+/**
+ * Sets the envs for using VNC inside docker, or the host machine websocket
+ * for displaying the browser
+ */
+const setVncENV = (vncActive:boolean) => {
+  vncActive
+    ? envUpdates(`GB_VNC_ACTIVE`, `GB_PW_SOCKET_ACTIVE`)
+    : envUpdates(`GB_PW_SOCKET_ACTIVE`, `GB_VNC_ACTIVE`)
+
+  return vncActive
+}
+
+
 
 // TODO: Setup custom ENVs to pull from the values files
 const vncEnvs = {

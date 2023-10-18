@@ -1,16 +1,20 @@
 import type { ComponentProps, MouseEventHandler } from 'react'
 
-import { asCallback } from '@utils/helpers'
-import { connectModal } from '@actions/modals/modals'
+import {getStore} from '@store'
+import { noOp } from '@keg-hub/jsutils'
+import { Alert } from '@actions/modals/alert'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import {
-  gutter,
   Tooltip,
   IconButton,
   CloudOffIcon,
 } from '@gobletqa/components'
+import {
+  ModalTitle,
+  ModalSubText,
+  ModalContainer
+} from '@components/Modals/Modal.styled'
 
-const onConnect = asCallback(connectModal, false)
 export type TUnmountContent = {}
 export type TUnmountBtn = ComponentProps<typeof CloudOffIcon>
 
@@ -53,6 +57,31 @@ export const UnmountAction = {
   action:(e:Event) => {
     e?.stopPropagation?.()
     e?.preventDefault?.()
-    disconnectRepo()
+    const { repo } = getStore().getState()
+    const name = repo?.git?.repoName || repo?.name || `the mounted repo`
+
+    Alert({
+      title: `Unmount Repo`,
+      okText: `Yes`,
+      onOk: () => {
+        disconnectRepo()
+      },
+      cancelText: `No`,
+      onCancel: noOp,
+      content: (
+        <ModalContainer>
+          <ModalTitle>
+            Are you sure your want to unmount {name}?
+          </ModalTitle>
+          <ModalSubText>
+            All files and content will be permanently removed.
+          </ModalSubText>
+          <ModalSubText>
+            Unsaved work can not be recovered.
+          </ModalSubText>
+        </ModalContainer>
+      ),
+    })
+
   },
 }

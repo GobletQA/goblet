@@ -72,8 +72,8 @@ export const SectionContainer = styled(Paper)`
     & > .MuiButtonBase-root.gb-dropdown-header.Mui-expanded {
       margin-bottom: 0px;
     }
-
   }
+
 `
 export const SectionDropdown = styled(DropdownComp)`
   cursor: default;
@@ -86,6 +86,8 @@ export const SectionDropdown = styled(DropdownComp)`
   }
 
   & .gb-dropdown-expand-icon {
+    width: 22px;
+    height: 22px;
     &:hover {
       color: ${colors.green10};
     }

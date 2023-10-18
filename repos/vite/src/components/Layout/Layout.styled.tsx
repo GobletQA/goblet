@@ -28,7 +28,7 @@ export const LAutomationCover = styled(Box)`
     cursor: wait;
     height: 100%;
     z-index: 100;
-    opacity: 0.1;
+    opacity: 0.05;
   }
   
 `

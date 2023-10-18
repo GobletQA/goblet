@@ -1,4 +1,4 @@
-import type { TPipelineArgs, TStateObj } from "@GEX/types"
+import type { TRunnerCls, TPipelineArgs, TStateObj, IExamRunner } from "@GEX/types"
 
 import { promises } from 'fs'
 import pMapSeries from 'p-map-series'
@@ -12,38 +12,39 @@ const { readFile } = promises
 const getTestRunner = (
   args:TPipelineArgs,
   opts:Record<any, any>,
+  CacheRunners:Record<string, IExamRunner<any>>
 ) => {
-  const { state } = args
+  const { state, config } = args
   const runners = state.RunnerClasses
+  const reuseRunner = config.reuseRunner
 
-  return async (location:string) => {
+  const withRunner = async (location:string) => {
     const content = await readFile(location, `utf8`)
     const model = toFileModel({ location, content })
-    const runnerCls = typeClassFromLoc(model, runners)
-    const RunCls = runnerCls || BaseRunner
+    const { found, type } = typeClassFromLoc<TRunnerCls<any>>(model, runners)
+
+    const RunCls = found || BaseRunner
+    CacheRunners[type] = (reuseRunner && CacheRunners[type]) || new RunCls(opts, state)
 
     return {
       model,
-      // @ts-ignore
-      Runner: new RunCls(opts, state)
+      Runner: CacheRunners[type]
     }
   }
+
+  return withRunner
 }
 
 
 export const loadRunnerTask = async (args:TPipelineArgs) => {
   const { config, state, testMatch } = args
+  let CacheRunners = {} as Record<string, IExamRunner<any>>
 
-  const looper = getTestRunner(args, {
-    bail: config.bail,
-    debug: config.debug,
-    omitTestResults: [],
-    verbose: config.verbose,
-    timeout: config.timeout,
-    globalTimeout: config.globalTimeout,
-    ...state?.passthrough?.runner,
-  })
+  const looper = getTestRunner(args, {...state?.passthrough?.runner}, CacheRunners)
 
-  return await pMapSeries(ensureArr(testMatch), looper)
+  const withRunners = await pMapSeries(ensureArr(testMatch), looper)
+  // Clear the cache after loading all runners
+  CacheRunners = {}
 
+  return withRunners
 }

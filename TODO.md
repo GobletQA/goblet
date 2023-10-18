@@ -9,6 +9,10 @@
 * Issues with General section
 
 
+### Parkin
+* This type of select breaks parkin 
+  * `div >> internal:has-text=/^Iowa Jamaican infomediaries$/`
+
 ### Screencast Goblet Config / FS API
 * Validate the paths of a repo config
 * Paths can only allow locations inside the mounted repo
@@ -51,6 +55,9 @@
     * Looks to be related to the decorators issues
   * Steps not getting the correct decorator
   * Steps with same step text cause decorator to only use the first step
+  * Needs an update to Parkin to keep a consistent uuid for feature items
+  * Needs to pass on feature test meta data
+    * This is mostly done, but needs to be published
 
 * Add cover over browser
   * Must intentionally click the browser to interact with it
@@ -94,5 +101,17 @@ On every page load
   * If it is a duplicate, try to regenerate the selector so that it properly passes
 
 
+### Mocks
+  * For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
+  * Also look at the new `node:test` module that provides mocking functionality 
+  * `import { mock, test } from 'node:test'`
 
-For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
+
+
+### AI
+* From user defined user story
+  * AI outputs a feature file 
+    * Should be editable, needs a little tlc
+* Then run the feature
+  * 
+

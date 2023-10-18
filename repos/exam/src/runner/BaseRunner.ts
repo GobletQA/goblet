@@ -10,16 +10,13 @@ import { ExamRunner } from './ExamRunner'
 import { set } from '@keg-hub/jsutils/set'
 import { get } from '@keg-hub/jsutils/get'
 import { RootSuiteId } from '@GEX/constants'
-import { Errors } from '@GEX/constants/errors'
 import { ExamEvents } from '@GEX/events/Events'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
-import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
 
 
 export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
-  bail:number=0
   omitTestResults:string[] = []
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
@@ -31,7 +28,6 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
     if(cfg.omitTestResults)
       this.omitTestResults = cfg.omitTestResults
   }
-
 
   /**
    * Runs the code passed to it via the exam
@@ -67,10 +63,11 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
     const results = await this.environment.test.run({
       description: data?.description,
-      timeout: data?.globalTimeout || this.globalTimeout
+      testTimeout: data?.testTimeout || this.testTimeout,
+      suiteTimeout: data?.suiteTimeout || this.suiteTimeout,
     }) as TExEventData[]
 
-    const final = results.map(result => this.clearTestResults(result))
+    const final = results.map(result => this.cleanExResult(result))
 
     this.isRunning = false
 
@@ -81,95 +78,12 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
   }
 
-  onSpecDone = (result:TExEventData) => {
-    if(this.canceled) return
-
-    this.event(ExamEvents.specDone({
-      data: {
-        ...this.clearTestResults(result),
-        failedExpectations: result?.failedExpectations
-      }
-    }))
-
-    if(result.failed){
-      /**
-       * TODO check here for failed state in result metadata
-       * Could allow for test warning, but not failing
-       * Need to add `warnOnFailed` to `result.metaData` in Parkin
-       */
-      // @ts-ignore
-      if(result?.metaData?.warnOnFailed)
-        this.event(ExamEvents.specDone({
-          data: {
-            ...this.clearTestResults(result),
-            failedExpectations: result?.failedExpectations
-          }
-        }))
-
-      let errorMsg = `Spec Failed`
-      if(result.testPath) errorMsg+= ` - ${result.testPath}`
-      const failedErr = Errors.TestFailed(result, new Error(errorMsg))
-
-      this.failed += 1
-      const bailAmt = this.bail
-
-      if(bailAmt && (this.failed >= bailAmt)){
-        this.cancel()
-        Errors.BailedTests(bailAmt, failedErr)
-      }
-    }
-  }
-
-  onSuiteDone = (result:TExEventData) => {
-    if(this.canceled) return
-
-    const data = this.clearTestResults(result)
-    result.id === RootSuiteId
-      ? this.event(ExamEvents.rootSuiteDone({ data }))
-      : this.event(ExamEvents.suiteDone({ data }))
-  }
-
-  onSpecStarted = (result:TExEventData) => {
-    if(this.canceled) return
-
-    this.event(ExamEvents.specStart({
-      data: this.clearTestResults(result),
-    }))
-  }
-
-  onSuiteStarted = (result:TExEventData) => {
-    if(this.canceled) return
-
-    const data = this.clearTestResults(result)
-    result.id === RootSuiteId
-      ? this.event(ExamEvents.rootSuiteStart({ data }))
-      : this.event(ExamEvents.suiteStart({ data }))
-  }
 
   cancel = async () => {
     this.canceled = true
     this.environment.test?.abort?.()
 
     await this.cleanup?.()
-  }
-
-  cleanup = async () => {
-    try {
-      this.environment?.cleanup?.()
-    }
-    catch(err){}
-  }
-
-  /**
-  * There's a lot of meta-data that is added to the player tests results object
-  * This clears out some of it, because the frontend does not need it
-  */
-  clearTestResults = (result:TExTestEvent|TExEventData) => {
-    // TODO: update to use dot notation
-    return omitKeys<TExTestEvent>(
-      result,
-      this.omitTestResults
-    )
   }
 
 }

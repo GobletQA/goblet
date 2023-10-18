@@ -1,5 +1,6 @@
 import type { MutableRefObject } from 'react'
 import type {
+  TPlayerTestEvent,
   TPlayerResEvent,
   TPlayerEventData,
 } from '@types'
@@ -34,7 +35,7 @@ export const updateRefs = <T=any>({
   }
   if(!event) return
 
-  type = type || getTypeFromId(event.data)
+  type = type || getTypeFromId(event.data as TPlayerTestEvent)
 
   switch(type){
     case `step`: {

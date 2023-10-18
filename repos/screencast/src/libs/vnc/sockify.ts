@@ -8,7 +8,7 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
-import { getDefaultGobletConfig } from '@gobletqa/goblet'
+import { InternalPaths } from '@gobletqa/environment/constants'
 import { findProc, killProc } from '@gobletqa/shared/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 
@@ -34,7 +34,6 @@ export const startSockify = async ({
   options = noOpObj,
 }:TChildProcArgs=defSockArgs) => {
 
-  const config = getDefaultGobletConfig()
   const { novnc, vnc } = screencastConfig.screencast
   const status = await statusSockify()
 
@@ -74,7 +73,7 @@ export const startSockify = async ({
   const cmdOpts = deepMerge({
     stdio:'inherit',
     env: { ...process.env },
-    cwd: cwd || config.internalPaths.gobletRoot,
+    cwd: cwd || InternalPaths.gobletRoot,
   }, options, { env })
 
   const cmd = `websockify ${cmdArgs.join(' ')}`

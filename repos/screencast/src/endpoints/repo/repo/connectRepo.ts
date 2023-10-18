@@ -1,11 +1,12 @@
-import type { Response, RequestHandler } from 'express'
+import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
-import { apiRes } from '@gobletqa/shared/express/apiRes'
-import { Repo, loadRepoContent } from '@gobletqa/workflows'
-import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+
+import { workflows } from '@gobletqa/workflows'
+import { loadRepoContent } from '@gobletqa/repo'
+import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export type TConnectBody = {
@@ -19,7 +20,7 @@ export type TConnectBody = {
 /**
  * Runs the initializeGoblet workflow to setup a new repository
  */
-export const connectRepo:RequestHandler = asyncWrap(async (
+export const connectRepo = async (
   req:JWTRequest,
   res:Response
 ) => {
@@ -28,7 +29,7 @@ export const connectRepo:RequestHandler = asyncWrap(async (
 
     const body = req.body as TConnectBody
     const { token, username } = req.auth
-    const { repo, status } = await Repo.fromWorkflow({
+    const { repo, status } = await workflows.fromWorkflow({
       token,
       username,
       ...body,
@@ -40,12 +41,12 @@ export const connectRepo:RequestHandler = asyncWrap(async (
   catch(err){
     // If the repo mounting fails for some reason
     // Call disconnect incase it throws after the repo was mounted
-    await Repo.disconnect({ username: req.auth.username })
+    await workflows.disconnect({ username: req.auth.username })
     throw err
   }
 
 
   return apiRes(res, content, 200)
-})
+}
 
-AppRouter.post('/repo/connect', connectRepo)
+AppRouter.post(`/repo/connect`, connectRepo)

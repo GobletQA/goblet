@@ -1,49 +1,27 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TFilelist, TAutoSave, TEditorOpenFiles } from '../../types'
+import type {
+  TFilelist,
+  TAutoSave,
+  TPathChange,
+  TEditorOpenFiles
+} from '../../types'
 
 
 import { useCallback } from 'react'
-import { exists } from '@keg-hub/jsutils/exists'
+import { exists, ife } from '@keg-hub/jsutils'
 import { saveFile } from '../../utils/file/saveFile'
 
 export type TUseCloseFile = {
   curPath:string
   autoSave: TAutoSave
+  pathChange: TPathChange
   openedFiles: TEditorOpenFiles
   filesRef: MutableRefObject<TFilelist>
   openedPathRef: MutableRefObject<string | null>
-  setCurPath: (data: SetStateAction<string>) => void
   onSaveFile?: (path: string, content: string) => void
   restoreModel: (path: string) => false | editor.ITextModel
   setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
-}
-
-/**
- * Clears all opened files
- * Is called when the last file in the openedFiles array is closed
- */
-const clearPath = (
-  openedPathRef:MutableRefObject<string | null>,
-  restoreModel:(path: string) => false | editor.ITextModel,
-  setCurPath:(data: SetStateAction<string>) => void
-) => {
-  restoreModel?.('')
-  setCurPath?.('')
-  openedPathRef.current = ''
-}
-
-/**
- * Updates the current active file to be the file from the passed in targetPath
- * Sets the curPath value
- */
-const updateTargetPath = (
-  targetPath:string,
-  restoreModel:(path: string) => false | editor.ITextModel,
-  setCurPath:(data: SetStateAction<string>) => void
-) => {
-  restoreModel?.(targetPath)
-  setCurPath?.(targetPath)
 }
 
 /**
@@ -105,7 +83,7 @@ export const useCloseFile = (props:TUseCloseFile) => {
     autoSave,
     filesRef,
     onSaveFile,
-    setCurPath,
+    pathChange,
     openedFiles,
     restoreModel,
     openedPathRef,
@@ -120,7 +98,7 @@ export const useCloseFile = (props:TUseCloseFile) => {
       autoSave !== `off`
         && openedFiles.forEach(file => {
           file.path === path
-            && file.status === 'editing'
+            && file.status === `editing`
             && saveFile(file, filesRef, onSaveFile)
         })
 
@@ -135,7 +113,7 @@ export const useCloseFile = (props:TUseCloseFile) => {
          * And the current active path is equal to the path being closed
          * Then set the targetPath as the active path
          * If the current active path is not equal to the close path
-         * Then do nothing, because it should say active
+         * Then do nothing, because it should stay active
          *
          * If no targetPath, it means no files are left open
          * So clear out all paths
@@ -143,9 +121,12 @@ export const useCloseFile = (props:TUseCloseFile) => {
         targetPath
           ? targetPath !== path
               && curPath === path
-              && updateTargetPath(targetPath, restoreModel, setCurPath)
+              && pathChange(targetPath, { openLoc: false, oldLoc: curPath })
           : filesOpened.length === 0
-              && clearPath(openedPathRef, restoreModel, setCurPath)
+              && ife(() => {
+                  pathChange(``, { openLoc: false, oldLoc: curPath })
+                  openedPathRef.current = ''
+                })
 
         return filesOpened
 
@@ -154,6 +135,7 @@ export const useCloseFile = (props:TUseCloseFile) => {
     [
       curPath,
       autoSave,
+      pathChange,
       onSaveFile,
       openedFiles,
       restoreModel,
