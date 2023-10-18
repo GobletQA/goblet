@@ -88,33 +88,34 @@ export type TEditorRefHandle = {
 }
 
 export interface IMonacoEditorProps {
-  title?: string
-  Modal: TModalOpts
-  emptyText?: string
-  rootPrefix?: string
-  options: TEditorOpts
+  title?:string
+  Modal:TModalOpts
+  emptyText?:string
+  rootPrefix?:string
+  options:TEditorOpts
   actionsOpen?:boolean
-  sidebarWidth?: number
-  style?: CSSProperties
-  config?: TEditorConfig
-  sidebarStatus?: boolean
-  onAddFile?: TAddFileCB
+  sidebarWidth?:number
+  style?:CSSProperties
+  openedPaths?:string[]
+  config?:TEditorConfig
+  onAddFile?:TAddFileCB
+  sidebarStatus?:boolean
   Panels?:TSidebarPanel[]
+  defaultFiles?:TFilelist
+  onDeleteFile?:TEditorCB
+  onValueChange?:TEditorCB
+  onSaveFile?:TEditorFileCB
   PrePanels?:TSidebarPanel[]
-  defaultFiles?: TFilelist
-  onDeleteFile?: TEditorCB
-  onValueChange?: TEditorCB
-  onSaveFile?: TEditorFileCB
   Divider?:ComponentType<any>
-  onPathChange?: TEditorFileCB
-  onEditorBlur?: TEditorFileCB
-  onFileChange?: TEditorFileCB
-  onLoadFile?: TEditorPromiseCB
-  onEditorFocus?: TEditorFileCB
-  onBeforeAddFile?: TFileCallback
+  onPathChange?:TEditorFileCB
+  onEditorBlur?:TEditorFileCB
+  onFileChange?:TEditorFileCB
+  onLoadFile?:TEditorPromiseCB
+  onEditorFocus?:TEditorFileCB
+  onBeforeAddFile?:TFileCallback
   onEditorLoaded?:TOnEditorLoaded
-  onRenameFile?: TEditorRenameFile
-  onSidebarResize?: (width:number) => void
+  onRenameFile?:TEditorRenameFile
+  onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction[] | TSidebarAction<TCodeEditor>[]
 }

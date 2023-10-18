@@ -22,16 +22,16 @@ export const updateModel = (model:editor.ITextModel, content:string|null) => {
   return model
 }
 
-const createModel = (path:string, content:string | null) => {
+const createModel = (loc:string, content:string|null) => {
 
-  const type = path.indexOf('.') !== -1
-    ? path.split('.').slice(-1)[0]
+  const type = loc.indexOf('.') !== -1
+    ? loc.split('.').slice(-1)[0]
     : ALLOWED_FILE_TYPES.js
 
   const model = window.monaco.editor.createModel(
     content || ``,
     ALLOWED_FILE_TYPES[type] || type,
-    new window.monaco.Uri().with({ path, scheme: 'goblet' })
+    new window.monaco.Uri().with({ path: loc, scheme: `goblet` })
   )
 
   // Model options get set on init
@@ -45,12 +45,12 @@ const createModel = (path:string, content:string | null) => {
   return model
 }
 
-export const createOrUpdateModel = (path: string, content: string|null) => {
+export const createOrUpdateModel = (loc:string, content:string|null=null) => {
   // Only create models of files, not directories
-  if(path.startsWith(`/`) && path.endsWith(`/`)) return
+  if(loc.startsWith(`/`) && loc.endsWith(`/`)) return
 
-  const model = getModelFromPath(path)
-  model
+  const model = getModelFromPath(loc)
+  return model
     ? updateModel(model, content)
-    : createModel(path, content)
+    : createModel(loc, content)
 }

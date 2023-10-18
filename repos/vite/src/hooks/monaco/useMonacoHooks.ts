@@ -10,17 +10,19 @@ import type {
 import { ESideNav } from '@types'
 import { useFiles, useRepo } from '@store'
 import { useMemo, useCallback } from 'react'
-import { useDecorations } from './useDecorations'
-import { useMonacoConfig } from './useMonacoConfig'
 import { confirmModal } from '@actions/modals/modals'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { exists, set, emptyObj } from '@keg-hub/jsutils'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
-import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
+import { useDecorations } from '@hooks/monaco/useDecorations'
+import { useMonacoConfig } from '@hooks/monaco/useMonacoConfig'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
+import { useOpenMonacoFile } from '@hooks/monaco/useOpenMonacoFile'
 import { useSettingValues } from '@hooks/settings/useSettingValues'
+import { useMonacoLastOpened } from '@hooks/monaco/useMonacoLastOpened'
 import {
   useOnEvent,
   useEventEmit,
@@ -66,6 +68,7 @@ export const useMonacoHooks = (
     [repo?.paths?.repoRoot, repo?.paths?.workDir]
   )
 
+  const lastOpened = useMonacoLastOpened(rootPrefix, files)
   const editorFiles = useEditorFiles({
     repo,
     repoFiles,
@@ -74,7 +77,13 @@ export const useMonacoHooks = (
 
   const onPathChangeCB = useOnPathChange()
   const onPathChange = useCallback(
-    (loc:string, content?:string|null) => onPathChangeCB(loc),
+    (loc:string, content?:string|null, opts?:{ oldLoc?:string }) => {
+      return onPathChangeCB(loc, {
+        ...opts,
+        fullLoc: loc && addRootToLoc(loc, rootPrefix),
+        oldLoc: opts?.oldLoc && addRootToLoc(opts?.oldLoc, rootPrefix),
+      })
+    },
     [onPathChangeCB]
   )
 
@@ -93,31 +102,7 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useOnEvent<TStepDef>(OpenEditorFileEvt, async (defAst:TStepDef) => {
-    const { location } = defAst
-
-    if(!location)
-      return console.warn(`[Error: ${OpenEditorFileEvt}] - Missing step def location`)
-
-    // If it's a custom file then it should already be loaded
-    if(isCustomDef(location)){
-      const relative = rmRootFromLoc(location, rootPrefix)
-      editorRef?.current?.openFile?.(relative)
-      return
-    }
-
-    // If it's a goblet file, then load it
-    // And then make call to open it in the editor
-    const loaded = await loadGobletFile(location)
-    if(!loaded) return
-
-    setTimeout(() => {
-      const relative = rmRootFromLoc(loaded.location, rootPrefix)
-      editorRef?.current?.openFile?.(relative, loaded.content)
-    }, 50)
-
-  })
-
+  useOpenMonacoFile({ editorRef, rootPrefix, })
   useDecorations({ editorRef, repo, rootPrefix })
 
   return {
@@ -127,6 +112,7 @@ export const useMonacoHooks = (
     onAddFile,
     onSaveFile,
     onLoadFile,
+    lastOpened,
     onRenameFile,
     onDeleteFile,
     modalActions,

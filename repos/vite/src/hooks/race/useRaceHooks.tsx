@@ -1,5 +1,4 @@
 import type { TRaceFiles } from '@types'
-import type { MutableRefObject } from 'react'
 import type {
   TEditorRef,
   TRaceDecoRef,
@@ -19,6 +18,7 @@ import { useRaceStepDefs } from '@hooks/race/useRaceStepDefs'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { useMultiFeatsErr } from '@hooks/race/useMultiFeatsErr'
+import { useRaceLastOpened } from '@hooks/race/useRaceLastOpened'
 import { useRaceDecorations } from '@hooks/race/useRaceDecorations'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
@@ -41,6 +41,7 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
   const definitions = useRaceStepDefs()
   const files = useFeatureFiles(rootPrefix)
   const onSaveFile = useOnSaveFile(files, rootPrefix)
+  const lastOpened = useRaceLastOpened(rootPrefix, files)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
   const onRenameFile = useOnRenameFile(files, rootPrefix)
   const onDeleteFeature = useOnDeleteFile(files, rootPrefix)
@@ -72,8 +73,10 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
   })
 
   const onFeatureActive = useInline(async (feature:TRaceFeature) => {
+    const storage = feature?.parent?.uuid !== EmptyFeatureUUID
+
     feature?.parent?.uuid
-      ? onPathChange(feature.parent.uuid)
+      ? onPathChange(feature.parent.uuid, { storage })
       : onPathChange(``, { sidebar: false })
   })
 
@@ -85,7 +88,7 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
     if(!activeFeat) return
 
     ;(activeFeat?.uuid === EmptyFeatureUUID || activeFeat?.uuid === feature?.parent?.uuid)
-      && onPathChange(``)
+      && onPathChange(``, { oldLoc: location })
   })
 
   const onFeatureChange = useInline((feature:TRaceFeature) => {
@@ -159,6 +162,7 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
     settings,
     features,
     rootPrefix,
+    lastOpened,
     definitions,
     onWorldChange,
     onFeatureClose,

@@ -17,11 +17,21 @@ import { useEditorFileTree } from '@GBM/hooks/editor/useEditorFileTree'
 import { useFolderCallbacks } from '@GBM/hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '@GBM/hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '@GBM/hooks/editor/useEditorFileCallbacks'
+import {
+  Editor,
+  Container,
+  EditorContainer,
+  Divider as REDivider,
+} from './Editor.styled'
+import {
+  FileIcon,
+  OpenedTabs,
+  EmptyEditor,
+  EditorActions,
+  useSidebarResize,
+} from '@gobletqa/components'
 
-import { EditorContainer, Container, Divider as REDivider, Editor } from './Editor.styled'
-import { useSidebarResize, FileIcon, EditorActions, EmptyEditor, OpenedTabs } from '@gobletqa/components'
-
-const editorStyles = { flex: 1, width: '100%' }
+const editorStyles = { flex: 1, width: `100%` }
 
 export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
 
@@ -36,6 +46,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onLoadFile,
     onAddFile,
     onSaveFile,
+    openedPaths,
     actionsOpen,
     onDeleteFile,
     onRenameFile,
@@ -51,7 +62,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onBeforeAddFile,
     Divider=REDivider,
     defaultFiles = {},
-    title='Goblet Editor',
+    title=`Goblet Editor`,
     config={} as TEditorConfig,
   } = props
 
@@ -75,11 +86,11 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onEditorBlurRef,
     editorStatesRef,
     onFileChangeRef,
+    onPathChangeRef,
     onEditorFocusRef,
     onValueChangeRef,
     contentListenerRef,
   } = useEditorRefs({
-    curPath,
     options,
     onLoadFile,
     defaultFiles,
@@ -103,12 +114,14 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     optionsRef,
     setCurPath,
     curValueRef,
+    openedPaths,
     openedPathRef,
     lintWorkerRef,
     onLoadFileRef,
     typesWorkerRef,
     editorNodeRef,
     onFileChangeRef,
+    onPathChangeRef,
     editorStatesRef,
     onValueChangeRef,
     contentListenerRef,

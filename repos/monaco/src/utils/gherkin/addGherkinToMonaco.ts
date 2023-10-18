@@ -5,7 +5,7 @@ import type {
   NLanguages,
 } from '@GBM/types'
 
-import { noOp } from '@keg-hub/jsutils/noOp'
+import { noOp } from '@keg-hub/jsutils'
 import { GherkinLangID } from '@GBM/constants'
 import { getCompletionItems } from './getCompletionItems'
 import { convertRange } from '@GBM/utils/editor/convertRange'
@@ -18,6 +18,30 @@ const registerGherkin = (monaco:TMonaco) => {
     extensions: [`.feature`],
     aliases: [`Feature`, `feature`]
   } as any)
+
+  monaco.languages.setLanguageConfiguration(GherkinLangID, {
+    comments: {
+      lineComment: `#`
+    },
+    folding: {
+      offSide: true
+    },
+    autoClosingPairs: [
+      { open: '{', close: '}' },
+      { open: '[', close: ']' },
+      { open: '(', close: ')' },
+      { open: '"', close: '"' },
+      { open: "'", close: "'" }
+    ],
+    onEnterRules: [
+      {
+        beforeText: /:\s*$/,
+        action: {
+          indentAction: monaco.languages.IndentAction.Indent
+        }
+      }
+    ]
+  })
 
   monaco.languages.setMonarchTokensProvider(GherkinLangID, {
     tokenizer: {

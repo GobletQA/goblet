@@ -2,6 +2,7 @@ import type { TEditorConfig, IMultiRefType, TMonacoEditor } from '../../types'
 
 import Editor from './Editor'
 import { Loading } from '../Icons/Loading'
+import { EditorLoading } from './Editor.styled'
 import { forwardRef, useEffect, useState } from 'react'
 
 const useInitMonaco = (
@@ -42,10 +43,10 @@ export const MonacoEditor = forwardRef<IMultiRefType, TMonacoEditor>((props, ref
 
     return window.monaco
       ? (<Editor {...editorProps} config={config} ref={ref} />)
-      : (<div className='goblet-editor-loading'>{LoadingComp}</div>)
+      : (<EditorLoading className='goblet-editor-loading'>{LoadingComp}</EditorLoading>)
   }
 )
 
-MonacoEditor.displayName = 'MonacoEditorEntry'
+MonacoEditor.displayName = `MonacoEditor`
 
 export default MonacoEditor
