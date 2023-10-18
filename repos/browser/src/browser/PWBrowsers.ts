@@ -180,9 +180,10 @@ export class PWBrowsers {
     } = args
 
     const opts = getBrowserOpts(browserConf, config, world)
+
     const browser = await playwright[type].launch(opts)
 
-    logEnvMsg(`createBrowser - Browser ${type} was started`)
+    logEnvMsg(`createBrowser - Browser ${type} was started`, `verbose`, opts)
     this.#setBrowser(browser, { ...browserConf, ...opts })
 
     return { browser } as TPWBrowser

@@ -1,4 +1,4 @@
-import type { TAnswerEditor, TEditorRef } from '@GBR/types'
+import type { TAskForEditor, TAnswerEditor, TEditorRef } from '@GBR/types'
 
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 
@@ -22,7 +22,7 @@ export const useGetEditorContext = (props:THEditorContext) => {
 
   // Helper to allow external code ask the context for the current editor
   // Allows external actions to interface with the editor
-  useOnEvent<TAnswerEditor>(AskForEditorEvt, ({ cb }) => cb?.({ editor: editorCtx }))
+  useOnEvent<TAskForEditor>(AskForEditorEvt, ({ cb }) => cb?.({ editor: editorCtx }))
   
   useEffect(() => {
     editorRef
