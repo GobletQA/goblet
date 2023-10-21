@@ -19,7 +19,7 @@ export class LeptonAI extends BaseProvider {
     const prompt = this.toPrompt(question) as any
     // console.log(`Question:`, require('util').inspect(prompt, false, null, true))
     const completion = await this.ai.chat.completions.create(prompt)
-    // console.log(`Answer:`, require('util').inspect(completion, false, null, true))
+    console.log(`Answer:`, require('util').inspect(completion, false, null, true))
 
     return completion as TPromptResp
   }

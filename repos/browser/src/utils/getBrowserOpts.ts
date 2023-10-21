@@ -1,5 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
-import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
+import type { TGBWorldCfg, TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
@@ -112,7 +111,7 @@ const getConfigOpts = (config:TGobletConfig) => {
 export const getBrowserOpts = (
   browserConf:TBrowserConf=emptyObj as TBrowserConf,
   config?:TGobletConfig,
-  world?:TWorldConfig
+  world?:TGBWorldCfg
 ) => {
   const {
     ws,

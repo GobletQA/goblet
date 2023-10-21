@@ -1,8 +1,8 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TGBWorldCfg } from '../types'
 import {deepFreeze} from '../utils/helpers'
 
 
-export const DefWorld:TWorldConfig = deepFreeze({
+export const DefWorld:TGBWorldCfg = deepFreeze({
   app: {},
   data: {},
   $merge: [],

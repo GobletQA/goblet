@@ -22,7 +22,6 @@ import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj
  */
 export const loadRepoContent = async (
   repo:Repo,
-  config:TDefGobletConfig,
   status:TRepoMountStatus
 ) => {
   try {
@@ -37,7 +36,7 @@ export const loadRepoContent = async (
     }
 
     content.fileTree = await buildFileTree(repo)
-    const definitions = await loadDefinitions(repo, config)
+    const definitions = await loadDefinitions(repo)
 
     const features = await loadFeatures(repo)
     content.features = fileModelArrayToObj<TFeatureFileModelList>(features)

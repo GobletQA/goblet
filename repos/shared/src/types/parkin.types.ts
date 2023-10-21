@@ -1,15 +1,17 @@
 /**
- * The types in this file should be exported from parkin instead
+ * Most of the types in this file should be exported from parkin instead
  * They were added before parkin had types, but now that it does they should be updated
  */
-
+import type { TProcessHtmlOpts } from './screencast.types'
 import type {
   Parkin,
   TStepDef,
   EHookType,
   TFeatureAst,
   EExpParmType,
+  TWorldConfig,
 } from '@ltipton/parkin'
+
 
 export type TParse = Parkin["parse"]
 export type TMatcher = Parkin["matcher"]
@@ -91,3 +93,11 @@ export type TParkinRun = (
   data:string|string[]|TFeatureAst|TFeatureAst[],
   options:TParkinRunOpts
 ) => any
+
+
+export type TWorldJokerCfg = {
+  html: TProcessHtmlOpts
+}
+export type TGBWorldCfg = TWorldConfig & {
+  joker?:TWorldJokerCfg
+}

@@ -90,6 +90,14 @@ On every page load
   * If it is a duplicate, try to regenerate the selector so that it properly passes
 
 
+### Playwright
+* Set a custom `userAgent` on the browser context
+  * I.E.
+  ```js
+    const context = await browser.newContext({ userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' +
+            ' AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', }); 
+  ```
+
 ### Mocks
   * For adding mocks to exam, look into https://www.npmjs.com/package/testdouble
   * Also look at the new `node:test` module that provides mocking functionality 

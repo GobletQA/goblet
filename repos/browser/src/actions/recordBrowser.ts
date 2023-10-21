@@ -9,6 +9,7 @@ import { Recorder }  from '../recorder/recorder'
 export const recordBrowser = async (data:TStartRecording) => {
   const {
     id,
+    repo,
     action,
     onCleanup,
     browserConf,
@@ -19,7 +20,7 @@ export const recordBrowser = async (data:TStartRecording) => {
   const { props, action:method } = action
 
   const [recordOpts, url] = props
-  const browserItems = pwComponents || await GBrowser.start({ browserConf })
+  const browserItems = pwComponents || await GBrowser.start({ browserConf, config: repo })
 
   const recorder = Recorder.getInstance(id, {
     onCleanup,

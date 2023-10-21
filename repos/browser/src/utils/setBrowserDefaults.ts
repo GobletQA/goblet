@@ -1,5 +1,5 @@
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
+  TGBWorldCfg,
   TBrowserPage,
   TGobletConfig,
   TBrowserContext,
@@ -37,7 +37,7 @@ export type TSetPageSettings = {
 const setContextState = async (
   context:TBrowserContext,
   ctxOpts:Partial<TBrowserContextOpts>=emptyObj,
-  world:TWorldConfig
+  world:TGBWorldCfg
 ) => {
 
   const options = {...world?.$context, ...ctxOpts}

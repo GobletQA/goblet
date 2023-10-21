@@ -28,10 +28,11 @@ export enum EJokerMessageType {
 }
 
 
-export type TJokerReq = {
+export type TJokerReq<T extends Record<string, any>=Record<string, any>> = {
   id:string
   text:string
   action?:EJokerAction
+  data?:T
 }
 
 export type TJokerRes = TPromptResp & {

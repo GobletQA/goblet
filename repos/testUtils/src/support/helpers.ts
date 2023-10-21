@@ -1,9 +1,9 @@
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
   TClickEl,
   TStepCtx,
   TLocator,
   TFillInput,
+  TGBWorldCfg,
   TSaveWorldLocator,
 } from '@GTU/Types'
 
@@ -115,7 +115,7 @@ export const cleanWorldPath = (worldPath:string) => {
  * Removes the value on the world object at the passed in path
  *
  */
-export const clearWorldPath = (worldPath:string, world:TWorldConfig) => {
+export const clearWorldPath = (worldPath:string, world:TGBWorldCfg) => {
   const cleaned = cleanWorldPath(worldPath)
   unset(world, cleaned)
 }
@@ -127,7 +127,7 @@ export const clearWorldPath = (worldPath:string, world:TWorldConfig) => {
  */
 export const saveWorldData = (
   data:Record<string, any>=emptyObj,
-  world:TWorldConfig,
+  world:TGBWorldCfg,
   worldPath?:string,
 ) => {
   const cleaned = worldPath
@@ -167,7 +167,7 @@ export const saveWorldLocator = async (props:TSaveWorldLocator, ctx?:TStepCtx) =
  */
 export const getFromWorldPath = (
   worldPath:string,
-  world:TWorldConfig,
+  world:TGBWorldCfg,
   fallback?:any
 ) => {
   const cleaned = cleanWorldPath(worldPath)
@@ -175,7 +175,7 @@ export const getFromWorldPath = (
 }
 
 export const getWorldData = (
-  world:TWorldConfig,
+  world:TGBWorldCfg,
   worldPath?:string,
   fallback?:any
 ) => {
@@ -190,7 +190,7 @@ export const getWorldData = (
 }
 
 export const getWorldLocator = (
-  world:TWorldConfig,
+  world:TGBWorldCfg,
   worldPath?:string,
   fallback?:any
 ) => {

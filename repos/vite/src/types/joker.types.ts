@@ -35,9 +35,17 @@ export type TJokerUsage = {
   completion_tokens?:number
 }
 
+export type TJokerStepReq = TJokerReq<{ url: string }> & {
+  action: EJokerAction.StepFromBrowserAndPrompt
+}
 
-export type TJokerReq = TJokerReqEx & {
+export type TJokerQAReq = TJokerReq<never> & {
+  action: EJokerAction.Question
+}
+
+export type TJokerReq<T extends Record<string, any>=Record<string, any>> = TJokerReqEx<T> & {
   cb?:(res:TJokerSocketRes) => void
 }
 
 export type TJokerSocketRes = TSocketEvt<TJokerRes>
+

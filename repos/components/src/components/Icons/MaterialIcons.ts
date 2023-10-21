@@ -74,7 +74,7 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-
+import SendIcon from '@mui/icons-material/Send'
 
 export {
   Settings,
@@ -150,4 +150,5 @@ export {
   KeyboardArrowRightIcon,
   PersonIcon,
   HelpOutlineIcon,
+  SendIcon
 }

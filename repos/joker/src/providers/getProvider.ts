@@ -17,6 +17,10 @@ const providers = {
 export const getProvider = (opts:TProviderOpts) => {
   try {
     const Provider = providers[opts.name]
+    
+    console.log(`------- opts -------`)
+    console.log(opts)
+    
     return new Provider(opts)
   }
   catch(err){

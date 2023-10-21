@@ -75,14 +75,13 @@ const useJokerItems = (props:TJokerActions) => {
       },
     ]
     return items
-    
+
   }, [])
 
-  
   return {
     items,
   }
-  
+
 }
 
 
@@ -103,7 +102,7 @@ export const JokerActions = (props:TJokerActions) => {
             Header={(
               <JokerActionsHeader>
                 <JokerActionsHeaderText>
-                  Joker Preset Actions
+                  Actions
                 </JokerActionsHeaderText>
               </JokerActionsHeader>
             )}

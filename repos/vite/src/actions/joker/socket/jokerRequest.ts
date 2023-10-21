@@ -1,4 +1,9 @@
-import type { TJokerReq, TJokerSocketRes } from "@types"
+import type {
+  TJokerReq,
+  TJokerQAReq,
+  TJokerStepReq,
+  TJokerSocketRes,
+} from "@types"
 
 
 import {jokerDispatch} from "@store"
@@ -16,7 +21,7 @@ import {
 } from '@constants'
 
 
-export const jokerRequest = (props:TJokerReq) => {
+export const jokerRequest = (props:TJokerStepReq|TJokerQAReq) => {
   const { cb, ...rest } = props
   
   let promise = PromiseAbort((res, rej) => {

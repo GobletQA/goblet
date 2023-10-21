@@ -1,4 +1,4 @@
-import type { TPlayerResEvent, TSymAST } from './shared.types'
+import type { TPlayerResEvent } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
 import { TTestRunUICfg } from './test.types'
 import type { TTestRunId, TTestRunEvent } from './shared.types'
@@ -11,7 +11,6 @@ export type TGlobalCopyEvent = {
 
 export type TBrowserNavEvt = {
   url:string
-  ast?:TSymAST[]
 }
 
 export type TBrowserIsLoadedEvent = {

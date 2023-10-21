@@ -1,9 +1,9 @@
 import type { Repo } from '../repo'
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
   EProvider,
   TRootPaths,
   TFileTypes,
+  TGBWorldCfg,
   TRepoMountStatus,
   TDefinitionFileModelList,
 } from './shared.types'
@@ -51,11 +51,11 @@ export type TGitData = {
 export type TRepoOpts = {
   name:string
   $ref?:string
-  git: TGitData
-  paths?: TRepoPaths
-  world: TWorldConfig
-  environment?: string
-  fileTypes: TFileTypes
+  git:TGitData
+  paths?:TRepoPaths
+  world?:TGBWorldCfg
+  environment?:string
+  fileTypes?:TFileTypes
 }
 
 export type TRepoFromCreate = {

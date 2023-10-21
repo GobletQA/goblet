@@ -45,7 +45,7 @@ describe('loadRepoContent', () => {
   })
 
   it('should load repo content successfully', async () => {
-    const result = await loadRepoContent(mockRepo, mockConfig, mockStatus)
+    const result = await loadRepoContent(mockRepo, mockStatus)
 
     expect(result).toEqual(mockContent)
     expect(loadFeatures).toHaveBeenCalledWith(mockRepo)
@@ -62,7 +62,7 @@ describe('loadRepoContent', () => {
     // @ts-ignore
     buildFileTree.mockRejectedValue(mockError)
 
-    await expect(loadRepoContent(mockRepo, mockConfig, mockStatus)).rejects.toThrow(mockError)
+    await expect(loadRepoContent(mockRepo, mockStatus)).rejects.toThrow(mockError)
 
     expect(Logger.warn).toHaveBeenCalledWith('[Repo Content Error] Could not load repo content files...')
     expect(Logger.error).toHaveBeenCalledWith(mockError)

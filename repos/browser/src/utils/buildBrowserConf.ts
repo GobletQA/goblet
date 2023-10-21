@@ -1,5 +1,5 @@
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
+  TGBWorldCfg,
   EBrowserType,
   TBrowserConf,
   TGobletConfig,
@@ -13,7 +13,7 @@ import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 
 export type TBuildBrowserCfg = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   config?:TGobletConfig
   browserServer?:boolean
   browserConf?:TBrowserConf,

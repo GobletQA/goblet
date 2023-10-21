@@ -15,4 +15,5 @@ export const ActionsContainer = styled(Box)(({ theme }) => `
   height: ${dims.editor.tabs.px};
   max-width: ${dims.editor.tabs.px};
   padding-right: ${gutter.padding.hpx};
+  background-color: var(--goblet-editorGroupHeader-tabsBackground);
 `)

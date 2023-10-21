@@ -7,18 +7,17 @@ import type {
 } from '@GSC/types'
 
 import { ExpressionKinds } from '@GSC/constants'
+import { withRepo } from '@GSC/utils/withRepo'
 import { GBrowser, Automate } from '@gobletqa/browser'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
-const onBrowserAutomate = async (
-  data:TUserAutomateOpts,
-  socket:Socket,
-  Manager:SocketManager,
-  app:Express
-) => {
 
+export const browserAutomate = (app:Express) => withRepo<TSocketEvtCBProps>(async ({
+  repo,
+  data,
+}) => {
   const browserConf = joinBrowserConf(data.browser, app)
-  const pwComponents = await GBrowser.start({ browserConf })
+  const pwComponents = await GBrowser.start({ browserConf, config: repo })
 
   switch(data?.selectorType){
     case ExpressionKinds.url: {
@@ -28,10 +27,5 @@ const onBrowserAutomate = async (
       return await Automate.turnOnElementSelect(pwComponents, data)
     }
   }
-}
+})
 
-export const browserAutomate = (app:Express) => {
-  return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
-    await onBrowserAutomate(data, socket, Manager, app)
-  }
-}

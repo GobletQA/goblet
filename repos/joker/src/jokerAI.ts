@@ -11,6 +11,7 @@ const providerAuth = {
   [EAIProvider.LeptonAI]: {
     apiKey: ENVS.GB_LEPTON_AI_TOKEN ?? ENVS.GB_JK_AI_KEY,
     baseURL: ENVS.GB_LEPTON_AI_CODE_URL ?? ENVS.GB_LEPTON_AI_CHAT_URL ?? ENVS.GB_JK_AI_URL,
+    // baseURL: `https://codellama-34b.lepton.run/api/v1`,
   },
   [EAIProvider.OpenAI]: {
     apiKey: ENVS.GB_OPEN_AI_KEY ?? ENVS.GB_JK_AI_KEY,

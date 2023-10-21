@@ -36,8 +36,8 @@ export class Browser {
   }
 
   #getPage = async ({
-    world,
     config,
+    world=config?.world,
     browserConf,
     initialUrl=GobletQAUrl,
     overrides=emptyObj as TBrowserConf,
@@ -117,8 +117,8 @@ export class Browser {
 
   #getContext = async (args:TGetCtx) => {
     const {
-      world,
       config,
+      world=config?.world,
       browserConf,
       overrides=emptyObj as TBrowserConf,
     } = args
@@ -170,7 +170,11 @@ export class Browser {
   }
 
   #getBrowser = async (args:TBrowserOnly) => {
-    const { world, config, browserServer } = args
+    const {
+      config,
+      world=config?.world,
+      browserServer
+    } = args
 
     const resp = await pwBrowsers.getBrowser({
       world,
@@ -185,13 +189,21 @@ export class Browser {
   server = async (args:TBrowserOnly) => this.#getBrowser(args)
 
   start = async (args:TStartBrowser):Promise<TPWComponents> => {
-    return await pwBrowsers.startBrowser(args, this.#getPage as TGetPageCB)
+    const {
+      config,
+      world=config?.world
+    } = args
+    
+    return await pwBrowsers.startBrowser({
+      ...args,
+      world
+    }, this.#getPage as TGetPageCB)
   }
 
   get = async (args:TGetPWComponents) => {
     const {
-      world,
       config,
+      world=config?.world,
       initialUrl=GobletQAUrl,
       browserConf=emptyObj as TBrowserConf,
     } = args
