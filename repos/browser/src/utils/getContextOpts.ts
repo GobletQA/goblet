@@ -1,5 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
-import type { TBrowserContextOpts, TGobletConfig } from '@GBB/types'
+import type { TGBWorldCfg, TBrowserContextOpts, TGobletConfig } from '@GBB/types'
 
 import { vncActive } from '@GBB/utils/checkVncEnv'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
@@ -38,7 +37,7 @@ const options = {
 }
 
 export type TGetBrowserCtxOpts = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   config?:TGobletConfig
   overrides?:TBrowserContextOpts
   contextOpts?:TBrowserContextOpts
@@ -76,7 +75,7 @@ export const getContextOpts = (args:TGetBrowserCtxOpts) => {
      * These come from the options passed to a task that started the process
      * This ensures those options gets set
      */
-    taskEnvToContextOpts(config),
+    taskEnvToContextOpts(),
     overrides
   )
 }

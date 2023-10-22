@@ -41,22 +41,21 @@ export type TSocketTokenErr = {
 
 export type TSocketTokenData = TSocketTokenValid | TSocketTokenErr
 
-export type TSocketData = {
+export type TSocketData<T extends Record<string, any>=Record<string, any>> = T & {
   url?:string
   repo?:TGitData
   browser?:TBrowserConf
-  examOpts?:TExamUIRun
   [key:string]: any
 }
 
-export type TSocketEvtCBProps = {
+export type TSocketEvtCBProps<T extends Record<string, any>=Record<string, any>> = {
   io:Server
   event:string
   socket:Socket
   user:TTokenUser
   config:TSocketConfig
   Manager:SocketManager
-  data:TSocketData
+  data:TSocketData<T>
 }
 
 export type TProcConfig = {

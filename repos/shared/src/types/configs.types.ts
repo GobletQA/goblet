@@ -3,7 +3,7 @@ import type { TRepoPaths } from './repo.types'
 import type { TExamConfig } from './exam.types'
 import type { TLogLevel } from './helpers.types'
 import type { TGFileTypes } from './files.types'
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TGBWorldCfg } from './parkin.types'
 import type { TBrowserConf, TBrowserContextOpts } from './pw.types'
 
 import type { TRecorderOpts, TGScreencastConfig } from './screencast.types'
@@ -52,7 +52,7 @@ export type TDefGobletConfig = {
   $ref?:string
   $merge?: string[],
   paths: TRepoPaths
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   fileTypes: TGFileTypes
   recorder: TRecorderOpts
   playwright?:TGobletPWConfig

@@ -4,7 +4,17 @@ export enum  EPromptRole {
   user=`user`,
   system=`system`,
   assistant=`assistant`,
-  // function=`function`,
+  function=`function`,
+}
+
+export type TJokerMsg = {
+  content:string
+  role:EPromptRole.assistant|EPromptRole.function
+}
+
+export type TUserMsg = {
+  content:string
+  role:EPromptRole.user
 }
 
 export type TPromptMsg = {
@@ -21,9 +31,10 @@ export type TQMsg = TPromptMsg|string
 
 
 export type TQuestion = {
-  temperature?:number
+  id:string
   model?: EAIModel
   messages:TQMsg[]
+  temperature?:number
 }
 
 export type TPrompt = Omit<TQuestion, `messages`> & {
@@ -38,9 +49,10 @@ export type TPRespUsage = {
 
 export type TPRespChoice = {
   index: number,
-  message: TPromptMsg,
+  message: TJokerMsg,
   finish_reason: string
 }
+
 
 export type TPromptResp = {
   id:string

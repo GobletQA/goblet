@@ -1,6 +1,7 @@
 import type {
   TJokerOpts,
   TJokerAsk,
+  TJokerRes,
   TSystemMsg,
 } from '@GJK/types'
 import { EPromptRole } from '@GJK/types'
@@ -28,8 +29,17 @@ export class Joker {
     })
   }
 
-  ask = async (args:TJokerAsk|string) => {
+  abort = async () => {
+    // TODO: add abort to joker AI request
+  }
+
+  ask = async (args:TJokerAsk|string):Promise<TJokerRes> => {
     const question = buildQuestion(args, this.#system)
-    return this.provider.prompt(question)
+    const resp = await this.provider.prompt(question)
+
+    return {
+      ...resp,
+      requestId: question?.id,
+    }
   }
 }

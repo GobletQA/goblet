@@ -26,14 +26,14 @@ export const TestRunsMsgContentContainer = styled(Box)`
   padding: ${gutter.padding.dpx};
 `
 
-export const TestRunsMsgTextContainer = styled(Box)`
+export const TestRunsMsgTextContainer = styled(Box)(({ theme }) => `
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: ${gutter.padding.px};
-  background-color: ${cmx(getColor(colors.white01, colors.black19), 30)};
-`
+  background-color: ${cmx(getColor(colors.white01, colors.black19, theme), 30)};
+`)
 
 export const TestRunsMsgText = styled(H5)(({ theme }) => `
   font-size: 16px;

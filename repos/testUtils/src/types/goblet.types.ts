@@ -1,6 +1,6 @@
-import type {TStepAst, TStepTable, TWorldConfig} from '@ltipton/parkin'
 import type { BrowserContextOptions } from 'playwright'
-import type { TGobletConfig, TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
+import type {TStepAst, TStepTable } from '@ltipton/parkin'
+import type { TGBWorldCfg, TGobletConfig, TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
 
 
 export type TGobletGlobalRecordVideo = {
@@ -66,7 +66,7 @@ export type TStepCtx = {
   doc?: any
   step:TStepAst
   table?:TStepTable
-  world:TWorldConfig
+  world:TGBWorldCfg
   options?:Record<string, any>
   [key:string]: any
 }

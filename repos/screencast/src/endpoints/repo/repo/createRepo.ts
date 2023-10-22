@@ -37,8 +37,7 @@ export const createRepo = async (
       ...body,
     })
 
-    const { config } = req.app.locals
-    content = await loadRepoContent(repo, config, status)
+    content = await loadRepoContent(repo, status)
   }
   catch(err){
     const { config } = req.app.locals

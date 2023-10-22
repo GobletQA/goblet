@@ -41,12 +41,12 @@ export const TestRunSectionHeader = styled(Box)`
   padding-right: ${gutter.padding.px};
 `
 
-export const TestRunSectionHeaderTitle = styled(H4)`
+export const TestRunSectionHeaderTitle = styled(H4)(({ theme }) => `
   padding-bottom: 8px;
   border-bottom: 1px solid;
-  color: ${getColor(colors.gray18, colors.gray01)};
-  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10), 30)};
-`
+  color: ${getColor(colors.gray18, colors.gray01, theme)};
+  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10, theme), 30)};
+`)
 
 export const TestRunFileContainer = styled(Box)`
   width: 100%;
@@ -209,7 +209,7 @@ export const TestRunTypeEvtType = styled(Box)`
   margin-right: ${gutter.margin.qpx};
 `
 
-export const TestRunEvtText = styled(Span)`
+export const TestRunEvtText = styled(Span)(({ theme }) => `
   font-size: 14px;
-  color: ${getColor(colors.gray19, colors.gray02)};
-`
+  color: ${getColor(colors.gray19, colors.gray02, theme)};
+`)

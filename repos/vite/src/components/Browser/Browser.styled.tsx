@@ -44,7 +44,7 @@ export const BrowserInput = styled('input')(({ theme }) => `
   letter-spacing: 0.2px;
   height: ${dims.browser.url.hpx};
   color: ${getColor(colors.black07, colors.white, theme)};
-  outline: 1px solid ${getColor(colors.gray00, colors.black11)};
+  outline: 1px solid ${getColor(colors.gray00, colors.black11, theme)};
   background-color: ${getColor(colors.white, colors.black12, theme)};
 
   &:focus {

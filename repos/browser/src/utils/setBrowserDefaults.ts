@@ -1,5 +1,5 @@
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
+  TGBWorldCfg,
   TBrowserPage,
   TGobletConfig,
   TBrowserContext,
@@ -9,14 +9,16 @@ import type {
 
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-
 import {
   GBrowser,
+} from '@GBB/browser'
+
+import {
   setContextCookie,
   contextStorageLoc,
   saveContextCookie,
   saveContextStorageState,
-} from '@gobletqa/browser'
+} from './browserCookie'
 
 export type TSetContextSettings = {
   headers?:boolean
@@ -35,7 +37,7 @@ export type TSetPageSettings = {
 const setContextState = async (
   context:TBrowserContext,
   ctxOpts:Partial<TBrowserContextOpts>=emptyObj,
-  world:TWorldConfig
+  world:TGBWorldCfg
 ) => {
 
   const options = {...world?.$context, ...ctxOpts}
@@ -46,7 +48,7 @@ const setContextState = async (
   savedCookie && await setContextCookie(context)
 }
 
-export const setContextHeaders = async (
+const setContextHeaders = async (
   context:TBrowserContext,
   headers:Record<string, string>
 ) => {
@@ -109,14 +111,15 @@ export const setBrowserDefaults = async (props:TSetBrowserDefaults) => {
     url,
     config,
     headers,
+    repo=config,
     browserConf,
     pwComponents,
   } = props
 
-  const { context, page } = pwComponents || await GBrowser.get({ config, browserConf })
+  const { context, page } = pwComponents || await GBrowser.get({ config: repo, browserConf })
 
   await setContextSettings({
-    config,
+    config: repo,
     context,
     headers,
   })

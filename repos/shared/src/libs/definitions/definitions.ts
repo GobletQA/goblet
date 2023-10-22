@@ -1,12 +1,12 @@
-import type { Repo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
+import type { Repo, TDefinitionFileModel } from '@GSH/types'
 
 import path from 'path'
 import { glob } from 'glob'
 import { getSupportFiles } from './supportFiles'
+import { getPathFromBase } from '@gobletqa/goblet'
 import { DefinitionsParser } from './definitionsParser'
 import { InternalPaths } from '@gobletqa/environment/constants'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
-import { getPathFromBase } from '@gobletqa/goblet'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 /**

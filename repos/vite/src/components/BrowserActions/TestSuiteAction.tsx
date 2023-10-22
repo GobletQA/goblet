@@ -17,6 +17,7 @@ import {
   TestRunGetUICfgEvt,
 } from '@constants'
 import {
+  useTheme,
   BaseAction,
   useThemeType,
   DangerousIcon,
@@ -30,7 +31,7 @@ const onPlayTestSuite = () => EE.emit<TTestRunGetUICfgEvt>(
 )
 
 export const useTestSuite = (props:TBrowserActionProps) => {
-  const { type } = useThemeType()
+  const theme = useTheme()
   const { testRunsView } = useApp()
   const { allTestsRunning } = useTestRuns()
 
@@ -53,7 +54,7 @@ export const useTestSuite = (props:TBrowserActionProps) => {
           color: `error`,
           variant: `text`,
           id: CancelButtonID,
-          containerSx: TestSuiteActionStyles(testRunsView),
+          containerSx: TestSuiteActionStyles(theme, testRunsView),
           text: (
             <TestSuiteTextContainer>
               <TestSuiteText className='action-text action-normal action-text-normal' >
@@ -75,7 +76,7 @@ export const useTestSuite = (props:TBrowserActionProps) => {
           ),
         }
   }, [
-    type,
+    theme,
     testRunsView,
     allTestsRunning
   ])

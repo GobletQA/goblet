@@ -1,5 +1,4 @@
-import type { TRepoOpts, TFileModel } from '@types'
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TGBWorldCfg, TRepoOpts, TFileModel } from '@types'
 
 import { useCallback } from 'react'
 import {getWorldLoc} from '@utils/repo/getWorldLoc'
@@ -24,7 +23,7 @@ export const useOnWorldChange = (props:THOnWorldChange) => {
     indentation
   } = useWorldSettings()
 
-  return useCallback((props:TWorldConfig) => {
+  return useCallback((props:TGBWorldCfg) => {
     const { world } = props
     const worldLoc = getWorldLoc(repo)
     const { error, content } = formatWorldFile({

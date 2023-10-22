@@ -12,7 +12,6 @@ import {
   InText,
   colors,
   getColor,
-  Dropdown,
   AutoInput,
   ExpandIcon,
 } from '@gobletqa/components'
@@ -30,36 +29,36 @@ export const RunTestOptsSectionContainer = styled(Box)`
   padding-top: 0px;
 `
 
-export const RunTestOptsSectionDrawer = styled(Collapse)`
+export const RunTestOptsSectionDrawer = styled(Collapse)(({ theme }) => `
   padding: ${gutter.padding.qpx} ${gutter.padding.dpx} ${gutter.padding.hpx};
-  background-color: ${cmx(getColor(colors.white01, colors.black19), 10)};
-`
+  background-color: ${cmx(getColor(colors.white01, colors.black19, theme), 10)};
+`)
 
 export const OptionsContainer = styled(Box)``
 
 export const TestOptsHeaderContainer = styled(Box)`
   cursor: pointer;
 `
-export const TestOptsHeaderTitle = styled(H4)`
+export const TestOptsHeaderTitle = styled(H4)(({ theme }) => `
   display: flex;
   font-size: 0.94rem;
   align-items: center;
   
   padding-bottom: 8px;
   border-bottom: 1px solid;
-  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12), 30)};
-  color: ${getColor(colors.gray18, colors.gray01)};
+  border-bottom-color: ${cmx(getColor(colors.gray01, colors.black12, theme), 30)};
+  color: ${getColor(colors.gray18, colors.gray01, theme)};
   transition: border-bottom-color ${avgEase}, color ${avgEase};
 
   &:hover {
-    color: ${cmx(getColor(colors.purple11, colors.gray01), 90)};
-    border-bottom-color: ${cmx(getColor(colors.purple06, colors.gray01), 20)};
+    color: ${cmx(getColor(colors.purple11, colors.gray01, theme), 90)};
+    border-bottom-color: ${cmx(getColor(colors.purple06, colors.gray01, theme), 20)};
   }
 
   &.open {
 
   }
-`
+`)
 
 export const TestOptsHeaderText = styled(InText)``
 

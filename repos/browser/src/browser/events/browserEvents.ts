@@ -6,7 +6,7 @@ import type {
   TOnAutomateEvent,
 } from '@GBB/types'
 
-import { Automate } from '../automate'
+import { Automate } from '../../automate'
 import { EBrowserEvent } from '@GBB/types'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 

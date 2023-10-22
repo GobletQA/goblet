@@ -1,6 +1,6 @@
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
   TBrowser,
+  TGBWorldCfg,
   TBrowserConf,
   EBrowserName,
   TPWComponents,
@@ -12,7 +12,7 @@ type TGetBrowserOpts = {
 }
 
 export type TStartBrowser = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   initialUrl?:string
   config?:TGobletConfig
   browserServer?:boolean,
@@ -23,14 +23,14 @@ export type TStartBrowser = {
 }
 
 export type TGetPWComponents = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   initialUrl?:string
   config?:TGobletConfig
   browserConf?:TBrowserConf
 }
 
 export type TBrowserOnly = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   config?:TGobletConfig
   browserServer?:boolean
   browserConf?:TBrowserConf
@@ -44,7 +44,7 @@ export type TGetPageCB = ((props:TGetPage) => Promise<TPWComponents>) & {
 }
 
 export type TGetCtx = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   config?:TGobletConfig
   browserConf:TBrowserConf
   overrides?:Partial<TBrowserConf>
@@ -56,13 +56,13 @@ export type TPWBrowsersOpts = {
 
 export type TCreateBrowserOpts = {
   type:EBrowserName
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   config?:TGobletConfig
   browserConf:TBrowserConf
 }
 
 export type TGetBrowser = {
-  world?:TWorldConfig
+  world?:TGBWorldCfg
   opts?:TGetBrowserOpts
   config?:TGobletConfig
   browserConf:TBrowserConf

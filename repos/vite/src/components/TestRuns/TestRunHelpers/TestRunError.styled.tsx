@@ -39,14 +39,14 @@ export const TestRunErrorHeaderText = styled(H5)(({ theme }) => `
   color: ${getColor(colors.gray15, colors.gray03, theme)};
 `)
 
-export const TestRunErrorTextContainer = styled(Box)`
+export const TestRunErrorTextContainer = styled(Box)(({ theme }) => `
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: ${gutter.padding.px};
-  background-color: ${cmx(getColor(colors.white01, colors.black19), 30)};
-`
+  background-color: ${cmx(getColor(colors.white01, colors.black19, theme), 30)};
+`)
 
 
 export const TestRunErrorText = styled(Span)(({ theme }) => `

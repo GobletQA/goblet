@@ -46,7 +46,7 @@ export const ErrorProblemContainer = styled(Box)(({ theme }) => {
     border-radius: 5px;
     padding: ${gutter.padding.px};
     margin-top: ${gutter.margin.qpx};
-    background-color: ${getColor(colors.red01, colors.red20)}
+    background-color: ${getColor(colors.red01, colors.red20, theme)}
   `
 })
 
@@ -58,7 +58,7 @@ export const ErrorFixContainer = styled(Box)(({ theme }) => {
     border-radius: 5px;
     padding: ${gutter.padding.px};
     margin-top: ${gutter.margin.qpx};
-    background-color: ${getColor(colors.green01, colors.green20)}
+    background-color: ${getColor(colors.green01, colors.green20, theme)}
   `
 })
 

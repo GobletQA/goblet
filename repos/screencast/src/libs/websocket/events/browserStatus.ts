@@ -1,9 +1,15 @@
 import type { Express } from 'express'
-import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
+import type {
+  Repo,
+  TBrowserConf,
+  SocketManager,
+  TSocketEvtCBProps
+} from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { GBrowser } from '@gobletqa/browser'
+import { withRepo } from '@GSC/utils/withRepo'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
@@ -11,7 +17,7 @@ let prevStatus
 let watchInterval:ReturnType<typeof setTimeout>
 
 
-type TWatchOpts = Partial<TBrowserConf> & { interval?:number }
+type TWatchOpts = Partial<TBrowserConf> & { interval?:number, stopWatching?:boolean }
 
 const defMessage = noOpObj as TWatchOpts
 
@@ -24,12 +30,17 @@ const defMessage = noOpObj as TWatchOpts
  * @returns {void}
  */
 const getStatusUpdate = async (
+  repo:Repo,
   browserConf:TBrowserConf,
   Mgr:SocketManager
 ) => {
   
   // TODO: Need to load the gobletConfig and pass it in here
-  const status = await GBrowser.start({ browserConf: joinBrowserConf(browserConf) })
+  const status = await GBrowser.start({
+    config: repo,
+    browserConf: joinBrowserConf(browserConf)
+  })
+
   // If no status chance, don't update the backend
   if (prevStatus === status?.status) return
 
@@ -42,6 +53,7 @@ const getStatusUpdate = async (
  * Interval method runs every 5 seconds unless overridden by passed in options
  * @function
  * @param {Object} app - Express App object
+ 
  * @param {Object} options - Options for watching the browser
  * @param {Object} Manager - Socket Manager Instance
  *
@@ -49,6 +61,7 @@ const getStatusUpdate = async (
  */
 const startWatching = (
   app:Express,
+  repo:Repo,
   options:TWatchOpts,
   Manager:SocketManager
 ) => {
@@ -57,7 +70,7 @@ const startWatching = (
 
   return setInterval(
     async (bConf, Mgr) => {
-      return await getStatusUpdate(bConf, Mgr).catch(err =>
+      return await getStatusUpdate(repo, bConf, Mgr).catch(err =>
         Logger.error(err.message)
       )
     },
@@ -73,16 +86,15 @@ const startWatching = (
  * Allows passing a `stopWatching` to stop the loop check
  * @function
  */
-export const browserStatus = (app:Express) => {
-  return ({
-    Manager,
-    data = defMessage,
-  }:TSocketEvtCBProps) => {
-    if (data?.stopWatching) {
-      watchInterval && clearInterval(watchInterval)
-      return (watchInterval = undefined)
-    }
-
-    watchInterval = startWatching(app, data, Manager)
+export const browserStatus = (app:Express) => withRepo<TSocketEvtCBProps>(({
+  repo,
+  Manager,
+  data=defMessage,
+}) => {
+  if (data?.stopWatching) {
+    watchInterval && clearInterval(watchInterval)
+    return (watchInterval = undefined)
   }
-}
+
+  watchInterval = startWatching(app, repo, data, Manager)
+})

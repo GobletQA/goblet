@@ -1,11 +1,11 @@
 import type { LatentRepo } from './latentRepo'
-import type { TWorldConfig } from '@ltipton/parkin'
 import type {
   TGitData,
   TRepoOpts,
   TFileTypes,
   TRepoPaths,
   TExamConfig,
+  TGBWorldCfg,
   TGobletConfig,
   TRecorderOpts,
   TGobletPWConfig,
@@ -43,7 +43,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  #world:TWorldConfig
+  #world:TGBWorldCfg
 
   /**
    * Paths object for the repo
@@ -133,8 +133,9 @@ export class Repo {
     return this.#world
   }
 
-  set world(update:TWorldConfig){
+  set world(update:TGBWorldCfg){
     this.#world = getWorld(this as TGobletConfig)
+    if(this.parkin) this.parkin.world = this.#world
   }
 
 

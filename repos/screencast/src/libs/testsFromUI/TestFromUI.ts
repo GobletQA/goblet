@@ -131,7 +131,7 @@ export class TestFromUI {
     this.runTimestamp = props.runTimestamp
 
     this.runId = this.buildRunId()
-    this.testRun = {files: {}, runId: this.runId}
+    this.testRun = {files: {}, runId: this.runId} as TTestRun
 
     props.onEvent && this.onEvent.push(props.onEvent)
     props.onRunFinish && this.onRunFinish.push(props.onRunFinish)
