@@ -17,8 +17,6 @@ const {
   browserRestart,
   cancelAutomate,
   browserAutomate,
-  jokerAbort,
-  jokerRequest,
 } = SocketEvents
 
 const defConfig = emptyObj as TSocketConfig
@@ -62,9 +60,6 @@ export const initSocket:TInitSocket = (
         testsRunAll: testsRunAll(app),
         testsRunAbort: testsRunAbort(app),
 
-        // ---- Joker AI Events ----
-        jokerAbort: jokerAbort(app),
-        jokerRequest: jokerRequest(app)
       },
     },
     cmdType
