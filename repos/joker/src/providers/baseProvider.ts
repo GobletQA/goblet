@@ -18,7 +18,7 @@ export class BaseProvider {
     top_p: 0.90,
     max_tokens: 256,
     temperature: 0.0,
-    model: EAIModel.GPT3T
+    model: EAIModel.CodeLlama34
   }
 
   constructor(opts:TProviderOpts){

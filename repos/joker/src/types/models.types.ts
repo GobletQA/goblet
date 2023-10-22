@@ -2,7 +2,8 @@
 export enum EAIModel {
   Llama27=`Llama-2-7b`,
   Llama270=`Llama-2-70b`,
-  CodeLlama34=`CodeLlama-34b-Instruct-hf`,
+  CodeLlama34=`codellama-34b`,
+  CodeLlama34Inst=`CodeLlama-34b-Instruct-hf`,
   PCodeLlama34=`Phind-CodeLlama-34B-v2`,
   GPT4=`gpt-4`,
   GPT403=`gpt-4-0314`,

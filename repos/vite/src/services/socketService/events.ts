@@ -96,5 +96,10 @@ export const events = {
    * Fire event to the listener in the actions/joker/jokerRequest.ts method
    * This ensures we can clean up the promise that's waiting for the response
    */
-  jokerResponse: (message:TJokerSocketRes) => EE.emit<TJokerSocketRes>(WSJokerResEvt, message)
+  jokerResponse: (message:TJokerSocketRes) => {
+    console.log(`------- Joker Resp -------`)
+    console.log(message)
+
+    EE.emit<TJokerSocketRes>(WSJokerResEvt, message)
+  }
 }
