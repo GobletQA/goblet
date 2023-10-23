@@ -28,7 +28,7 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
     ? ``
     : filterErrMessage(evtData as TExEventData, PWEventErrorLogFilter)
 
-  return `${capitalize(evtData.eventParent)} - ${status}${message}`
+  return `${capitalize(evtData.eventParent)} - ${status}\n${message}`
 }
 
 
