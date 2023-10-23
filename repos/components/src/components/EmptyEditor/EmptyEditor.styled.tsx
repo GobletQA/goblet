@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import {gutter} from '@theme'
 
 export const EmptyEditorContainer = styled(Box)`
-  z-index: 1;
+  z-index: 20;
   left: 0;
   right: 0;
   top: 0px;

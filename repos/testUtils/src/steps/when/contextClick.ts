@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
-import { getPage } from '@GTU/Playwright'
+import { getLocator } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
@@ -12,7 +12,8 @@ export const contextClick = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const page = await getPage()
+
+  const locator = getLocator(selector)
   /**
    * Based on the element we are interacting with
    * There are times where using a locator in not consistent
@@ -20,9 +21,10 @@ export const contextClick = async (
    * This can also happen with select drop downs
    * A good example is in Material UI 
    */
-    
-  // @ts-ignore
-  await page.evaluate(({ selector }) => document.querySelector(selector).click(), { selector })
+  await locator.evaluate((node) => {
+    const clickEvent = new MouseEvent(`click`)
+    node.dispatchEvent(clickEvent)
+  })
 
 }
 

@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
-import { getPage } from '@GTU/Playwright'
+import { getLocator } from '@GTU/Playwright'
 import {
   ExpressionKinds,
   ExpressionTypes,
@@ -15,18 +15,17 @@ const targetOpts = [
   `_top`
 ]
 
-
 export const setTarget = async (
   selector:string,
   target:string,
   ctx:TStepCtx
 ) => {
-  const page = await getPage()
+  const locator = getLocator(selector)
 
-  await page.evaluate(({ selector, target }) => {
-    const element = document.querySelector(selector)
+  await locator.evaluate((element, { target }) => {
     element.setAttribute(`target`, target)
-  }, { selector, target })
+  }, { target })
+
 }
 
 const meta = {

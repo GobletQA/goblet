@@ -21,7 +21,7 @@ export const TestRunsContainer = styled(Box)(({ theme }) => `
   right: 0px;
   bottom: 0px;
   width: 100%;
-  z-index: 10;
+  z-index: 30;
   height: 100%;
   display: flex;
   position: absolute;
