@@ -1,9 +1,18 @@
-import type { SvgIconProps } from '@mui/material'
-import type { ForwardedRef, ReactNode, CSSProperties, ComponentType, ComponentProps } from 'react'
+
+
+import type {
+  ReactNode,
+  ForwardedRef,
+  CSSProperties,
+  ComponentType,
+  ComponentProps,
+} from 'react'
 
 import { forwardRef } from 'react'
 import { Span } from '@GBC/components/Text'
 import MuiButton from '@mui/material/Button'
+import { TooltipHoc } from '@GBC/hocs/TooltipHoc'
+import { inheritStyles } from '@GBC/styles/styles'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
 
@@ -27,20 +36,13 @@ export type TButton = ComponentProps<typeof MuiButton> & {
 }
 
 const styles = {
-  text: {
-    font: `inherit`,
-    fontSize: `inherit`,
-    fontWeight: `inherit`,
-    fontFamily: `inherit`,
-    lineHeight: `inherit`,
-    letterSpacing: `inherit`,
-  },
+  text: inheritStyles,
   button: {padding: `6px 12px 6px 6px`},
   icon: {marginRight: `5px`, fontSize: `20px`},
 }
 
 
-export const Button = forwardRef((props:TButton, ref:ForwardedRef<HTMLButtonElement>) => {
+const ButtonComp = forwardRef((props:TButton, ref:ForwardedRef<HTMLButtonElement>) => {
   const {
     text,
     Icon,
@@ -82,3 +84,5 @@ export const Button = forwardRef((props:TButton, ref:ForwardedRef<HTMLButtonElem
     </MuiButton>
   )
 })
+
+export const Button = TooltipHoc(ButtonComp)

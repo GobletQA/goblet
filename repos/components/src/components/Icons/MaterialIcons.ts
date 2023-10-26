@@ -64,6 +64,9 @@ import UploadFileIcon from '@mui/icons-material/UploadFile'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import TuneIcon from '@mui/icons-material/Tune'
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
+import PersonIcon from '@mui/icons-material/Person'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 
 // Icon for playing from a specific point in a feature
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
@@ -71,6 +74,7 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import SendIcon from '@mui/icons-material/Send'
 
 export {
   Settings,
@@ -142,5 +146,9 @@ export {
   FormatListBulletedIcon,
   ContentPasteIcon,
   TuneIcon,
-  KeyboardArrowRightIcon
+  QuestionAnswerIcon,
+  KeyboardArrowRightIcon,
+  PersonIcon,
+  HelpOutlineIcon,
+  SendIcon
 }

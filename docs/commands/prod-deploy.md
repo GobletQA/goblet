@@ -62,7 +62,8 @@
   * `pnpm kube set prod --env prod`
 * Deploy the Frontend Apps
   * `pnpm dep fe --env prod`
-
+* Revert back to dev environment
+  * `GB_KUBE_CONTEXT=docker-desktop pnpm kube set dev`
 
 ## Helpful Command
 * Set both context and namespace for an environment

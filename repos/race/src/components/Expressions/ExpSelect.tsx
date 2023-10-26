@@ -13,7 +13,7 @@ import {
   sharedHelperTextProps,
 } from '../Shared'
 
-export type TExpInput = ComponentProps<typeof Select> & {
+export type TExpSelect = ComponentProps<typeof Select> & {
   step:TRaceStep
   disabled:boolean
   items?:TMenuItem[]
@@ -33,7 +33,7 @@ const selectProps = {
  * **NOTICE** - Menu Item definitions are in the main frontend (vite) app
  * Look at file `src/hooks/race/ueContentMenu.ts`
  */
-export const ExpSelect = (props:TExpInput) => {
+export const ExpSelect = (props:TExpSelect) => {
   const {
     step,
     value,

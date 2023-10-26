@@ -18,7 +18,7 @@ export class BaseProvider {
     top_p: 0.90,
     max_tokens: 256,
     temperature: 0.0,
-    model: EAIModel.GPT3T
+    model: EAIModel.CodeLlama34
   }
 
   constructor(opts:TProviderOpts){
@@ -27,7 +27,7 @@ export class BaseProvider {
   }
 
   protected toPrompt = (question:TQuestion) => {
-    const { messages } = question
+    const { messages, id, ...rest } = question
     
     const msgs = messages.map(message => {
       return isStr(message)
@@ -37,7 +37,7 @@ export class BaseProvider {
 
     return {
       ...this.defaults,
-      ...question,
+      ...rest,
       messages: msgs
     } as TPrompt
   }

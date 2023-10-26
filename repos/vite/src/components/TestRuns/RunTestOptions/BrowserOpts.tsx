@@ -7,7 +7,6 @@ import type {
 import { useState } from 'react'
 import { TestOptsSectionHeader } from './TestOptsSectionHeader'
 import {
-  TagsInput,
   NumberInput,
   ToggleInput,
   InputContainer,
@@ -16,6 +15,7 @@ import {
   RunTestOptsSectionDrawer,
   RunTestOptsSectionContainer,
 } from './RunTestOptions.styled'
+import {exists} from '@keg-hub/jsutils'
 
 
 export type TBrowserOpts = {
@@ -50,6 +50,27 @@ export const BrowserOpts = (props:TBrowserOpts) => {
         timeout="auto"
       >
         <OptionsContainer>
+
+          <InputContainer className='gb-test-suite-retry-input-container' >
+            <ToggleInput
+              label='Show Browser'
+              value={
+                !exists(testRunCfg.headless) || testRunCfg.headless
+                  ? `false`
+                  : `true`
+              }
+              onChange={(...args) => onChangeRunTestOpts(args, `headless`)}
+              options={[
+                { value: `true`, text: `True` },
+                { value: `false`, text: `False` },
+              ]}
+              helperText={
+                <InputHelperText>
+                  Show the automated browser as tests are executed
+                </InputHelperText>
+              }
+            />
+          </InputContainer>
 
           <InputContainer className='gb-test-slowmo-container' >
             <NumberInput

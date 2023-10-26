@@ -19,6 +19,7 @@ export type TUserAutomateOpts = {
   browser?:TBrowserConf
   selectorType?: string
   disabledEvents?:boolean
+  selectorRef?:string|string[]
 }
 
 export type TAutomateCleanupCB = (automate:Automate) => void

@@ -105,6 +105,7 @@ export const DefsHeaderTabs = styled(Tabs)(({ theme }) => `
 
 export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   ${tabHeight}
+  font-size: 12px;
   flex-direction: row;
   letter-spacing: 0.2px;
   max-width: ${tabWidthStr};

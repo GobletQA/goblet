@@ -1,6 +1,5 @@
 import type {
   TScreenDims,
-  TGobletConfig,
   TBrowserContextGeo,
   TBrowserContextOpts,
   TBrowserContextVideo,
@@ -110,7 +109,7 @@ const parseRecord = (
  * Gets the browser opts set as envs when a task is run
  * This allows passing values into the test environment
  */
-export const taskEnvToContextOpts = (config:TGobletConfig) => {
+export const taskEnvToContextOpts = () => {
 
   const opts = {
     ...parseJsonEnvArr('permissions', ENVS.GOBLET_CONTEXT_PERMISSIONS),

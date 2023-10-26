@@ -38,9 +38,10 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
   if (!foundRepo)
     throw new Exception(`Error getting repo status. No repo exists.`, 422)
 
-  const repoContent = await loadRepoContent(foundRepo, config, status)
+  const repoContent = await loadRepoContent(foundRepo, status)
   try {
     await setBrowserDefaults({
+      repo: foundRepo,
       config: foundRepo,
       browserConf: joinBrowserConf(foundRepo?.screencast?.browser)
     })

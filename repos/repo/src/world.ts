@@ -1,5 +1,4 @@
-import type { TGobletConfig } from '@GGT/types'
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TGBWorldCfg, TGobletConfig } from '@GGT/types'
 
 import { getClientWorld } from './getClientWorld'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
@@ -10,7 +9,7 @@ import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 export const getWorld = (
   repo?:TGobletConfig
 ) => {
-  return deepMerge<TWorldConfig>(
+  return deepMerge<TGBWorldCfg>(
     {
       app: {
         url: process.env.GOBLET_APP_URL,

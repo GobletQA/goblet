@@ -114,9 +114,9 @@ export class TestFromUI {
     const params = buildBddEnvs({
       ...opts,
       // Default to headless true for now should be added on the frontend
-      headless: true,
       cwd: aliases?.GobletRoot,
       browser: EBrowserType.chromium,
+      headless: opts?.headless ?? true,
     }, EBrowserType.chromium, ETestType.feature, true)
     
     return deepMerge<SpawnOptionsWithoutStdio>(
@@ -131,7 +131,7 @@ export class TestFromUI {
     this.runTimestamp = props.runTimestamp
 
     this.runId = this.buildRunId()
-    this.testRun = {files: {}, runId: this.runId}
+    this.testRun = {files: {}, runId: this.runId} as TTestRun
 
     props.onEvent && this.onEvent.push(props.onEvent)
     props.onRunFinish && this.onRunFinish.push(props.onRunFinish)

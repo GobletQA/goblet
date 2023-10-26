@@ -1,9 +1,11 @@
 import type { Socket } from 'socket.io'
 import type {
+  Repo,
+  TGBWorldCfg,
   TBrowserConf,
+  TBrowserPage,
   TBrowserContext,
   TBrowserContextOpts,
-  TBrowserPage
 } from '@GSC/types'
 
 import { get } from '@keg-hub/jsutils/get'
@@ -29,20 +31,10 @@ type TRestartWSocket = {
 }
 type TRestartSocket = TRestartWId|TRestartWSocket
 
-type TWorldConfig = {
-    url?: string
-    app?: Record<string, any>
-    merge?: string[]
-    environment?: string
-    data?: Record<string, any>
-    $alias: Record<string, any>
-    context?: Record<string, any>
-    [key: string]: any
-};
-
 export type TRestartContext = TRestartSocket & {
   url?:string
-  world?:TWorldConfig
+  repo?:Repo
+  world?:TGBWorldCfg
   Manager?:SocketManager
   browser?:Partial<TBrowserConf>
 }
@@ -96,26 +88,30 @@ const getSocket = (props:TRestartContext) => {
 }
 
 export const restartContext = async (props:TRestartContext) => {
+  const { repo, world=repo.world } = props
+  const args = {...props, world}
+  
   // TODO: need to get the gobletConfig and pass it in here
   const browserConf = joinBrowserConf(props.browser)
-  const { context, page } = await GBrowser.get({ browserConf })
+  const browserOpts = { browserConf, world, config: repo }
+  const { context, page } = await GBrowser.get(browserOpts)
 
-  const url = getPageUrl(props, page)
-  const extraCtxOpts = await getCtxOptions(props, browserConf, context)
+  const url = getPageUrl(args, page)
+  const extraCtxOpts = await getCtxOptions(args, browserConf, context)
 
   context && await context.close()
 
   await GBrowser.start({
-    browserConf,
+    ...browserOpts,
     initialUrl: url,
     overrides: { context: extraCtxOpts },
   })
 
-  const pwComponents = await GBrowser.get({ browserConf })
+  const pwComponents = await GBrowser.get(browserOpts)
   global.context = pwComponents.context
 
   browserEvents({
-    ...props,
+    ...args,
     browserConf,
     pwComponents,
     ...getSocket(props),

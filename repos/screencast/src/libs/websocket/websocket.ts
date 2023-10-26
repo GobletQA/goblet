@@ -42,17 +42,24 @@ export const initSocket:TInitSocket = (
     {
       ...config,
       events: {
+        // ---- User Session Events ----
         authToken: authToken(app),
         disconnect: disconnect(app),
         connection: connection(app),
+
+        // ---- Browser Single Test Run Events ----
         browserPlay: browserPlay(app),
         browserRecord: browserRecord(app),
         browserRestart: browserRestart(app),
+
+        // ---- Browser Automation Events ----
         cancelAutomate: cancelAutomate(app),
         browserAutomate: browserAutomate(app),
 
+        // ---- Full Test Suite Events ----
         testsRunAll: testsRunAll(app),
         testsRunAbort: testsRunAbort(app),
+
       },
     },
     cmdType

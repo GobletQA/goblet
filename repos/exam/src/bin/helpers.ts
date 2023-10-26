@@ -62,7 +62,7 @@ export const removeEmpty = <T extends Record<any, any>>(opts:T) => {
 /**
  * Special handling for arguments that can be a boolean or number
  */
-const booleanToNum = (opts:TExamCliOpts, key:keyof TExamCliOpts) => {
+const booleanToNum = (opts:TExamCliOpts, key:string) => {
   const value = opts[key]
   if(!exists(value)) return
 
@@ -77,7 +77,8 @@ export const parseArgs = async () => {
   const args = process.argv.slice(2) as string[] 
   const last = args[args.length - 1]
 
-  const opts = await argsParse({ args, task: { options }})
+  const opts = await argsParse({ args, task: { options }}) as TExamCliOpts
+
   /**
    * Convert any options that ban be a boolean or number to a number
    * IF false, will be 0; if true, will be 1, or converted into a number

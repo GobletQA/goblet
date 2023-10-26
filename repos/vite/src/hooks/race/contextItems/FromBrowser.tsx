@@ -42,6 +42,7 @@ const fromBrowser = async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement
   const [err, data] = await limbo<TSelectFromBrowserRespEvent, TAbortError>(automateBrowser({
     disabledEvents: true,
     selectorType: active.kind,
+    selectorRef: active.kindRef,
   }))
 
   // Reenable the input be removed the disabled prop set above

@@ -182,6 +182,13 @@ export type TStartPlaying = {
   steps?:TParkinRunStepOptsMap
 }
 
+export type TScrapeBrowser = {
+  repo?:Repo
+  url?:string
+  browserConf?:TBrowserConf
+  pwComponents?:TPWComponents
+}
+
 export type TStartRecording = {
   id:string
   repo?:Repo

@@ -74,6 +74,14 @@ export const TestCfgUpdaters = {
     },
     onBlur: noOp,
   },
+  headless: {
+    onChange: (_:any, value:string, __:any, ___:any) => {
+      if(!exists(value)) return undefined
+
+      return { headless: !toBool(value) }
+    },
+    onBlur: noOp,
+  },
   slowMo: {
     onChange: noOp,
     onBlur: (evt:FocusEvent) => {

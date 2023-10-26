@@ -28,9 +28,9 @@ export const ModalHeader = (props:TModal) => {
   const theme = useTheme()
   const styles = useMemo(() => {
     return {
-      color: getColor(colors.black10, colors.white),
-      bgcolor: getColor(colors.white, colors.black12),
-      borderBottom: `1px solid ${getColor(colors.white01, colors.black14)}`
+      color: getColor(colors.black10, colors.white, theme),
+      bgcolor: getColor(colors.white, colors.black12, theme),
+      borderBottom: `1px solid ${getColor(colors.white01, colors.black14, theme)}`
     }
     
   }, [theme])

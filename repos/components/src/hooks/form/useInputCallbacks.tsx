@@ -16,6 +16,7 @@ export type THInputCallbacks = {
   onBlur?:TChangeCB
   onFocus?:TChangeCB
   autoFocus?:boolean
+  multiline?:boolean
   onChange?:TChangeCB
   controlled?:boolean
   onKeyDown?:TChangeCB
@@ -31,6 +32,7 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
     setValue,
     multiple,
     autoFocus,
+    multiline,
     controlled,
   } = props
 
@@ -53,9 +55,9 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
      */
     autoFocus || forceFocus
       && setTimeout(() => {
-        inputRef.current?.focus?.()
-        inputRef.current?.select?.()
-      }, 0)
+          inputRef.current?.focus?.()
+          inputRef.current?.select?.()
+        }, 0)
 
     onFocusIn?.(evt)
 
@@ -115,15 +117,16 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
     if(multiple && evtKey.key === ` `)
       isStr(val) && setValue?.(val.split(` `))
 
-    else if(evtKey.key === `Enter`)
+    else if((!multiline || !evt?.shiftKey) && evtKey.key === `Enter`)
       target?.blur?.()
-    
+
     onKeyDownIn?.(evt)
 
   }, [
     value,
     error,
     multiple,
+    multiline,
     setValue,
     onKeyDownIn
   ])

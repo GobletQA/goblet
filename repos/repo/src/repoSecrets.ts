@@ -1,4 +1,5 @@
 import type { TGitOpts } from '@GGT/types'
+import type { Repo } from '@gobletqa/repo'
 import type { TGobletConfig } from '@gobletqa/shared'
 
 import { Logger } from '@gobletqa/logger'
@@ -8,10 +9,10 @@ import {ensureRemoteTag} from './ensureRemoteTag'
 
 export const repoSecrets = async (
   opts:TGitOpts,
-  config:TGobletConfig,
+  repo:Repo|TGobletConfig,
   statusCheck?:boolean
 ) => {
-  if(config?.$ref) Logger.success(`Goblet config has $ref, skipping remote tag`)
+  if(repo?.$ref) Logger.success(`Goblet Repo has $ref, skipping remote tag`)
 
   else if(!statusCheck){
     Logger.log(`Checking goblet remote tag...`)
@@ -20,7 +21,7 @@ export const repoSecrets = async (
   }
 
   Logger.log(`Decrypting repo secrets...`)
-  const cryptoErr = await decryptRepo(opts, config)
+  const cryptoErr = await decryptRepo(opts, repo)
 
   if(cryptoErr) throw cryptoErr
 }

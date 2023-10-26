@@ -16,6 +16,10 @@ export type TProviderDefs = {
 
 export type TProviderOpts = {
   name:EAIProvider
-  auth?:Record<string, any>
+  auth?:{
+    apiKey?:string
+    baseUrl?:string
+    organization?:string
+  }
   defaults?:TProviderDefs
 }

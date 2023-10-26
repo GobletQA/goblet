@@ -3,6 +3,7 @@ declare const self: DedicatedWorkerGlobalScope;
 
 import type {
   TAudit,
+  TGBWorldCfg,
   TRaceFeature,
   TAuditFeature,
   TRaceParentAst,
@@ -14,7 +15,6 @@ import type {
   EAstObject,
   TParentAst,
   TFeatureAst,
-  TWorldConfig,
   TRegisterOrAddStep,
 } from '@ltipton/parkin'
 
@@ -35,13 +35,13 @@ export type TReIndexFeature = {
 
 const PK  = new Parkin()
 
-export const init = async (world?:TWorldConfig, steps?:TRegisterOrAddStep) => {
+export const init = async (world?:TGBWorldCfg, steps?:TRegisterOrAddStep) => {
   PK.init(world, steps, false)
 }
 
 export const getWorld = async () => PK.world
-export const setWorld = async (world:TWorldConfig, replace?:boolean) => {
-  PK.world = replace ? world : deepMerge<TWorldConfig>(PK.world, world)
+export const setWorld = async (world:TGBWorldCfg, replace?:boolean) => {
+  PK.world = replace ? world : deepMerge<TGBWorldCfg>(PK.world, world)
 }
 
 export const registerSteps = async (steps:TRegisterOrAddStep) => PK.registerSteps(steps)
@@ -50,8 +50,8 @@ export const clearSteps = async () => PK?.steps?.clear?.()
 
 export const parseFeature = async (
   text:string,
-  world?:TWorldConfig,
-) => PK.parse.feature(text, world || {$alias: {}} as TWorldConfig, { worldReplace: false })
+  world?:TGBWorldCfg,
+) => PK.parse.feature(text, world || {$alias: {}} as TGBWorldCfg, { worldReplace: false })
 
 export const reIndex = async (options:TReIndexFeature) => {
   const { feature } = options

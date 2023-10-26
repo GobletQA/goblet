@@ -17,11 +17,12 @@ export type TExpPart = TPartsMatch & {
   kind?: string
   label?:string
   decor?:boolean
-  defIndex: number
+  defIndex:number
   example?:string
   value?:string|number
-  description?: string
+  description?:string
   paramType:EExpParmType
+  kindRef?:string|string[]
   options?:string[]|number[]
 }
 

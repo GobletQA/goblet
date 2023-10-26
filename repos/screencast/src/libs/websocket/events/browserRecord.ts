@@ -1,10 +1,19 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
-import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
+import type { Repo, SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
+import { withRepo } from '@GSC/utils/withRepo'
 import { recordBrowser } from '@gobletqa/browser'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+
+type TRecordAction = {
+  repo:Repo,
+  app:Express
+  socket:Socket
+  data:Record<any, any>
+  Manager:SocketManager
+}
 
 /**
  * Stats a the browser recorder from a socket.io event
@@ -19,16 +28,26 @@ import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
  *
  * @returns {void}
  */
-const handleStart = async (
-  data:Record<any, any>,
-  socket:Socket,
-  Manager:SocketManager,
-  app:Express
-) => {
-  const { token, ref, action, repo, ...browser } = data
+const handleStart = async (props:TRecordAction) => {
+  const {
+    app,
+    data,
+    repo,
+    socket,
+    Manager,
+  } = props
+
+  const {
+    token,
+    ref,
+    action,
+    ...browser
+  } = data
+
   const browserConf = joinBrowserConf(browser, app)
 
   const recorder = await recordBrowser({
+    repo,
     action,
     browserConf,
     id: socket.id,
@@ -51,18 +70,16 @@ const handleStart = async (
  * Pulls the Recorder instance from Socket Manager Cache
  * Then calls the recorders stop method
  *
- * @param {Object} data - Data object passed to the socket event from the FE
- * @param {Object} socket - Socket.io Socket object
- * @param {Object} Manager - Socket Manager instance
- *
  * @returns {void}
  */
-const handleStop = async (
-  data:Record<any, any>,
-  socket:Socket,
-  Manager:SocketManager,
-  app:Express
-) => {
+const handleStop = async (props:TRecordAction) => {
+  
+  const {
+    data,
+    socket,
+    Manager,
+  } = props
+  
   const { action=emptyObj } = data
   const cache = Manager.cache[socket.id]
 
@@ -82,14 +99,13 @@ const handleStop = async (
  *
  * @returns {function} - Custom Event Method passed to Socket to be called from the frontend
  */
-export const browserRecord = (app:Express) => {
-  return async ({ data, socket, Manager }:TSocketEvtCBProps) => {
+export const browserRecord = (app:Express) => withRepo<TSocketEvtCBProps>(async (props) => {
     // TODO: add token validation
-    const { action } = data
+    const { action } = props?.data
 
-    action.action === 'start'
-      ? await handleStart(data, socket, Manager, app)
-      : await handleStop(data, socket, Manager, app)
-  }
-}
+    action.action === `start`
+      ? await handleStart({ ...props, app })
+      : await handleStop({ ...props, app })
+  })
+
 

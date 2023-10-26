@@ -7,8 +7,11 @@ import { useEventState } from '@hooks/testRuns/useEventState'
 import {
   TestRunEvtText,
   TestRunEventItem,
+  TestRunEvtErrText,
   TestRunTypeEvtType,
+  TestRunEvtErrTitle,
   TestRunEventContainer,
+  TestRunEvtErrContainer,
   TestRunEventIconContainer,
   TestRunEventTextContainer,
 } from './TestRunsReporter.styled'
@@ -53,7 +56,7 @@ const useClassList = (props:TTestRunEvt, evtState:TTestRunEventState) => {
     runState?.status,
   ])
 }
- 
+
 const TestRunEventType = (props:TTestRunEvt) => {
   const {
     end,
@@ -79,6 +82,35 @@ const TestRunEventType = (props:TTestRunEvt) => {
   )
 }
 
+const TestRunEventError = (props:TTestRunEvt & { classList:string }) => {
+  const {
+    end,
+    classList,
+  } = props
+
+  if(!end?.description) return null
+
+  const [title, ...rest] = end?.description.split(`\n`)
+
+  return (
+    <TestRunEvtErrContainer className={`gb-test-run-error-container ${classList}`} >
+      <TestRunEvtErrTitle>
+        {title}
+      </TestRunEvtErrTitle>
+      <>
+      {
+        rest.map(line => (
+          <TestRunEvtErrText key={line} className={`gb-test-run-error-text ${classList}`} >
+            {line}
+          </TestRunEvtErrText>
+        ))
+      }
+      </>
+    </TestRunEvtErrContainer>
+  )
+  
+}
+
 export const TestRunEvent = (props:TTestRunEvt) => {
   const {
     end,
@@ -90,6 +122,7 @@ export const TestRunEvent = (props:TTestRunEvt) => {
   const scrolledRef = useRef<boolean>(false)
   const evtState = useEventState(props, props.canceled)
   const classList = useClassList(props, evtState)
+  const showTestErr = Boolean(end?.failed && end?.type === `test` && end?.description)
 
   useEffect(() => {
     if(!allTestsRunning) return
@@ -112,7 +145,6 @@ export const TestRunEvent = (props:TTestRunEvt) => {
     allTestsRunning
   ])
 
-
   return (
     <TestRunEventItem className={`gb-test-run-event-item ${classList}`}>
       <TestRunEventContainer ref={itemRef} className={`gb-test-run-event-container ${classList}`} >
@@ -129,8 +161,13 @@ export const TestRunEvent = (props:TTestRunEvt) => {
           <TestRunEvtText className={`gb-test-run-event-text ${classList}`}>
             {start.text}
           </TestRunEvtText>
+
         </TestRunEventTextContainer>
+
       </TestRunEventContainer>
+
+      {showTestErr && (<TestRunEventError {...props} classList={classList} />)}
+
     </TestRunEventItem>
   )
   

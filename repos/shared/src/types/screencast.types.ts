@@ -2,6 +2,7 @@ import type { TJwtConfig } from './helpers.types'
 import type { TSocketConfigOpts } from './socket.types'
 import type { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
+export * from '../../../screencast/src/types'
 export type TChildProcArgs = {
   cwd: string
   args: string[]

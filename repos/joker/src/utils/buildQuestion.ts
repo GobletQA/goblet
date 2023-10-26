@@ -7,13 +7,14 @@ import type {
 
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { exists } from '@keg-hub/jsutils/exists'
+import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 export const buildQuestion = (
   args:TJokerAsk|string,
   system:TSystemMsg[]=emptyArr
 ):TQuestion => {
-  if(isStr(args)) return { messages: [args] }
+  if(isStr(args)) return { messages: [args], id: nanoid() }
 
   const {
     q,

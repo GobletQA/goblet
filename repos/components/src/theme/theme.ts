@@ -1,5 +1,5 @@
+import type { TGobletTheme } from '@GBC/types'
 import type { ThemeOptions } from '@mui/material/styles'
-import type { TGobletTheme, TEditorTheme } from '@GBC/types'
 
 import { dims } from './dims'
 import { gutter } from './gutter'

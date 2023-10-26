@@ -1,5 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
-import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
+import type { TGBWorldCfg, TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
@@ -8,7 +7,7 @@ import { vncActive } from '@GBB/utils/checkVncEnv'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
-import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { InternalPaths } from '@gobletqa/environment/constants'
 import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
@@ -18,14 +17,23 @@ import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
  * @type {Object}
  */
 const getDefOpts = () => {
-  const opts =  {
+  const opts = {
+    shared: {
+      args: [
+        `--allow-insecure-localhost`,
+        `--use-fake-ui-for-media-stream`,
+        `--use-fake-device-for-media-stream`,
+        `--unsafely-treat-insecure-origin-as-secure`,
+      ],
+      ignoreDefaultArgs: [
+        `--enable-automation`
+      ],
+    },
     host: {} as Partial<TBrowserConf>,
     vnc: {
       slowMo: 100,
       headless: false,
-      ignoreDefaultArgs: [
-        `--enable-automation`
-      ],
+      ignoreDefaultArgs: [],
       args: [
           // `--disable-extensions-except=${pathToExtension}`,
           // `--load-extension=${pathToExtension}`,
@@ -35,10 +43,6 @@ const getDefOpts = () => {
         `--start-fullscreen`,
         // Hides the top-bar header. Should validate this this is what we want
         `--window-position=0,-75`,
-        `--allow-insecure-localhost`,
-        `--unsafely-treat-insecure-origin-as-secure`,
-        `--use-fake-ui-for-media-stream`,
-        `--use-fake-device-for-media-stream`,
         `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
 
 
@@ -63,6 +67,7 @@ const getDefOpts = () => {
     ci: {
       args: [],
       headless: true,
+      ignoreDefaultArgs: [],
     } as Partial<TBrowserConf>,
   }
 
@@ -71,7 +76,7 @@ const getDefOpts = () => {
   // Then add the fake webcam data
   if(InternalPaths?.testUtilsDir){
     const webcamLoc = path.join(InternalPaths.testUtilsDir, `media/webcam.y4m`)
-    opts.vnc.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
+    opts.shared.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
   }
 
 
@@ -112,7 +117,7 @@ const getConfigOpts = (config:TGobletConfig) => {
 export const getBrowserOpts = (
   browserConf:TBrowserConf=emptyObj as TBrowserConf,
   config?:TGobletConfig,
-  world?:TWorldConfig
+  world?:TGBWorldCfg
 ) => {
   const {
     ws,
@@ -124,7 +129,8 @@ export const getBrowserOpts = (
     // Should not be included in the browser options
     context,
     page,
-    args = noPropArr,
+    args=emptyArr,
+    ignoreDefaultArgs=emptyArr,
     // type / url is not used, just pulled out of the config object
     type,
     url,
@@ -133,12 +139,17 @@ export const getBrowserOpts = (
 
   const options = getDefOpts()
 
-  const { args: configModeArgs, ...configModeOpts } = vncActive()
+  const {
+    args:configModeArgs,
+    ignoreDefaultArgs:configModeIgnoreArgs,
+    ...configModeOpts
+  } = vncActive()
     ? options.vnc
     : options.host
 
   const {
     args:ciArgs,
+    ignoreDefaultArgs:ciIgnoreArgs,
     ...ciConfigModeOpts
   } = (process.env.GOBLET_RUN_FROM_CI ? options.ci : {}) as Partial<TBrowserConf>
 
@@ -157,7 +168,18 @@ export const getBrowserOpts = (
      * Allows only setting properties if they actually exist
      */
     {
-      args: flatUnion(configModeArgs, ciArgs, args),
+      args: flatUnion(
+        options.shared.args,
+        configModeArgs,
+        ciArgs,
+        args
+      ),
+      ignoreDefaultArgs: flatUnion(
+        options.shared.ignoreDefaultArgs,
+        configModeIgnoreArgs,
+        ciIgnoreArgs,
+        ignoreDefaultArgs
+      ),
       ...(exists(headless) && { headless }),
       ...(exists(channel) && { channel }),
       colorScheme: colorScheme || `no-preference`,

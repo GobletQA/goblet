@@ -272,7 +272,7 @@ export const ToggleHelperText = styled(Text)(({ theme }) => {
     font-family: Manrope,sans-serif;
     margin-left: ${gutter.margin.qpx};
     margin-right: ${gutter.margin.qpx};
-    color: ${getColor(colors.gray15, colors.gray03)};
+    color: ${getColor(colors.gray15, colors.gray03, theme)};
   `
 })
 

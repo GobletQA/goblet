@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
 import {
   dims,
+  colors,
   Tooltip,
   useTheme,
   getColor,
@@ -43,9 +44,9 @@ export const NavItem = (props:TNavItemProps) => {
   } = useMemo(() => {
 
     const isActive = name === activeNav
-    const activeColor = getColor(`colors.fadeDark60`, `colors.fadeDark60`, theme)
-    const inactiveColor = getColor(`colors.fadeDark50`, `colors.fadeDark50`, theme)
-    const backgroundActiveColor = getColor(`colors.fadeDark15`, `colors.fadeDark15`, theme)
+    const activeColor = getColor(colors.fadeDark60, colors.fadeDark60, theme)
+    const inactiveColor = getColor(colors.fadeDark50, colors.fadeDark50, theme)
+    const backgroundActiveColor = getColor(colors.fadeDark15, colors.fadeDark15, theme)
 
     return {
       isActive,

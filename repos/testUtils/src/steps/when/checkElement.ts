@@ -3,7 +3,12 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+
+const checkOpts = [
+  `check`,
+  `uncheck`
+]
 
 /**
  * Checks/unchecks the element matching the selector
@@ -30,18 +35,16 @@ const meta = {
   ],
   expressions: [
     {
-      // TODO: check kind should be `check` || `uncheck`
-      kind: ExpressionKinds.check,
+      example: `check`,
+      options: checkOpts,
+      kind: ExpressionKinds.options,
       type: ExpressionTypes.string,
       description: `Valid options are \'check\' or \'uncheck\' only.`,
-      example: 'check',
     },
     {
-      // TODO: Should set different element types that can be selected
-      // In this case only radio and checkboxes
-      // kind: ExpressionKinds.checkbox,
       kind: ExpressionKinds.element,
       type: ExpressionTypes.string,
+      kindRef: ExpressionElements.inputCheck,
       description: `The element selector. Selector must be specific enough to locate a single element.  Valid for checkbox and radio inputs.`,
       example: `input[name='unique_name']`,
     },

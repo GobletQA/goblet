@@ -41,12 +41,12 @@ export const TestRunSectionHeader = styled(Box)`
   padding-right: ${gutter.padding.px};
 `
 
-export const TestRunSectionHeaderTitle = styled(H4)`
+export const TestRunSectionHeaderTitle = styled(H4)(({ theme }) => `
   padding-bottom: 8px;
   border-bottom: 1px solid;
-  color: ${getColor(colors.gray18, colors.gray01)};
-  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10), 30)};
-`
+  color: ${getColor(colors.gray18, colors.gray01, theme)};
+  border-bottom-color: ${cmx(getColor(colors.gray03, colors.black10, theme), 30)};
+`)
 
 export const TestRunFileContainer = styled(Box)`
   width: 100%;
@@ -87,7 +87,9 @@ export const TestRunEventsListHeader = styled(ListSubheader)(({ theme }) => `
 export const TestRunListHeaderText = styled(InText)``
 
 export const TestRunEventItem = styled(ListItem)`
+  flex-wrap: wrap;
   padding-left: ${gutter.padding.px};
+
   &.scenario {
     padding-left: ${gutter.padding.size * 2}px;
   }
@@ -209,7 +211,25 @@ export const TestRunTypeEvtType = styled(Box)`
   margin-right: ${gutter.margin.qpx};
 `
 
-export const TestRunEvtText = styled(Span)`
+export const TestRunEvtText = styled(Span)(({ theme }) => `
   font-size: 14px;
-  color: ${getColor(colors.gray19, colors.gray02)};
+  color: ${getColor(colors.gray19, colors.gray02, theme)};
+`)
+
+export const TestRunEvtErrContainer = styled(Box)`
+  margin-top: ${gutter.margin.px};
+  margin-left: ${gutter.margin.dpx};
 `
+
+export const TestRunEvtErrTitle = styled(Box)`
+  font-size: 14px;
+  font-weight: bold;
+  color: ${colors.error};
+  margin-bottom: ${gutter.margin.hpx};
+`
+
+export const TestRunEvtErrText = styled(Box)(({ theme }) => `
+  font-size: 12px;
+  margin-left: ${gutter.margin.px};
+  color: ${getColor(colors.gray19, colors.gray02, theme)};
+`)

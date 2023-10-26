@@ -1,5 +1,10 @@
-import type { TWorldConfig } from '@ltipton/parkin'
-import type { TGitData, TRepoPaths, TGobletConfig, Repo } from '@GRP/types'
+import type {
+  Repo,
+  TGitData,
+  TRepoPaths,
+  TGBWorldCfg,
+  TGobletConfig,
+} from '@GRP/types'
 
 import { ENVS } from '@gobletqa/environment'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
@@ -51,11 +56,11 @@ export const loadClientWorld = (
   config:TGobletConfig,
 ) => {
   const worldPath = config?.paths?.world
-  if(!worldPath) return deepMerge<TWorldConfig>(DefWorld)
+  if(!worldPath) return deepMerge<TGBWorldCfg>(DefWorld)
 
   const resetEnvs = setGobletEnv(config)
 
-  let worldJson:TWorldConfig
+  let worldJson:TGBWorldCfg
   try {
 
     const basePath = getRepoGobletDir(config)
@@ -65,7 +70,7 @@ export const loadClientWorld = (
       clearCache: true,
       file: `world.json`,
       location: worldPath
-    }) as TWorldConfig
+    }) as TGBWorldCfg
 
   }
   catch(err){
@@ -86,7 +91,7 @@ export const loadClientWorld = (
  */
 export const getClientWorld = (
   repo?:TGobletConfig,
-):TWorldConfig => {
+):TGBWorldCfg => {
   const cfg = repo || getGobletConfig()
   return loadClientWorld(cfg)
 }

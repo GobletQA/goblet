@@ -35,8 +35,7 @@ export const connectRepo = async (
       ...body,
     })
 
-    const { config } = req.app.locals
-    content = await loadRepoContent(repo, config, status)
+    content = await loadRepoContent(repo, status)
   }
   catch(err){
     // If the repo mounting fails for some reason

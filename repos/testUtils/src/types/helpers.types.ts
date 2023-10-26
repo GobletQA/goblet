@@ -1,5 +1,4 @@
-import type { TLocator } from './shared.types'
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TGBWorldCfg, TLocator } from './shared.types'
 
 export type TClickOpts = {
   delay?:number
@@ -29,7 +28,7 @@ export type TSaveWorldLocator = {
   selector:string,
   worldPath?:string
   element?:TLocator
-  world:TWorldConfig
+  world:TGBWorldCfg
 }
 
 export type TLocOpts = {
