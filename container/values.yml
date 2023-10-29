@@ -47,6 +47,8 @@ env:
   # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
   PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
 
+  GB_KUBE_NAMESPACE: gb-local
+  GB_KUBE_CONTEXT: docker-desktop
   GB_KUBE_SCRT_DOC_AUTH: docker-auth
   GB_KUBE_SCRT_FB_SA: firebase-sa
 

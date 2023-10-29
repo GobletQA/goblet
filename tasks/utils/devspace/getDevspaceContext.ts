@@ -26,9 +26,16 @@ export const getDevspaceContext = (
 ) => {
   const { namespace, kubeContext, env, force, override } = params
   const envs = loadEnvs({ env, force, override })
-  const { GB_KUBE_NAMESPACE = `gb-local`, GB_KUBE_CONTEXT } = envs
 
-  const { GB_KUBE_NAMESPACE:ENV_GB_KUBE_NAMESPACE, GB_KUBE_CONTEXT:ENV_GB_KUBE_CONTEXT } = process.env
+  const {
+    GB_KUBE_CONTEXT,
+    GB_KUBE_NAMESPACE =`gb-local`,
+  } = envs
+
+  const {
+    GB_KUBE_CONTEXT:ENV_GB_KUBE_CONTEXT,
+    GB_KUBE_NAMESPACE:ENV_GB_KUBE_NAMESPACE,
+  } = process.env
 
   throwErr &&
   !kubeContext &&
@@ -39,7 +46,12 @@ export const getDevspaceContext = (
   const ctx = kubeContext || ENV_GB_KUBE_CONTEXT || GB_KUBE_CONTEXT
   const ns = namespace || ENV_GB_KUBE_NAMESPACE || GB_KUBE_NAMESPACE
 
-  const arrayCtx:TDSContext = [`--namespace`, ns, `--kube-context`, ctx]
+  const arrayCtx:TDSContext = [
+    `--namespace`,
+    ns,
+    `--kube-context`,
+    ctx
+  ]
 
   // A bit of a heck, but allows accessing the namespace and context in either an array or object
   arrayCtx.namespace = ns

@@ -20,6 +20,6 @@ const requireTasks = createRequire(path.join(appRoot, 'tasks/definitions'))
   requireTasks('./utils/task/sharedOptions.ts')
   const { default:tasks } = requireTasks('./definitions/index.ts')
 
-  await runTask(tasks, { env: process.env.NODE_ENV || 'local' }, tasksConfig)
+  await runTask(tasks, { env: process.env.NODE_ENV || `local` }, tasksConfig)
 })()
 

@@ -1,8 +1,8 @@
 
 import '../resolveRoot'
 import type { TBackendConfig } from '@GBE/types'
-import { ENVS } from '@gobletqa/environment'
 
+import { ENVS } from '@gobletqa/environment'
 import { conductorConfig } from './conductor.config'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'

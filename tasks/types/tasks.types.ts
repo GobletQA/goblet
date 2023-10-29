@@ -44,9 +44,9 @@ export type TTaskAction = (args:TTaskActionArgs) => any
 
 export type TTask = {
   name: string,
+  tasks?: TTasks
   alias?: string[]
   action?: TTaskAction
-  tasks?: TTasks
   options?: TTaskOptions
   [key: string]: any
 }

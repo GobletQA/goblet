@@ -2,6 +2,7 @@ import type { TProc, TChildProcArgs } from '@GSC/types'
 
 import { exec } from 'child_process'
 import { Logger } from '@GSC/utils/logger'
+import { ENVS } from '@gobletqa/environment'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
@@ -10,7 +11,6 @@ import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { InternalPaths } from '@gobletqa/environment/constants'
 import { findProc, killProc } from '@gobletqa/shared/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
-
 
 /**
  * Cache holder for the tigervnc process
@@ -55,6 +55,7 @@ export const startVNC = async ({
       `-verbose`,
       `-SecurityTypes`,
       `None`,
+      ...(ENVS.GB_VNC_PASS ? [`-rfbauth`, `/root/.vnc/passwd`] : []),
       `-geometry`,
       `${vnc.width}x${vnc.height}x24`,
       `-rfbport`,
@@ -75,7 +76,7 @@ export const startVNC = async ({
       // This only happens on new Mac M1 machines using arm64
       // Ubuntu 20.10 should have a fix included, but playwright uses version 20.04
       // If the playwright docker image ever updates to +Ubuntu 20.10, this should be removed
-      ...(process.arch === 'arm64' && {
+      ...(process.arch === `arm64` && {
         LD_PRELOAD: `/lib/aarch64-linux-gnu/libgcc_s.so.1`,
       }),
     },

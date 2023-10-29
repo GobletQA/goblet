@@ -18,6 +18,12 @@ gb_log(){
   fi
 }
 
+setVNCPass(){
+  if [ -z "$GB_VNC_PASS" ]; then
+    echo "$GB_VNC_PASS" > ~/.vnc/passwd
+  fi
+}
+
 # Starts supervisor using the config based on the current $NODE_ENV
 startSup(){
   gb_log "Starting supervisor with config \"configs/$SupCfgLoc\""
@@ -92,6 +98,9 @@ loopConnectionsCheck(){
     sleep $GB_SC_IDLE_INTERVAL
   done
 }
+
+# Set the VNC password to make it more secure
+setVNCPass
 
 # First start supervisor, to ensure all services are running
 startSup "$@"
