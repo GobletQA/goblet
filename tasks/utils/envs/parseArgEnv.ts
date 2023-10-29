@@ -8,30 +8,35 @@ type TEnvironment = {
 const environment = tskConf.environment as TEnvironment
 let __FOUND_ENV:string
 
+
+const findEnvArg = (args:string[], refs:string[]) => {
+  return args.reduce((matching, arg, idx) => {
+    if(matching.length) return matching
+
+    const cleaned = arg.split(`=`).shift()
+
+    const match = refs.find(ref => cleaned === ref)
+    return match ? [arg, idx] : matching
+  }, [] as []|[string, number])
+}
+
 /**
  * Helper to parse the passed in args and find the environment
  * Should really be moved to args-parse
  */
 export const parseArgEnv = () => {
   if(__FOUND_ENV) return __FOUND_ENV
-  
+
   const args = process.argv.slice(2)
 
   __FOUND_ENV = environment.options.reduce((found, opt) => {
     if(found) return found
 
     const refs = [opt, `--${opt}`]
+    // Only add the single `-` for the short env option
     opt.length === 1 && refs.push(`-${opt}`)
 
-    const [envArg, idx] = args.reduce((matching, arg, idx) => {
-      if(matching.length) return matching
-
-      const cleaned = arg.split(`=`).shift()
-
-      const match = refs.find(ref => cleaned === ref)
-      return match ? [arg, idx] : matching
-    }, [] as []|[string, number])
-
+    const [envArg, idx] = findEnvArg(args, refs) as [string, number]
     if(!envArg) return found
 
     const [equalsEnv, equalsVal] = envArg.split(`=`)

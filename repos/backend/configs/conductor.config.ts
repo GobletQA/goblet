@@ -55,13 +55,15 @@ const {
 
 } = process.env
 
+
 const whiteList = [
   `GB_SC`,
   `GB_LOG`,
   `GB_VNC`,
-  `GB_NO_VNC`,
   `DISPLAY`,
   `PLAYWRIGHT_`,
+  `GB_NO_VNC`,
+  `GB_VNC_PASS`,
   `GB_CD_VALIDATION`,
   `GB_SERVER_ORIGINS`,
   `GB_BE_WS_PATH`,
