@@ -126,8 +126,10 @@ git.checkRepo = async (gitOpts:TGitOpts):Promise<TRepoGitState> => {
 
   const { remote, branch, newBranch } = gitOpts
   const remoteUrl =  await git.remote.print(gitOpts)
-  if(remoteUrl === remote) state.repo = true
-  
+  if(remoteUrl !== remote) return state
+
+  state.repo = true
+
   const checkBranch = newBranch || branch
   const currentBranch = await git.branch.current(gitOpts)
   if(checkBranch === currentBranch) state.branch = true

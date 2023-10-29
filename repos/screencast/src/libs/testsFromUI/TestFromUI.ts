@@ -114,9 +114,9 @@ export class TestFromUI {
     const params = buildBddEnvs({
       ...opts,
       // Default to headless true for now should be added on the frontend
-      headless: true,
       cwd: aliases?.GobletRoot,
       browser: EBrowserType.chromium,
+      headless: opts?.headless ?? true,
     }, EBrowserType.chromium, ETestType.feature, true)
     
     return deepMerge<SpawnOptionsWithoutStdio>(

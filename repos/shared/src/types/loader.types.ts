@@ -22,6 +22,7 @@ export type TLoadShared = {
   safe?: boolean
   first?: boolean
   basePath:string
+  clearCache?:boolean
   merge?: string[] | false | null | undefined
 }
 
@@ -48,11 +49,13 @@ export type TGobletLoaderRemote = {
 export type TGobletLoader = TLoader & (TGobletLoaderRef | TGobletLoaderRemote)
 
 export type TCfgRefFolder = {
+  clearCache?:boolean
   ref:string|undefined
   remote?:never
 }
 
 export type TCfgRemoteFolder = {
+  clearCache?:boolean
   ref?:never|undefined
   remote:string
 }

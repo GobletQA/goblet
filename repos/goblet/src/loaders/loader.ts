@@ -95,13 +95,15 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
 const loadWithMerge = <T extends TCfgMerge>(data:T, {
   merge,
   basePath,
-  requireFunc
+  clearCache,
+  requireFunc,
 }:Omit<TLoopLoad<T>, `loadArr`>) => {
 
   if(merge === false || !data?.$merge || !data?.$merge?.length) return data
 
   const loadedArr = loopLoadArray<T>({
     basePath,
+    clearCache,
     requireFunc,
     loadArr: data?.$merge,
   })
@@ -124,10 +126,11 @@ const loopLoadArray = <T extends TCfgMerge>(params:TLoopLoad<T>):TLoadedFunResp<
     first,
     loadArr,
     basePath,
+    clearCache,
     requireFunc,
   } = params
 
-  const requireData = requireFunc || buildRequire(basePath, { safe })
+  const requireData = requireFunc || buildRequire(basePath, { safe, clearCache })
   
   const loadedArr:TLoadedFunResp<T>[] = [] as TLoadedFunResp<T>[]
 
@@ -215,6 +218,7 @@ export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
     remote,
     basePath,
     safe=true,
+    clearCache,
     first=true,
     addLocation,
   ...loadArgs
@@ -227,7 +231,7 @@ export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
     addLocation,
     loadArr: GobletConfigFileNames,
     ...loadArgs,
-    requireFunc: buildRequire(params.basePath, { safe, addLocation }),
+    requireFunc: buildRequire(params.basePath, { safe, addLocation, clearCache }),
     // enforce not loading multiple goblet configs
     merge: false,
   })

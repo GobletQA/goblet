@@ -68,13 +68,21 @@ const addListener = (styles) => {
   }
 }
 
+const findTarget = (element, options) => {
+  if(!options || !options.selectorRef) return element
+
+  const selectorRef = options.selectorRef
+  const search = Array.isArray(selectorRef) ? selectorRef.join(`, `) : selectorRef
+
+  return element.querySelector(search)
+    || element.closest(search)
+    || element
+
+}
 
 const elementSelectEvent = (options, e) => {
 
   options = options || {}
-
-  // TODO: use selector type to choose between selecting text or an css selector
-  const selectorType = options.selectorType
 
   if(options.disabledEvents !== false){
     e.stopPropagation()
@@ -82,28 +90,30 @@ const elementSelectEvent = (options, e) => {
     e.stopImmediatePropagation()
   }
 
+  const target = findTarget(e.target, options)
+
   const event = {
     type: e.type,
-    target: window.__gobletFindCssSelector(e.target, options),
+    target: window.__gobletFindCssSelector(target, options),
   }
 
-  if(exists(e.target.value)) event.value = e.target.value
+  if(exists(target.value)) event.value = target.value
 
-  if(exists(e.target.type)) event.elementType = e.target.type
-  if(exists(e.target.tagName)) event.elementTag = e.target.tagName.toLowerCase()
+  if(exists(target.type)) event.elementType = target.type
+  if(exists(target.tagName)) event.elementTag = target.tagName.toLowerCase()
 
-  if(event.elementType === 'checkbox' || event.elementType === 'radio')
-    event.elementChecked = e.target.checked
+  if(event.elementType === `checkbox` || event.elementType === `radio`)
+    event.elementChecked = target.checked
   
   if(event.elementType === 'select'){
-    event.selectedIndex = e.target.selectedIndex
-    event.selectedText = e.target[event.selectedIndex].text
+    event.selectedIndex = target.selectedIndex
+    event.selectedText = target[event.selectedIndex].text
   }
 
-  // if(exists(e.target.outerHTML)) event.elementHtml = e.target.outerHTML
+  // if(exists(target.outerHTML)) event.elementHtml = target.outerHTML
 
-  if(exists(e.target.innerText))
-    event.elementText = (e.target.textContent || ``).substring(0, 300)
+  if(exists(target.innerText))
+    event.elementText = (target.textContent || ``).substring(0, 300)
 
   window.onGobletSelectAction(event)
 }

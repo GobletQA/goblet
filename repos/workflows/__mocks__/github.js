@@ -25,7 +25,8 @@ export const repos = {
           "branches": [
             "main",
             "goblet-lancetipton",
-            "goblet-HerrSchultz"
+            "goblet-HerrSchultz",
+            "goblet-acabreira"
           ]
         },
         {

@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 type TCheckStates = [`checked`, `unchecked`] & {
   checked?: `checked`,
@@ -49,6 +49,7 @@ const meta = {
     {
       type: ExpressionTypes.string,
       kind: ExpressionKinds.element,
+      kindRef: ExpressionElements.checkbox,
       description: `The selector for the checkbox.`,
       example: `input[name='my-checkbox']`,
     },

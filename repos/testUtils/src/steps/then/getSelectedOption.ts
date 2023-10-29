@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Expects the element matching `selector` and verifies selected options === `data`
@@ -47,10 +47,9 @@ Then(
     description: `Locates a select element by selector and verifies its selected options.  Can verify options by option label or option value.`,
     expressions: [
       {
-      // TODO: Should set different element types that can be selected
-      // In this case only select
         kind: ExpressionKinds.element,
         type: ExpressionTypes.string,
+        kindRef: ExpressionElements.select,
         description: `The selector for the select element.  Selector must be specific enough to locate a single element.`,
         example: `select[name='unique_name']`,
       },

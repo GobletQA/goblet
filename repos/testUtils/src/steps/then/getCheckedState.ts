@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { Then } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 type TCheckStates = [`checked`, `unchecked`] & {
   checked?: `checked`,
@@ -46,14 +46,15 @@ const meta = {
     {
       type: ExpressionTypes.string,
       kind: ExpressionKinds.element,
+      kindRef: ExpressionElements.checkbox,
       description: `The selector for the checkbox.  Selector must be specific enough to locate a single element.`,
       example: `input[name='unique_name']`,
     },
     {
       example: `checked`,
       options: checkedStates,
-      kind: ExpressionKinds.check,
       type: ExpressionTypes.string,
+      kind: ExpressionKinds.options,
       description: `Valid options are 'checked' or 'uncheck' only.`,
     },
   ],
