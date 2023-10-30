@@ -3,10 +3,18 @@
 # set -Eeo pipefail
 
 # Define the idle criteria thresholds
+GB_SC_PORT=${GB_SC_PORT:-19011}
+GB_NO_VNC_PORT=${GB_NO_VNC_PORT:-26369}
+GB_VNC_SERVER_PORT=${GB_VNC_SERVER_PORT:-26370}
 GB_SC_IDLE_INTERVAL=${GB_SC_IDLE_INTERVAL:-20}
 GB_SC_IDLE_THRESHOLD=${GB_SC_IDLE_THRESHOLD:-4}
 GB_SC_IDLE_WAIT_TO_START=${GB_SC_IDLE_WAIT_TO_START:-180}
 GB_SC_IDLE_CONNECTION_THRESHOLD=${GB_SC_IDLE_CONNECTION_THRESHOLD:-1}
+
+GB_APP_TEMP_PATH=${GB_APP_TEMP_PATH:-"temp"}
+GB_APP_MOUNT_PATH=${GB_APP_MOUNT_PATH:-"/goblet/app"}
+GB_SC_RESET_CONNECTION_FILE=${GB_SC_RESET_CONNECTION_FILE:-"reset-connection-check"}
+GB_RESET_CONNECTION_PATH="$GB_APP_MOUNT_PATH/$GB_APP_TEMP_PATH/$GB_SC_RESET_CONNECTION_FILE"
 
 [[ "$NODE_ENV" == "local" ]] && SupCfgLoc=supervisord.local.conf || SupCfgLoc=supervisord.conf
 
@@ -42,6 +50,16 @@ stopSup(){
   exit 0
 }
 
+callSCServer(){
+  local PATH="idle-check"
+  local HOST="http://0.0.0.0:$GB_SC_PORT"
+  local QUERY="counter=$1&connections=$2&state=$3"
+
+  # Use node fetch to make api call
+  # I did not want to install another dep just to make this api call
+  # And curl is not installed
+  /usr/bin/node -e "fetch('$HOST/$PATH?$QUERY')"
+}
 
 # Uses a while loop to loop forever
 # On each looop iteraction, checks the number of active network connections
@@ -54,18 +72,30 @@ loopConnectionsCheck(){
 
   gb_log "Starting idle timeout check..."
 
-  IdleCounter=0
+  local IdleCounter=0
+  local halfTotal=$(( $GB_SC_IDLE_THRESHOLD / 2 ))
+  local ResetConCheck=0
 
   # Start looping forever
   while true; do
 
-    gb_log "Checking active network connections..."
-    EstablishedCons=$(netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l)
-    gb_log "Found $EstablishedCons active connections"
+    gb_log "Checking active connections..."
+    local EstablishedCons=$(netstat -an | grep ESTABLISHED | grep -v $GB_VNC_SERVER_PORT | wc -l)
+
+    gb_log "Total Active Connections: $EstablishedCons"
+    gb_log "Idle Connection Threshold:  $GB_SC_IDLE_CONNECTION_THRESHOLD"
+    gb_log ""
+    
+    gb_log "Check Reset File: \"$GB_RESET_CONNECTION_PATH\""
+
+    if [[ -f "$GB_RESET_CONNECTION_PATH" ]]; then
+      ResetConCheck=1
+      break
+    fi
 
     if [[ $EstablishedCons -le $GB_SC_IDLE_CONNECTION_THRESHOLD ]]; then
 
-      gb_log "The active connections count of $EstablishedCons is less or equal to the $GB_SC_IDLE_CONNECTION_THRESHOLD connections threshold"
+      gb_log "The Active Connections are <= to Idle Connections Threshold"
 
       # If the container was idle more consecutive times the defined GB_SC_IDLE_THRESHOLD amount
       if [[ $IdleCounter -ge $GB_SC_IDLE_THRESHOLD ]]; then
@@ -77,11 +107,21 @@ loopConnectionsCheck(){
         break
 
       else
+
         IdleCounter=$(($IdleCounter + 1))
         gb_log "Container is idle, updated container idle count to: $IdleCounter"
+
+        if [[ $IdleCounter -ge $halfTotal ]]; then
+          callSCServer "$IdleCounter" "$EstablishedCons" "idle"
+        fi
+
       fi
 
     else
+
+      if [[ $IdleCounter -ge $halfTotal ]]; then 
+        callSCServer "$IdleCounter" "$EstablishedCons" "active"
+      fi
 
       IdleCounter=0
       gb_log "Container passed idle connections check. Reset container idle count to $IdleCounter"
@@ -91,6 +131,16 @@ loopConnectionsCheck(){
     # Wait the defined amount of time before doing the next check
     sleep $GB_SC_IDLE_INTERVAL
   done
+  
+  if [[ ResetConCheck -eq 1 ]]; then
+    rm "$GB_RESET_CONNECTION_PATH"
+    IdleCounter=0
+    ResetConCheck=0
+    gb_log "Found reset file, resetting connection check..."
+    gb_log ""
+    loopConnectionsCheck "$@"
+  fi
+
 }
 
 # First start supervisor, to ensure all services are running
@@ -99,6 +149,3 @@ startSup "$@"
 # Then run the loop connections check forever until the container is killed
 loopConnectionsCheck "$@"
 
-
-# TODO: Validate this for local environments
-# [["$NODE_ENV" != "local" ]] && loopConnectionsCheck "$@"

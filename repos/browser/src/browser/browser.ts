@@ -31,9 +31,7 @@ export class Browser {
   creatingPage:boolean=false
   close=pwBrowsers.closeBrowser
 
-  constructor(){
-    
-  }
+  constructor(){}
 
   #getPage = async ({
     config,
@@ -84,6 +82,7 @@ export class Browser {
         page = pages[0]
         const currentUrl = page.url()
         currentUrl === `about:blank`
+          && initialUrl
           && await page.goto(initialUrl)
 
       }
@@ -92,7 +91,8 @@ export class Browser {
         page = await context.newPage()
 
         try {
-          await page.goto(initialUrl)
+          initialUrl
+            && await page.goto(initialUrl)
         }
         catch(err){
           console.error(err)
@@ -124,7 +124,11 @@ export class Browser {
     } = args
 
 
-    const resp = await pwBrowsers.getBrowser({ world, config, browserConf })
+    const resp = await pwBrowsers.getBrowser({
+      world,
+      config,
+      browserConf
+    })
 
     let context = resp.context
     const browser = resp.browser
@@ -198,6 +202,11 @@ export class Browser {
       ...args,
       world
     }, this.#getPage as TGetPageCB)
+  }
+
+  restart = async (args:TStartBrowser):Promise<TPWComponents> => {
+    await pwBrowsers.closeBrowser(args?.browserConf?.type as EBrowserType)
+    return await this.start(args)
   }
 
   get = async (args:TGetPWComponents) => {

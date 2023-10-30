@@ -1,4 +1,4 @@
 export * from './browser'
-export * from './events'
+export * from './browserEvents'
 export * from './taskEnvToBrowserOpts'
 export * from './taskEnvToContextOpts'

@@ -1,15 +1,24 @@
 import type { SocketService } from './socketService'
-import type { TBrowserNavEvt, TSocketEvt } from '@types'
+import type {
+  TSocketEvt,
+  TBrowserNavEvt,
+  TIdleConnection,
+  TBrowserIsLoadedEvent,
+} from '@types'
 
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { WSAutomateEvent, BrowserNavEvt } from '@constants'
 import { playEvent } from '@actions/socket/local/playEvent'
-import { setPageAst } from '@actions/socket/local/setPageAst'
 import { recordAction } from '@actions/socket/local/recordAction'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 import {clearEditorDecorations} from '@actions/runner/clearEditorDecorations'
+import {
+  BrowserNavEvt,
+  WSAutomateEvent,
+  SCIdleConnectionsEvt,
+  SetBrowserIsLoadedEvent,
+} from '@constants'
 
 type TPlayerCancelEvent = TSocketEvt & {
   location:string
@@ -45,8 +54,11 @@ export const events = {
     // console.log(`------- connect event -------`)
     // console.log(message)
   },
+  idleStatus: function(message:TSocketEvt<TIdleConnection>) {
+    EE.emit<TIdleConnection>(SCIdleConnectionsEvt, message.data)
+  },
   browserStatus: function (message:TSocketEvt){
-    
+    console.log(`------- browser status -------`)
   },
   recordStarted: function(message:TSocketEvt){
     setBrowserRecording(message)
@@ -61,10 +73,12 @@ export const events = {
     console.log(`------- recordGeneral -------`)
     console.log(message)
   },
+  pwBrowserRestarted: function (message:TSocketEvt){
+    EE.emit<TBrowserIsLoadedEvent>(SetBrowserIsLoadedEvent, { state: true })
+  },
   pwUrlChange: function(message:TSocketEvt<TBrowserNavEvt>){
     const data = message.data
     EE.emit(BrowserNavEvt, data)
-    setPageAst(data)
   },
   pwAutomateEvent: function(message:TSocketEvt){
     EE.emit(WSAutomateEvent, message.data)

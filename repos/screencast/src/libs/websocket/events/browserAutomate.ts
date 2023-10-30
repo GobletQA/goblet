@@ -1,10 +1,5 @@
 import type { Express } from 'express'
-import type { Socket } from 'socket.io'
-import type {
-  SocketManager,
-  TUserAutomateOpts,
-  TSocketEvtCBProps,
-} from '@GSC/types'
+import type { TSocketEvtCBProps } from '@GSC/types'
 
 import { ExpressionKinds } from '@GSC/constants'
 import { withRepo } from '@GSC/utils/withRepo'

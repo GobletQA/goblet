@@ -1,52 +1,26 @@
-import type { IIdleTimer, IIdleTimerProps } from "react-idle-timer"
-
+import type { TIdleConnection } from "@types"
 
 import { useApp } from "@store"
 import { EAppStatus } from "@types"
-import { emptyObj } from "@keg-hub/jsutils"
-import {useInline} from "@gobletqa/components"
-import { useIdleTimer } from "react-idle-timer"
 import {setStatus} from "@actions/app/setStatus"
 import {idleModal} from "@actions/modals/modals"
-import { IdleTimeout, IdlePromptTimeout } from "@constants/values"
-import { signOutManually } from '@actions/admin/user/signOutManually'
-
-export type TIdleTimeout = Partial<IIdleTimerProps>
-
-
-
+import { SCIdleConnectionsEvt } from "@constants/events"
+import { useInline, useOnEvent } from "@gobletqa/components"
 
 /**
  * Helper hook to track if the user is idle on the frontend
  */
-export const useIdleTimeout = (props:TIdleTimeout=emptyObj) => {
+export const useIdleTimeout = () => {
 
   const { status } = useApp()
 
-    const onIdle = useInline(() => {
-      signOutManually({ idleSignOut: true })
-    })
+  const onPrompt = useInline((data?:TIdleConnection) => {
+    if(status === EAppStatus.Idle) return
 
-    const onPrompt = useInline((evt?:Event, idleTimer?:IIdleTimer) => {
-      if(status === EAppStatus.Idle) return
+    setStatus(EAppStatus.Idle)
+    idleModal({ visible: true })
+  })
 
-      setStatus(EAppStatus.Idle)
-      idleModal({ visible: true })
-    })
+  useOnEvent<TIdleConnection>(SCIdleConnectionsEvt, onPrompt)
 
-    const timeout = (props?.timeout || IdleTimeout) * 1000
-    const promptBeforeIdle = (props?.promptBeforeIdle || IdlePromptTimeout) * 1000
-
-    const idleTimer = useIdleTimer({
-      onIdle,
-      onPrompt,
-      debounce: 500,
-      ...props,
-      timeout,
-      promptBeforeIdle,
-    })
-
-    return {
-      idleTimer
-    }
 }

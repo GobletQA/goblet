@@ -18,3 +18,10 @@ export type TCancelAutomateRespEvent = {}
 export type TStartBrowserPlayOpts = {
   ast?: TFeatureAst
 }
+
+export type TIdleConnection = {
+  idle?:boolean
+  counter?:number
+  connections?:number
+  state?:`active`|`idle`
+}

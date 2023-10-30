@@ -245,11 +245,9 @@ export class SocketManager {
       if (!tag)
         return console.error(`SocketManager.emitAll requires an event tag as param 2!`)
 
-      if(!data.socketId)
-        return console.error(`SocketManager.emitAll - Missing data.socketId`)
-
-      const socket:Socket = this.getSocket(data.socketId)
-      const groupId = get(this.cache, [ data.socketId, `groupId` ])
+      const [socket, groupId] = data.socketId
+        ? [this.getSocket(data.socketId), get(this.cache, [ data.socketId, `groupId` ])]
+        : [undefined, undefined]
 
       // TODO: Update to emit only to group room when group Id exists
       this.socketIo.emit(

@@ -37,6 +37,13 @@ class ScreencastApi {
     })
   }
 
+  resetIdle = async () => {
+    return await apiRequest({
+      method: HttpMethods.GET,
+      url: `${this.basePath}/reset/idle`,
+    })
+  }
+
   status = async (browserOpts:TValueGroup) => {
     browserOpts.repo = repoApiObj(browserOpts.repo)
 

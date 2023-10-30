@@ -1,6 +1,8 @@
 import type { Socket } from 'socket.io'
+import type { SocketManager } from '@GSC/libs/websocket/manager/manager'
 import type {
   Repo,
+  TBrowser,
   TGBWorldCfg,
   TBrowserConf,
   TBrowserPage,
@@ -12,7 +14,6 @@ import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { browserEvents } from '@GSC/utils/browserEvents'
-import { SocketManager } from '@GSC/libs/websocket/manager/manager'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 
 import {
@@ -39,7 +40,7 @@ export type TRestartContext = TRestartSocket & {
   browser?:Partial<TBrowserConf>
 }
 
-const getCtxOptions = async (
+const getCtxOptions = (
   props:TRestartContext,
   browserConf:TBrowserConf,
   context:TBrowserContext
@@ -62,6 +63,21 @@ const getCtxOptions = async (
   )
 }
 
+const getBrowserOpts = (
+  props:TRestartContext,
+  browserConf:TBrowserConf,
+  browser:TBrowser
+) => {
+  const { world } = props
+  const browserOpts = get(global, `__goblet.browser`, emptyObj)
+
+  return deepMerge<TBrowserConf>(
+    browserConf,
+    browserOpts,
+    world?.$browser
+  )
+}
+
 
 const getPageUrl = (
   props:TRestartContext,
@@ -76,44 +92,31 @@ const getPageUrl = (
   return pageUrl !== GobletQAUrl ? pageUrl : appUrl || GobletQAUrl
 }
 
-// TODO: fix this, need better way to access socket and Manager form
-// step definition 
-const getSocket = (props:TRestartContext) => {
-  const { Manager, socket, socketId } = props
-
-  return {
-    Manager,
-    socket: socket || Manager.peers[socketId],
-  }
-}
-
-export const restartContext = async (props:TRestartContext) => {
+export const restartBrowser = async (props:TRestartContext) => {
   const { repo, world=repo.world } = props
   const args = {...props, world}
   
   // TODO: need to get the gobletConfig and pass it in here
   const browserConf = joinBrowserConf(props.browser)
-  const browserOpts = { browserConf, world, config: repo }
-  const { context, page } = await GBrowser.get(browserOpts)
+  const browserOpts = {world, config: repo, browserConf }
+  const { browser, context, page } = await GBrowser.get(browserOpts)
 
   const url = getPageUrl(args, page)
-  const extraCtxOpts = await getCtxOptions(args, browserConf, context)
 
-  context && await context.close()
 
-  await GBrowser.start({
+  const pwComponents = await GBrowser.restart({
     ...browserOpts,
     initialUrl: url,
-    overrides: { context: extraCtxOpts },
+    overrides: { context: getCtxOptions(args, browserConf, context) },
+    browserConf: getBrowserOpts(args, browserConf, browser),
   })
 
-  const pwComponents = await GBrowser.get(browserOpts)
   global.context = pwComponents.context
+  global.browser = pwComponents.browser
 
-  browserEvents({
-    ...args,
+  return await browserEvents({
     browserConf,
     pwComponents,
-    ...getSocket(props),
+    Manager: props.Manager
   })
 }

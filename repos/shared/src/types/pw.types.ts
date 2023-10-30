@@ -235,12 +235,12 @@ export enum EBrowserEvent {
   worker=`worker`,
 }
 
+export type TSocketMgr = TSocketEvtCBProps[`Manager`]
 export type TBrowserEventCB = (...args:any[]) => void
-export type TBrowserEventArgs = Pick<
-  TSocketEvtCBProps, `socket`|`Manager`
-> & { 
+export type TBrowserEventArgs = { 
+  Manager:TSocketMgr
   browserConf?:TBrowserConf
-  pwComponents?: TPWComponents
+  pwComponents?:TPWComponents
 }
 
 export type TBrowserEvents = {
