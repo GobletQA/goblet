@@ -78,7 +78,6 @@ __main__(){
   switchProdKubeCtx
   deployBackend
   deployFrontend
-  switchDevKubeCtx
 
   echo ""
   gb_success "Finished deploying to production"
