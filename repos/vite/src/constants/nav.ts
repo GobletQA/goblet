@@ -15,6 +15,7 @@ import {
   AppsIcon,
   Settings,
   DesignIcon,
+  LogoutIcon,
   FileTreeIcon,
   SettingsIcon,
   CloudOffIcon,
@@ -22,6 +23,9 @@ import {
   LabelImportantIcon,
   FolderPlayOutlineIcon,
 } from '@gobletqa/components'
+import { settingsModal } from '@actions/modals'
+import { disconnectRepo } from '@actions/repo/api/disconnect'
+import { signOutManually } from '@actions/admin/user/signOutManually'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 
 export const SubNavId = `gb-nav-subnav-for-portal`
@@ -34,6 +38,7 @@ export const HeaderNav = [
   {
     label: `Settings`,
     Icon: SettingsIcon,
+    onClick: () => settingsModal()
   },
   // {
   //   label: `Team`,
@@ -42,7 +47,14 @@ export const HeaderNav = [
   {
     label: `Unmount Repo`,
     Icon: CloudOffIcon,
+    onClick: () => disconnectRepo()
   },
+  {
+    divider: true,
+    label: `Sign Out`,
+    Icon: LogoutIcon,
+    onClick: signOutManually,
+  }
 ]
 
 export const EditorNavItems = {

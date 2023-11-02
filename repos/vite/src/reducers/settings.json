@@ -219,6 +219,15 @@
       "enabled": false,
       "type": "boolean",
       "group": "browser"
+    },
+    "forwardLogs": {
+      "key": "forwardLogs",
+      "value": false,
+      "active": true,
+      "default": false,
+      "enabled": true,
+      "type": "boolean",
+      "group": "browser"
     }
   },
   "monaco": {

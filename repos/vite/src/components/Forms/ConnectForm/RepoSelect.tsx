@@ -6,6 +6,7 @@ import { AutoInput } from '@gobletqa/components'
 const repoProps = {
   name: `repo`,
   required: true,
+  freeSolo: true,
   disabled: false,
   label: `Repository`,
   textFieldProps: {

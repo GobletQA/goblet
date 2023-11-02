@@ -16,7 +16,7 @@ export const assertUrl = async (url:string, ctx:TStepCtx) => {
 }
 
 const meta = {
-  name: `Assert Url`,
+  name: `Assert url`,
   module: `assertUrl`,
   alias: [
     `Assert Url`,

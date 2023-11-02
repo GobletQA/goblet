@@ -3,6 +3,7 @@ import type {
   TSocketEvt,
   TBrowserNavEvt,
   TIdleConnection,
+  TPWConsoleMsgEvt,
   TBrowserIsLoadedEvent,
 } from '@types'
 
@@ -10,6 +11,7 @@ import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { playEvent } from '@actions/socket/local/playEvent'
+import { parsePlayLogs } from '@actions/runner/parsePlayLogs'
 import { recordAction } from '@actions/socket/local/recordAction'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 import {clearEditorDecorations} from '@actions/runner/clearEditorDecorations'
@@ -82,6 +84,9 @@ export const events = {
   },
   pwAutomateEvent: function(message:TSocketEvt){
     EE.emit(WSAutomateEvent, message.data)
+  },
+  pwConsole: function(message:TSocketEvt<TPWConsoleMsgEvt>){
+    parsePlayLogs(message)
   },
   playCanceled: function(message:TPlayerCancelEvent){
     clearEditorDecorations(message.location)

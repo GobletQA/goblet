@@ -29,5 +29,6 @@ export const WSCmdRunning = `${TagPrefix}:CMD_RUNNING`
 
 // Playwright
 export const WSPwLog = `${TagPrefix}:PW_LOG`
+export const WSPwConsole = `${TagPrefix}:PW_CONSOLE`
 export const WSPwUrlChange = `${TagPrefix}:PW_URL_CHANGE`
 export const WSPwBrowserRestarted = `${TagPrefix}:PW_BROWSER_RESTARTED`

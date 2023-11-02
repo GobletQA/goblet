@@ -27,6 +27,7 @@ import {getAppData} from '@utils/store/getStoreData'
 import {signOutManually} from '@actions/admin/user/signOutManually'
 
 const {
+  WSPwConsole,
   WSIdleStatus,
   WSPwUrlChange,
   WSReconnectAttempts,

@@ -10,6 +10,8 @@ export const playBrowser = async (data:TStartPlaying) => {
     action,
     onEvent,
     onCleanup,
+    onConsole,
+    forwardLogs,
     browserConf,
     pwComponents,
   } = data
@@ -21,6 +23,8 @@ export const playBrowser = async (data:TStartPlaying) => {
   const player = new Player({
     onEvent,
     onCleanup,
+    onConsole,
+    forwardLogs,
     ...browserItems,
   }, id)
 

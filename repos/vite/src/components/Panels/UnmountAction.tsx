@@ -6,6 +6,7 @@ import { Alert } from '@actions/modals/alert'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import {
   Tooltip,
+  stopEvent,
   IconButton,
   CloudOffIcon,
 } from '@gobletqa/components'
@@ -55,8 +56,7 @@ export const UnmountAction = {
   Component: UnmountBtn,
   className:`goblet-connect-repo`,
   action:(e:Event) => {
-    e?.stopPropagation?.()
-    e?.preventDefault?.()
+    stopEvent(e)
     const { repo } = getStore().getState()
     const name = repo?.git?.repoName || repo?.name || `the mounted repo`
 
@@ -67,7 +67,7 @@ export const UnmountAction = {
         disconnectRepo()
       },
       cancelText: `No`,
-      onCancel: noOp,
+      onCancel: () => {},
       content: (
         <ModalContainer>
           <ModalTitle>

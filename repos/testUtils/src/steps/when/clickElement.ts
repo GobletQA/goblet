@@ -17,6 +17,7 @@ export const clickElementHandler = async (
 
 
 const meta = {
+  name: `Click element`,
   module: `clickElement`,
   examples: [
     `When I click "button[name='unique_name']"`,
@@ -35,7 +36,6 @@ const meta = {
 
 When(`I click {string}`, clickElementHandler, {
   ...meta,
-  name: `Click element`,
   alias: [`Touch`, `Press`],
   info: `Action to simulate clicking, touching, or pressing an element on the page`,
   race: true

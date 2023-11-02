@@ -26,6 +26,7 @@ const autoSaveElToWorld = async (selector:string, ctx:TStepCtx) => {
 }
 
 const meta = {
+  name: `Save Element`,
   autoSaveLocator: true,
   description: `Locates and saves an element for use in subsequent steps.`,
   module: `saveElement`,

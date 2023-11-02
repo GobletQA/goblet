@@ -130,9 +130,9 @@ export class BrowserEvents {
     this.name = name
     this.methods = methods
 
-    page.on(this.name as any, (...pwArgs:any[]) => 
-      Promise.all(this.methods.map(method => method?.(page, ...pwArgs, args)))
-    )
+    page.on(this.name as any, (...pwArgs:any[]) => Promise.all(
+      this.methods.map(method => method?.(page, ...pwArgs, args))
+    ))
 
     BrowserEvents.onPageClose(page)
     BrowserEvents.listeners[name] = this

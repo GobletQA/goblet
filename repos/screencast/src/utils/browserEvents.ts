@@ -1,4 +1,4 @@
-import type { Frame } from 'playwright'
+import type { Frame, ConsoleMessage } from 'playwright'
 import type {
   TBrowserPage,
   TAutomateEvent,
@@ -9,6 +9,7 @@ import { wait } from '@keg-hub/jsutils/wait'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import {
   GBrowser,
+  WSPwConsole,
   WSPwUrlChange,
   EBrowserEvent,
   BrowserEvents,
@@ -32,7 +33,7 @@ export const Events = {
      * All events below are Playwright page specific events
      * For more info go here => https://playwright.dev/docs/api/class-page#events
      */
-    [EBrowserEvent.framenavigated]: async (page:TBrowserPage, frame:Frame, args:TBrowserEventArgs) => {
+    [EBrowserEvent.framenavigated]:(page:TBrowserPage, frame:Frame, args:TBrowserEventArgs) => {
       /**
         * Check if frame is the top most frame
         * If frame if parent, then response is null
@@ -43,6 +44,17 @@ export const Events = {
 
       const url = frame.url()
       args.Manager.emitAll(WSPwUrlChange, {data: { url, ast: [] }})
+    },
+
+    [EBrowserEvent.console]: async (page:TBrowserPage, message:ConsoleMessage, args:TBrowserEventArgs) => {
+      // TODO: add check for forwarding logs to the args object
+      
+      args?.browserConf?.forwardLogs
+        && args.Manager.emitAll(WSPwConsole, {data: {
+            type: message.type(),
+            text: message.text(),
+            location: message.location(),
+          }})
     }
 
     // TODO: Add these for tracking requests and responses from a page

@@ -8,26 +8,21 @@ import { RepoCreate } from './RepoCreate'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Text, PurpleText, gutter } from '@gobletqa/components'
 
-export type TRepoProps = Partial<typeof repoProps> & {
-  repo?:TBuiltRepo
-  repos?:TBuiltRepos
+export type TRepoProps = {
+  name?:string
+  label?:string
   newRepo?:string
+  repo?:TBuiltRepo
+  required?:boolean
   disabled?:boolean
+  repos?:TBuiltRepos
   createRepo:boolean
   onChange?:TOnAutoChange
   inputError:TRepoInputError
   onChangeNewRepo:TRepoValueCB
+  textFieldProps?:Record<string, any>
   onSyncRepos:(...args:any[]) => void
   onInputError?:(key:string, value?:string) => void
-}
-
-const repoProps = {
-  name: `repo`,
-  required: true,
-  label: `Repository`,
-  textFieldProps: {
-    placeholder: `Select from list...`,
-  },
 }
 
 const styles = {

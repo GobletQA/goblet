@@ -51,6 +51,7 @@ export const useConnect = (props:THConnect=noOpObj) => {
     onChangeDescription
   } = useRepoEvents({
     repo,
+    repos,
     owner,
     setRepo,
     newRepo,

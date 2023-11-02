@@ -4,7 +4,7 @@
  * Which allows us to capture all events even when `preventDefault` / `stopPropitiation` are called
  */
 
-console.log(`[Goblet] - Mouse-Hover Init`)
+console.log(`Goblet mouse-hover init`)
 
 /**
  * Element used to highlight other elements hovered by the mouse
@@ -59,7 +59,7 @@ const addListener = (styles) => {
   const onMouseHover = async (event) => hoverHighlighter(event, styles)
 
   try {
-    console.log(`[Goblet] - On mouse move listener`)
+    console.log(`Goblet on mouse-move listener`)
     window.addEventListener('mousemove', onMouseHover)
     return () => window.removeEventListener('mousemove', onMouseHover)
   }
@@ -123,7 +123,7 @@ const initElementHover = async () => {
   if(initElementHover.init) return
   initElementHover.init = true
 
-  console.log(`[Goblet] - Start initElementHover`)
+  console.log(`Goblet start initElementHover`)
   
   let removeListener
   let onSelectElement
@@ -171,7 +171,7 @@ const initElementHover = async () => {
     })
   }
 
-  console.log(`[Goblet] - Finish initElementHover`)
+  console.log(`Goblet finish initElementHover`)
 }
 
 

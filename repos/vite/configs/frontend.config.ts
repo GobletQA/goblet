@@ -27,8 +27,6 @@ const loadFirebaseCfg = () => {
  * Eventually that will be removed and this will be called directly
  */
 export const loadConfig = () => {
-
-
   addToProcess(
     loadConfigs({
       name: 'goblet',

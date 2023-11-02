@@ -16,6 +16,7 @@ export const usePageState = async (name:boolean|string, ctx:TStepCtx) => {
 
 const meta = {
   module: `usePageState`,
+  name: `Use saved page state`,
   examples: [
     `Given I use the saved page state`,
     `Given I use the saved "saved-state-name" page state`,

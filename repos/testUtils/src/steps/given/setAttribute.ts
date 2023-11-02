@@ -21,7 +21,7 @@ export const setAttribute = async (
 }
 
 const meta = {
-  name: `Set Attribute`,
+  name: `Set attribute`,
   alias: [ `attributes`, `attr`],
   module: `changeTarget`,
   examples: [

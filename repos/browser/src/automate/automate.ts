@@ -71,7 +71,7 @@ export class Automate {
    */
   static addInitScripts = async (parent:TAutomateParent, automate?:Automate) => {
     logEnvMsg(`Automate - Adding automate init scripts to playwright parent`)
-    
+
     automate = automate || parent.__GobletAutomateInstance
     if(!automate)
       throw new Error(`Could not find goblet automate instance on parent object`)
