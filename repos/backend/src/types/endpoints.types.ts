@@ -19,8 +19,8 @@ export type TBAppLocals = TAppLocals<TBackendConfig> & {
 export type TBApp = TApp<TBAppLocals>
 
 export type TBEParamReq<
-  Params extends TParamsDictionary,
-  Res extends Record<string, any>,
+  Params extends TParamsDictionary=TParamsDictionary,
+  Res extends Record<string, any>=Record<string, any>,
   Query extends TParsedQs=TParsedQs,
 > = TPAReq<Params, Res, Query, TBApp>
 

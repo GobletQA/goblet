@@ -138,29 +138,34 @@ export class Kubectl {
    */
   onListenEvent = (type:string, pod:V1Pod, watchObj:TEventWatchObj) => {
     switch(type){
-      case 'ADDED':
+      case `ADDED`:
         const addCB = this.config?.events?.start || this.config?.events?.added
         return addCB?.(pod, watchObj)
 
-      case 'MODIFIED':
+      case `MODIFIED`:
         return this.config?.events?.modified?.(pod, watchObj)
 
-      case 'DELETED':
+      case `DELETED`:
         const deleteCB = this.config?.events?.destroy || this.config?.events?.deleted
         return deleteCB?.(pod, watchObj)
 
-      case 'BOOKMARK':
+      case `BOOKMARK`:
         return this.config?.events?.bookmark?.(pod, watchObj)
 
-      case 'ERROR':
+      case `ERROR`:
         return this.config?.events?.error?.(pod, watchObj)
 
       default:
-        Logger.warn('unknown type: ' + type)
+        Logger.warn(`Unknown KubeCtrl event type: ` + type)
     }
 
   }
 
+  /**
+   * We have to periodically disable and reenabled the watcher
+   * This is due to a bug in the kubernetes client library
+   * See more info here - https://github.com/kubernetes-client/javascript/issues/596
+   */
   cycleListen = (time:number, events:TKubeWatchEvents) => {
     Logger.log(`Starting kubernetes listen cycle...`)
     this.listen(events)

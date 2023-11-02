@@ -179,7 +179,7 @@ env:
   # Timeout for the kube listener
   # Will kill and restart the listener on an interval
   # Works around issue where listener stops responding after some amount of time
-  GB_CD_LISTENER_TIMEOUT: 250000
+  GB_CD_LISTENER_TIMEOUT: 600000
 
   # Conductor controller validation
   GB_CD_VALIDATION_KEY: "gb-cd-1234567"

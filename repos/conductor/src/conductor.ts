@@ -4,6 +4,7 @@ import type {
   TUserHash,
   TSpawnOpts,
   TRouteMeta,
+  TRemoveOpts,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
@@ -149,14 +150,20 @@ export class Conductor {
    */
   async remove(
     containerRef:TContainerRef,
-    isContainerMap:boolean=false,
-    throwOnEmpty:boolean=true
+    opts:TRemoveOpts,
   ){
+    const {
+      throwOnEmpty=true,
+      isContainerMap=false,
+      ...rest
+    } = opts
+
     return await this.controller.remove(
-      containerRef,
-      isContainerMap,
-      throwOnEmpty
-    )
+      containerRef, {
+        ...rest,
+        throwOnEmpty,
+        isContainerMap,
+    })
   } 
 
   /**

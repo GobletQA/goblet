@@ -44,7 +44,7 @@ export const ModalHeader = (props:TModal) => {
       justifyContent="start"
       margin={`0 ${gutter.margin.px}`}
       className={cls(`gb-modal-header`, className)}
-      padding={`${gutter.padding.tQpx} ${gutter.padding.px}`}
+      padding={`${gutter.padding.tQpx} ${gutter.padding.hpx}`}
       {...styles}
       sx={headerSx}
     >

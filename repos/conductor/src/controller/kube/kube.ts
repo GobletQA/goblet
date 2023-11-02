@@ -5,8 +5,10 @@ import type {
   TImgRef,
   TRunOpts,
   TRouteMeta,
+  TRemoveOpts,
   TPodContainer,
   TContainerMap,
+  TContainerMaps,
   TEventWatchObj,
   TContainerMeta,
   TKubeController,
@@ -17,11 +19,11 @@ import { Controller } from '../controller'
 import { Logger } from '../../utils/logger'
 import { buildPorts } from './pod/buildPorts'
 import { isObj } from '@keg-hub/jsutils/isObj'
-import { noOp } from '@keg-hub/jsutils/noOp'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { buildPortMap } from './pod/buildPortMap'
 import { shouldRemove } from './pod/shouldRemove'
 import { shouldHydrate } from './pod/shouldHydrate'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { buildPodManifest } from './pod/buildPodManifest'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { buildImgUri } from '../docker/image/buildImgUri'
@@ -44,13 +46,29 @@ export class Kube extends Controller {
   config: TKubeController
   // @ts-ignore
   devRouterActive: boolean
-  pods: Record<string, TPod>
-  containerMaps: Record<string, TContainerMap>={}
+  pods:Record<string, TPod>
+  containerMaps: TContainerMaps={}
 
   constructor(conductor:Conductor, config:TKubeController){
     super(conductor, config)
     this.config = config
     this.devRouterActive = !isEmptyColl(this.config.devRouter)
+  }
+
+  /**
+   * Single method to remove the container meta data from both the container map and controller routes
+   * @member Kube
+   */
+  #cleanup = (mapped:TContainerMap, opts:{userHash?:string}=emptyObj) => {
+    this.containerMaps = Object.entries(this.containerMaps)
+      .reduce((acc, [ref, container]:[string, TContainerMap]) => {
+        mapped?.id !== container.id && (acc[ref] = container)
+
+        return acc
+      }, {})
+
+    const hash = opts.userHash || mapped.labels[ConductorUserHashLabel]
+    if(this.routes[hash]) delete this.routes[hash]
   }
 
   /**
@@ -64,21 +82,24 @@ export class Kube extends Controller {
     const pods = await this.getAll()
     const imgNames = Object.keys(this.conductor.config.images)
 
-    this.containerMaps = await pods.reduce(async (toResolve, pod) => {
-      const acc = await toResolve
-      
+    this.containerMaps = pods.reduce((acc, pod) => {
       const userHash = pod.metadata.annotations[ConductorUserHashLabel]
+
       // Check if there's an existing container that's owned by goblet
       // But missing the correct user hash. If there is, then remove it
       if(!userHash){
-        const fromGoblet = Object.keys(pod.metadata.annotations).find((label:string) => imgNames.includes(label))
+        const fromGoblet = Object.keys(pod.metadata.annotations)
+          .find((label:string) => imgNames.includes(label))
+
         fromGoblet && this.remove(pod)
         return acc
       }
 
+      // If no accessible ports, then remove the pod
+      // The user can't access it anyways
       const annotations = getPodAnnotations(pod)
       if(!annotations.ports){
-        this.remove(pod)
+        this.remove(pod, { userHash })
         return acc
       }
 
@@ -87,14 +108,14 @@ export class Kube extends Controller {
       // Any container not running always just remove it
       // The user can't access it anyways
       if(mapped.state !== EContainerState.Running){
-        this.remove(mapped, true)
+        this.remove(mapped, {userHash, isContainerMap: true})
         return acc
       }
 
       acc[mapped.id] = mapped
 
       return acc
-    }, Promise.resolve({}))
+    }, {} as TContainerMaps)
 
     const hydrateCount = Object.keys(this.containerMaps).length
     hydrateCount && Logger.info(`Hydrating ${hydrateCount} container(s) into runtime cache`)
@@ -111,6 +132,7 @@ export class Kube extends Controller {
    */
   hydrateDevRouter = async () => {
     Logger.warn(`Running in dev mode, kind will not be active!`)
+    const meta = this.config.devRouter.meta
 
     this.routes[DevUserHash] = Object.entries(this.config.devRouter.routes)
       .reduce((acc, [port, config]) => {
@@ -123,7 +145,7 @@ export class Kube extends Controller {
         })
 
         return acc
-      }, { routes: {}, meta: this.config.devRouter.meta } as TRouteMeta)
+      }, { routes: {}, meta } as TRouteMeta)
   }
 
   /**
@@ -141,10 +163,19 @@ export class Kube extends Controller {
     if(!image) return
 
     const mapped = buildContainerMap(pod, annotations.ports)
-    const doRemove = shouldRemove(pod, mapped, annotations)
-    if(doRemove) return this.remove(mapped, true)
 
-    const doHydrate = shouldHydrate(mapped.state, watchObj.type, pod?.metadata?.deletionTimestamp)
+    if(shouldRemove(pod, mapped, annotations))
+        return this.remove(mapped, {
+          isContainerMap: true,
+          userHash: annotations.userHash
+        })
+
+    const doHydrate = shouldHydrate(
+      mapped.state,
+      watchObj.type,
+      pod?.metadata?.deletionTimestamp
+    )
+
     if(!doHydrate) return
 
     Logger.info(`Hydrating pod ${annotations.name} from watch event: '${watchObj.type}'`)
@@ -187,9 +218,9 @@ export class Kube extends Controller {
         name: nameRef,
         namespace: this.config.namespace,
         labels: {
-          'app.kubernetes.io/name': `gobletqa-app`,
-          'app.kubernetes.io/component': deployment,
-          'app.kubernetes.io/managed-by': `goblet-conductor`,
+          [`app.kubernetes.io/name`]: `gobletqa-app`,
+          [`app.kubernetes.io/component`]: deployment,
+          [`app.kubernetes.io/managed-by`]: `goblet-conductor`,
         },
         annotations: {
           ...buildLabels(image, userHash),
@@ -258,22 +289,15 @@ export class Kube extends Controller {
    * @member Kube
    */
   removeFromCache = (pod:TPod, watchObj:TEventWatchObj) => {
-    if(this.devRouterActive) return
+    if(this.devRouterActive || !isObj(pod)) return
 
     const mapped = buildContainerMap(pod, {})
-
     Logger.info(`Removing pod ${mapped.name} from cache`)
 
-    this.containerMaps = Object.entries(this.containerMaps)
-      .reduce((acc, [ref, container]:[string, TContainerMap]) => {
-        isObj(pod)
-          && mapped?.id !== container.id
-          && (acc[ref] = container)
-        return acc
-      }, {})
+    const userHash = mapped?.labels[ConductorUserHashLabel]
+      || pod?.metadata?.annotations[ConductorUserHashLabel]
 
-    const userHash = pod.metadata.annotations[ConductorUserHashLabel]
-    delete this.routes[userHash]
+    this.#cleanup(mapped, { userHash })
 
   }
 
@@ -283,38 +307,34 @@ export class Kube extends Controller {
    */
   remove = async (
     podRef:TPodRef,
-    isContainerMap:boolean=false,
-    throwOnEmpty:boolean=true
+    opts:TRemoveOpts=emptyObj
   ) => {
     if(this.devRouterActive) return
 
-    const containerMap = isContainerMap
+    const {
+      userHash,
+      throwOnEmpty=true,
+      isContainerMap=false,
+    } = opts
+
+    const mapped = isContainerMap
       ? podRef as TContainerMap
       : this.getContainer(podRef)
 
-    if(!containerMap){
-      this?.config?.onRemove?.(containerMap)
-
+    if(!mapped){
+      this?.config?.onRemove?.(mapped)
       throwOnEmpty
         && this.notFoundErr({ type: `container`, ref: podRef as string })
 
-      return containerMap
+      return mapped
     }
 
-    await this.kubectl.deletePod(containerMap.id)
-    Logger.info(`Removing container with ID ${containerMap.id}`)
+    await this.kubectl.deletePod(mapped.id)
+    Logger.info(`Removing container with ID ${mapped.id}`)
 
-    this.containerMaps = Object.entries(this.containerMaps)
-      .reduce((acc, [ref, cont]:[string, TContainerMap]) => {
-        cont.id !== containerMap.id && (acc[ref] = cont)
+    this.#cleanup(mapped, { userHash })
 
-        return acc
-      }, {})
-
-    Logger.success(`Pod ${containerMap.id} removed successfully`)
-    this?.config?.onRemove?.(containerMap)
-
-    return containerMap
+    return mapped
   }
 
   /**
@@ -358,7 +378,7 @@ export class Kube extends Controller {
     this.kubectl = new Kubectl(this.config)
     const hydrateSingle = this.hydrateSingle.bind(this)
 
-    const timeout = this.config.listenerTimeout || 25000
+    const timeout = this.config.listenerTimeout || 600000
 
     this.kubectl.cycleListen(timeout, {
       start: hydrateSingle,

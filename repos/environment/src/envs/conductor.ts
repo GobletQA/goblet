@@ -1,0 +1,38 @@
+import type { TGenEnv } from "../types"
+
+
+const conductor = (general:TGenEnv) => {
+  const {
+    GB_SC_PORT,
+    GB_SC_IMAGE,
+    GB_SC_ACTIVE,
+    GB_KD_PORT,
+    GB_NO_VNC_PORT,
+    GB_SC_IMAGE_TAG,
+    GB_SC_DEPLOYMENT,
+    GB_KUBE_NAMESPACE,
+    GB_LOCAL_DEV_MODE,
+    GOBLET_SCREENCAST_PORT,
+    GB_CD_LISTENER_TIMEOUT,
+    GOBLET_KIND_SERVICE_PORT,
+    GOBLET_SCREENCAST_SERVICE_HOST,
+  } = process.env
+
+  return {
+    GB_SC_PORT,
+    GB_SC_IMAGE,
+    GB_SC_ACTIVE,
+    GB_KD_PORT,
+    GB_NO_VNC_PORT,
+    GB_SC_IMAGE_TAG,
+    GB_SC_DEPLOYMENT,
+    GB_KUBE_NAMESPACE,
+    GB_LOCAL_DEV_MODE,
+    GOBLET_SCREENCAST_PORT,
+    GB_CD_LISTENER_TIMEOUT,
+    GOBLET_KIND_SERVICE_PORT,
+    GOBLET_SCREENCAST_SERVICE_HOST,
+  }
+}
+
+export default conductor

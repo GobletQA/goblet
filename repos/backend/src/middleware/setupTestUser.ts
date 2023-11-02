@@ -5,9 +5,7 @@ import { getApp } from '@gobletqa/shared/api/express/app'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
- * Gets both app routes
- * Adds the main AppRouter on a subdomain
- * Because that's where the proxy will be applied
+ * Adds a fake auth user to the request
  */
 export const setupTestUser = (app?:Express) => {
 

@@ -1,21 +1,27 @@
-import { Request, Response } from 'express'
+import type { Response } from 'express'
+import type { TBEParamReq } from '@GBE/types'
+// import { ForwardSubdomainHeader } from '@gobletqa/conductor'
+import { ForwardSubdomainHeader } from '@GCD/constants'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
-
-export const remove = async (req:Request, res:Response) => {
+export const remove = async (req:TBEParamReq, res:Response) => {
   const conductor = req.app.locals.conductor
+  const userHash = (req.headers[ForwardSubdomainHeader] || ``).toString().split(`,`).shift()
 
   if(conductor.controller.devRouterActive)
     return res.status(200).json({})
 
   const refCont = conductor.controller.getContainer((req.params.containerRef || ``)?.trim())
-
   const container = refCont || conductor.controller.getContainer((res.locals.subdomain || ``)?.trim?.())
 
   if(!container)
-    throw new Error(`Container not found for ${req.params.containerRef || res.locals.subdomain}`) 
+    return res.status(422).json({})
 
-  const status = await conductor.remove(container?.id, false, false)
+  const status = await conductor.remove(container?.id, {
+    userHash,
+    throwOnEmpty: false,
+    isContainerMap: false,
+  })
 
   res.status(200).json(status || container)
 }

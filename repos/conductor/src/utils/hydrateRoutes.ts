@@ -1,5 +1,5 @@
 import type { Controller } from '../controller'
-import type { TContainerMap, } from '../types'
+import type { TContainerMap } from '../types'
 
 import { generateRoutes } from './generators'
 import { ConductorUserHashLabel } from '../constants'
@@ -30,8 +30,6 @@ export const hydrateRoutes = (
   controller:Controller,
   containers:Record<string, TContainerMap>
 ) => {
-  return Promise.all(
-    Object.entries(containers)
-      .map(([key, container]) => routesFromContainer(controller, container))
-  )
+  return Object.entries(containers)
+    .map(([key, container]) => routesFromContainer(controller, container))
 }

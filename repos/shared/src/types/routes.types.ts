@@ -1,6 +1,21 @@
+import type url from 'url'
 import type { TPort } from './ports.types'
-import type { ProxyTarget } from 'http-proxy'
 import type { EContainerState, TUserHash } from './helpers.types'
+
+type ProxyTarget = string | Partial<url.Url> | {
+  ca?:string
+  host:string
+  port:number
+  key?:string
+  cert?:string
+  ciphers?:string
+  protocol?:string
+  hostname?:string
+  socketPath?:string
+  passphrase?:string
+  pfx?:Buffer|string
+  secureProtocol?:string
+}
 
 type TPublicUrl = string
 type TContainerId = string
@@ -34,7 +49,6 @@ export type TProxyRoute = {
 export type TProxyRoutes = {
   [key:string]: TProxyRoute
 }
-
 
 export type TContainerMeta = {
   host?: string
