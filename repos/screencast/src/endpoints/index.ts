@@ -1,5 +1,4 @@
 export * from './browser'
-export * from './joker'
 export * from './screencast'
 export * from './repo'
 export * from './idle'

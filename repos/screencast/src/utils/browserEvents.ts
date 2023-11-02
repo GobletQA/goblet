@@ -46,16 +46,16 @@ export const Events = {
       args.Manager.emitAll(WSPwUrlChange, {data: { url, ast: [] }})
     },
 
-    [EBrowserEvent.console]: async (page:TBrowserPage, message:ConsoleMessage, args:TBrowserEventArgs) => {
-      // TODO: add check for forwarding logs to the args object
+    // [EBrowserEvent.console]: async (page:TBrowserPage, message:ConsoleMessage, args:TBrowserEventArgs) => {
+    //   // TODO: add check for forwarding logs to the args object
       
-      args?.browserConf?.forwardLogs
-        && args.Manager.emitAll(WSPwConsole, {data: {
-            type: message.type(),
-            text: message.text(),
-            location: message.location(),
-          }})
-    }
+    //   args?.browserConf?.forwardLogs
+    //     && args.Manager.emitAll(WSPwConsole, {data: {
+    //         type: message.type(),
+    //         text: message.text(),
+    //         location: message.location(),
+    //       }})
+    // }
 
     // TODO: Add these for tracking requests and responses from a page
     // [EBrowserEvent.request]: async (page:TBrowserPage, frame:Frame) => {},

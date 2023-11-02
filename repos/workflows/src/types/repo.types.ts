@@ -19,8 +19,8 @@ export type TGraphApiEndpoint = {
 export type TGetData = <T>(data:any) => TGraphApiResp<T>
 
 export type TGraphApiVars = TRepoGraphRepos & {
-  cacheKey?:string
   getData?:TGetData
+  cacheKey?:string|false
   endpoint: TGraphApiEndpoint
 }
 
