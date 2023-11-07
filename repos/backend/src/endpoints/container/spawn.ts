@@ -1,8 +1,14 @@
-import { Request, Response } from 'express'
+import type { Response } from 'express'
+import type { TBEDefReq, TSpawnOpts } from '@GBE/types'
+
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
-export const spawn = async (req:Request, res:Response) => {
+type TBEParams = {
+  imageRef:string
+}
+
+export const spawn = async (req:TBEDefReq<TBEParams, TSpawnOpts>, res:Response) => {
   const conductor = req.app.locals.conductor
 
   const status = await conductor.spawn(

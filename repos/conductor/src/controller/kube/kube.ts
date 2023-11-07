@@ -35,6 +35,7 @@ import { buildLabels } from '../docker/container/buildLabels'
 import { generateRoute, generateRoutes } from '../../utils/generators'
 import { ERestartPolicy, EImgPullPolicy } from '@gobletqa/conductor/types'
 import { DevUserHash, PodAnnotations, ConductorUserHashLabel } from '@GCD/constants'
+import {toNum} from '@keg-hub/jsutils'
 
 /**
  * Docker controller class with interfacing with the Docker-Api via Dockerode
@@ -238,6 +239,17 @@ export class Kube extends Controller {
             ports: builtPorts,
             image: buildImgUri(image),
             pullPolicy: EImgPullPolicy.Always,
+            /**
+             * Investigate adding a prob to know when the container is fully running
+             */
+            // startupProbe: {
+            //   httpGet: {
+            //     path: `/`,
+            //     // port: toNum(ENVS.GB_SC_PORT)
+            //   },
+            //   periodSeconds: 10,
+            //   failureThreshold: 10,
+            // }
           }
         }
       }

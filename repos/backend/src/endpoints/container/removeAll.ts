@@ -1,8 +1,8 @@
-import { Request, Response } from 'express'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import type { Response } from 'express'
+import type { TBEDefReq } from '@GBE/types'
 
 
-export const removeAll = async (req:Request, res:Response) => {
+export const removeAll = async (req:TBEDefReq, res:Response) => {
   const conductor = req.app.locals.conductor
   const status = await conductor.removeAll()
   res.status(200).json(status)

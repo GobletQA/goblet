@@ -1,13 +1,17 @@
-import { Response } from 'express'
-import type { Request as JWTRequest } from 'express-jwt'
+import type { Response } from 'express'
+import type { TBEDefReq } from '@GBE/types'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
+type TBEReqParams ={
+  imageRef:string
+}
 
 /**
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusContainer = async (req:JWTRequest, res:Response) => {
+export const statusContainer = async (req:TBEDefReq<TBEReqParams>, res:Response) => {
   const conductor = req.app.locals.conductor
   const imageRef = req?.params?.imageRef || Object.keys(conductor.config.images)[0]
 

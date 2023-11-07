@@ -32,10 +32,8 @@ export const useLayoutResize = () => {
     onBrowserResize()
   })
 
-  const onDragEnd = useInline(onBrowserResize)
-
   return {
-    onDragEnd
+    onDragEnd: onBrowserResize
   }
 
 

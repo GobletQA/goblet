@@ -3,7 +3,6 @@ import type { Express, Request } from 'express'
 import type { TTokenUser } from './user.types'
 import type { TDefGobletConfig } from './configs.types'
 
-
 export type TParsedQs = { [key: string]: undefined | string | string[] | TParsedQs | TParsedQs[] }
 
 export type TParamsDictionary = {
