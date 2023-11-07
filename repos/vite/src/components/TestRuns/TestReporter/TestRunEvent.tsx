@@ -15,13 +15,14 @@ import {
   TestRunEventIconContainer,
   TestRunEventTextContainer,
 } from './TestRunsReporter.styled'
-import { scrollFirstParent } from '@gobletqa/components'
+import { FlexBreak, scrollFirstParent } from '@gobletqa/components'
 
 
 export type TTestRunEvt = {
   canceled?:boolean
   end?:TTestRunEvent
   start:TTestRunEvent
+  scrollLock?:boolean
   allTestsRunning?:boolean
   runState:TTestRunEventState
 }
@@ -93,20 +94,23 @@ const TestRunEventError = (props:TTestRunEvt & { classList:string }) => {
   const [title, ...rest] = end?.description.split(`\n`)
 
   return (
-    <TestRunEvtErrContainer className={`gb-test-run-error-container ${classList}`} >
-      <TestRunEvtErrTitle>
-        {title}
-      </TestRunEvtErrTitle>
-      <>
-      {
-        rest.map(line => (
-          <TestRunEvtErrText key={line} className={`gb-test-run-error-text ${classList}`} >
-            {line}
-          </TestRunEvtErrText>
-        ))
-      }
-      </>
-    </TestRunEvtErrContainer>
+    <>
+      <FlexBreak />
+      <TestRunEvtErrContainer className={`gb-test-run-error-container ${classList}`} >
+        <TestRunEvtErrTitle>
+          {title}
+        </TestRunEvtErrTitle>
+        <>
+        {
+          rest.map(line => (
+            <TestRunEvtErrText key={line} className={`gb-test-run-error-text ${classList}`} >
+              {line}
+            </TestRunEvtErrText>
+          ))
+        }
+        </>
+      </TestRunEvtErrContainer>
+    </>
   )
   
 }
@@ -115,6 +119,7 @@ export const TestRunEvent = (props:TTestRunEvt) => {
   const {
     end,
     start,
+    scrollLock,
     allTestsRunning,
   } = props
 
@@ -125,7 +130,7 @@ export const TestRunEvent = (props:TTestRunEvt) => {
   const showTestErr = Boolean(end?.failed && end?.type === `test` && end?.description)
 
   useEffect(() => {
-    if(!allTestsRunning) return
+    if(!allTestsRunning || !scrollLock) return
 
     if(evtState.status !== `running` && !scrolledRef?.current && itemRef.current){
       scrolledRef.current = true

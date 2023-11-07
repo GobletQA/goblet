@@ -1,15 +1,15 @@
 import type { TTestRuns } from "@types"
 
 import { useTestRuns } from "@store"
+import { cls } from "@keg-hub/jsutils"
 import { ETestRunsSection } from "@types"
 import { TestRunFiles } from './TestRunFiles'
 import { Loading } from '@gobletqa/components'
 import { TestRunSectionScroll } from '../TestRuns.styled'
+
 import { TestRunError } from '../TestRunHelpers/TestRunError'
 import { NoActiveTestRun } from '../TestRunHelpers/NoActiveTestRun'
-import {
-  TestRunLoadingContainer,
-} from './TestRunsReporter.styled'
+import { TestRunLoadingContainer } from './TestRunsReporter.styled'
 
 export type TTestRunsReporter = {
   runs: TTestRuns
@@ -32,12 +32,15 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
     onChangeSection
   } = props
 
-  const { allTestsRunning } = useTestRuns()
+  const {
+    scrollLock,
+    allTestsRunning
+  } = useTestRuns()
   const activeRun = runs[active as string]
 
   return (
     <TestRunSectionScroll
-      className='test-runs-reporter-container'
+      className={cls(`test-runs-reporter-container`, scrollLock ? `locked` : `unlocked`)}
     >
       {
         allTestsRunning && !activeRun
@@ -54,7 +57,13 @@ export const TestRunsReporter = (props:TTestRunsReporter) => {
           : activeRun?.runError
             ? <TestRunError run={activeRun} />
               : activeRun
-                ? (<TestRunFiles run={activeRun} allTestsRunning={allTestsRunning} />)
+                ? (
+                    <TestRunFiles
+                      run={activeRun}
+                      scrollLock={scrollLock}
+                      allTestsRunning={allTestsRunning}
+                    />
+                  )
                 : (<NoActiveTestRun onChangeSection={onChangeSection} />)
       }
     </TestRunSectionScroll>

@@ -1,6 +1,11 @@
 import type { CodeRunner } from './codeRunner'
 import type { TPlayerEventData, TPlayerTestEvent } from '@GBB/types'
 import type { TRunResult, TParkinTestConfig } from '@ltipton/parkin'
+import type {
+  TBrowser,
+  TBrowserPage,
+  TBrowserContext,
+} from '@GBB/types'
 
 
 type TPTestCallback = (result:TRunResult) => any
@@ -39,7 +44,15 @@ const testGlobals = [
   `beforeEach`,
 ]
 
-let TestGlobalsCache = {}
+type TTestGlobalCache = {
+  expect?:any
+  console?:Console
+  browser?:TBrowser
+  page?:TBrowserPage
+  context?:TBrowserContext
+}
+
+let TestGlobalsCache:TTestGlobalCache = {}
 let ProcessEnvCache = {}
 const GobletGlobalCache = { __goblet: undefined }
 
@@ -167,19 +180,21 @@ const setGlobalConsole = (Runner:CodeRunner) => {
  * This ensures it doesn't clobber what ever already exists
  */
 export const setupGlobals = (Runner:CodeRunner) => {
-  ;(TestGlobalsCache as any).expect = (global as any).expect
-  ;(TestGlobalsCache as any).page = (global as any).page
-  ;(TestGlobalsCache as any).context = (global as any).context
-  ;(TestGlobalsCache as any).browser = (global as any).browser
-  ;(TestGlobalsCache as any).console = (global as any).console
+  TestGlobalsCache.expect = (global as any).expect
+  TestGlobalsCache.page = global.page
+  TestGlobalsCache.context = global.context
+  TestGlobalsCache.browser = global.browser
+  TestGlobalsCache.console = global.console
+
 
   setGlobalOpts(Runner)
   setGlobalConsole(Runner)
 
-  ;(global as any).expect = expect
   global.page = Runner.player.page
   global.browser = Runner.player.browser
   global.context = Runner.player.context
+  ;(global as any).expect = expect
+
   return setTestGlobals(Runner)
 }
 
@@ -188,12 +203,13 @@ export const setupGlobals = (Runner:CodeRunner) => {
  * This ensures it doesn't clobber what ever already exists
  */
 export const resetTestGlobals = () => {
+  const globThis = global as TTestGlobalCache
 
-  ;(global as any).expect = (TestGlobalsCache as any).expect
-  ;(global as any).page = (TestGlobalsCache as any).page
-  ;(global as any).context = (TestGlobalsCache as any).context
-  ;(global as any).browser = (TestGlobalsCache as any).browser
-  ;(global as any).console = (TestGlobalsCache as any).console
+  if(TestGlobalsCache.page) global.page = TestGlobalsCache.page
+  if(TestGlobalsCache.expect) globThis.expect = TestGlobalsCache.expect
+  if(TestGlobalsCache.context) global.context = TestGlobalsCache.context
+  if(TestGlobalsCache.browser) global.browser = TestGlobalsCache.browser
+  if(TestGlobalsCache.console) global.console = TestGlobalsCache.console
 
   global.__goblet = GobletGlobalCache.__goblet
   testGlobals.forEach((item) => global[item] = TestGlobalsCache[item])
