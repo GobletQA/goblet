@@ -23,18 +23,20 @@ import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 export type TTestRunsState = {
   active?:string
   runs: TTestRuns
+  scrollLock?:boolean|undefined
   allTestsRunning: boolean|undefined
 }
 
 export const testRunsState = {
   // runs: runMock,
   runs: {},
+  scrollLock: true,
   allTestsRunning: false,
 } as TTestRunsState
 
+const clearTestRuns = createAction(`clearTestRuns`)
 const removeTestRun = createAction<TTestRunId>(`removeTestRun`)
 const upsertTestRun = createAction<TUpsertTestRun>(`upsertTestRun`)
-const clearTestRuns = createAction(`clearTestRuns`)
 
 const addTestRunEvt = createAction<TAddTestRunEvts>(`addTestRunEvt`)
 const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
@@ -42,6 +44,7 @@ const cancelTestRun = createAction<TTestRunId|undefined>(`cancelTestRun`)
 const toggleAllTestsRun = createAction<boolean|undefined>(`toggleAllTestsRun`)
 const addEvtAndMakeActive = createAction<TAddTestRunEvts>(`addEvtAndMakeActive`)
 const addActiveTestRunEvt = createAction<TAddActiveTestRunEvts>(`addActiveTestRunEvt`)
+const toggleTestsRunScrollLock = createAction<boolean|undefined>(`toggleTestsRunScrollLock`)
 
 const getEvents = (opts:TAddActiveTestRunEvts) => {
   const { events=[], event } = opts
@@ -92,6 +95,11 @@ export const testRunsActions = {
   toggleAllTestsRun: (state:TTestRunsState, action:TDspAction<boolean|undefined>) => {
     const allTestsRunning = exists(action?.payload) ? action?.payload : !state.allTestsRunning
     return {...state, allTestsRunning }
+  },
+
+  toggleTestsRunScrollLock: (state:TTestRunsState, action:TDspAction<boolean|undefined>) => {
+    const scrollLock = exists(action?.payload) ? action?.payload : !state.scrollLock
+    return {...state, scrollLock }
   },
 
   addActiveTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddActiveTestRunEvts>) => {
@@ -175,5 +183,6 @@ export const testRunsReducer = createReducer(
     builder.addCase(toggleAllTestsRun, testRunsActions.toggleAllTestsRun)
     builder.addCase(addActiveTestRunEvt, testRunsActions.addActiveTestRunEvt)
     builder.addCase(addEvtAndMakeActive, testRunsActions.addEvtAndMakeActive)
+    builder.addCase(toggleTestsRunScrollLock, testRunsActions.toggleTestsRunScrollLock)
   })
 

@@ -15,6 +15,9 @@ import {
   colors,
   InText,
   getColor,
+  LockIcon,
+  IconButton,
+  LockOpenIcon,
 } from '@gobletqa/components'
 import {
   DecoPass,

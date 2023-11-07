@@ -1,4 +1,4 @@
-import type { TPlayerResEvent, TTestRun, TTestRunFileData } from '@types'
+import type { TTestRun, TTestRunFileData } from '@types'
 
 import { useState } from 'react'
 import { cls } from '@keg-hub/jsutils'
@@ -11,22 +11,25 @@ import { useEventState } from '@hooks/testRuns/useEventState'
 import {
   TestRunEventsList,
   TestRunSectionHeader,
-  TestRunSectionHeaderTitle,
   TestRunFileContainer,
   TestRunListHeaderText,
   TestRunEventsDropdown,
   TestRunEventsListHeader,
+  TestRunSectionHeaderTitle,
   TestRunEventsListHeaderContainer,
 } from './TestRunsReporter.styled'
 
+
 export type TTestRunFileEvents = {
   run:TTestRun
+  scrollLock?:boolean
   allTestsRunning?:boolean
 }
 
 export type TTestRunFile = {
   location:string
   canceled?:boolean
+  scrollLock?:boolean
   file:TTestRunFileData
   allTestsRunning?:boolean
 }
@@ -36,6 +39,7 @@ const TestRunFile = (props:TTestRunFile) => {
     file,
     location,
     canceled,
+    scrollLock,
     allTestsRunning
   } = props
 
@@ -80,6 +84,7 @@ const TestRunFile = (props:TTestRunFile) => {
           file={file}
           runState={runState}
           canceled={canceled}
+          scrollLock={scrollLock}
           allTestsRunning={allTestsRunning}
         />
       </TestRunEventsDropdown>
@@ -89,7 +94,7 @@ const TestRunFile = (props:TTestRunFile) => {
 }
 
 export const TestRunFiles = (props:TTestRunFileEvents) => {
-  const { run, allTestsRunning } = props
+  const { run, scrollLock, allTestsRunning } = props
 
   return (
     <>
@@ -112,6 +117,7 @@ export const TestRunFiles = (props:TTestRunFileEvents) => {
                 file={file}
                 location={location}
                 canceled={run.canceled}
+                scrollLock={scrollLock}
                 allTestsRunning={allTestsRunning}
               />
             </TestRunFileContainer>

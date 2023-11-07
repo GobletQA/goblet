@@ -10,6 +10,7 @@ export type TTestRunFileEvents = {
 
 export type TTestRunEvents = {
   canceled?:boolean
+  scrollLock?:boolean
   file:TTestRunFileData
   allTestsRunning?:boolean
   runState:TTestRunEventState
@@ -20,6 +21,7 @@ export const TestRunEvents = (props:TTestRunEvents) => {
     file,
     runState,
     canceled,
+    scrollLock,
     allTestsRunning,
   } = props
 
@@ -37,6 +39,7 @@ export const TestRunEvents = (props:TTestRunEvents) => {
                   runState={runState}
                   start={events.start}
                   canceled={canceled}
+                  scrollLock={scrollLock}
                   allTestsRunning={allTestsRunning}
                 />
               ) || null

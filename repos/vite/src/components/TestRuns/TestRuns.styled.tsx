@@ -125,4 +125,5 @@ export const TestRunSectionScroll = styled(Box)(({ theme }) => `
     box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
     -webkit-box-shadow: inset 0 0 5px ${getColor(`${colors.gray07}00`, `#${colors.purple19}00`, theme)};
   }
+
 `)
