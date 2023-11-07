@@ -83,12 +83,12 @@ export type TBrowserProps = {
   onClipboard?: TBrowserCallback
   onConnect?: (rfb?: RFB) => void
   loadingProps?: Record<any, any>
-  onKeyDown?:( event:Event) => any
   onDesktopName?: TBrowserCallback
   onCapabilities?: TBrowserCallback
   rfbOptions?: Partial<TRFBOptions>
   onDisconnect?: (rfb?: RFB) => void
   onSecurityFailure?: TBrowserCallback
+  onKeyDown?:(event:KeyboardEvent) => any
   onCredentialsRequired?: (rfb?: RFB) => void
   elementAttrs?: Record<string, string|number>
 }

@@ -9,6 +9,7 @@ export const mouseLeavePage = async (ctx:TStepCtx) => {
 }
 
 const meta = {
+  name: `Leave page`,
   module: `mouseLeavePage`,
   examples: [
     `I move the mouse off the page`

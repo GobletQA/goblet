@@ -4,8 +4,8 @@ export const AuthTokenHeader = `SOCKET-AUTH-TOKEN`
 // General
 export const WSInit = `${TagPrefix}:INIT`
 export const WSSetId = `${TagPrefix}:SET_ID`
-
 export const WSConnect = `${TagPrefix}:CONNECT`
+export const WSIdleStatus = `${TagPrefix}:IDLE_STATUS`
 
 // STORE
 export const WS_UPDATE_STORE = `${TagPrefix}:UPDATE_STORE`
@@ -29,4 +29,6 @@ export const WSCmdRunning = `${TagPrefix}:CMD_RUNNING`
 
 // Playwright
 export const WSPwLog = `${TagPrefix}:PW_LOG`
+export const WSPwConsole = `${TagPrefix}:PW_CONSOLE`
 export const WSPwUrlChange = `${TagPrefix}:PW_URL_CHANGE`
+export const WSPwBrowserRestarted = `${TagPrefix}:PW_BROWSER_RESTARTED`

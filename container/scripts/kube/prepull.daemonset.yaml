@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: prepuller
+spec:
+  selector:
+    matchLabels:
+      name: prepuller
+  template:
+    metadata:
+      labels:
+        name: prepuller
+    spec:
+      # Configure an init container for each image you want to pull
+      initContainers:
+        - name: screencast-prepuller
+          # Set the image you want to pull
+          image: ghcr.io/gobletqa/goblet-screencast:latest
+          # Use a known command that will exit successfully immediately
+          # Any no-op command will do but YMMV with scratch based containers
+          command: ["sh", "-c", "'true'"]
+
+        # - name: prepuller-2
+        #   image: ...
+        #   command: ["sh", "-c", "'true'"]
+
+        # etc...
+
+      # Use the pause container to ensure the Pod goes into a `Running` phase
+      # but doesn't take up resource on the cluster
+      containers:
+        - name: pause
+          image: gcr.io/google_containers/pause

@@ -16,6 +16,12 @@ export type TPodManifest = V1Pod & {
 
 export type TPodRef = TContainerMap | TPod | string
 
+export type TRemoveOpts = {
+  userHash?:string
+  throwOnEmpty?:boolean
+  isContainerMap?:boolean
+}
+
 export type TPodMeta = Omit<V1ObjectMeta, `name` | `namespace`> & {
   name: string
   namespace: string

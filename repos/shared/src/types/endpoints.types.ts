@@ -3,11 +3,10 @@ import type { Express, Request } from 'express'
 import type { TTokenUser } from './user.types'
 import type { TDefGobletConfig } from './configs.types'
 
-
 export type TParsedQs = { [key: string]: undefined | string | string[] | TParsedQs | TParsedQs[] }
 
 export type TParamsDictionary = {
-  [key: string]: string;
+  [key: string]: string
 }
 
 // TODO: this is no longer used
@@ -16,14 +15,16 @@ export type TailLogger = {
   start: () => void
 }
 
-export type TAppLocals<T extends Record<string, any>=Record<string, any>> = {
+export type TExLocals = Record<string, any>
+
+export type TAppLocals<T extends TExLocals=TExLocals> = {
   repo?: Repo
   tailLogger?:TailLogger
   config:TDefGobletConfig & T
 }
 
 export type TApp<L=TAppLocals> = Express & {
-  locals: L
+  locals: L & TAppLocals
 }
 
 export type TResLocals = {
@@ -32,7 +33,7 @@ export type TResLocals = {
 }
 
 export type TReqDef<
-  Params extends TParamsDictionary,
+  Params extends TParamsDictionary=TParamsDictionary,
   Body=any,
   Res=any,
   Query=TParsedQs,
@@ -47,6 +48,11 @@ export type TReqDef<
   app: App
   auth?:TTokenUser
 }
+
+export type TAppOvReq<
+  App extends Express=TApp,
+  Params extends TParamsDictionary=TParamsDictionary,
+> = TReqDef<Params, any, any, TParsedQs, App>
 
 export type TPReq<
   Params extends TParamsDictionary,

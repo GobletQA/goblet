@@ -298,8 +298,7 @@ export class PWBrowsers {
       throw err
     }
   }
-  
-  
+
   /**
   * Starts browser using playwright
   * See https://playwright.dev/docs/api/class-browsertype#browser-type-launch|Playwright Docs for more info

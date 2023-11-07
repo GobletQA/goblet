@@ -4,13 +4,26 @@ import type {
   TBrowserEvents,
   TBrowserEventCB,
   TOnAutomateEvent,
+  TBrowserEventArgs,
 } from '@GBB/types'
 
-import { Automate } from '../../automate'
+
+import { Automate } from '../automate'
 import { EBrowserEvent } from '@GBB/types'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 
 type ListenerList = Record<EBrowserEvent, BrowserEvents>
+type TBrowserEvtsRegister = {
+  page:TBrowserPage
+  events:TBrowserEvents
+  args:TBrowserEventArgs
+}
+
+type TBrowserAutomateEvt = {
+  args:TBrowserEventArgs
+  event?: TOnAutomateEvent
+  pwComponents?: TPWComponents
+}
 
 export class BrowserEvents {
 
@@ -18,17 +31,19 @@ export class BrowserEvents {
   static listeners:ListenerList={} as ListenerList
 
 
-  static registerEvents = async (
-    events:TBrowserEvents,
-    page:TBrowserPage
-  ) => {
+  static registerEvents = ({
+    args,
+    page,
+    events,
+  }:TBrowserEvtsRegister) => {
     // Setup browser page event listeners
     Object.entries(events).forEach(
       ([ event, methods ]:[EBrowserEvent, TBrowserEventCB[]]) => {
         BrowserEvents.registerEvent(
           event,
           methods,
-          page
+          page,
+          args
         )
       }
     )
@@ -42,21 +57,24 @@ export class BrowserEvents {
   static registerEvent = (
     name:EBrowserEvent,
     callback:TBrowserEventCB|TBrowserEventCB[],
-    page:TBrowserPage
+    page:TBrowserPage,
+    args:TBrowserEventArgs,
   ) => {
     const events = ensureArr<TBrowserEventCB>(callback)
+    // Add the methods to it if it already exists
+    const listener = BrowserEvents.listeners[name]
 
     // Create a new listener if none exists for the event name
-    if(!BrowserEvents.listeners[name])
+    if(!listener)
       return new BrowserEvents(
         name,
         events,
-        page
+        page,
+        args
       )
 
-    // Add the methods to it if it already exists
-    const listener = BrowserEvents.listeners[name]
-    listener.methods.push(...events)
+    const filtered = events.filter(method => !listener?.methods?.includes(method))
+    listener.methods.push(...filtered)
 
     return listener
   }
@@ -66,13 +84,14 @@ export class BrowserEvents {
    * Just a helper method
    * Used to listen for automate events from the same events class
    */
-  static automateEvent = (
-    pwComponents?: TPWComponents,
-    AutomateEvent?: TOnAutomateEvent,
-  ) => {
+  static automateEvent = ({
+    args,
+    event,
+    pwComponents,
+  }:TBrowserAutomateEvt) => {
     // Setup Automate event listener
-    AutomateEvent
-      && Automate.addEventListener(pwComponents, AutomateEvent)
+    event
+      && Automate.addEventListener(pwComponents, event, args)
   }
 
   /**
@@ -105,14 +124,15 @@ export class BrowserEvents {
   constructor(
     name:EBrowserEvent,
     methods:TBrowserEventCB[],
-    page:TBrowserPage
+    page:TBrowserPage,
+    args:TBrowserEventArgs,
   ){
     this.name = name
     this.methods = methods
 
-    page.on(this.name as any, (...args:any[]) => 
-      Promise.all(this.methods.map(method => method?.(page, ...args)))
-    )
+    page.on(this.name as any, (...pwArgs:any[]) => Promise.all(
+      this.methods.map(method => method?.(page, ...pwArgs, args))
+    ))
 
     BrowserEvents.onPageClose(page)
     BrowserEvents.listeners[name] = this

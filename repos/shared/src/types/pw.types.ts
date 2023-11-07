@@ -110,6 +110,7 @@ export type TBrowserConf = TBrowserLaunchOpts & {
   url?:string
   page?:TPageOpts
   restart?:boolean
+  forwardLogs?:boolean
   colorScheme?: TColorSchema
   context?:TBrowserContextOpts
   type: EBrowserType|EBrowserName
@@ -137,6 +138,16 @@ export type TPWComponents = Omit<TPWBrowser, `context`> & {
 }
 
 export type TActionCallback = (...args:any[]) => void
+export type TPlayConsoleMsg = {
+  text:string
+  type:string
+  location: {
+    url:string
+    line:string
+    column:string
+  }
+}
+export type TConsoleCallback = (message:TPlayConsoleMsg) => void
 
 export type TBrowserActionArgs = {
   id:string
@@ -174,10 +185,12 @@ export type TSetBrowserDefaults = {
 export type TStartPlaying = {
   id:string
   repo:Repo
+  forwardLogs?:boolean
   action:TBrowserAction,
   onEvent:TActionCallback
   onCleanup:TActionCallback
   browserConf: TBrowserConf
+  onConsole?:TConsoleCallback
   pwComponents?:TPWComponents
   steps?:TParkinRunStepOptsMap
 }
@@ -235,12 +248,12 @@ export enum EBrowserEvent {
   worker=`worker`,
 }
 
+export type TSocketMgr = TSocketEvtCBProps[`Manager`]
 export type TBrowserEventCB = (...args:any[]) => void
-export type TBrowserEventArgs = Pick<
-  TSocketEvtCBProps, `socket`|`Manager`
-> & { 
+export type TBrowserEventArgs = { 
+  Manager:TSocketMgr
   browserConf?:TBrowserConf
-  pwComponents?: TPWComponents
+  pwComponents?:TPWComponents
 }
 
 export type TBrowserEvents = {

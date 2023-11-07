@@ -76,8 +76,10 @@ const resolveFromSettings = (args:TBuiltCmdParams) => {
   const { repo, settings } = getStore()?.getState()
 
   const mergedSettings = deepMerge(settings, repo?.world?.settings)
+  const forwardLogs = mergedSettings?.browser?.forwardLogs
 
   return {
+    forwardLogs: forwardLogs?.active ? forwardLogs?.value : false,
     options: {
       ...conditionalAddSettingOpt(`debug`, mergedSettings?.browser?.debug),
       ...conditionalAddSettingOpt(`slowMo`, mergedSettings?.browser?.slowMo),
@@ -99,11 +101,12 @@ const buildDefaultParams = (args:TBuiltCmdParams) => {
   const { file } = args
   const repo = getStore()?.getState().repo
   // Add user run settings here via state.settings and world.settings
-  const { options, params } = resolveFromSettings(args)
+  const { options, params, forwardLogs } = resolveFromSettings(args)
   const location = file?.location
   const base = repo?.paths?.repoRoot
 
   return {
+    forwardLogs,
     options: {
       ...conditionalAddOpt(`context`, location),
       ...conditionalAddOpt(`base`, base),
@@ -121,14 +124,15 @@ const buildDefaultParams = (args:TBuiltCmdParams) => {
  * @function
  */
 const buildFeatureParams = (args:TBuiltCmdParams) => {
-  const { params, options } = buildDefaultParams(args)
+  const { params, options, forwardLogs } = buildDefaultParams(args)
 
   return {
     options,
+    forwardLogs,
     params: [
       ...params,
       // Add Feature file specific params here
-    ].filter(Boolean)
+    ].filter(Boolean),
   }
 }
 
@@ -137,14 +141,15 @@ const buildFeatureParams = (args:TBuiltCmdParams) => {
  * @function
  */
 const buildWaypointParams = (args:TBuiltCmdParams) => {
-  const { params, options } = buildDefaultParams(args)
+  const { params, options, forwardLogs } = buildDefaultParams(args)
 
   return {
     options,
+    forwardLogs,
     params: [
       ...params,
       // Add Waypoint file specific params here
-    ].filter(Boolean)
+    ].filter(Boolean),
   }
 }
 
@@ -153,14 +158,15 @@ const buildWaypointParams = (args:TBuiltCmdParams) => {
  * @function
  */
 const buildUnitParams = (args:TBuiltCmdParams) => {
-  const { params, options } = buildDefaultParams(args)
+  const { params, options, forwardLogs } = buildDefaultParams(args)
 
   return {
     options,
+    forwardLogs,
     params: [
       ...params,
       // Add Unit file specific params here
-    ].filter(Boolean)
+    ].filter(Boolean),
   }
 }
 
@@ -182,6 +188,7 @@ export const buildCmdParams = (args:TBuiltCmdParams) => {
   const { file } = args
 
   const typeKey = file?.fileType as keyof typeof parmBuildMap
-  return checkCall(parmBuildMap[typeKey], args) || { params: emptyArr, options: emptyObj  }
+  return checkCall(parmBuildMap[typeKey], args)
+    || { params: emptyArr, options: emptyObj, forwardLogs: false  }
 
 }

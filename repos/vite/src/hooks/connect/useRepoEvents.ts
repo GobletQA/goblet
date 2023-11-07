@@ -6,15 +6,17 @@ import type {
 import type { Dispatch, SetStateAction } from 'react'
 import type { TOnAutoChange } from '@gobletqa/components'
 
-import { useUser } from '@store'
-import { CreateNewRepo } from '@constants'
+
+import { isStr, isUrl } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { formatName } from '@utils/repo/formatName'
+import { CreateNewRepo, CreateNewBranch } from '@constants'
 
 export type THRepoEvts = {
   branch?:string
   owner:string
   newRepo:string
+  repos:TBuiltRepo[]
   userBranch:string
   createRepo:boolean
   description:string
@@ -27,6 +29,25 @@ export type THRepoEvts = {
   onInputError?: (key:string, value:string) => void
   setDescription: Dispatch<SetStateAction<string>>
   setRepo: Dispatch<SetStateAction<TBuiltRepo | undefined>>
+}
+
+const formatCustomUrl = (
+  value:string,
+  userBranch:string
+) => {
+  const cleaned = value.trim().replace(/\.git$/, ``)
+  
+  return isUrl(cleaned)
+    && {
+        id: cleaned,
+        key: cleaned,
+        label: cleaned,
+        value: cleaned,
+        branches: [
+          userBranch,
+          CreateNewBranch,
+        ],
+      }
 }
 
 export const useRepoEvents = (props:THRepoEvts) => {
@@ -67,21 +88,29 @@ export const useRepoEvents = (props:THRepoEvts) => {
       && setNewRepo(formatted)
   })
 
-  const user = useUser()
   const onChangeOwner = useInline<TOnAutoChange>((evt, value) => {
     const update = value as string
     update !== owner && setOwner(update)
   })
 
   const onChangeRepo = useInline<TOnAutoChange>((evt, value) => {
-    const update = value as TBuiltRepo
+    const update = isStr(value)
+      ? formatCustomUrl(value, userBranch)
+      : value as TBuiltRepo
+
+    if(!update){
+      setRepo(undefined)
+      setBranch(userBranch)
+      return
+    }
+
     if(repo?.id === update?.id) return
 
     update?.id === CreateNewRepo?.id
       ? onCreateRepo(evt, true)
       : onCreateRepo(evt, false)
 
-    setRepo(value as TBuiltRepo)
+    setRepo(update as TBuiltRepo)
     setBranch(userBranch)
   })
 

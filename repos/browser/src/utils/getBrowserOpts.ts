@@ -134,6 +134,7 @@ export const getBrowserOpts = (
     // type / url is not used, just pulled out of the config object
     type,
     url,
+    forwardLogs,
     ...argumentOpts
   } = browserConf
 

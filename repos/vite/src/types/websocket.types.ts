@@ -18,3 +18,57 @@ export type TCancelAutomateRespEvent = {}
 export type TStartBrowserPlayOpts = {
   ast?: TFeatureAst
 }
+
+export type TIdleConnection = {
+  idle?:boolean
+  counter?:number
+  connections?:number
+  state?:`active`|`idle`
+}
+
+
+export type TPWConsoleMethods = Pick<Console,
+  `log`
+  |`debug`
+  |`info`
+  |`error`
+  |`warn`
+  |`dir`
+  |`table`
+  |`count`
+  |`countReset`
+  |`trace`
+  |`clear`
+  |`assert`
+  |`profile`
+  |`profileEnd`
+  |`count`
+  |`timeEnd`
+  
+>
+
+export enum EPWConsoleMethod {
+  log=`log`,
+  debug=`debug`,
+  info=`info`,
+  error=`error`,
+  warn=`warn`,
+  warning=`warn`,
+  dir=`dir`,
+  dirxml=`dirxml`,
+  table=`table`,
+  count=`count`,
+  countReset=`countReset`,
+  trace=`trace`,
+  clear=`clear`,
+  assert=`assert`,
+  profile=`profile`,
+  profileEnd=`profileEnd`,
+  timeEnd=`timeEnd`,
+}
+
+export type TPWConsoleMsgEvt = {
+  text:string
+  location:string
+  type:EPWConsoleMethod|TPWConsoleMethods
+}

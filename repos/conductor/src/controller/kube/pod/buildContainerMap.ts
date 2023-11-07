@@ -1,5 +1,4 @@
-import type { TPort, TPod, TContainerMap } from '../../../types'
-
+import type { TPort, TPod, TContainerMap } from '@GCD/types'
 
 export const buildContainerMap = (pod:TPod, ports:Record<string, TPort>) => {
   const container = pod.spec.containers[0]

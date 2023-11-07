@@ -63,6 +63,7 @@ const initApi = async () => {
   const socket = await initSocket(app, server, socketConf, 'tests')
 
   onExit(socket.Manager)
+  app.locals.SocketManager = socket.Manager
 
   return { app, server, socket }
 }

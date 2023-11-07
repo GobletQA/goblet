@@ -8,6 +8,7 @@ import type {
   TAutomateParent,
   TOnAutomateEvent,
   TUserAutomateOpts,
+  TBrowserEventArgs,
   TAutomateCleanupCB,
   TAutomatePageEvent,
   TAutomateElementEvent,
@@ -17,11 +18,15 @@ import type {
 import { ENVS } from '@gobletqa/environment'
 import { noOp } from '@keg-hub/jsutils/noOp'
 import { logEnvMsg } from '@GBB/utils/logger'
+import { isArr } from '@keg-hub/jsutils/isArr'
 import { PWAutomateEvent } from '@GBB/constants'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { addPWInitScripts } from '@GBB/utils/addPWInitScripts'
 import { exposePWFunction } from '@GBB/utils/exposePWFunction'
+
+type TAutomateEvtGroup = Array<TOnAutomateEvent|[TOnAutomateEvent, Record<any, any>]>
+
 
 
 export class Automate {
@@ -66,7 +71,7 @@ export class Automate {
    */
   static addInitScripts = async (parent:TAutomateParent, automate?:Automate) => {
     logEnvMsg(`Automate - Adding automate init scripts to playwright parent`)
-    
+
     automate = automate || parent.__GobletAutomateInstance
     if(!automate)
       throw new Error(`Could not find goblet automate instance on parent object`)
@@ -140,11 +145,12 @@ export class Automate {
 
   static addEventListener = (
     pwComponents:Partial<TPWComponents>,
-    onEvent:TOnAutomateEvent
+    onEvent:TOnAutomateEvent,
+    args?:TBrowserEventArgs,
   ) => {
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
-    automate.registerListener(onEvent)
+    automate.registerListener(onEvent, args)
   }
 
   /**
@@ -182,7 +188,7 @@ export class Automate {
 
   id?:string = null
   parent: TAutomateParent
-  onEvents:TOnAutomateEvent[] = []
+  onEvents:TAutomateEvtGroup = []
   onCleanup:TAutomateCleanupCB = noOp
   options:TAutomateOpts = {
     highlightStyles: {
@@ -207,7 +213,10 @@ export class Automate {
   fireEvent = <T=TAutomateElementEvent>(event:TAutomateEvent<T>) => {
     logEnvMsg(`Automate - Fire automate event`, `debug`, event)
     
-    this.onEvents.map(func => checkCall(func, event))
+    this.onEvents.map(data => {
+      const [func, args] = isArr(data) ? data : [data, undefined]
+      checkCall(func, event, args)
+    })
     return this
   }
 
@@ -233,8 +242,8 @@ export class Automate {
   /**
    * Adds event callback, called when events are fired
    */
-  registerListener = (onEvent:TOnAutomateEvent) => {
-    !this.onEvents.includes(onEvent) && this.onEvents.push(onEvent)
+  registerListener = (onEvent:TOnAutomateEvent, args?:TBrowserEventArgs) => {
+    !this.onEvents.includes(onEvent) && this.onEvents.push([onEvent, args])
   }
 
   getHoverOption = (option:string) => {

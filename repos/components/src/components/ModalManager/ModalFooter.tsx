@@ -1,13 +1,16 @@
-import type { CSSProperties } from 'react'
+import type { CSSProperties, ForwardedRef } from 'react'
 import type { TModalFooter, TModalAction } from '@GBC/types'
 
+import { forwardRef } from 'react'
 import Button from '@mui/material/Button'
 import DialogActions from '@mui/material/DialogActions'
 import { useOnKeyDown } from '@GBC/hooks/dom/useOnKeyDown'
 import { useGetIcon } from '@GBC/hooks/components/useGetIcon'
+import { TooltipHoc } from '@GBC/hocs/TooltipHoc'
 
 
-const FooterAction = (props:TModalAction) => {
+
+const FooterAction = TooltipHoc(forwardRef((props:TModalAction, ref:ForwardedRef<HTMLButtonElement>) => {
   const {
     label,
     loading,
@@ -41,11 +44,12 @@ const FooterAction = (props:TModalAction) => {
       endIcon={EIcon && (<EIcon {...iconProps} />)}
       startIcon={SIcon && (<SIcon {...iconProps} />)}
       {...buttonProps as any}
+      ref={ref}
     >
       {text}
     </Button>
   )
-}
+}))
 
 export const ModalFooter = (props:TModalFooter) => {
   const {
@@ -68,7 +72,7 @@ export const ModalFooter = (props:TModalFooter) => {
         >
           {Object.values(actions)?.map((action) => (
             <FooterAction
-              key={action?.label || action?.text}
+              key={action?.key ?? action?.id ?? action?.label ?? action?.text}
               {...action}
             />
           ))}

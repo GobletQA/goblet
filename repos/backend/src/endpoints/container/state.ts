@@ -1,14 +1,18 @@
 import type { Response } from 'express'
-import type { Request as JWTRequest } from 'express-jwt'
+import type { TBEDefReq } from '@GBE/types'
 
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
+type TBEReqParams ={
+  imageRef:string
+}
 
 /**
  * Gets the state of a connected repo
  * Calls the stateGoblet workflow
  */
-export const stateContainer = async (req:JWTRequest, res:Response) => {
+export const stateContainer = async (req:TBEDefReq<TBEReqParams>, res:Response) => {
   const conductor = req.app.locals.conductor
   const imageRef = req?.params?.imageRef || Object.keys(conductor.config.images)[0]
   if(!imageRef) throw new Error(`Conductor config missing Image Reference`)
@@ -20,6 +24,9 @@ export const stateContainer = async (req:JWTRequest, res:Response) => {
     body: { ...req?.body },
     params: { ...req?.params, imageRef },
   }, req?.auth?.subdomain || res?.locals?.subdomain)
+
+  // TODO: update here to make an API call to session container
+  // To ensure its running
 
   return apiRes(res, status)
 }

@@ -31,6 +31,16 @@
   * **Description** - Disables loading secrets when not enabled for a repo
   * **Repos** - `exam`, `test-utils`, `workflows`
 
+* `GB_VNC_VIEW_HEIGHT`
+  * **Default** - 1430
+  * **Description** - Disables loading secrets when not enabled for a repo
+  * **Repos** - `screencast`, `browser`, `frontend`
+
+* `GB_VNC_VIEW_WIDTH`
+  * **Default** -  1615
+  * **Description** - Disables loading secrets when not enabled for a repo
+  * **Repos** - `screencast`, `browser`, `frontend`
+
 
 ## UI Only
 
@@ -89,3 +99,37 @@
     * Share only with those who should have access to the content of the secrets files
     * Used to decrypt secrets when running exam
   * **Repos** - `latent`, `exam`
+
+
+### Screencast
+
+* `GB_SC_IDLE_DEBUG`
+  * **Default** - `develop` = `true` / `production` = `false`
+  * **Description** - Enable or disable debug logs session container idle state
+    * Used for debugging the idle timeout / shutdown of the session-container
+    * Used only in development. Is disabled in production
+* `GB_SC_IDLE_TIMEOUT_ACTIVE`
+  * **Default** - `develop` = `false` / `production` = `true`
+  * **Description** - Enable or disable session timeout for the session container
+    * When active and the session times out due to inactivity, the session container is shutdown
+    * Used in production, is disabled in development by default
+* `GB_SC_IDLE_INTERVAL`
+  * **Default** - 20 seconds
+  * **Description** - Interval in seconds that the idle timeout check will run
+* `GB_SC_IDLE_WAIT_TO_START`
+  * **Default** - 120 seconds
+  * **Description** - Time in seconds to wait before starting the idle timeout check in seconds, i.e. 180 === 3min
+* `GB_SC_IDLE_THRESHOLD`
+  * **Default** - 4 seconds
+  * **Description** - Number of times the inactive check can be true before shutting down the session container
+* `GB_SC_IDLE_CONNECTION_THRESHOLD`
+  * **Default** - 2 connections
+  * **Description** - Max number of connections that can exist to consider the container to be idle
+* `GB_SC_RESET_CONNECTION_FILE`
+  * **Default** - `reset-connection-check`
+  * **Description** - # Name of the file that gets created when the idle connections check should be reset
+    * The idle timeout check script, looks for this file
+    * If it exists, the file is removed, and the idle timeout is reset
+    * This file is created by the frontend calling the screencast API endpoint `/screencast/reset/idle`
+      * This call is made when the user selects continue when the `IdleCheck` modal is displayed
+

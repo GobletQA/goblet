@@ -1,8 +1,12 @@
+import type { TBrowserIsLoadedEvent, TSocketEmitData, TBrowserConf } from '@types'
+
 import { emptyObj } from '@keg-hub/jsutils'
 import { SocketMsgTypes } from '@constants'
 import { GobletQAUrl } from '@constants/values'
 import { pageService } from '@services/pageService'
+import { SetBrowserIsLoadedEvent } from '@constants'
 import { getWorldVal } from '@utils/repo/getWorldVal'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { WSService } from '@services/socketService/socketService'
 import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
@@ -12,24 +16,28 @@ import { getSettingsValues } from '@utils/settings/getSettingsValues'
  *
  * @returns {void}
  */
-export const restartBrowserContext = async (options:Record<string, any> = emptyObj) => {
+export const restartBrowserContext = (
+  options?:Partial<TBrowserConf>,
+  resetUrl:boolean=true
+) => {
+
   const browserOpts = getSettingsValues(`browser`)
-  const url = getWorldVal({
-    location: `url`,
-    fallback: `app.url`,
-    def: GobletQAUrl
-  })
+  const opts:TSocketEmitData = { browser: {...browserOpts, ...options} }
 
-  
-  const normal = pageService.normalize(url)
-  if(!normal) return
+  if(resetUrl){
+    const url = getWorldVal({
+      location: `url`,
+      fallback: `app.url`,
+      def: GobletQAUrl
+    })
+    const normal = pageService.normalize(url)
+    if(!normal) return
 
-  WSService.emit(SocketMsgTypes.BROWSER_RESTART, {
-    url: pageService.normalize(url),
-    browser: {
-      ...browserOpts,
-      ...options,
-    }
-  })
+    opts.url = normal
+  }
+
+  EE.emit<TBrowserIsLoadedEvent>(SetBrowserIsLoadedEvent, { state: false })
+
+  WSService.emit(SocketMsgTypes.BROWSER_RESTART, opts)
 }
 

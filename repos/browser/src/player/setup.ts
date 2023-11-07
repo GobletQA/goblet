@@ -2,6 +2,7 @@ import type { CodeRunner } from './codeRunner'
 import type { TPlayerEventData, TPlayerTestEvent } from '@GBB/types'
 import type { TRunResult, TParkinTestConfig } from '@ltipton/parkin'
 
+
 type TPTestCallback = (result:TRunResult) => any
 
 /**
@@ -9,10 +10,12 @@ type TPTestCallback = (result:TRunResult) => any
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
+import { Parkin } from '@ltipton/parkin'
+import { WSPwConsole } from '@GBB/constants'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import { unset } from '@keg-hub/jsutils/unset'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { Parkin } from '@ltipton/parkin'
 
 import {
   SavedDataWorldPath,
@@ -22,6 +25,7 @@ import {
 } from '@GBB/constants'
 
 
+const emptyConsoleLoc = { url: ``, line: ``, column: ``}
 const testGlobals = [
   `it`,
   `xit`,
@@ -109,6 +113,54 @@ const setGlobalOpts = (Runner:CodeRunner) => {
   }
 }
 
+
+const wrapConsoleMethod = (Runner:CodeRunner, type:keyof Console, ogConsole:Console) => {
+  const ogMethod = ogConsole[type].bind(ogConsole)
+
+  const method = function(arg:any, ...args:any[]) {
+    ogMethod.call(ogConsole, arg, ...args)
+    if(!isStr(arg) || !arg.includes(`label: 'Goblet SC'`)) return
+
+    try {
+      const text = [arg, ...args].reduce((acc, arg) => {
+        if(!arg) return
+        const str = JSON.stringify(arg)
+        acc += `${str}\n${WSPwConsole}\n`
+        return acc
+      }, ``)
+      Runner.player.onConsole({ type, text, location: emptyConsoleLoc })
+    }
+    catch(err){}
+  }
+
+  return method.bind(ogConsole)
+}
+
+const setGlobalConsole = (Runner:CodeRunner) => {
+  if(!Runner.player.forwardLogs) return
+
+  const ogConsole = global.console
+  global.console = {
+    ...global.console,
+    dir: wrapConsoleMethod(Runner, `dir`, ogConsole),
+    log: wrapConsoleMethod(Runner, `log`, ogConsole),
+    warn: wrapConsoleMethod(Runner, `warn`, ogConsole),
+    info: wrapConsoleMethod(Runner, `info`, ogConsole),
+    debug: wrapConsoleMethod(Runner, `debug`, ogConsole),
+    error: wrapConsoleMethod(Runner, `error`, ogConsole),
+    trace: wrapConsoleMethod(Runner, `trace`, ogConsole),
+    table: wrapConsoleMethod(Runner, `table`, ogConsole),
+    count: wrapConsoleMethod(Runner, `count`, ogConsole),
+    clear: wrapConsoleMethod(Runner, `clear`, ogConsole),
+    profile: wrapConsoleMethod(Runner, `profile`, ogConsole),
+    timeEnd: wrapConsoleMethod(Runner, `timeEnd`, ogConsole),
+    profileEnd: wrapConsoleMethod(Runner, `profileEnd`, ogConsole),
+    countReset: wrapConsoleMethod(Runner, `countReset`, ogConsole),
+    // warning: wrapConsoleMethod(Runner, `warning`, ogConsole),
+    // countEnd: wrapConsoleMethod(Runner, `countEnd`, ogConsole),
+  } as Console
+}
+
 /**
  * Sets up the global variables so they can be accesses in step definitions
  * Caches any existing globals so they can be reset after the test run
@@ -119,8 +171,10 @@ export const setupGlobals = (Runner:CodeRunner) => {
   ;(TestGlobalsCache as any).page = (global as any).page
   ;(TestGlobalsCache as any).context = (global as any).context
   ;(TestGlobalsCache as any).browser = (global as any).browser
+  ;(TestGlobalsCache as any).console = (global as any).console
 
   setGlobalOpts(Runner)
+  setGlobalConsole(Runner)
 
   ;(global as any).expect = expect
   global.page = Runner.player.page
@@ -139,6 +193,7 @@ export const resetTestGlobals = () => {
   ;(global as any).page = (TestGlobalsCache as any).page
   ;(global as any).context = (TestGlobalsCache as any).context
   ;(global as any).browser = (TestGlobalsCache as any).browser
+  ;(global as any).console = (TestGlobalsCache as any).console
 
   global.__goblet = GobletGlobalCache.__goblet
   testGlobals.forEach((item) => global[item] = TestGlobalsCache[item])

@@ -31,7 +31,7 @@ export const WaitOnContainer = (props:TWaitOnContainer) => {
     // Otherwise show reload warning
     condition: !timedOut,
     callback: () => setTimedOut(true),
-    delay: timeout || WaitTimeout || 20,
+    delay: timeout || WaitTimeout || 40,
   })
 
   const message = !timedOut

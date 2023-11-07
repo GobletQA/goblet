@@ -17,6 +17,7 @@ export const savePageCookie = async (name:boolean|string, ctx:TStepCtx) => {
 }
 
 const meta = {
+  name: `Save page cookie`,
   module: `savePageCookie`,
   examples: [
     `Then I save the page cookie`,

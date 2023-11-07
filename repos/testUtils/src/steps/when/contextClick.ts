@@ -30,6 +30,7 @@ export const contextClick = async (
 
 const meta = {
   module: `contextClick`,
+  name: `Browser context click`,
   examples: [
     `When I click "button[name='unique_name']" in context`,
     `When I click the element "button[name='unique_name']" in context`,

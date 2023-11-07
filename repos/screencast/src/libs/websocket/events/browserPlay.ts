@@ -6,8 +6,8 @@ import type {
 
 import { Logger } from '@GSC/utils/logger'
 import { withRepo } from '@GSC/utils/withRepo'
-import { playBrowser } from '@gobletqa/browser'
 import { getDefinitions } from '@gobletqa/repo'
+import { playBrowser, WSPwConsole } from '@gobletqa/browser'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 
@@ -19,19 +19,27 @@ export const browserPlay = (app:Express) => withRepo<TSocketEvtCBProps>(async ({
   Manager,
 }) => {
 
-  const { action, browser } = data
+  const { action, browser, forwardLogs } = data
   const browserConf = joinBrowserConf(browser, app)
   await getDefinitions(repo, false)
 
   const player = await playBrowser({
     repo,
     action,
+    forwardLogs,
     browserConf,
     id: socket.id,
     // TODO: update this to pass in step / shared options
     // Could also use as a way to pass callbacks as needed
     steps: {
       shared: {}
+    },
+    onConsole: (message) => {
+      Manager.emit(socket, WSPwConsole, {data: {
+        type: message.type,
+        text: message.text,
+        location: message.location,
+      }})
     },
     onEvent:(event:TPlayerTestEventMeta) => {
       const emitEvt = formatTestEvt(event, { group: socket.id })

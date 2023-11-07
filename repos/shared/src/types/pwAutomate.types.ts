@@ -1,7 +1,5 @@
-import type { TBrowserConf, TBrowserContext, TBrowserPage } from './pw.types'
-
-// Exported from screencast/src/types
 import type { Automate } from '@gobletqa/browser'
+import type { TBrowserEventArgs, TBrowserConf, TBrowserContext, TBrowserPage } from './pw.types'
 
 export type TAutomateEventData<T=Record<string, any>> = T
 
@@ -24,7 +22,7 @@ export type TUserAutomateOpts = {
 
 export type TAutomateCleanupCB = (automate:Automate) => void
 
-export type TOnAutomateEvent = <T>(event:TAutomateEvent<T>) => void
+export type TOnAutomateEvent = <T>(event:TAutomateEvent<T>, args?:TBrowserEventArgs) => void
 
 export type TPageOrContext = TBrowserPage | TBrowserContext
 

@@ -27,8 +27,6 @@ const loadFirebaseCfg = () => {
  * Eventually that will be removed and this will be called directly
  */
 export const loadConfig = () => {
-
-
   addToProcess(
     loadConfigs({
       name: 'goblet',
@@ -58,12 +56,10 @@ export const loadConfig = () => {
     GB_WS_TRANSPORTS,
     GB_VNC_VIEW_WIDTH,
     GB_VNC_VIEW_HEIGHT,
-    GB_FE_IDLE_TIMEOUT,
     GB_PW_SOCKET_ACTIVE,
     GB_FE_CONTAINER_WAIT,
     GB_GITHUB_AUTH_USERS,
     FIRE_BASE_PERSISTENCE,
-    GB_FE_IDLE_PROMPT_TIMEOUT,
     GB_CD_FORWARD_HOST_HEADER,
     GB_CD_FORWARD_PORT_HEADER,
     GB_CD_FORWARD_PROTO_HEADER,
@@ -94,11 +90,9 @@ export const loadConfig = () => {
     GB_VNC_ACTIVE,
     GB_AUTH_ACTIVE,
     GB_NO_VNC_PATH,
-    GB_FE_IDLE_TIMEOUT,
     GB_PW_SOCKET_ACTIVE,
     GB_GITHUB_AUTH_USERS,
     GB_FE_CONTAINER_WAIT,
-    GB_FE_IDLE_PROMPT_TIMEOUT,
     GB_CD_FORWARD_HOST_HEADER,
     GB_CD_FORWARD_PORT_HEADER,
     GB_CD_FORWARD_PROTO_HEADER,

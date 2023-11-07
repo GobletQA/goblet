@@ -33,6 +33,8 @@ export type TContainerMap = {
   labels: Record<string, string>
 }
 
+export type TContainerMaps = Record<string, TContainerMap>
+
 export type TJwtConfig = {
   exp: string
   secret: string

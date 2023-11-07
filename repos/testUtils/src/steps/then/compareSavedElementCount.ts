@@ -34,6 +34,7 @@ export const compareSavedElementCount = async (
 }
 
 const meta = {
+  name: `Compare saved element count`,
   module : `compareSavedElementCount`,
   examples: [
     `Then the "li.list-items" count is "equal" to "app.saved.itemCount"`,

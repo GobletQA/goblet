@@ -25,7 +25,7 @@ export const buildPorts = (
   opts?:any
 ):V1ContainerPort[] => {
   const portsObj = isArr<TPortItem[]>(container.ports)
-    ? container.ports.reduce((acc, item) => {
+    ? (container.ports as TPortItem[]).reduce((acc, item) => {
         const built = isObj(item) ? item : { containerPort: item }
         
         acc[built.containerPort] = item

@@ -44,6 +44,7 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>({
   checkbox: `checkbox`, // - checked || unchecked/
   options: `options`, // - Dropdown select from options
   attribute: `attribute`, // - Any element attribute
+  code: `code`, // - Javascript code via doc script
 })
 
 export const ExpressionElements = deepFreeze<Record<string, string[]>>({
@@ -66,4 +67,11 @@ export const ExpressionElements = deepFreeze<Record<string, string[]>>({
     `[role="radio"]`,
     `[role="checkbox"]`,
   ],
+})
+
+
+export const ExpressionCustomInputs = deepFreeze<Record<string, string>>({
+  editor: `editor`,
+  textbox: `textarea`,
+  textarea: `textarea`,
 })

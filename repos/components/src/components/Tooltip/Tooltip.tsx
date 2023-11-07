@@ -4,6 +4,7 @@ import type { ComponentProps, ComponentType } from 'react'
 import { MuiTooltip, TooltipTitle, TooltipWrap } from './Tooltip.styled'
 
 export type TTooltip = ComponentProps<typeof MuiTooltip> & {
+  key?:any
   wrap?:boolean
   Wrap?:ComponentType<any>
   disabled?: boolean

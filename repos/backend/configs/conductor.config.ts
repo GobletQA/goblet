@@ -31,29 +31,26 @@ loadEnvs({
 })
 
 const {
-  GB_LOCAL_DEV_MODE,
-  GOBLET_SCREENCAST_PORT,
-  GOBLET_SCREENCAST_SERVICE_HOST,
-
   GB_SC_PORT,
   GB_SC_IMAGE,
+  GB_KD_PORT,
   GB_SC_ACTIVE,
+  GB_NO_VNC_PORT,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
-  GB_NO_VNC_PORT,
-  GB_CD_CONTROLLER_TYPE,
-  GB_CD_LISTENER_TIMEOUT,
-
   GB_KUBE_NAMESPACE,
-
-  GB_KD_PORT,
-  GB_CD_VALIDATION_KEY,
-  GB_CD_VALIDATION_HEADER,
-  GOBLET_KIND_SERVICE_PORT,
+  GB_LOCAL_DEV_MODE,
   GB_GIT_REMOTE_REF,
   GB_GIT_GLOBAL_IGNORE,
+  GB_CD_VALIDATION_KEY,
+  GB_CD_CONTROLLER_TYPE,
+  GOBLET_SCREENCAST_PORT,
+  GB_CD_LISTENER_TIMEOUT,
+  GB_CD_VALIDATION_HEADER,
+  GOBLET_KIND_SERVICE_PORT,
+  GOBLET_SCREENCAST_SERVICE_HOST,
 
-} = process.env
+} = ENVS
 
 const whiteList = [
   `GB_SC`,
@@ -100,10 +97,12 @@ const screencastHost = screencastManual ? `host.docker.internal` : GB_SC_DEPLOYM
 // TODO: look into passing the GB_*_ACTIVE envs to the pods on deployment
 // That and update GB_LOCAL_DEV_MODE env to be set via a argument when starting
 // When running without auto-starting the screencast pod
+// const localDevMode = false
+const localDevMode = GB_LOCAL_DEV_MODE
 const devRouter = screencastManual
   || (
       NODE_ENV === `local`
-        && toBool(GB_LOCAL_DEV_MODE)
+        && toBool(localDevMode)
         && exists(GOBLET_SCREENCAST_SERVICE_HOST)
         && exists(GOBLET_SCREENCAST_PORT)
     )
@@ -119,19 +118,17 @@ const devRouter = screencastManual
             port: GB_SC_PORT,
             host: screencastHost,
             containerPort: GB_SC_PORT,
-            protocol: 'http:' as TProtocol,
+            protocol: `http:` as TProtocol,
           },
           [GB_NO_VNC_PORT]: {
             port: GB_NO_VNC_PORT,
             host: screencastHost,
             containerPort: GB_NO_VNC_PORT,
-            protocol: 'http:' as TProtocol,
+            protocol: `http:` as TProtocol,
           }
         }
       }
     : {}
-
-
 
 
 /**
@@ -198,7 +195,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
   controller: {
     devRouter: devRouter as TRouteMeta,
     type: GB_CD_CONTROLLER_TYPE as TControllerType,
-    listenerTimeout: toNum(GB_CD_LISTENER_TIMEOUT || 25000)
+    listenerTimeout: toNum(GB_CD_LISTENER_TIMEOUT || 600000)
   },
   images: {
     [GB_SC_DEPLOYMENT]: {

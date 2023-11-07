@@ -12,24 +12,19 @@ const wrapContent = (
   children?: ReactNode,
 ) => {
   children = children || content
-  return !isArr(children)
-    ? children
-    : <Fragment>{children ?? null}</Fragment>
+  return (<Fragment>{children || null}</Fragment>)
 }
 
-/**
- * Loop the actions and wrap the onClick handler
- * Add call to close modal after onClick
- */
-const wrapActions = (
-  actions:TModalActions,
+const buildDefaultActs = (
   okText?:string,
   onOk?:(...args:any[]) => any,
   cancelText?:string,
   onCancel?:(...args:any[]) => any,
 ) => {
-  const builtActs:TModalActions = [
-    onCancel && ({
+  const builtActs:TModalActions = []
+
+  onCancel
+    && builtActs.push({
       color: `error`,
       variant: `contained`,
       startIcon: `CloseIcon`,
@@ -41,8 +36,10 @@ const wrapActions = (
 
         return resp
       },
-    } as TModalAction),
-    onOk && ({
+    } as TModalAction)
+  
+  onOk
+    && builtActs.push({
       color: `success`,
       keyboard: `enter`,
       variant: `contained`,
@@ -56,29 +53,54 @@ const wrapActions = (
         return resp
       },
     } as TModalAction)
-  ].filter(Boolean) as TModalActions
 
-  return (actions.map((act) => {
-    const {
-      text,
-      type,
-      color,
-      onClick,
-      children,
-      ...rest
-    } = act
-    return {
-      ...rest,
-      color: color || type,
-      text: children || text,
-      onClick: (...args:any) => {
-        const resp = onClick?.(...args)
-        toggleModal(false)
+  return builtActs
+}
 
-        return resp
-      }
-    }
-  }) as TModalActions).concat(builtActs)
+/**
+ * Loop the actions and wrap the onClick handler
+ * Add call to close modal after onClick
+ */
+const wrapActions = (
+  actions:TModalActions=[],
+  okText?:string,
+  onOk?:(...args:any[]) => any,
+  cancelText?:string,
+  onCancel?:(...args:any[]) => any,
+) => {
+
+  const customActs = actions?.length
+    ? actions.map((act) => {
+        const {
+          text,
+          type,
+          color,
+          onClick,
+          children,
+          ...rest
+        } = act
+        return {
+          ...rest,
+          color: color || type,
+          text: children || text,
+          onClick: (...args:any) => {
+            const resp = onClick?.(...args)
+            toggleModal(false)
+
+            return resp
+          }
+        } as TModalAction
+      })
+    : [] as TModalActions
+  
+  return customActs.concat(
+    buildDefaultActs(
+      okText,
+      onOk,
+      cancelText,
+      onCancel,
+    )
+  )
 }
 
 
@@ -100,7 +122,7 @@ const buildModalParams = (props:TAlert) => {
     ...(floatContent ? { overrideContent: true } : emptyObj),
     children: wrapContent(content, children),
     actions: wrapActions(
-      actions || [],
+      actions,
       okText,
       onOk,
       cancelText,

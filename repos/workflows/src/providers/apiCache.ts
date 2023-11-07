@@ -18,11 +18,10 @@ import { projects, branches } from '../../__mocks__/gitlab'
 /**
  *  --- Only use when in dev or testing ---  *
  */
-const mockCacheActive = process.env.NODE_ENV === `production`
-  ? false
-  : true
-
-// const mockCacheActive = false
+// const mockCacheActive = process.env.NODE_ENV === `production`
+//   ? false
+//   : true
+const mockCacheActive = false
 
 const defOpts:TGCacheOpts = emptyObj as TGCacheOpts
 const defVarOpts:TGraphApiVars = emptyObj as TGraphApiVars
@@ -61,8 +60,8 @@ export class ApiCache {
   cacheResponse = (key:string, value:any) => {
     this.#responses[key] = {
       value,
-      // Default timeout is 10 min
-      time: Date.now() + 60000 * 10
+      // Default timeout is 1 min
+      time: Date.now() + 60000 * 1
     }
   }
 

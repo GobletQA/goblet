@@ -31,6 +31,7 @@ type TBuildOpts = {
   appUrl:string
   params:string[],
   file:TFileModel,
+  forwardLogs?:boolean
   options:Record<string, any>
 }
 
@@ -39,12 +40,13 @@ type TBrowserPlay = Omit<TStartPlaying, `repo`|`id`|`onEvent`|`browserConf`|`onC
 }
 
 const buildOptions = (
-  { options, params, file, appUrl }:TBuildOpts,
+  { options, params, file, appUrl, forwardLogs }:TBuildOpts,
   repo:TGitData
 ) => {
   return {
     repo,
-    ref: 'page',
+    ref: `page`,
+    forwardLogs,
     action: {
       props: [
         {
@@ -79,7 +81,7 @@ export const startBrowserPlay = async (
   })
 
   const repo = getRepoData()
-  const { params, options } = buildCmdParams({ file })
+  const { params, options, forwardLogs } = buildCmdParams({ file })
   const appUrl = getWorldVal({loc: `url`, fb: `app.url`})
 
   const model = await filterFileContext(file, startOpts)
@@ -90,6 +92,7 @@ export const startBrowserPlay = async (
       params,
       options,
       file: model,
+      forwardLogs,
     },
     pickKeys<TGitData>(
       repo?.git,

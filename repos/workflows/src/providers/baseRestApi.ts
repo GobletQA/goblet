@@ -36,6 +36,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
   // It is generated from the baseUrl in the buildAPIUrl method
   baseUrl:string
 
+  cacheEnabled:boolean=false
   headers:Record<string, string>
   _cache: Record<string, [AxiosError, Record<any, any>]>={}
 

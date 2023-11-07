@@ -27,8 +27,12 @@ import {getAppData} from '@utils/store/getStoreData'
 import {signOutManually} from '@actions/admin/user/signOutManually'
 
 const {
-  WSReconnectInterval,
+  WSPwConsole,
+  WSIdleStatus,
+  WSPwUrlChange,
   WSReconnectAttempts,
+  WSReconnectInterval,
+  WSPwBrowserRestarted,
   ...EventTypes
 } = WSEventTypes
 

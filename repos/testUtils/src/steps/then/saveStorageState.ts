@@ -17,6 +17,7 @@ export const savePageState = async (
 }
 
 const meta = {
+  name: `Save page state`,
   module: `savePageState`,
   examples: [
     `Then I save the page state`,

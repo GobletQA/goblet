@@ -8,6 +8,7 @@ import type {
   TImgConfig,
   TRouteMeta,
   TImgsConfig,
+  TRemoveOpts,
   TContainerRef,
   TContainerMap,
   TContainerRoute,
@@ -121,8 +122,7 @@ export class Controller {
 
   remove = async (
     containerRef:TContainerRef|TPodRef,
-    isContainerMap:boolean=false,
-    throwOnEmpty:boolean=true
+    opts?:TRemoveOpts
   ) => {
     throwOverrideErr()
     return undefined

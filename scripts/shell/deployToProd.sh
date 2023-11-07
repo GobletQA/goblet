@@ -74,11 +74,10 @@ deployFrontend(){
 __main__(){
   gb_load_stdio
   
-  pullImages
+  # pullImages
   switchProdKubeCtx
   deployBackend
   deployFrontend
-  switchDevKubeCtx
 
   echo ""
   gb_success "Finished deploying to production"

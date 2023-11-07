@@ -7,13 +7,13 @@ import type {
   TRepoGraphRepos,
 } from '@gobletqa/workflows/types'
 
-import axios, { AxiosRequestConfig } from 'axios'
 import { ApiCache } from './apiCache'
 import { get } from '@keg-hub/jsutils/get'
-import { Logger } from '@gobletqa/logger'
+import { ApiLogger } from '@GWF/utils/logger'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
+import axios, { AxiosRequestConfig } from 'axios'
 import { hashObj } from '@keg-hub/jsutils/hashObj'
 import { buildHeaders } from '../utils/buildHeaders'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
@@ -22,10 +22,51 @@ import { hashString } from '@keg-hub/jsutils/hashString'
 
 const defPageInfo:TGraphPageInfo = emptyObj as TGraphPageInfo
 
+type TExtractNodes = TGraphApiVars & {
+  
+}
+
+const extractNodes = <T>(args:TExtractNodes, resp:any) => {
+  const { endpoint, getData } = args
+  return isFunc(getData)
+    ? getData<T>(resp.data)
+    : get(resp.data, endpoint.DataPath, emptyObj) as TGraphApiResp<T>
+}
+
+const handleResponse = async <T>(
+  graphApi:BaseGraphApi,
+  resp:any,
+  args:TExtractNodes,
+  endpointKey:string,
+  cacheKey,
+) => {
+  
+  const {
+    nodes=emptyArr as T[],
+    pageInfo=defPageInfo
+  } = extractNodes<T>(args, resp)
+  
+  if(pageInfo.hasNextPage && pageInfo.endCursor){
+    ApiLogger.log(`More nodes exist, making call to get more nodes...`)
+    graphApi.cache.set(endpointKey, { after: pageInfo.endCursor })
+    const moreNodes = await graphApi.callApi<T>({
+      ...args,
+      cacheKey,
+    }, true) as T[]
+
+    return nodes.concat(moreNodes)
+  }
+
+  ApiLogger.log(`No more nodes exist, return pulled nodes`)
+  return nodes
+}
+
+
 export class BaseGraphApi {
 
   cache: ApiCache
   provider: TGraphProvider
+  cacheEnabled:boolean = true
 
   constructor(args:TBaseGraphApi){
     this.provider = args.provider
@@ -69,20 +110,22 @@ export class BaseGraphApi {
 
     const variables = this.cache.buildVars(args, endpointKey)
 
-    const userCachekey = args.userId
+    const userCacheKey = args.userId
       || args.username && hashString(args.username)
       || args.subdomain
 
     // Disable cache for now until I can figure out why is failing
-    const cacheKey = args.cacheKey || (userCachekey && `${endpointKey}-${userCachekey}-${hashObj(variables)}`)
+    const cacheKey = this.cacheEnabled
+      ? args.cacheKey || (userCacheKey && `${endpointKey}-${userCacheKey}-${hashObj(variables)}`)
+      : false
 
     if(!pageCall && !force && cacheKey){
       const res = this.cache.checkResponse(cacheKey)
       if(res){
-        Logger.log(`Found ${res?.length} cached repos`)
+        ApiLogger.log(`Found ${res?.length} cached repos`)
         return res as T[]
       }
-      else Logger.log(`No cached repos found, making api call...`)
+      else ApiLogger.log(`No cached repos found, making api call...`)
     }
 
     const opts = {
@@ -92,33 +135,25 @@ export class BaseGraphApi {
       headers: this.buildHeaders(token, headers),
     }
 
+    ApiLogger.log(`Calling git provider graph API: ${this.provider.Url}`)
     const [err, resp] = await this.request(opts)
     this.apiError(err, resp?.data?.errors)
 
-    const {
-      nodes=emptyArr as T[],
-      pageInfo=defPageInfo
-    } = isFunc(getData)
-      ? getData<T>(resp.data)
-      : get(resp.data, endpoint.DataPath, emptyObj) as TGraphApiResp<T>
+    const allNodes = await handleResponse<T>(this, resp, args, endpointKey, cacheKey)
 
-    if(pageInfo.hasNextPage && pageInfo.endCursor){
-      this.cache.set(endpointKey, { after: pageInfo.endCursor })
-      const moreNodes = await this.callApi<T>({
-        ...args,
-        cacheKey,
-      }, true) as T[]
-
-      return nodes.concat(moreNodes)
-    }
+    if(pageCall) return allNodes
 
     this.cache.reset(endpointKey)
-    if(cacheKey) this.cache.cacheResponse(cacheKey, nodes)
+    if(this.cacheEnabled && cacheKey)
+      if(cacheKey) this.cache.cacheResponse(cacheKey, allNodes)
 
-    return nodes as T[]
+    ApiLogger.log(`Pulled "${allNodes.length}" nodes from Git Provider`)
+    return allNodes as T[]
   }
 
   repos = async <T>(opts:TRepoGraphRepos) => {
+    ApiLogger.log(`Getting user repos...`)
+
     return await this.callApi<T>({
       ...opts,
       endpoint: this.provider.Endpoints.Repo.ListAll,

@@ -71,7 +71,8 @@ export class GitlabApi extends BaseRestApi {
 
     const { cache, error:throwErr } = conf
 
-    if(cache !== false && this._cache[url]) return this._cache[url] as [AxiosError, T]
+    if(this.cacheEnabled && cache !== false && this._cache[url])
+      return this._cache[url] as [AxiosError, T]
 
     const config = deepMerge<AxiosRequestConfig>({
       method: 'GET',
@@ -81,7 +82,8 @@ export class GitlabApi extends BaseRestApi {
     const [err, resp] = await limbo<T, AxiosError>(axios(config))
     const axiosRes = [err, resp] as [AxiosError, T]
 
-    if(cache !== false && !err) this._cache[url] = axiosRes as [AxiosError, T]
+    if(this.cacheEnabled && cache !== false && !err)
+      this._cache[url] = axiosRes as [AxiosError, T]
 
     if(resp || !err || !throwErr) return axiosRes as [AxiosError, T]
 

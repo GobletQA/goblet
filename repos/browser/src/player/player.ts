@@ -9,11 +9,13 @@ import type {
   TPlayerEventCB,
   TBrowserContext,
   TPlayerCleanupCB,
+  TConsoleCallback,
   TPlayerStartConfig,
 } from '@GBB/types'
 
 import { CodeRunner } from './codeRunner'
 import { noOp } from '@keg-hub/jsutils/noOp'
+import { exists } from '@keg-hub/jsutils/exists'
 import { TestsToSocketEvtMap } from '@GBB/constants'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
@@ -33,17 +35,19 @@ import { getInjectScript } from '@GBB/utils/getInjectScript'
 export class Player {
 
   repo:Repo
-  id:string = null
+  id:string=null
   browser:TBrowser
   page:TBrowserPage
   codeRunner:CodeRunner
   canceled:boolean=false
-  playing:boolean = false
+  playing:boolean=false
   context:TBrowserContext
+  forwardLogs:boolean=false
   steps?:TParkinRunStepOptsMap
-  onEvents:TPlayerEventCB[] = []
-  onCleanup:TPlayerCleanupCB = noOp
-  options:TPlayerOpts = {} as TPlayerOpts
+  onEvents:TPlayerEventCB[]=[]
+  onCleanup:TPlayerCleanupCB=noOp
+  onConsole:TConsoleCallback=noOp
+  options:TPlayerOpts={} as TPlayerOpts
 
   static isPlaying:boolean = false
 
@@ -89,6 +93,8 @@ export class Player {
       options,
       onEvent,
       onCleanup,
+      onConsole,
+      forwardLogs,
     } = config
 
     if(page) this.page = page
@@ -100,6 +106,9 @@ export class Player {
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup
+
+    if(exists(forwardLogs)) this.forwardLogs = forwardLogs
+    if(this.forwardLogs && onConsole) this.onConsole = onConsole
 
     return this
   }

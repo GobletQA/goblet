@@ -1,7 +1,6 @@
 import type { Repo } from './repo.types'
 import type { TExEventData } from './exam.types'
 import type { TSocketMessageObj } from './socket.types'
-import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 import type { EPlayerTestType } from './exam.types'
 import type {
   EResultStatus,
@@ -9,6 +8,13 @@ import type {
   TRunResultActionMeta,
   TParkinRunStepOptsMap,
 } from '@ltipton/parkin'
+import type {
+  TBrowser,
+  TBrowserPage,
+  TBrowserContext,
+  TConsoleCallback,
+  TBrowserActionOptions,
+} from './pw.types'
 
 // Exported from browser/src/types
 import type { Player } from '@gobletqa/browser'
@@ -30,8 +36,10 @@ export type TPlayerConfig = {
   repo?:Repo
   browser?:TBrowser
   page?:TBrowserPage
+  forwardLogs?:boolean
   onEvent?:TPlayerEventCB
   context?:TBrowserContext
+  onConsole?:TConsoleCallback
   onCleanup?:TPlayerCleanupCB
   steps?:TParkinRunStepOptsMap
   options?:TBrowserActionOptions

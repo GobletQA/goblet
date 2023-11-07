@@ -1,11 +1,10 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
-import { Logger } from '@GSC/utils/logger'
 import { browserEvents } from '@GSC/utils/browserEvents'
 
 export const connection = (app:Express) => {
-  return (props:TSocketEvtCBProps) => {
+  return async (props:TSocketEvtCBProps) => {
     const { socket, Manager, user} = props
 
     // Todo Update to be the group / room name for the connected user
@@ -17,11 +16,10 @@ export const connection = (app:Express) => {
 
     Manager.cache[socket.id] = cache
 
-    const {data, ...rest} = props
-    setTimeout(() => browserEvents({
-      ...rest,
-      browserConf: data?.browser
-    }), 1000)
+    await browserEvents({
+      Manager,
+      browserConf: props.data?.browser
+    })
 
   }
 }
