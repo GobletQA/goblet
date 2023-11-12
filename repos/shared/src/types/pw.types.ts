@@ -56,6 +56,8 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
     tracer?:any
     cookie?:string
     tracing?:Boolean
+    initFuncs?: string[]
+    initScript?: string[]
     extraHTTPHeaders?:Record<string, string>
     options?:Partial<TBrowserContextOpts>
   }
@@ -66,6 +68,8 @@ export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   __GobletAutomateInstance?: Automate
   __pageGoblet?: {
     video?:any
+    initFuncs?: string[]
+    initScript?: string[]
   }
 }
 

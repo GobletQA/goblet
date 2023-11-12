@@ -74,7 +74,7 @@ deployFrontend(){
 __main__(){
   gb_load_stdio
   
-  # pullImages
+  pullImages
   switchProdKubeCtx
   deployBackend
   deployFrontend

@@ -41,8 +41,10 @@ export const uploadFile = async (
   if(file.includes(`..`)) throw new Error(`File must exist in the uploads directory`)
 
   const uploadsLoc = await getArtifactsLoc(ctx)
+
   const locator = getLocator(selector)
-  await locator.setInputFiles(path.join(uploadsLoc, file))
+  const location = path.join(uploadsLoc, file)
+  await locator.setInputFiles(location)
 
 }
 
@@ -53,7 +55,7 @@ const meta = {
   examples: [
     `When I upload the file "test-file.png" to the element "input#file-upload"`
   ],
-  description: `Locates input element by selector and attaches a file to it. The file path is relative to the repositories goblet.config#paths.downloadsDir. Default is goblet/artifacts/downloads`,
+  description: `Locates input element by selector and attaches a file to it. The file path is relative to the repositories goblet.config#paths.downloadsDir. Default is goblet/artifacts/uploads`,
   expressions: [
     {
       example: `test-file.png`,

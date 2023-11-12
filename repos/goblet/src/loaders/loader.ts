@@ -1,13 +1,12 @@
 import type {
-  TLoader,
   TCfgMerge,
   TLoopLoad,
-  TLoadedFunc,
   TSearchFile,
   TRequiredFun,
   TGobletConfig,
+  TGobletLoader,
   TLoadedFunResp,
-  TGobletLoader
+  TGobletCfgLoaderResp
 } from '../types'
 
 import path from 'path'
@@ -212,7 +211,7 @@ export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
 /**
  * @description - Loads config files based on the passed in basePath and loadArr
  */
-export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
+export const gobletLoader = (params:TGobletLoader):TGobletCfgLoaderResp|undefined => {
   const {
     ref,
     remote,
@@ -245,6 +244,6 @@ export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
     remote,
     location,
     repoRoot: basePath
-  }) as TGobletConfig
+  })
 
 }

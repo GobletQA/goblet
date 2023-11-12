@@ -112,3 +112,26 @@ On every page load
 * Then run the feature
   * 
 
+
+
+### Main issues
+* Sometimes injected scripts are not injected
+  * Steps
+    * Open a test that fails
+    * Run the test
+    * Wait for it to fail or press cancel
+    * Try to use the select from browser
+      * Throws an error can't find injected script method
+* Need to add world editor to Race Editor
+  * Allow alias to be multi-leveled
+* Need to add play from step / play step to monaco
+  * Should be in a right click context menu
+* Add element highlight on hover of selector from editor
+  * Should also work with aliases
+* Stop Browser page is reloaded on browser resize
+* Need to restart browser when a page crashes
+  * Listen to page.on(`crash`) event
+* If a test is modified then run, sometimes the modification is not included in the run
+  * Need to ensure runs the most up-to-date version of the test file
+* Batch git commit/push changes
+* Add long-pull to browser url when tests are not running

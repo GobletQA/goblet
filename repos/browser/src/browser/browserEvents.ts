@@ -102,7 +102,7 @@ export class BrowserEvents {
     if(this.onCloseListen) return
 
     this.onCloseListen = true
-    page.on(EBrowserEvent.close, () => {
+    page.on(EBrowserEvent.close, async () => {
       let listeners = Object.entries({...BrowserEvents.listeners})
       listeners.forEach(([name, listener]) => {
         listener.methods = undefined
@@ -114,6 +114,21 @@ export class BrowserEvents {
 
       listeners = undefined
       BrowserEvents.listeners = {} as ListenerList
+      
+      if(page.__GobletAutomateInstance){
+        let automate = page.__GobletAutomateInstance
+        if(automate?.parent === page) await automate?.cleanUp?.()
+
+        automate = undefined
+        page.__GobletAutomateInstance = undefined
+      }
+      
+      if(page.__pageGoblet){
+        page.__pageGoblet.video = undefined
+        page.__pageGoblet.initFuncs = undefined
+        page.__pageGoblet.initScript = undefined
+      }
+      page.__pageGoblet = undefined
     })
   }
 

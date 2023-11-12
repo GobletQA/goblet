@@ -28,13 +28,13 @@ const copyTemplateContent = async (gitData:TGitData, template:string) => {
 const checkGobletExists = (gitData:TGitData, template:string) => {
   Logger.info(`Searching for goblet config...`)
   const config = configFromFolder(gitData.local, { remote: gitData.remote, clearCache: true })
-  
-  if(config){
-    Logger.info(`Found existing goblet config at ${gitData.local}`)
-    console.log(config)
-  }
+  if(!config) return false
 
-  return config
+  Logger.info(`Found existing goblet config at ${gitData.local}`)
+  console.log(config?.config)
+
+  return true
+
 }
 
 const checkGobletFolder = (gitData:TGitData) => existsSync(path.join(gitData.local, `goblet`))

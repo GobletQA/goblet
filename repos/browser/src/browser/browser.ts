@@ -15,6 +15,7 @@ import type {
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
+import { EBrowserEvent } from '@GBB/types'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
@@ -159,16 +160,29 @@ export class Browser {
       else {
         context = await browser.newContext(options) as TBrowserContext
         context.__contextGoblet = { options }
-
         logEnvMsg(`getContext - New context created for browser ${browserConf.type}`)
-
-        Automate.bind({ parent: context })
       }
-
     }
     else {
       logEnvMsg(`getContext - Found Persistent context for browser ${browserConf.type}`)
     }
+
+    !context.__GobletAutomateInstance
+      && Automate.bind({ parent: context })
+
+    context.on(EBrowserEvent.close, async () => {
+      if(context.__GobletAutomateInstance){
+        let automate = context.__GobletAutomateInstance
+        await automate.cleanUp()
+        automate = undefined
+        context.__GobletAutomateInstance = undefined
+      }
+      if(context.__contextGoblet){
+        context.__contextGoblet.initFuncs = undefined
+        context.__contextGoblet.initScript = undefined
+        context.__contextGoblet = undefined
+      }
+    })
 
     return { context, browser }
   }

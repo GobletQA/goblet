@@ -42,7 +42,9 @@ export const getGobletConfig = (
   // If other test runners are added, need to ensure this is updated as well
   if (!Boolean(process.env.EXAM_ENV) && __GOBLET_CONFIG) return __GOBLET_CONFIG
 
-  const baseConfig = loadConfigFromBase(isStr(argsConfig.base) && argsConfig.base)
+  const {
+    config:baseConfig
+  } = loadConfigFromBase(isStr(argsConfig.base) && argsConfig.base) || {}
 
   if (!baseConfig && argsConfig.local && argsConfig.warn) {
     Logger.warn(

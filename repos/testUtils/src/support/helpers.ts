@@ -22,6 +22,7 @@ import {
   AutoSavedLocatorWorldPath
 } from '@GTU/Constants'
 
+
 const checkTypes = {
   less: {
     match: [`less`, `<`],
@@ -84,17 +85,21 @@ export const greaterLessEqual = (
 
   foundType[1].method(count1, count2)
 }
+
 /**
  * Builds the match types from the checkTypes and adds to the greaterLessEqual method
  * Allows them to be accessible when using this method
  */
+greaterLessEqual.options = [] as string[]
 greaterLessEqual.matchTypes = Object.entries(checkTypes)
   .reduce((types, [key, def]) => {
+    
+    greaterLessEqual.options.push(def.match[0])
+    
     types.push(...def.match)
     return types
   }, [])
   .join(', ')
-
 
 /**
  * Cleans the passed in world path to ensure world || $world is not the start of the string

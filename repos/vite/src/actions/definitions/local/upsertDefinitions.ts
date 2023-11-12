@@ -1,3 +1,7 @@
+/**
+ * **NEVER ACTUALLY CALLED** - Remove this is this file is imported some where
+ */
+
 import type { TDefinitionFileModelList } from '@types'
 
 import { emptyObj } from '@keg-hub/jsutils'

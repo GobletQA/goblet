@@ -10,11 +10,11 @@ export const GobletConfigFileLocations = deepFreeze([
 ])
 
 export const GobletConfigFileNames = deepFreeze<string[]>([
-  `.gobletrc`,
-  `goblet.js`,
+  `goblet.config.ts`,
   `goblet.config.js`,
   `goblet.ts`,
-  `goblet.config.ts`,
+  `goblet.js`,
+  `.gobletrc`,
 ])
 
 export const GobletConfigRef = `<<-goblet-config-$ref->>`

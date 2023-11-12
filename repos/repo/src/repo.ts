@@ -1,4 +1,3 @@
-import type { LatentRepo } from './latentRepo'
 import type {
   TGitData,
   TRepoOpts,
@@ -14,7 +13,7 @@ import type {
 
 import { getWorld } from './world'
 import { Parkin } from '@ltipton/parkin'
-import { latentRepo } from './latentRepo'
+import { LatentRepo } from './latentRepo'
 import { ENVS } from '@gobletqa/environment'
 import { getFileTypes } from '@gobletqa/goblet'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
@@ -112,13 +111,14 @@ export class Repo {
      */
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
-    this.latent = latentRepo
 
     if($ref) this.$ref = $ref
     else if(git?.remote) {
       const url = new URL(git?.remote)
       this.$ref = url.pathname.replace(/\.git$/, ``)
     }
+
+    this.latent = new LatentRepo()
   }
 
   get world(){

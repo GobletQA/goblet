@@ -2,6 +2,16 @@ import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
 import { TGitOpts, TSaveMetaData } from '@GGT/types'
 
+const debounce = (cb:Function, delay:number) => {
+  let timeoutId: NodeJS.Timeout
+
+  return (...args: any[]) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => cb(...args), delay)
+  }
+}
+
+
 // TODO: add code to commit changes from javascript instead of shelling out to the git executable
 // const saveFromCode = async (opts:TGitOpts, metaData:TSaveMetaData) => {
 //   console.log(`[Workflow] Commit from code not implemented`)
@@ -34,6 +44,8 @@ const saveFromShell = async (opts:TGitOpts, metaData:TSaveMetaData, retry:number
   return Logger.error(`Failed to save repo changes\n`)
 }
 
+const debouncedSaveFromShell = debounce(saveFromShell, 4000)
+
 /**
  * Workflow for committing changes into a git repo
  * @function
@@ -45,7 +57,7 @@ export const saveRepo = async (
   metaData:TSaveMetaData,
   shell:boolean=true
 ) => {
-  return await saveFromShell(opts, metaData)
+  return debouncedSaveFromShell(opts, metaData)
   // return shell
   //   ? await saveFromShell(opts, metaData)
   //   : await saveFromCode(opts, metaData)

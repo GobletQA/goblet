@@ -9,7 +9,6 @@ import type {
 import path from 'path'
 import { EE } from '@gobletqa/shared'
 import { Logger } from '@GSC/utils/logger'
-import { latentRepo } from '@gobletqa/repo'
 import { ENVS } from '@gobletqa/environment'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { TestFromUI } from '@GSC/libs/testsFromUI/TestFromUI'
@@ -19,9 +18,7 @@ import {
   KillTestRunUIProcEvt,
 } from '@gobletqa/environment/constants'
 
-
 const testConfig = path.join(InternalPaths.testUtilsDir, `src/exam/exam.feature.config.ts`)
-
 
 const setupUIRun = async (args:TSocketEvtCBProps) => {
   const {
@@ -36,7 +33,7 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
     repo: data?.repo,
   })
 
-  const gobletToken = latentRepo.repoToken({
+  const gobletToken = repo.latent.repoToken({
     ref: repo.$ref,
     remote: repo?.git?.remote
   })
@@ -83,44 +80,19 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
       childProc = undefined
     }
 
-    /**
-     * Extra args to add to the events
-     * Is a function to allow accessing the child proc id within the event callbacks
-     */
-    const getExtra = ():Partial<TExamEvtExtra> => ({
-      group: socket.id,
-      fullTestRun: true,
-      procId: childProc?.pid,
-    })
-
-    childProc = testFromUI.runTests(runOpts, {
-      onStdOut: (data:string) => {
-        if(testRunAborted) return
-
-        const events = testFromUI.parseEvent({ data })
-        events?.length && testFromUI.onEvtsParsed({ events, extra: getExtra() })
+    childProc = testFromUI.runTests({
+      ...runOpts,
+      extraEvtData: {
+        group: socket.id,
+        fullTestRun: true,
       },
-      onStdErr: (data:string) => {
-        if(testRunAborted) return
-
-        const events = testFromUI.parseEvent({ data })
-        events?.length && testFromUI.onEvtsParsed({ events, extra: getExtra() })
+      onFailed: (error) => {
+        !testRunAborted
+          && error
+          && cleanup()
       },
-      onError: (error:Error) => {
-        if(testRunAborted) return
-
-        Logger.error(`UI-Exam Error:`)
-        Logger.log(error)
-
-        cleanup()
-      },
-      onExit: async (code) => {
-        if(testRunAborted) return res({ code })
-
-        await testFromUI.runFinish({ code, extra: getExtra() })
-        Logger.log(`UI-Exam finished with exit code: ${code}`)
-
-        cleanup()
+      onDone: async (code) => {
+        !testRunAborted && cleanup()
         res({ code })
       }
     })
@@ -138,6 +110,7 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
       // if(procId && childProc?.pid && procId !== childProc?.pid) return
 
       testRunAborted = true
+      testFromUI.abortRun()
       !childProc?.killed && childProc?.kill?.(`SIGKILL`)
 
       cleanup()

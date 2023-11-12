@@ -235,10 +235,10 @@
       "key": "autoSave",
       "value": "blur",
       "active": true,
-      "default": "blur",
+      "default": "change",
       "type": "select",
       "group": "monaco",
-      "emptyOption": "blur",
+      "emptyOption": "change",
       "description": "File changes will be automatically saved based on this setting",
       "options": [
         "blur",

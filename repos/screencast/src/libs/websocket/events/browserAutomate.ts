@@ -12,7 +12,7 @@ export const browserAutomate = (app:Express) => withRepo<TSocketEvtCBProps>(asyn
   data,
 }) => {
   const browserConf = joinBrowserConf(data.browser, app)
-  const pwComponents = await GBrowser.start({ browserConf, config: repo })
+  const pwComponents = await GBrowser.get({ browserConf, config: repo })
 
   switch(data?.selectorType){
     case ExpressionKinds.url: {

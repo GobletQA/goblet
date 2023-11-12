@@ -62,3 +62,8 @@ export type TCfgRemoteFolder = {
 
 export type TCfgFolder = (TCfgRefFolder|TCfgRemoteFolder)
 
+export type TGobletCfgLoaderResp = {
+  location:string
+  config:TGobletConfig
+  refReplaced?:boolean
+}

@@ -1,10 +1,10 @@
-import type { TGitData, TGobletConfig } from '../types'
+import type { TGobletCfgLoaderResp, TGitData, TGobletConfig } from '../types'
 
-import path from 'path'
-import { URL } from 'url'
-import { promises as fs } from 'fs'
+import path from 'node:path'
+import { promises as fs } from 'node:fs'
 import { ENVS } from '@gobletqa/environment'
-import { GobletConfigRef } from '@gobletqa/environment/constants'
+import { buildRefFromRemote } from './getRepoRef'
+import { GobletConfigFileNames, GobletConfigRef } from '@gobletqa/environment/constants'
 
 export type TGobletRefOpts = {
   ref?:string
@@ -13,15 +13,28 @@ export type TGobletRefOpts = {
   location:string
 }
 
-/**
- * By default uses the repos `/org/repo-name` to set the $ref
- * This makes it more transferable then using the full remote
- * But really the ref could be anything, as long as it exists and is consistent
- */
-export const buildRefFromRemote = (remote:string) => {
-  const url = new URL(remote)
-  return url.pathname.replace(/\.git$/, ``)
+const pathExists = async (loc:string):Promise<[Error, boolean]> => {
+  try {
+    await fs.access(loc, fs.constants.F_OK)
+    return [undefined, true]
+  }
+  catch(err) {
+    return [err, undefined]
+  }
 }
+
+const findGobletCfgLoc = async (base:string) => {
+  return GobletConfigFileNames.reduce(async (found, name) => {
+    const loc = await found
+    if(loc) return loc
+
+    const location = path.join(base, name)
+    const [err, exists] = await pathExists(location)
+
+    return exists ? location : found
+  }, Promise.resolve(``))
+} 
+
 
 /**
  * This ensure the $ref is set in the repos Goblet Config
@@ -29,8 +42,8 @@ export const buildRefFromRemote = (remote:string) => {
  * But that would require loading the config from disk, which would slow the process down a lot
  * Leaving out for now, but may need to add later
  */
-export const replaceGobletConfigRef = async (gitData:TGitData) => {
-  const cfgLoc = path.join(gitData.local, `goblet.config.ts`)
+export const replaceGobletConfigRef = async (gitData:TGitData, cfgLoc?:string) => {
+  cfgLoc = cfgLoc || await findGobletCfgLoc(gitData.local)
   const content = await fs.readFile(cfgLoc, `utf8`)
 
   const replaced = content.replaceAll(GobletConfigRef, buildRefFromRemote(gitData.remote))
@@ -56,8 +69,9 @@ const addRefToConfig = (config: TGobletConfig, opts:TGobletRefOpts) => {
   return {...config, ...getRef(opts)} as TGobletConfig
 }
 
-export const ensureGobletCfg = (config: TGobletConfig, opts:TGobletRefOpts):TGobletConfig => {
-  const { repoRoot } = opts
+
+export const ensureGobletCfg = (config: TGobletConfig, opts:TGobletRefOpts):TGobletCfgLoaderResp => {
+  const { repoRoot, location } = opts
 
   // Ensure the repoRoot path gets set
   // This should never happen because it's enforce when the repo is mounted
@@ -67,6 +81,6 @@ export const ensureGobletCfg = (config: TGobletConfig, opts:TGobletRefOpts):TGob
     && (config.paths = {...config?.paths, repoRoot })
 
   return config?.$ref && config?.$ref !== GobletConfigRef
-    ? config
-    : addRefToConfig(config, opts)
+    ? { config, location }
+    : { config: addRefToConfig(config, opts), refReplaced: true, location }
 }

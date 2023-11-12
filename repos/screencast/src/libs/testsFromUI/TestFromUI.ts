@@ -22,6 +22,7 @@ import type {
 
 import path from 'node:path'
 import { spawn } from 'child_process'
+import {isFunc} from "@keg-hub/jsutils"
 import { Logger } from '@GSC/utils/logger'
 import { ENVS } from '@gobletqa/environment'
 import {isArr} from '@keg-hub/jsutils/isArr'
@@ -42,6 +43,7 @@ import {
   buildTempLoc,
   cleanRepoName,
 } from './utils'
+
 
 const runExam = (
   cfg:TExamUIChildProcOpts,
@@ -65,6 +67,7 @@ const runExam = (
   return childProc
 }
 
+
 export class TestFromUI {
   repo:Repo
   runId:string
@@ -74,6 +77,7 @@ export class TestFromUI {
   saveJson?:boolean
   runTimestamp:number
   eventSplit?:string=``
+  runAborted?:boolean=false
   events:TExamUIRunEvts = {}
   onEvent:TExamUIRunEvtCB[]=[]
   extraEvt:Partial<TExamEvtExtra>
@@ -148,10 +152,70 @@ export class TestFromUI {
     opts:TExamUIRun=emptyObj as TExamUIRun,
     cfg:TExamUIChildProcOpts=emptyObj,
   ) => {
-    const testCmd = buildTestArgs(opts)
+    const {
+      onEvent,
+      onError,
+      onDone,
+      onFailed,
+      extraEvtData,
+      ...rest
+    } = opts
+    
+    const testCmd = buildTestArgs(rest)
     const [cmd, ...args] = testCmd
+    const extraFunc = isFunc(extraEvtData) ? extraEvtData : () => (extraEvtData || {})
 
-    return runExam(cfg, cmd, args, this.buildTestParams(opts, cfg))
+    const childProc = runExam({
+      ...cfg,
+      onStdOut:(data:string) => {
+        if(this.runAborted) return
+        const events = this.parseEvent({ data })
+        onEvent?.(events)
+
+        events?.length
+          && this.onEvtsParsed({
+              events,
+              extra: {procId: childProc?.pid, ...extraFunc(events)}
+            })
+
+        cfg?.onStdOut?.(data)
+      },
+      onStdErr:(data:string) => {
+        if(this.runAborted) return
+
+        const events = this.parseEvent({ data })
+        onError?.(events)
+
+        events?.length
+          && this.onEvtsParsed({
+              events,
+              extra: {procId: childProc?.pid, ...extraFunc(events)}
+            })
+
+        onError?.(events)
+        cfg?.onStdErr?.(data)
+      },
+      onError:(error:Error) => {
+        if(this.runAborted) return
+
+        Logger.error(`UI-Exam Error:`)
+        Logger.log(error)
+
+        onFailed?.(error)
+        cfg?.onError?.(error)
+      },
+      onExit: async (code) => {
+        if(!this.runAborted) {
+          await this.runFinish({ code, extra: extraFunc() })
+          Logger.log(`UI-Exam finished with exit code: ${code}`)
+        }
+        
+        onDone?.(code)
+        cfg?.onExit?.(code)
+      }
+    }, cmd, args, this.buildTestParams(opts, cfg))
+
+    return childProc
   }
 
   buildRunId = () => {
@@ -247,6 +311,10 @@ export class TestFromUI {
 
     this.events[loc] = this.events[loc] || []
     this.events[loc].push(...events)
+  }
+
+  abortRun = () => {
+    this.runAborted = true
   }
 
   cleanup = () => {
