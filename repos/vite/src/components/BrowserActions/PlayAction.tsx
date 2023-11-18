@@ -25,13 +25,19 @@ export type TEditorPathChange = {
 const onCancelPlayers = () => EE.emit(WSCancelPlayerEvent, {})
 const onCancelAutomation = () => EE.emit(WSCancelAutomateEvent, {})
 
+let __localSetLocation:(loc: string) => void
+EE.once<TEditorPathChange>(EditorPathChangeEvt, (props) => {
+  if(__localSetLocation) return __localSetLocation(props.location)
+  setTimeout(() => __localSetLocation(props.location), 1000)
+})
+
 export const usePlayAction = (props:TBrowserActionProps) => {
 
   const { browserState } = useBrowserState()
   const [location, setLocation] = useState<string>(``)
-  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => {
-    setLocation(location)
-  })
+  __localSetLocation = setLocation
+
+  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => setLocation(location))
 
   const noActiveFile = !Boolean(location)
 
@@ -92,7 +98,6 @@ export const usePlayAction = (props:TBrowserActionProps) => {
 
 export const PlayTest = (props:TBrowserActionProps) => {
   const { actProps } = usePlayAction(props)
-
   return (<BaseAction {...actProps} />)
 }
 

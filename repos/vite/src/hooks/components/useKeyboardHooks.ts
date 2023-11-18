@@ -15,8 +15,10 @@ export const useKeyboardHooks = (props:TKeyboardCtx) => {
     async (event: KeyboardEvent) => {
       // const ctrlKey = event.ctrlKey || event.metaKey
 
-      const key = event.key.toLowerCase()
-      const config = keyboard[key.toLowerCase() as keyof TKeyboard] as TKeyConfig
+      const key = event?.key?.toLowerCase?.()
+      if(!key) return
+      
+      const config = keyboard[key as keyof TKeyboard] as TKeyConfig
       if(!config) return
 
       if(config?.combo?.length){

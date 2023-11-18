@@ -135,3 +135,11 @@ On every page load
   * Need to ensure runs the most up-to-date version of the test file
 * Batch git commit/push changes
 * Add long-pull to browser url when tests are not running
+
+
+* Couldn't log in to the demo repo, even though I could get into others. Kept trying and eventually got it to get past the "failed to mount repo" message, but would get stuck at "This is taking longer than normal". After signing out and in a few times, it finally mounted.
+
+* I started creating a demo test for Stylaquin and while making it the select from browser tool would stop working. Forcing the BiB restart did nothing. I had to log out of Goblet completely and log back in before I could get it to start working again.
+
+
+Basically the select in browser issue caused an issue with your session container. When you logged out, it cause the session container to shutdown, but there's no update to the frontend about that. So when you  logged back in it would not allow you to mount until the container fully restarted.

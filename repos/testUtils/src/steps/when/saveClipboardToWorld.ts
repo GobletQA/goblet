@@ -15,7 +15,19 @@ export const saveClipboardToWorld = async (
 ) => {
 
   const page = await getPage()
-  const content = await page.evaluate(() => navigator.clipboard.readText())
+
+  const content = await page.evaluate(async () => {
+    const el = document.createElement(`div`)
+    el.tabIndex = 0
+    Object.assign(el.style, {opacity: 0, height: `0px`, width: `0px`})
+    document.body.append(el)
+    el.focus()
+    const text = await navigator.clipboard.readText()
+    document.body.removeChild(el)
+
+    return text
+  })
+
   const { world } = ctx
   expect(content).not.toBe(undefined)
   saveWorldData({ value: content }, world, worldPath)

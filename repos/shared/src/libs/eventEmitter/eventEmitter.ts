@@ -52,6 +52,15 @@ export class EventEmitter {
     
     return this
   }
+  
+  once = <T=Record<any, any>>(event:string, cb:TEventCB<T>, key:string=event) => {
+    let off = this.on(event, (...args) => {
+      cb?.(...args)
+      off?.()
+      off = undefined
+    })
+  }
+
 }
 
 /**

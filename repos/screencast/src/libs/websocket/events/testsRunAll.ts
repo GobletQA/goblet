@@ -1,7 +1,6 @@
 import type { Express } from 'express'
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 import type {
-  TExamEvtExtra,
   TSocketEvtCBProps,
   TKillTestRunUIRunEvtOpts,
 } from '@GSC/types'
