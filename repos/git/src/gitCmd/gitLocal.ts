@@ -1,3 +1,4 @@
+import type { TGitAddMeta }  from './gitcmd.types'
 import type {
   TCmdResp,
   TGitOpts,
@@ -7,6 +8,7 @@ import type {
   TSaveMetaData,
 } from '@GGT/types'
 
+
 import fs from 'fs'
 import { git } from './gitCmd'
 import { Logger } from '@gobletqa/logger'
@@ -14,8 +16,10 @@ import { RepoWatcher } from '../repoWatcher'
 import { fileSys } from '@keg-hub/cli-utils'
 import { throwErr } from '@GGT/utils/throwErr'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getRepoPath } from '@GGT/utils/getRepoPath'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 
 import {
   defCmdOpts,
@@ -38,13 +42,23 @@ git.commit = async (
   const message = metaData?.message || `test(goblet): auto-commit`
   const options = validateGitOpts(gitOpts)
   const { local } = options
+  
+  const {
+    gitAdd,
+    addArgs,
+    locations
+  } = metaData
+  
+  if(gitAdd !== false){
+    const [addErr, addResp] = await git.add(options, {
+      cmdOpts,
+      locations,
+      args: addArgs ?? emptyArr
+    })
+    if(hasGitError(addErr, addResp, `add`)) return [addErr, addResp]
+  }
 
   const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
-
-  // Add all changes that currently exist
-  Logger.info(`Adding all changes in repo at path ${local}`)
-  const [addErr, addResp] = await git([`add`, `--all`], joinedOpts, local)
-  if(hasGitError(addErr, addResp, `add`)) return [addErr, addResp]
 
   // Commit all changes that currently exist
   Logger.info(`Committing all staged changes in repo at path ${local}`)
@@ -56,6 +70,27 @@ git.commit = async (
   hasGitError(commitErr, commitResp, `commit`)
 
   return [commitErr, commitResp]
+}
+
+git.add = async (
+  gitOpts:TGitOpts,
+  metaData:TGitAddMeta
+):Promise<[err:Error, resp:TCmdResp]> => {
+
+  const { cmdOpts, locations } = metaData
+  const { local } = gitOpts
+  if(!local) return [new Error(`Local path not specified in gitOpts`), null]
+  
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  let args:string[] = [`add`, ...metaData?.args]
+  locations
+    ? args.push(...ensureArr<string>(locations))
+    : args.push(`--all`)
+
+  Logger.info(`Adding changes in repo at path ${local}`)
+
+  return await git(args, joinedOpts, local)
 }
 
 /**

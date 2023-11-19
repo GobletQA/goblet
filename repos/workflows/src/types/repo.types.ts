@@ -38,6 +38,9 @@ export type TGraphApiResp<T> = {
 
 export type TSaveMetaData = {
   message?: string
+  gitAdd?:boolean
+  addArgs?:string[]
+  locations?:string|string[]
   [key: string]: any
 }
 

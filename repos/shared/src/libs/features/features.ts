@@ -125,7 +125,7 @@ const parseFeatures = (repo:Repo, featureFiles:string[], featuresDir:string) => 
       : noPropArr
 
     if(modelErr){
-      Logger.warn(`[Error Feature] Parse File Path => ${Logger.colors.white(file)}`)
+      Logger.warn(`[Error Feature] Build File Model => ${Logger.colors.white(file)}`)
       Logger.error(modelErr.stack)
     }
 

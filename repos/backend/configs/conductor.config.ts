@@ -18,7 +18,6 @@ import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
 const {
   NODE_ENV=`local`,
   GB_LT_TOKEN_SECRET,
-  GB_GIT_PROVIDER_DATA,
 } = process.env
 
 
@@ -70,7 +69,6 @@ const whiteList = [
   `GB_SECRETS_TAG_REF`,
   `GB_LT_TOKEN_SECRET`,
   `GB_GIT_GLOBAL_IGNORE`,
-  `GB_GIT_PROVIDER_DATA`,
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
   `GB_BE_JWT_REFRESH_SECRET`,
@@ -225,9 +223,6 @@ export const conductorConfig:TConductorOpts = deepMerge({
 
           // Repo Tokens secret - This should never be shared outside goblet... ever!!!
           GB_LT_TOKEN_SECRET,
-
-          // TODO: Remove this when PAT's are fully integrated
-          GB_GIT_PROVIDER_DATA,
 
           // Name of the remote origin used on mounted repos
           GB_GIT_REMOTE_REF,

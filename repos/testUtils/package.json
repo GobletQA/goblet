@@ -42,7 +42,7 @@
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@keg-hub/jsutils": "9.8.3",
-    "@ltipton/parkin": "6.3.0",
+    "@ltipton/parkin": "6.3.1",
     "esbuild": "0.19.3",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.5.0",
