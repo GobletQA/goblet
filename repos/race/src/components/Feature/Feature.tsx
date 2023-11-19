@@ -13,10 +13,10 @@ import { EditTitle } from '../Title/EditTitle'
 import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { EEditorMode, ESectionType } from '@GBR/types'
-import { useEditor, useSettings } from '@GBR/contexts'
 import { SimpleMode } from '@GBR/components/SimpleMode'
 import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { FeatureStack, FeatureContent } from './Feature.styled'
+import { useFeature, useEditor, useSettings } from '@GBR/contexts'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
 import { useSimpleActions } from '@GBR/hooks/features/useSimpleActions'
 import { useFeatureActions } from '@GBR/hooks/actions/useFeatureActions'
@@ -38,8 +38,14 @@ const styles:Record<string, StyleObj|CSSProperties> = {
 
 export const Feature = (props:TFeature) => {
 
+  const {
+    featureUIActive,
+    FeatureComponent,
+  } = useFeature()
+
+  const editor = useEditor()
   const { settings } = useSettings()
-  const { feature, rootPrefix } = useEditor()
+  const { feature, rootPrefix } = editor
 
   const noChildren = useMemo(() => {
     return Boolean(
@@ -98,70 +104,98 @@ export const Feature = (props:TFeature) => {
             { !featureIsEmpty && feature.uuid !== EmptyFeatureUUID
                 ? (
                     <>
-                      <FeatureHeader
-                        feature={feature}
-                        items={featureItems}
-                      />
-                      
-                      {settings.mode === EEditorMode.advanced ? (
-                        <>
-                          <Meta
-                            parent={feature}
-                            onTagsChange={onTagsChange}
-                          />
+                      {
+                        featureUIActive && FeatureComponent
+                          ? (
+                              <FeatureComponent
+                                editor={editor}
+                                feature={feature}
+                                items={featureItems}
+                                mode={settings.mode}
+                                onSimpleAdd={onSimpleAdd}
+                                onTagsChange={onTagsChange}
+                                onAddScenario={onAddScenario}
+                                onChangeScenario={onChangeScenario}
+                                onRemoveScenario={onRemoveScenario}
+                                onAddScenarioStep={onAddScenarioStep}
+                                onUpdateBackground={onUpdateBackground}
+                                onRemoveBackground={onRemoveBackground}
+                                onAddBackgroundStep={onAddBackgroundStep}
+                                onChangeScenarioStep={onChangeScenarioStep}
+                                onRemoveScenarioStep={onRemoveScenarioStep}
+                                onChangeBackgroundStep={onChangeBackgroundStep}
+                                onRemoveBackgroundStep={onRemoveBackgroundStep}
+                              />
+                            )
+                          : (
+                              <>
+                                <FeatureHeader
+                                  feature={feature}
+                                  items={featureItems}
+                                />
+                                
+                                {settings.mode === EEditorMode.advanced ? (
+                                  <>
+                                    <Meta
+                                      parent={feature}
+                                      onTagsChange={onTagsChange}
+                                    />
 
-                          {noChildren && (
-                            <EmptyFeature
-                              parent={feature}
-                              items={featureItems}
-                              mode={settings.mode}
-                            />
-                          ) || null}
+                                    {noChildren && (
+                                      <EmptyFeature
+                                        parent={feature}
+                                        items={featureItems}
+                                        mode={settings.mode}
+                                      />
+                                    ) || null}
 
-                          {feature.background && (
-                            <Background
-                              parent={feature}
-                              onChange={onUpdateBackground}
-                              onRemove={onRemoveBackground}
-                              onAddStep={onAddBackgroundStep}
-                              background={feature.background}
-                              onChangeStep={onChangeBackgroundStep}
-                              onRemoveStep={onRemoveBackgroundStep}
-                            />
-                          ) || null}
+                                    {feature.background && (
+                                      <Background
+                                        parent={feature}
+                                        onChange={onUpdateBackground}
+                                        onRemove={onRemoveBackground}
+                                        onAddStep={onAddBackgroundStep}
+                                        background={feature.background}
+                                        onChangeStep={onChangeBackgroundStep}
+                                        onRemoveStep={onRemoveBackgroundStep}
+                                      />
+                                    ) || null}
 
-                          {feature.rules?.length && (
-                            <Rules
-                              parent={feature}
-                              rules={feature.rules}
-                            />
-                          ) || null}
+                                    {feature.rules?.length && (
+                                      <Rules
+                                        parent={feature}
+                                        rules={feature.rules}
+                                      />
+                                    ) || null}
 
-                          <Scenarios
-                            parent={feature}
-                            onAdd={onAddScenario}
-                            onChange={onChangeScenario}
-                            onRemove={onRemoveScenario}
-                            onAddStep={onAddScenarioStep}
-                            scenarios={feature.scenarios}
-                            onChangeStep={onChangeScenarioStep}
-                            onRemoveStep={onRemoveScenarioStep}
-                          />
+                                    <Scenarios
+                                      parent={feature}
+                                      onAdd={onAddScenario}
+                                      onChange={onChangeScenario}
+                                      onRemove={onRemoveScenario}
+                                      onAddStep={onAddScenarioStep}
+                                      scenarios={feature.scenarios}
+                                      onChangeStep={onChangeScenarioStep}
+                                      onRemoveStep={onRemoveScenarioStep}
+                                    />
 
-                        </>
-                      ) : scenario && (
-                        <SimpleMode
-                          parent={feature}
-                          scenario={scenario}
-                          onAdd={onAddScenario}
-                          onSimpleAdd={onSimpleAdd}
-                          onChange={onChangeScenario}
-                          onRemove={onRemoveScenario}
-                          onAddStep={onAddScenarioStep}
-                          onChangeStep={onChangeScenarioStep}
-                          onRemoveStep={onRemoveScenarioStep}
-                        />
-                      ) || null}
+                                  </>
+                                ) : scenario && (
+                                  <SimpleMode
+                                    parent={feature}
+                                    scenario={scenario}
+                                    onAdd={onAddScenario}
+                                    onSimpleAdd={onSimpleAdd}
+                                    onChange={onChangeScenario}
+                                    onRemove={onRemoveScenario}
+                                    onAddStep={onAddScenarioStep}
+                                    onChangeStep={onChangeScenarioStep}
+                                    onRemoveStep={onRemoveScenarioStep}
+                                  />
+                                ) || null}
+                              </>
+                            )
+                      }
                     </>
                   )
                 : (

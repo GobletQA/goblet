@@ -1,4 +1,5 @@
 import type { MutableRefObject } from 'react'
+import type { TFeatureUIOverride }  from './FeatureContext'
 import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 import type { TTabItem } from '@gobletqa/components'
 import type {
@@ -79,6 +80,7 @@ export type TEditorCtx = TRaceMenuActions & {
   onFolderRename?:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
   setTabsAndGroups: TSetTabsAndGroups
+  overrideFeatureUI:TFeatureUIOverride
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -122,6 +124,7 @@ export const EditorProvider = (props:TEditorProvider) => {
 
   const {
     feature,
+    overrideFeatureUI,
     setFeature:_setFeature
   } = useFeature()
 
@@ -194,6 +197,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       featureActions,
       scenarioActions,
       backgroundActions,
+      overrideFeatureUI,
       onFolderRename: onFeatureRename,
       onFolderDelete: onFeatureDelete,
       onFolderCreate: onFeatureCreate,
