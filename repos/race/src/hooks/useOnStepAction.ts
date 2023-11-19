@@ -80,19 +80,19 @@ export const useOnStepAction = (props:THOnStepChange) => {
   const { defs } = useStepDefs()
   const { feature } = useFeature()
 
-  return useInline((evt:Event, opt:TAutoOpt|null) => {
+  return useInline(async (evt:Event, opt:TAutoOpt|null) => {
     if(!feature) return
 
     // If no option, then it was cleared, so reset the step
-    if(!opt || opt.id === NoStepActionSelected)
-      return onChange?.(stepFactory({ feature, parent, step: {uuid: step.uuid} }), step)
+    if(!opt || opt.id === NoStepActionSelected){
+      const built = await stepFactory({ feature, parent, step: {uuid: step.uuid} })
+      return onChange?.(built, step)
+    }
 
     const found = defs[opt.id as keyof typeof defs]
     if(!found) return console.warn(`Can not find step definition`, opt, defs)
 
-    // const matchStr = copyOverExps({ def: found, expressions })
-
-    return onChange?.({
+    onChange?.({
       ...step,
       type: found.type,
       definition: found.uuid,

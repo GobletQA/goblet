@@ -7,11 +7,6 @@ import { DefinitionsParser } from './definitionsParser'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 /**
- * Cache holder for internal goblet definitions, so they don't have to be reloaded each time
- */
-let __CachedGobletDefs:TDefinitionFileModel[]
-
-/**
  * Builds the definitions models from the loaded definitions
  */
 const parseRepoFiles = async (
@@ -43,7 +38,7 @@ const parseRepoFiles = async (
  * Loads repo specific step definitions
  * **IMPORTANT** - These should be loaded from the `repo.paths.supportDir`
  * The `gobletConfig.paths.supportDir` should **NOT** be used
- * Because tt is not the path mounted repos step definitions
+ * Because it is not the path mounted repos step definitions
  *
  */
 const loadRepFiles = async (

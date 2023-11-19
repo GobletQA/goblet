@@ -2,7 +2,7 @@ import type { TGBWorldCfg, TOnWorldChange } from '@GBR/types'
 import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
 import { ERaceModal } from '@GBR/types'
-import { useParkin } from '@GBR/contexts'
+import { useWorld } from '@GBR/contexts'
 import { deepMerge } from '@keg-hub/jsutils'
 import { useState, useEffect } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -16,7 +16,7 @@ import {
 } from '@gobletqa/components'
  
 export const WorldEditorModal:TModalRef = (props:TModalComponent) => {
-  const {world, updateWorld} = useParkin()
+  const {world, updateWorld} = useWorld()
   const [copy, setWorld] = useState<TGBWorldCfg>()
 
   useEffect(() => {

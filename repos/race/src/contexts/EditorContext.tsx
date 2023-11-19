@@ -19,6 +19,7 @@ import type {
   TOnAuditFeatureCB,
 } from '@GBR/types'
 
+import { useWorld } from './WorldContext'
 import { emptyObj } from '@keg-hub/jsutils'
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
@@ -58,9 +59,11 @@ export type TEditorCtx = TRaceMenuActions & {
   audit:TAudit
   rootPrefix:string
   expanded:TExpanded
+  isAuditing?:boolean
   displayMeta?:boolean
   feature:TRaceFeature
   collapseAll:() => void
+  resetParkin:() => void
   setFeature:TOnFeatureCB
   featureGroups:TRaceFeatures
   expressionOptions?:TExpOpts
@@ -114,12 +117,17 @@ export const EditorProvider = (props:TEditorProvider) => {
   } = props
 
   const {
+    resetParkin
+  } = useWorld()
+
+  const {
     feature,
     setFeature:_setFeature
   } = useFeature()
 
   const {
     audit,
+    isAuditing,
     onAuditFeature
   } = useAudit({ feature })
 
@@ -165,8 +173,10 @@ export const EditorProvider = (props:TEditorProvider) => {
       audit,
       expanded,
       setFeature,
+      isAuditing,
       rootPrefix,
       collapseAll,
+      resetParkin,
       menuContext,
       getOpenedTabs,
       featureGroups,
@@ -195,7 +205,9 @@ export const EditorProvider = (props:TEditorProvider) => {
     expanded,
     setFeature,
     rootPrefix,
+    isAuditing,
     collapseAll,
+    resetParkin,
     getOpenedTabs,
     deleteFeature,
     updateFeature,

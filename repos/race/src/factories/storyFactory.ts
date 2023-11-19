@@ -17,14 +17,14 @@ export type TStoryFactory = {
   empty?:boolean
 }
 
-const addToObj = (
+const addToObj = async (
   obj:Partial<TRaceFeature>,
   key:keyof TStoryMeta,
   value?:string,
   empty:boolean=false
 ) => {
   (empty || value)
-    && (obj[key] = blockFactory({
+    && (obj[key] = await blockFactory({
       feature: obj as TRaceFeature,
       block: {
         content: value || ``,
@@ -34,7 +34,7 @@ const addToObj = (
     }))
 }
 
-export const storyFactory = ({
+export const storyFactory = async ({
   feature,
   storyMeta=emptyObj,
   empty=false
@@ -46,10 +46,10 @@ export const storyFactory = ({
   } = storyMeta
 
   if(!empty && (!reason && !desire && !perspective)) return feature
-  
-  addToObj(feature, ESectionType.reason, reason, empty)
-  addToObj(feature, ESectionType.desire, desire, empty)
-  addToObj(feature, ESectionType.perspective, perspective, empty)
+
+  await addToObj(feature, ESectionType.reason, reason, empty)
+  await addToObj(feature, ESectionType.desire, desire, empty)
+  await addToObj(feature, ESectionType.perspective, perspective, empty)
 
   return feature
 }

@@ -23,6 +23,19 @@ type TBuildReqOpts = {
   addLocation?:boolean
 }
 
+
+let __RelativeRequire:any
+
+export const resetLoader = () => {
+  if(!__RelativeRequire) return
+
+  Object.keys(__RelativeRequire.cache).forEach(loc => {
+    if(require.cache[loc]) delete require.cache[loc]
+  })
+  __RelativeRequire.cache = {}
+  __RelativeRequire = undefined
+}
+
 /**
  * Characters that define if a path
  */
@@ -58,8 +71,8 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
     addLocation=false
   } = opts
   
-  const relativeRequire = createRequire(basePath)
-  return (
+  __RelativeRequire = __RelativeRequire || createRequire(basePath)
+  const localRequire = (
     location:string,
     inlineSafe:boolean=false,
     inlineClearCache:boolean=false
@@ -70,9 +83,9 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
         ? location
         : path.join(basePath, location)
 
-      if(clearCache || inlineClearCache) delete require.cache[fullLoc]
+      if(clearCache || inlineClearCache) delete __RelativeRequire.cache[fullLoc]
 
-      const data = relativeRequire(fullLoc) as T
+      const data = __RelativeRequire(fullLoc) as T
       return data ? { data, location: fullLoc } : undefined
 
     }
@@ -82,6 +95,8 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
       throw err
     }
   }
+
+  return localRequire
 }
 
 /**
@@ -91,7 +106,7 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
  * Once loaded, then merges each loaded world into a single world object
  * @recursive
  */
-const loadWithMerge = <T extends TCfgMerge>(data:T, {
+const loadWithMerge = <T extends TCfgMerge=TCfgMerge>(data:T, {
   merge,
   basePath,
   clearCache,

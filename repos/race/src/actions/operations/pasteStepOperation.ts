@@ -39,32 +39,6 @@ export type TPasteStep = {
   parent:TRaceStepParent
 }
 
-const removeOnCut = async (props:TPasteStep) => {
-  const {
-    gran,
-    step,
-    parent,
-    feature,
-  } = props
-
-  return (`scenario` in parent)
-    ? await removeScenarioStep({
-        feature,
-        force: true,
-        granParent: gran,
-        stepId: step.uuid,
-        stepParentId: parent.uuid,
-      })
-    : await removeBackgroundStep({
-        feature,
-        force: true,
-        granParent: gran,
-        stepId: step.uuid,
-        stepParentId: parent.uuid,
-      })
-}
-
-
 const cleanUpAfterPaste = async (props:TPasteStep) => {
   dispatchOp({
     data: undefined,
@@ -83,7 +57,7 @@ export const pasteStepOperation = async (props:TPasteStep) => {
 
   const { insert, step:stepMeta } = getStepMeta(parent, props.step, pos, index)
 
-  const added = buildStep<TRaceStepParent>(
+  const added = await buildStep<TRaceStepParent>(
     feature,
     parent,
     {...props.step, ...stepMeta},

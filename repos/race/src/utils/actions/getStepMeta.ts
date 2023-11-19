@@ -1,8 +1,7 @@
 import type { TRaceStep, TRaceStepParent } from "@GBR/types"
 
-import {uuid} from "@keg-hub/jsutils/uuid"
 import {EDndPos} from "@gobletqa/components"
-import {exists} from "@keg-hub/jsutils/exists"
+import {exists, uuid} from "@keg-hub/jsutils"
 
 
 const getStepIndex = (

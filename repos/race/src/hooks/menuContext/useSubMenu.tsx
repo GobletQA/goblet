@@ -1,7 +1,6 @@
 import type { MouseEvent } from 'react'
 import type { TOnMenuClose, TMenuItem } from '@gobletqa/components'
 import type {
-  Parkin,
   TWorldConfig,
   TStepDefsList 
 } from '@ltipton/parkin'
@@ -19,7 +18,6 @@ import { exists } from '@keg-hub/jsutils'
 import { useCallback, useState, useRef } from 'react'
 
 export type THUseSubMenu = TMenuContextRef & {
-  parkin: Parkin
   audit: TAudit
   defs: TStepDefsList
   world: TWorldConfig

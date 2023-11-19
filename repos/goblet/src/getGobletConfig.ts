@@ -18,6 +18,7 @@ import type { TGobletConfig } from './types'
 
 
 import { Logger } from '@gobletqa/logger'
+import { resetLoader } from './loaders/loader'
 import { isStr, deepMerge } from './utils/helpers'
 import { addConfigFileTypes } from './utils/addConfigFileTypes'
 import { loadConfigFromBase } from './loaders/loadConfigFromBase'
@@ -79,4 +80,5 @@ export const getGobletConfig = (
  */
 export const resetGobletConfig = () => {
   __GOBLET_CONFIG = undefined
+  resetLoader()
 }

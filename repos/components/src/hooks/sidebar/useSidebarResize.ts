@@ -79,12 +79,14 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   ])
 
   const resizeSidebar = useCallback((width:number) => {
-    setSidebarWidth(width)
-    onSidebarResize?.(width)
+    requestAnimationFrame(() => {
+      setSidebarWidth(width)
+      onSidebarResize?.(width)
+    })
   }, [onSidebarResize, setSidebarWidth])
 
   useOnEvent<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size, toggle }) => {
-    if(exists(size)) return resizeSidebar?.(size)
+    if(exists<number>(size)) return resizeSidebar?.(size)
     if(!toggle) return
 
     sidebarWidth > 0

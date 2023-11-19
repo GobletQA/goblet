@@ -7,7 +7,7 @@ import { useInline } from '@gobletqa/components'
 import { useMemo, useState, useRef } from 'react'
 import { useMenuContext } from '@GBR/hooks/editor/useMenuContext'
 import {
-  useParkin,
+  useWorld,
   useEditor,
   useStepDefs,
 } from '@GBR/contexts'
@@ -39,7 +39,7 @@ export const useMenuItems = (props:THMenuItems) => {
   const onChange = useInline(props.onChange)
   const { feature, audit, updateFeature } = useEditor()
   
-  const { parkin, world, updateWorld } = useParkin()
+  const { world, updateWorld } = useWorld()
   
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)
@@ -72,7 +72,6 @@ export const useMenuItems = (props:THMenuItems) => {
     audit,
     parent,
     active,
-    parkin,
     onClose,
     feature,
     onChange,
@@ -102,7 +101,6 @@ export const useMenuItems = (props:THMenuItems) => {
               gran,
               world,
               audit,
-              parkin,
               parent,
               active,
               onOpen,
@@ -129,7 +127,6 @@ export const useMenuItems = (props:THMenuItems) => {
     audit,
     parent,
     active,
-    parkin,
     feature,
     setDefs,
     menuItems,

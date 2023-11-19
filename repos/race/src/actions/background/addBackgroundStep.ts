@@ -73,7 +73,7 @@ export const addBackgroundStep = async (props:TAddBackgroundStep) => {
   } = findBackground(feature, stepParentId, granParent)
   if(!background) return logNotFound(`background`, prefix)
 
-  const added = buildStep<TRaceBackground>(feature, background, props.step, index)
+  const added = await buildStep<TRaceBackground>(feature, background, props.step, index)
   if(!added) return
 
   const { steps, step } = added

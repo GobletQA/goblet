@@ -11,6 +11,7 @@ export const ToggleSideNavEvt = `toggle-side-nav-event`
 export const PlayerStartedEvent = `player-started-event`
 export const OpenEditorFileEvt = `open-editor-file-event`
 export const SideNavToggledEvt = `side-nav-toggled-event`
+export const BrowserResetUrlEvt = `browser-reset-url-event`
 export const WSAutomateEvent = `ws-automate-response-event`
 export const EditorPathChangeEvt = `editor-path-change-event`
 export const PlayerClearDecorationEvt = `player-clear-decoration-event`

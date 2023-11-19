@@ -1,5 +1,4 @@
 import type {
-  TAnyCB,
   TRaceStep,
   TRaceFeature,
   TRaceScenario,
@@ -22,21 +21,23 @@ export const useSimpleActions = (props:THOnSimpleAdd) => {
   const { operations } = useOperations()
 
   const onSimpleAdd = useCallback(
-    () => {
+    async () => {
       const scn = scenario || ensureScenario(parent)
-      addSimpleModeStep({scenario: scn, feature: parent})
+      scn && addSimpleModeStep({scenario: scn, feature: parent})
     },
     [parent, scenario?.uuid]
   )
 
   const hasPasteStep = operations?.paste && (operations?.paste?.item as TRaceStep)?.step
-  const onSimplePaste =  useInline(() => {
-    hasPasteStep
+  const onSimplePaste =  useInline(async () => {
+    const scn = scenario || ensureScenario(parent)
+    scn
+      && hasPasteStep
       && pasteSimpleModeStep({
           parent,
+          scenario: scn,
           from: operations?.paste?.from,
           step: operations?.paste?.item as TRaceStep,
-          scenario: scenario || ensureScenario(parent),
         })
   })
 

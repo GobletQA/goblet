@@ -78,10 +78,11 @@ export const addScenarioStep = async (props:TAddScenarioStep) => {
   } = findScenario(feature, stepParentId, granParent)
   if(!scenario) return logNotFound(`scenario`, prefix, stepParentId)
 
-  const added = buildStep<TRaceScenario>(feature, scenario, props.step, index)
+  const added = await buildStep<TRaceScenario>(feature, scenario, props.step, index)
   if(!added) return
 
   const { steps, step } = added
+
   scenarios[scenarioIdx] = {...scenario, steps}
 
   return sParent.type === ESectionType.feature

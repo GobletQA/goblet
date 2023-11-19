@@ -15,7 +15,7 @@ export type TAddBackground = {
 
 const prefix = `[Add Background]`
 
-const toRule = (
+const toRule = async (
   props:TAddBackground,
   feature:TRaceFeature,
   ruleId:string,
@@ -30,7 +30,7 @@ const toRule = (
   if(!rule) return logNotFound(`Rule ${ruleId}`, prefix)
 
   const background = addBackground
-    || backgroundFactory({
+    || await backgroundFactory({
         feature,
         empty: true,
         parent: rule,
@@ -42,22 +42,22 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, background: background}
 
   const update = {...feature, rules}
-  props.persist !== false && updateFeature(update, { expand: background.uuid, skipAudit: true })
+  props.persist !== false && updateFeature(update, { expand: background.uuid, skipAudit: false })
 
   return update
 }
 
-const toFeature = (
+const toFeature = async (
   props:TAddBackground,
   feature:TRaceFeature,
   addBackground?:TRaceBackground
 ) => {
 
-  const background = addBackground || backgroundFactory({feature, empty: true})
+  const background = addBackground || await backgroundFactory({feature, empty: true})
   if(!background) return factoryFailed(`background`, prefix)
 
   const update = {...feature, background}
-  props.persist !== false && updateFeature(update, { expand: background.uuid, skipAudit: true })
+  props.persist !== false && updateFeature(update, { expand: background.uuid, skipAudit: false })
 
   return update
 }
@@ -72,6 +72,6 @@ export const addBackground = async (props:TAddBackground) => {
   if(!feature) return logNotFound(`feature`, prefix)
 
   return !parentId || parentId === feature.uuid
-    ? toFeature(props, feature, background)
-    : toRule(props, feature, parentId, background)
+    ? await toFeature(props, feature, background)
+    : await toRule(props, feature, parentId, background)
 }

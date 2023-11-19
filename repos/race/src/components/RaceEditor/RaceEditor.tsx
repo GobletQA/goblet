@@ -3,7 +3,7 @@ import type { TRaceEditorProps } from '@GBR/types'
 import { Editor } from './Editor'
 import { useInitialFeature } from '@GBR/hooks/features/useInitialFeature'
 import {
-  ParkinProvider,
+  WorldProvider,
   FeatureProvider,
   StepDefsProvider,
   SettingsProvider,
@@ -24,7 +24,7 @@ export const RaceEditor = (props:TRaceEditorProps) => {
       onSettingChange={props.onSettingChange}
     >
       <OperationsProvider>
-        <ParkinProvider
+        <WorldProvider
           world={props.world}
           defs={props.definitions}
           onWorldChange={props.onWorldChange}
@@ -34,7 +34,7 @@ export const RaceEditor = (props:TRaceEditorProps) => {
               <Editor {...props} initialFeature={initialFeature} />
             </StepDefsProvider>
           </FeatureProvider>
-        </ParkinProvider>
+        </WorldProvider>
       </OperationsProvider>
     </SettingsProvider>
   )

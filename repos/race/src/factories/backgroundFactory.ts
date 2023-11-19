@@ -3,7 +3,7 @@ import type { TRaceFeature, TRaceBackgroundParent, TRaceBackground } from '@GBR/
 import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
 import { deepMerge } from '@keg-hub/jsutils'
-import { findIndex } from '@GBR/utils/find/findIndex'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 
 export type TBackgroundFactory = {
   empty?:boolean
@@ -21,7 +21,7 @@ const emptyBackground = (background:Partial<TRaceBackground>) => {
   } as Partial<TRaceBackground>
 }
 
-export const backgroundFactory = ({
+export const backgroundFactory = async ({
   feature,
   background,
   empty=false,
@@ -29,7 +29,7 @@ export const backgroundFactory = ({
 }:TBackgroundFactory) => {
   if(!parent) throw new Error(`A parent type of feature or rule is required.`)
 
-  const index = findIndex({
+  const index = await ParkinWorker.findIndex({
     parent,
     feature,
     type: EAstObject.background,
@@ -53,7 +53,7 @@ export const backgroundFactory = ({
       : undefined
   
   built && (
-    built.steps = stepsFactory({
+    built.steps = await stepsFactory({
       feature,
       parent: built,
       steps: background?.steps,

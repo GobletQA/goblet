@@ -70,7 +70,6 @@ export class VideoRecorder {
 
 /**
  * Checks if the context was recording a video
- * Then updates the testMeta with the path to the video
  * @param {string} testStatus - passed || failed
  * @param {string|boolean} saveVideo - one of `never` | `always` | `on-fail` | true | false
  *
@@ -138,7 +137,6 @@ export class VideoRecorder {
 
   /**
    * Checks if the page was recording a video
-   * Then updates the testMeta with the path to the video
    * @param {Object} page - Playwright page to get the video path from
    *
    */

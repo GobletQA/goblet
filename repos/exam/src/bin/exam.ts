@@ -1,5 +1,6 @@
 import "./init"
 import "@GEX/utils/logger"
+import { resetRoot } from './paths'
 import { getConfig } from './getConfig'
 import { initLocal } from './initLocal'
 import { updateCLIEnvs } from './helpers'
@@ -24,6 +25,7 @@ ife(async () => {
       : await initWorkers(exam)
 
     printDebugResults(results, time)
+    resetRoot()
 
     if(!isArr(results)) process.exit(1)
 

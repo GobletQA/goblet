@@ -22,10 +22,12 @@ export type THFeatureAudit = {
 export const useAudit = (props:THFeatureAudit) => {
   const { feature } = props
   const [audit, setAudit] = useState(emptyAudit)
+  const [isAuditing, setIsAuditing] = useState<boolean>(false)
 
   const onAuditFeature = useCallback<TOnAuditFeatureCB>(async (feat, opts=emptyObj) => {
-    if(opts.skipAudit) return
-    
+    if(opts.skipAudit === true) return
+
+    setIsAuditing(true)
     const {
       mergeAudit,
       removeAuditSteps
@@ -37,6 +39,8 @@ export const useAudit = (props:THFeatureAudit) => {
     if(removeAuditSteps) return setAudit(pickKeys(audit, Object.keys(updated)))
 
     setAudit(updated || emptyAudit)
+    setIsAuditing(false)
+
   }, [audit])
 
   /**
@@ -54,6 +58,7 @@ export const useAudit = (props:THFeatureAudit) => {
     audit,
     feature,
     setAudit,
+    isAuditing,
     onAuditFeature,
     featureIsEmpty,
   }
