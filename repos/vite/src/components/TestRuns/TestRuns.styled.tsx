@@ -127,3 +127,8 @@ export const TestRunSectionScroll = styled(Box)(({ theme }) => `
   }
 
 `)
+
+
+export const TestRunsHeaderActions = styled(Box)(({ theme }) => `
+  display: flex;
+`)

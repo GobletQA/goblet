@@ -1,7 +1,6 @@
-import type { FocusEvent } from 'react'
 import type {
-  TTestRunsState,
   TTestRunUICfg,
+  TTestRunsState,
   TOnBlurRunTestOpts,
   TTestRunGetUICfgEvt,
   TOnChangeRunTestOpts,
@@ -50,7 +49,7 @@ export const TestRuns = () => {
   
   const {
     testRunCfg,
-    setTestRunCfg
+    setTestRunCfg,
   } = useTestRunOpts(testRuns)
 
   const onBlurRunTestOpts = useInline<TOnBlurRunTestOpts>((evt, type) => {

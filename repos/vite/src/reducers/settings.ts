@@ -114,7 +114,10 @@ export const settingsActions = {
     action:TDspAction<TSettingAct>
   ) => {
     const { found, setting } = findSetting(action.payload?.setting, state)
-    if(!found) return state
+    if(!found){
+      console.warn(`Could not find setting with path ${action.payload?.setting}`)
+      return state
+    }
 
     /**
      * If value property is in data, it will override passed in value

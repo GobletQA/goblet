@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import mime from 'mime'
 import { fileModel } from '@GSH/models'
-import { limboify } from '@keg-hub/jsutils/limbo'
+import { limboify } from '@keg-hub/jsutils/limboify'
 import { resolveFileType } from '@GSH/models/resolveFileType'
 
 /**

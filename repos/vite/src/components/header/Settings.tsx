@@ -15,6 +15,9 @@ import { dims } from '@gobletqa/components/theme'
 import { Link as RouterLink } from 'react-router-dom'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import {
+  SettingsContainer
+} from './Settings.styled'
 
 type TSettings = {
   anchorEl: null | HTMLElement
@@ -151,15 +154,13 @@ export const Settings = (props:TSettings) => {
   const avatarProps = useAvatar()
 
   return (
-    <>
-      <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="Admin Settings">
-          <IconButton onClick={onOpenSettings} sx={{ p: 0 }}>
-            <Avatar {...avatarProps} />
-          </IconButton>
-        </Tooltip>
-        <SettingMenu {...props} />
-      </Box>
-    </>
+    <SettingsContainer>
+      <Tooltip title="Admin Settings">
+        <IconButton onClick={onOpenSettings} sx={{ p: 0 }}>
+          <Avatar {...avatarProps} />
+        </IconButton>
+      </Tooltip>
+      <SettingMenu {...props} />
+    </SettingsContainer>
   )
 }

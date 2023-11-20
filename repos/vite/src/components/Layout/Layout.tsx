@@ -1,12 +1,16 @@
-import type { ReactNode } from 'react'
+import type { MutableRefObject, ReactNode } from 'react'
+import type { TGobletSettings } from '@types'
+import type { AllotmentHandle } from "allotment"
 
 import "allotment/dist/style.css"
-import { Allotment } from "allotment"
+import { useRef, useEffect, useState } from 'react'
+import { LayoutPriority, Allotment } from "allotment"
 import { LayoutCover } from './LayoutCover'
 import { ActionBar } from '@gobletqa/components'
 import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
 import {useLayoutResize} from '@hooks/components/useLayoutResize'
+import {useSettingValues} from '@hooks/settings/useSettingValues'
 import {
   LContainer,
   RContainer,
@@ -27,6 +31,27 @@ export type TLayout = {
 
 export const Layout = (props:TLayout) => { 
   const { onDragEnd  } = useLayoutResize()
+  const allRef = useRef<AllotmentHandle>()
+
+  const { browserInBrowser } = useSettingValues<TGobletSettings>(`goblet`)
+  const [showBrowser, setShowBrowser] = useState<boolean>(browserInBrowser)
+
+  useEffect(() => {
+    if(!allRef.current) return
+
+    if((!browserInBrowser && showBrowser)){
+      setShowBrowser(false)
+      allRef.current.reset()
+    }
+    else if((browserInBrowser && !showBrowser)){
+      setShowBrowser(true)
+      allRef.current.reset()
+    }
+
+  }, [
+    showBrowser,
+    browserInBrowser
+  ])
 
   return (
     <LayoutContainer
@@ -34,9 +59,13 @@ export const Layout = (props:TLayout) => {
     >
       <Allotment
         onDragEnd={onDragEnd}
+        ref={allRef as MutableRefObject<AllotmentHandle>}
       >
 
-        <Allotment.Pane preferredSize={`40%`} >
+        <Allotment.Pane
+          preferredSize={`40%`}
+          priority={LayoutPriority.Low}
+        >
           <LContainer
             disableGutters
             sx={styles.container}
@@ -47,7 +76,11 @@ export const Layout = (props:TLayout) => {
           </LContainer>
         </Allotment.Pane>
 
-        <Allotment.Pane preferredSize={`60%`} >
+        <Allotment.Pane
+          preferredSize={`60%`}
+          visible={showBrowser}
+          priority={LayoutPriority.High}
+        >
           <RContainer
             disableGutters
             sx={styles.container}
@@ -57,7 +90,7 @@ export const Layout = (props:TLayout) => {
               <ActionBar actions={BrowserActions} />
             </RTSection>
 
-            <Screencast />
+            <Screencast browserIsActive={showBrowser} />
           </RContainer>
         </Allotment.Pane>
 

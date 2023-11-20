@@ -31,7 +31,7 @@ export const Page = (props:TPage) => {
     <SocketProvider>
       <RenderPage />
       <SideNav />
-      <Header settings={props.settings} />
+      <Header meuItems={props.settings} />
     </SocketProvider>
   )
 }

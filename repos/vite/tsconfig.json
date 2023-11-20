@@ -65,7 +65,9 @@
       "@gobletqa/components/svgs/*": ["../components/src/components/Svgs/*"],
       "@gobletqa/components": ["../components/src"],
       "@gobletqa/components/*": ["../components/src/*"],
-      "GobletRoot": ["../../"]
+      "GobletRoot": ["../../"],
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
     }
   },
   "include": ["src"],

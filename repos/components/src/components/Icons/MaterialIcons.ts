@@ -75,6 +75,8 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import SendIcon from '@mui/icons-material/Send'
+import WebAssetIcon from '@mui/icons-material/WebAsset'
+import WebAssetOffIcon from '@mui/icons-material/WebAssetOff'
 
 export {
   Settings,
@@ -150,5 +152,7 @@ export {
   KeyboardArrowRightIcon,
   PersonIcon,
   HelpOutlineIcon,
-  SendIcon
+  SendIcon,
+  WebAssetIcon,
+  WebAssetOffIcon,
 }

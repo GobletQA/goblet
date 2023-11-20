@@ -3,9 +3,10 @@ import type { TRootPaths, Repo } from '@GSH/types'
 import path from 'path'
 import fs from 'node:fs'
 import { readdir } from 'node:fs/promises'
+import { limbo } from '@keg-hub/jsutils/limbo'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { getRepoGobletDir } from '@gobletqa/goblet'
-import { limbo, limboify } from '@keg-hub/jsutils/limbo'
+import { limboify } from '@keg-hub/jsutils/limboify'
 
 const defaultFileExclude = [
   `.DS_Store`,

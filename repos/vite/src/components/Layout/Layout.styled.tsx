@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import MuiContainer from '@mui/material/Container'
-import { colors, dims } from '@gobletqa/components'
+import { gutter, colors, dims } from '@gobletqa/components'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
@@ -49,4 +49,11 @@ export const RTSection = styled(Box)`
   flex-basis: ${dims.browser.actions.hpx};
   min-height: ${dims.browser.actions.hpx};
   max-height: ${dims.browser.actions.hpx};
+`
+
+export const TestRunsActionContainer = styled(Box)`
+  z-index: 201;
+  position: absolute;
+  right: ${gutter.padding.px};
+  bottom: ${gutter.padding.px};
 `

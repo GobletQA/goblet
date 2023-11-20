@@ -39,20 +39,20 @@ export const useTestSuite = (props:TBrowserActionProps) => {
     return !allTestsRunning
       ? {
           as: `button`,
-          loc: `bottom`,
-          variant: `text`,
-          color: `success`,
-          text: `Run Tests`,
           onClick: onPlayTestSuite,
-          Icon: FolderPlayOutlineIcon,
-          className: `gb-browser-run-test-suite`,
+          loc: props.loc ?? `bottom`,
+          text: props.text ?? `Run Tests`,
+          color: props.color ?? `success`,
+          variant: props.variant ?? `text`,
+          Icon: props.Icon ?? FolderPlayOutlineIcon,
+          className: props.className ?? `gb-browser-run-test-suite`,
           tooltip: `Execute multiple or all tests based on the test run options`,
         }
       : {
           as: `button`,
-          loc: `bottom`,
-          color: `error`,
-          variant: `text`,
+          loc: props.loc ?? `bottom`,
+          color: props.color ?? `error`,
+          variant: props.variant ?? `text`,
           id: CancelButtonID,
           containerSx: TestSuiteActionStyles(theme, testRunsView),
           text: (
@@ -66,8 +66,8 @@ export const useTestSuite = (props:TBrowserActionProps) => {
             </TestSuiteTextContainer>
           ),
           onClick: onCancelTestSuite,
-          className: `gb-browser-cancel-test-suite`,
           tooltip: `Test suite running; click to cancel`,
+          className: props.className ?? `gb-browser-cancel-test-suite`,
           Icon: () =>  (
             <>
               <DangerousIcon className='action-hover gb-test-runs-cancel-icon browser-action' />
@@ -78,7 +78,13 @@ export const useTestSuite = (props:TBrowserActionProps) => {
   }, [
     theme,
     testRunsView,
-    allTestsRunning
+    allTestsRunning,
+    props.loc,
+    props.text,
+    props.Icon,
+    props.color,
+    props.variant,
+    props.className,
   ])
 
   return {

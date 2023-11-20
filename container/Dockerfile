@@ -86,10 +86,10 @@ FROM goblet-repos AS goblet-built
 WORKDIR /goblet/app
 COPY --from=goblet-build-files /goblet/app .
 COPY --from=goblet-repo-files /goblet/app .
-WORKDIR /goblet/app/repos/backend
-RUN pnpm build:docker
-WORKDIR /goblet/app/repos/screencast
-RUN pnpm build:docker
+# WORKDIR /goblet/app/repos/backend
+# RUN pnpm build:docker
+# WORKDIR /goblet/app/repos/screencast
+# RUN pnpm build:docker
 # ---- End Stage ---- #
 
 
