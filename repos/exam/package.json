@@ -54,7 +54,7 @@
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@keg-hub/args-parse": "10.0.1",
-    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "6.3.1",
     "esbuild": "0.19.3",

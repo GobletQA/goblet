@@ -49,7 +49,7 @@
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/workflows": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "esbuild-plugin-path-alias": "1.0.7",
     "express": "4.18.2",

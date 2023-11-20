@@ -54,7 +54,7 @@
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/test-utils": "workspace:*",
-    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/esdev": "0.2.1",
     "esbuild": "0.19.3",

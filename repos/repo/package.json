@@ -39,7 +39,7 @@
     "@gobletqa/git": "workspace:*",
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
-    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/jsutils": "9.10.0",
     "@ltipton/parkin": "6.3.1"
   },
   "devDependencies": {

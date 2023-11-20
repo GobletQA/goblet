@@ -37,7 +37,7 @@
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
-    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/jsutils": "9.10.0",
     "intellinode": "1.4.4",
     "openai": "4.10.0"
   },
