@@ -230,6 +230,7 @@ export class Automate {
    * Helper to add the int script for Goblet UI
    */
   addInitScripts = async (parent?:TBrowserPage|TBrowserContext) => {
+    logEnvMsg(`Adding init scripts and exposing methods...`)
     parent = parent || this.parent
     await exposePWFunction(
       parent,

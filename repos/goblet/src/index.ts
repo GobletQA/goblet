@@ -5,11 +5,15 @@ import { getPathFromConfig } from './utils/getPathFromConfig'
 import { replaceGobletConfigRef } from './utils/ensureGobletCfg'
 import { buildRefFromRemote, getRepoRef } from './utils/getRepoRef'
 
+import {  resetGobletConfig } from './loaders/configCache'
 import { configFromFolder } from './loaders/configFromFolder'
-import { gobletLoader, loaderSearch } from './loaders/loader'
+import {
+  loaderSearch,
+  gobletLoader
+} from './loaders/loader'
 
+import { getGobletConfig } from './getGobletConfig'
 import { getDefaultGobletConfig } from './getDefaultGobletConfig'
-import { getGobletConfig, resetGobletConfig } from './getGobletConfig'
 
 export {
   getRepoRef,

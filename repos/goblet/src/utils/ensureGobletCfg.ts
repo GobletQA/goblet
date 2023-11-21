@@ -4,6 +4,9 @@ import path from 'node:path'
 import { promises as fs } from 'node:fs'
 import { ENVS } from '@gobletqa/environment'
 import { buildRefFromRemote } from './getRepoRef'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { addConfigFileTypes } from './addConfigFileTypes'
+import { getDefaultGobletConfig } from '../getDefaultGobletConfig'
 import { GobletConfigFileNames, GobletConfigRef } from '@gobletqa/environment/constants'
 
 export type TGobletRefOpts = {
@@ -35,23 +38,6 @@ const findGobletCfgLoc = async (base:string) => {
   }, Promise.resolve(``))
 } 
 
-
-/**
- * This ensure the $ref is set in the repos Goblet Config
- * Might be a good idea to add a check afterwards to ensure it was properly replaced
- * But that would require loading the config from disk, which would slow the process down a lot
- * Leaving out for now, but may need to add later
- */
-export const replaceGobletConfigRef = async (gitData:TGitData, cfgLoc?:string) => {
-  cfgLoc = cfgLoc || await findGobletCfgLoc(gitData.local)
-  const content = await fs.readFile(cfgLoc, `utf8`)
-
-  const replaced = content.replaceAll(GobletConfigRef, buildRefFromRemote(gitData.remote))
-  await fs.writeFile(cfgLoc, replaced, `utf8`)
-
-  return true
-}
-
 const getRef = (opts:TGobletRefOpts) => {
   const ref = opts.ref || ENVS.GB_REPO_CONFIG_REF || ``
   const remote = opts.remote || ENVS.GB_GIT_REPO_REMOTE
@@ -63,14 +49,31 @@ const getRef = (opts:TGobletRefOpts) => {
 
 }
 
-// TODO: Investigate writing the $ref to the actual goblet config file
-// Need to figure out to do that for a JS/TS file. That or switch to a JSON file, and load that instead
+
+/**
+ * Ensures the $ref is added to the gobletConfig
+ */
 const addRefToConfig = (config: TGobletConfig, opts:TGobletRefOpts) => {
   return {...config, ...getRef(opts)} as TGobletConfig
 }
 
+/**
+ * Check for the $ref in the goblet config
+ * Finds all refs to the GobletConfigRef constant, and replaces it with the real $ref
+ */
+export const replaceGobletConfigRef = async (gitData:TGitData, cfgLoc?:string) => {
+  cfgLoc = cfgLoc || await findGobletCfgLoc(gitData.local)
+  const content = await fs.readFile(cfgLoc, `utf8`)
 
-export const ensureGobletCfg = (config: TGobletConfig, opts:TGobletRefOpts):TGobletCfgLoaderResp => {
+  const replaced = content.replaceAll(GobletConfigRef, buildRefFromRemote(gitData.remote))
+  await fs.writeFile(cfgLoc, replaced, `utf8`)
+
+  return true
+}
+
+export const ensureGobletCfg = (cfg: TGobletConfig, opts:TGobletRefOpts):TGobletCfgLoaderResp => {
+  const config = addConfigFileTypes(deepMerge<TGobletConfig>(getDefaultGobletConfig(), cfg))
+
   const { repoRoot, location } = opts
 
   // Ensure the repoRoot path gets set

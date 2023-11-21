@@ -33,18 +33,14 @@ export const getStepMeta = (
 ) => {
   const idx = getStepIndex(parent, pos, index)
   const insert = getInsertIndex(parent, idx)
+  // Ensure the index is always greater than the parents index
+  const sIdx = idx <= parent.index ? parent.index + 1 : idx
 
   return {
     insert,
     step: {
-      // Ensure the index is always greater than the parents index
-      index: idx === parent.index ? parent.index + 1 : idx,
-      // Add a random uuid to the start of the uuid to avoid duplicates
-      // In all path finding, any text before the first `.` is skipped
-      // Because it assumes it's the features uuid, So this should not cause issues
-      
-      // TODO: this should be the insert index, not the feature file index
-      uuid: `${uuid()}-${parent.uuid}.${step.type}.${idx}`,
+      index: sIdx,
+      uuid: `${parent.uuid}.${step.type}.${sIdx}`,
     }
   }
 

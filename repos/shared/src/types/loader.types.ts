@@ -13,7 +13,6 @@ export type TLoadedFunc<T extends TCfgMerge> = (...args:any[]) => TLoadedFunResp
 
 export type TLoopLoad<T extends TCfgMerge> = TLoadShared & {
   loadArr:string[]
-  addLocation?:boolean
   requireFunc?:TLoadedFunc<T>
 }
 
@@ -34,7 +33,6 @@ export type TSearchFile = TLoadShared & {
 
 export type TLoader = TLoadShared & {
   loadArr?:string[]
-  addLocation?:boolean
 }
 
 export type TGobletLoaderRef = {

@@ -16,6 +16,7 @@ type TPTestCallback = (result:TRunResult) => any
  */
 import expect from 'expect'
 import { Parkin } from '@ltipton/parkin'
+import { ENVS } from '@gobletqa/environment'
 import { WSPwConsole } from '@GBB/constants'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { unset } from '@keg-hub/jsutils/unset'
@@ -91,8 +92,8 @@ const setTestGlobals = (Runner:CodeRunner) => {
   // TODO: investigate overwriting all envs
   Object.entries(processENVs)
     .forEach(([key, val]) => {
-      ProcessEnvCache[key] = process.env[key]
-      process.env[key] = val
+      if(ENVS[key]) ProcessEnvCache[key] = ENVS[key]
+      ENVS[key] = val
     })
 
   return PTE
@@ -203,6 +204,7 @@ export const setupGlobals = (Runner:CodeRunner) => {
  * This ensures it doesn't clobber what ever already exists
  */
 export const resetTestGlobals = () => {
+
   const globThis = global as TTestGlobalCache
 
   if(TestGlobalsCache.page) global.page = TestGlobalsCache.page
@@ -217,7 +219,8 @@ export const resetTestGlobals = () => {
   // TODO: investigate overwriting all envs
   Object.entries(processENVs)
     .forEach(([key, val]) => {
-      process.env[key] = ProcessEnvCache[key]
+      if(ProcessEnvCache[key]) ENVS[key] = ProcessEnvCache[key]
+      else delete ENVS[key]
     })
 
   TestGlobalsCache = {}

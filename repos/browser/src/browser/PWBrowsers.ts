@@ -128,7 +128,7 @@ export class PWBrowsers {
     
     const context = await playwright[type].launchPersistentContext(opts)
 
-    const browser = new EmptyBrowser(context, type)
+    const browser = new EmptyBrowser(context, type) as unknown as TBrowser
     logEnvMsg(`createPersistentBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, browserConf)
 

@@ -14,23 +14,18 @@
  * But it wouldn't take mush to make this a general tool for finding configs
  *
  */
-import type { TGobletConfig } from './types'
-
 
 import { Logger } from '@gobletqa/logger'
-import { resetLoader } from './loaders/loader'
-import { isStr, deepMerge } from './utils/helpers'
-import { addConfigFileTypes } from './utils/addConfigFileTypes'
+import { getGobletCfg } from './loaders/configCache'
 import { loadConfigFromBase } from './loaders/loadConfigFromBase'
-import { getDefaultGobletConfig } from './getDefaultGobletConfig'
 
 type TGetGobletConfigArgs = {
+  ref?:string,
   base?:string
   warn?: boolean
   local?: boolean
+  remote?:string
 }
-
-let __GOBLET_CONFIG:TGobletConfig
 
 /**
  * Gets the Goblet application config from a number of sources
@@ -39,13 +34,13 @@ export const getGobletConfig = (
   argsConfig:TGetGobletConfigArgs = {} as TGetGobletConfigArgs
 ) => {
 
+  const cachedCfg = getGobletCfg()
+
   // TODO: Exam sets the EXAM_ENV env
   // If other test runners are added, need to ensure this is updated as well
-  if (!Boolean(process.env.EXAM_ENV) && __GOBLET_CONFIG) return __GOBLET_CONFIG
+  if (!Boolean(process.env.EXAM_ENV) && cachedCfg?.config) return cachedCfg?.config
 
-  const {
-    config:baseConfig
-  } = loadConfigFromBase(isStr(argsConfig.base) && argsConfig.base) || {}
+  const { config:baseConfig } = loadConfigFromBase(argsConfig) || {}
 
   if (!baseConfig && argsConfig.local && argsConfig.warn) {
     Logger.warn(
@@ -63,22 +58,5 @@ export const getGobletConfig = (
     )
   }
 
-  const defConfig = getDefaultGobletConfig()
-  __GOBLET_CONFIG = addConfigFileTypes(
-    deepMerge<TGobletConfig>(
-      defConfig,
-      // Base if a folder path, not a config file path
-      baseConfig,
-    )
-  )
-
-  return __GOBLET_CONFIG
-}
-
-/**
- * Resets the loaded goblet config
- */
-export const resetGobletConfig = () => {
-  __GOBLET_CONFIG = undefined
-  resetLoader()
+  return baseConfig
 }

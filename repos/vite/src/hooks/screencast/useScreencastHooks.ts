@@ -7,13 +7,13 @@ import type {
 } from '@types'
 
 
+import { isMac } from '@utils/browser/getOS'
 import { useOnEvent } from '@gobletqa/components/hooks/useEvent'
 import { useRef, useCallback, useState, useEffect } from 'react'
 import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
 import { GlobalCopyEvt, SetBrowserIsLoadedEvent } from '@constants'
 import { useScreencastUrl }  from '@hooks/screencast/useScreencastUrl'
 import { useCheckBrowserStatus } from '@hooks/screencast/useCheckBrowserStatus'
-
 
 const useDelayCallback = (method:(...args:any[]) => void, delay:number=2000) => {
   return useCallback((...args:any[]) => setTimeout(() => method?.(...args), delay), [method, delay])
@@ -60,25 +60,48 @@ export const useScreencastHooks = () => {
   })
 
   const onKeyDown = useCallback((event:KeyboardEvent) => {
+    const isT = event.code === `KeyT` || event.key === `t` || event.keyCode === 84
     const isTab = event.code === `Tab` || event.key === `Tab` || event.keyCode === 9
-    
-    if(isTab || event.ctrlKey || event.metaKey){
-      const isT = event.code === `KeyT` || event.keyCode === 84 || event.key === `t`
-      if(isT || isTab){
-        
-        event.stopPropagation()
-        event.preventDefault()
-        console.warn(`Command not allowed`)
 
-        // TODO: add check here for it on mac
-        // Re-Map the keys command / ctrl keys if possible
-        // Have to use ctl when on vnc screen
-      }
-      
+    if((isT || isTab) && (event.ctrlKey || event.metaKey || event.altKey)){
+      event.stopPropagation()
+      event.preventDefault()
+      console.warn(`Command not allowed`)
     }
 
-    // event.stopPropagation()
-    // event.preventDefault()
+    // Check if on mac, and if so, map the metaKey to the ctrlKey
+    // The vnc browser runs in linux, which uses the ctrlKey instead of the metaKey (command key on mac)
+    if(isMac() && (event.metaKey)){
+      const isC = event.code === `KeyC` || event.key === `c` || event.keyCode === 67
+      const isV = event.code === `KeyV` || event.key === `v` || event.keyCode === 86
+
+      if(isC || isV){
+        // @ts-ignore
+        const sendEvt = new event.constructor(event.type, {
+          ...event,
+          metaKey: false,
+          ctrlKey: true,
+          bubbles: true,
+          composed: true,
+          cancelable: true,
+          key: event.key,
+          code: event.code,
+          view: event.view,
+          which: event.which,
+          keyCode: event.keyCode,
+          returnValue: event.returnValue,
+          // @ts-ignore
+          sourceCapabilities: event.sourceCapabilities
+        })
+
+        // Stop the original event
+        event.stopPropagation()
+        event.preventDefault()
+
+        return event?.target?.dispatchEvent(sendEvt)
+      }
+
+    }
 
   }, [])
 

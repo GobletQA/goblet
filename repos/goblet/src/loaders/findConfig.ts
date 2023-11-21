@@ -1,4 +1,4 @@
-import type { TCfgFolder } from '../types'
+import type { TGobletCfgLoaderResp, TCfgFolder } from '../types'
 
 import path from 'path'
 import { configFromFolder } from './configFromFolder'
@@ -9,13 +9,15 @@ import { configFromFolder } from './configFromFolder'
  */
 export const findConfig = (startDir:string, opts:TCfgFolder) => {
   let currentPath = startDir
+  let config:TGobletCfgLoaderResp|false|null = null
 
-  while (currentPath != '/') {
-    const config = configFromFolder(currentPath, opts)
-    if (config) return config
+  while (currentPath != `/`) {
+    config = configFromFolder(currentPath, opts)
+    if (config) break
 
-    currentPath = path.join(currentPath, '../')
+    currentPath = path.join(currentPath, `../`)
   }
-  return null
+
+  return config
 }
 

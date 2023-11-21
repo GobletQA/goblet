@@ -219,7 +219,10 @@ export class Browser {
   }
 
   restart = async (args:TStartBrowser):Promise<TPWComponents> => {
+    logEnvMsg(`Closing browser...`)
     await pwBrowsers.closeBrowser(args?.browserConf?.type as EBrowserType)
+
+    logEnvMsg(`Browser closed, restarting browser...`)
     return await this.start(args)
   }
 

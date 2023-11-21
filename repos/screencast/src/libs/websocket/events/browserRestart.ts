@@ -1,6 +1,7 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
+import { Logger } from '@GSC/utils/logger'
 import { withRepo } from '@GSC/utils/withRepo'
 import { WSPwBrowserRestarted } from '@GSC/constants'
 import { restartBrowser } from '@GSC/utils/restartBrowser'
@@ -9,6 +10,7 @@ import { restartBrowser } from '@GSC/utils/restartBrowser'
 export const browserRestart = (app:Express) => withRepo<TSocketEvtCBProps>(async (props) => {
   const { Manager } = props
 
+  Logger.log(`Restarting screencast browser...`)
   await restartBrowser({
     ...props,
     url: props?.data?.url,
