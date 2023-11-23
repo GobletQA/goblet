@@ -2,8 +2,10 @@ import type { TFileResp } from '@types'
 import type { TRequest } from '@services/axios.types'
 
 import { HttpMethods } from '@constants'
+
 import { apiRequest } from '@utils/api/apiRequest'
 import { buildRepoReq } from '@utils/api/apiHelpers'
+import { downloadBlob } from '@utils/dom/downloadBlob'
 
 export type TSaveFile = {
   type:string
@@ -31,6 +33,10 @@ export type TLoadFile = {
   location:string
 }
 
+export type TDownloadReport = {
+  location:string
+}
+
 
 class FilesApi {
 
@@ -45,6 +51,36 @@ class FilesApi {
   loadGobletFile = async <T=TFileResp>(location:string) => await this._req<T>(
     `/files/definition?location=${location}`
   )
+
+  downloadReport = async <T=any>({
+    location
+  }:TDownloadReport) => {
+
+    const resp = await this._req<Blob>({
+      url: `/files/reports/download?location=${location}`,
+      method: HttpMethods.GET,
+      responseType: `blob`
+    })
+    
+    if(resp.error) return resp
+    
+    const { data, ...rest } = resp
+
+    try {
+      const name = location.split(`/`).pop() || `Goblet-Report.html`
+      downloadBlob(data, name)
+    }
+    catch(err:any){
+      return {
+        ...rest,
+        statusCode: 1,
+        success: false,
+        error:`[Report Download Failed] ${err.message}`
+      }
+    }
+
+    return {...rest, data: true}
+  }
 
   deleteFile = async <T=TDeleteFileRep>(location:string) => await this._req<T>({
     method: `DELETE`,

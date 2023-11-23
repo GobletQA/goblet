@@ -57,20 +57,20 @@
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "6.3.1",
-    "esbuild": "0.19.3",
+    "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",
     "esbuild-plugin-path-alias": "1.0.7",
     "expect": "29.7.0",
     "glob": "10.3.10",
     "micromatch": "4.0.5",
-    "module-alias": "2.2.2",
+    "module-alias": "2.2.3",
     "p-map-series": "3.0.0",
     "p-pipe": "4.0.0"
   },
   "devDependencies": {
     "@ltipton/esdev": "0.2.1",
     "@types/debug": "4.1.9",
-    "@types/node": "20.7.1",
+    "@types/node": "20.9.3",
     "nodemon": "3.0.1"
   }
 }

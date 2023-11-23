@@ -97,12 +97,12 @@ const StepList = (tests: TExEventData[], opts:TReporterOpts) => {
       if(!testTime) testTime = state === `skipped` ? state : `unknown`
       else testTime = `${testTime}s`
       
-        
+      const idRef = `${test?.id}-${idx}`
       
-      const toggleError = test.failedExpectations.length > 0 ? `onclick="toggleError(${idx})"` : ``
+      const toggleError = test.failedExpectations.length > 0 ? `onclick="toggleError('${idRef}')"` : ``
 
       const FailedHtml = test?.failedExpectations?.length
-        ? `<ul class="list-parent failed-list" id="error-${idx}" style="visibility:hidden;max-height:0px;">${FailedList(test, opts)}</ul>`
+        ? `<ul class="list-parent failed-list" id="error-${idRef}" style="visibility:hidden;max-height:0px;">${FailedList(test, opts)}</ul>`
         : ``
 
       return `
@@ -271,7 +271,7 @@ export const TestsHtml = (data:TExEventData, opts:TReporterOpts) => {
   const state = status(data)
   return `
     ${testStyles()}
-    <ul class="root-list list-parent root-${state} ${state}">
+    <ul class="root-list list-parent root-${state} ${state}" id="${data.timestamp}" >
       ${FeatureList(data.describes, opts)}
     </ul>
   `

@@ -58,8 +58,24 @@ export const margin = {
   dpx: `${marginSize * 2}px`,
 }
 
+const background = {
+  skipped: `
+    background-color: #D99B0133;
+    border-bottom: 2px solid #D99B0166;
+  `,
+  passed: `
+    background-color: #61AB8233;
+    border-bottom: 2px solid #61AB8266;
+  `,
+  failed: `
+    background-color: #B5354133;
+    border-bottom: 2px solid #B5354166;
+  `
+}
+
 export const colors = {
   ...scale,
+  background,
   text: scale.c21,
   primary: royalPurple,
   secondary: blueGreen,

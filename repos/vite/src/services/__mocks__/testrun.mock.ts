@@ -1079,10 +1079,13 @@ const inputsFile = {
   "timestamp": 1695449669930
 } as unknown as TTestRunFileData
 
+
+
 export const runMock = {
   [`end-2-end.1695449662824`]: {
     canceled: true,
     runId:`end-2-end.1695449662824`,
+    htmlReport: `/AI-Tests/AI-Tests-chromium-1700679950858.html`,
     files: {
       [`/bdd/features/Secrets/Secrets-Url.feature`]: {...secretsFile},
       [`/bdd/features/Tests/form-inputs.feature`]: {...inputsFile},
@@ -1099,7 +1102,9 @@ export const runMock = {
     }
   },
   [`end-2-end.1695709147674`]: {
+    finished: true,
     runId:`end-2-end.1695709147674`,
+    htmlReport: `/AI-Tests/AI-Tests-chromium-1700679950858.html`,
     files: {
       [`/bdd/features/Secrets/Secrets-Url.feature`]: {...secretsFile},
     }

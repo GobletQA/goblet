@@ -78,6 +78,8 @@ export const buildTestGobletOpts = (
 
   if(ENVS.GOBLET_TEST_TYPE) options.testType = ENVS.GOBLET_TEST_TYPE
 
+  if(ENVS.GOBLET_CUSTOM_REPORTS_DIR) options.reportsDir = ENVS.GOBLET_CUSTOM_REPORTS_DIR
+
   if(artifactSaveActive(ENVS.GOBLET_TEST_TRACING))
     options.tracing = {
       sources: toBool(ENVS.GOBLET_TEST_TRACING_SOURCES),

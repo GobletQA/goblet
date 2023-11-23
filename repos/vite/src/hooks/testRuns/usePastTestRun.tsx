@@ -35,6 +35,7 @@ export const usePastTestRun = (props:THPastTestRuns) => {
     return {
       date,
       name: wordCaps(name),
+      htmlReport: run.htmlReport,
       status: getTestRunStatus(run)
     }
   }, [

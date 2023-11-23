@@ -54,10 +54,10 @@ const __ExamEvents:TExamEvts = {
     name: TestsToSocketEvtMap.error,
     message: `Exam error`,
   }),
-  ended: {
+  ended: onExDynEvent({
     message: `Exam finished`,
     name: TestsToSocketEvtMap.ended,
-  },
+  }),
   canceled: {
     name: TestsToSocketEvtMap.canceled,
     message: `Exam canceled`,

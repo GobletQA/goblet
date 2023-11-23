@@ -46,23 +46,3 @@
 * Sets the name of the secret to the value of the `GB_LT_TOKEN_SECRET` env (default: `goblet-token`).
 * Dev example: `pnpm kube secret goblet --log`
 
-#### Setup Locally
-
-Run the following commands to setup the secrets locally
-* `pnpm kube secret auth`
-* `pnpm kube secret firebase --file ~/.kegConfig/goblet/goblet-dev-firebase-sa.json`
-* `pnpm kube secret goblet`
-
-
-### Secret
-
-* Cmd: `pnpm kube secret <options>`
-* Description: Create kubernetes secrets for the environment
-* Example `pnpm kube secret --name my-secret --key my-key --value my-value`
-
-
-### Ingress
-
-* Cmd: `pnpm kube ingress <options>`
-* Description: Create an new `nginx ingress` for the current kubernetes namespace via `helm chart`
-* Example `pnpm kube ingress`

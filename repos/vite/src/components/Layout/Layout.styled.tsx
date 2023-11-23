@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import MuiContainer from '@mui/material/Container'
-import { gutter, colors, dims } from '@gobletqa/components'
+import { Button, gutter, colors, dims } from '@gobletqa/components'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
@@ -57,3 +57,12 @@ export const TestRunsActionContainer = styled(Box)`
   right: ${gutter.padding.px};
   bottom: ${gutter.padding.px};
 `
+
+export const TestRunsDownloadContainer = styled(Box)`
+  z-index: 201;
+  position: absolute;
+  bottom: ${gutter.padding.px};
+  right: ${gutter.padding.size * 9}px;
+`
+
+export const TestRunDownload = styled(Button)``

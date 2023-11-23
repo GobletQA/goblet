@@ -20,15 +20,11 @@ import {upsertTestRun} from './upsertTestRun'
 const onTestEvent = (evt:TPlayerResEvent) => {
   const { app } = getStore().getState()
   const event = testRunEventFactory(evt)
+  const formatted = { event, runId: evt.runId }
+
   app.testRunsView
-    ? EE.emit<TTestRunExecEvt>(TestRunExecEvt, {
-        event,
-        runId: evt.runId,
-      })
-    : testRunsDispatch.addTestRunEvt({
-        event,
-        runId: evt.runId,
-      })
+    ? EE.emit<TTestRunExecEvt>(TestRunExecEvt, formatted)
+    : testRunsDispatch.addTestRunEvt(formatted)
 }
 
 const onTestRunError = (evt:TPlayerResEvent) => {
@@ -46,8 +42,11 @@ const onTestRunError = (evt:TPlayerResEvent) => {
       })
 }
 
-const onTestRunEnd = (event:TPlayerResEvent) => {
-  upsertTestRun({ runId: event.runId, data: { finished: true } })
+const onTestRunEnd = (event:TPlayerResEvent<any>) => {
+  upsertTestRun({
+    runId: event.runId,
+    data: { finished: true, htmlReport: event?.data?.htmlReport }
+  })
   testRunsDispatch.toggleAllTestsRun(false)
 
   EE.emit<TTestRunExecEndEvent>(TestRunExecEndEvt, {

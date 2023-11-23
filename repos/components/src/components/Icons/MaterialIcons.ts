@@ -77,6 +77,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import SendIcon from '@mui/icons-material/Send'
 import WebAssetIcon from '@mui/icons-material/WebAsset'
 import WebAssetOffIcon from '@mui/icons-material/WebAssetOff'
+import DownloadIcon from '@mui/icons-material/Download'
 
 export {
   Settings,
@@ -90,6 +91,7 @@ export {
   LogoutIcon,
   ErrorIcon,
   PendingIcon,
+  DownloadIcon,
   InfoIcon,
   SourceIcon,
   OpenFileIcon,

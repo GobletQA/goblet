@@ -1,3 +1,6 @@
+import { EPlayerTestType } from '@GEX/types'
+import { EResultAction } from '@ltipton/parkin'
+
 export const ExamCfgArrayItems = [
   `testMatch`,
   `reporters`,
@@ -57,6 +60,34 @@ export const BuiltTestResultFailed = {
   action: `end` as const,
   type: `describe` as const,
   status: `failed`  as const,
+}
+
+export const BuiltExamEnded = {
+  stats: {},
+  testPath: `/`,
+  failed: false,
+  passed: false,
+  skipped: false,
+  timestamp: 0,
+  describes: [],
+  action: `ended`,
+  id: EPlayerTestType.ended,
+  type: EPlayerTestType.ended,
+  fullName: EPlayerTestType.ended,
+  description: `Exam test execution has finished`,
+}
+
+export const BuiltExamStopped = {
+  timestamp: 0,
+  testPath: `/`,
+  failed: false,
+  passed: false,
+  skipped: false,
+  action: `stopped`,
+  id: EPlayerTestType.stopped,
+  type: EPlayerTestType.stopped,
+  description: `Exam has stopped`,
+  fullName: EPlayerTestType.stopped,
 }
 
 

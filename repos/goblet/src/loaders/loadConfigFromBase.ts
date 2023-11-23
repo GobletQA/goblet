@@ -17,8 +17,13 @@ export type TLoadCfgFromBase = {
  * Loads a goblet.config from a folder path recursively
  */
 export const loadConfigFromBase = (opts:TLoadCfgFromBase) => {
-  const { base, clearCache } = opts
-  
+  const {
+    clearCache,
+    ref=ENVS.GB_REPO_CONFIG_REF,
+    base=ENVS.GOBLET_CONFIG_BASE,
+    remote=ENVS.GB_GIT_REPO_REMOTE
+  } = opts
+
   if(!base) return null
 
   const cleanedDir = path.normalize(base)
@@ -28,14 +33,10 @@ export const loadConfigFromBase = (opts:TLoadCfgFromBase) => {
     return null
   }
 
-
   const stat = fs.lstatSync(cleanedDir)
   const startDir = stat.isDirectory() || (ENVS.GOBLET_RUN_FROM_CI && stat.isSymbolicLink())
     ? cleanedDir
     : path.dirname(cleanedDir)
-
-  const ref = opts.ref || ENVS.GB_REPO_CONFIG_REF
-  const remote = opts.remote || ENVS.GB_GIT_REPO_REMOTE
 
   const cfg:TCfgFolder = ref ? { ref } : { remote }
   if(clearCache) cfg.clearCache = clearCache

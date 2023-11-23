@@ -1,5 +1,8 @@
+import type { TExamConfig } from '@GEX/types'
+
 import "./init"
 import "@GEX/utils/logger"
+
 import { resetRoot } from './paths'
 import { getConfig } from './getConfig'
 import { initLocal } from './initLocal'
@@ -13,10 +16,12 @@ import { logJsonError } from '@GEX/utils/logJsonError'
 
 
 ife(async () => {
+  let exam:TExamConfig
+  
   try {
     const opts = await parseArgs()
     const config = await getConfig(opts)
-    const exam = removeEmpty(config)
+    exam = removeEmpty(config)
 
     updateCLIEnvs(exam, opts)
 
@@ -34,7 +39,7 @@ ife(async () => {
       : !exam.passWithNoTests && (process.exitCode = 1)
   }
   catch(err){
-    logJsonError(err)
+    logJsonError(err, exam)
     throw err
   }
 })

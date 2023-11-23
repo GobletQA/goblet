@@ -18,6 +18,6 @@ export const WorldEditorAction:TMenuItem = {
     title: `Opens a modal that allows editing the mounted repos world.json file`,
   },
   onClick: async () => {
-    EE.emit<TToggleRaceModalEvt>(ToggleRaceModalEvt, { state:true, type: ERaceModal.WorldEditor })
+    // EE.emit<TToggleRaceModalEvt>(ToggleRaceModalEvt, { state:true, type: ERaceModal.WorldEditor })
   },
 }

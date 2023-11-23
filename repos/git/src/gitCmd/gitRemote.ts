@@ -186,7 +186,7 @@ git.push = async (
   cmdOpts?:TRunCmdOpts
 ):Promise<[err:Error, resp:TCmdResp, saved:boolean]> => {
 
-  const options = validateGitOpts(gitOpts)
+  const options = validateGitOpts(gitOpts, [`local`, `remote`, `branch`, `provider`])
   const { local, branch, remote } = options
   const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
 

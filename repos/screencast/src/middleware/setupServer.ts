@@ -8,7 +8,7 @@ import express from 'express'
  * @returns {void}
  */
 export const setupServer = (app:Express) => {
-  app.set(`trust proxy`, 1)
+  app.set(`trust proxy`, 2)
   app.disable(`etag`)
   app.disable(`x-powered-by`)
   app.use(express.json())

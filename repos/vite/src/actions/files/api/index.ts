@@ -6,3 +6,4 @@ export * from './renameFile'
 export * from './getFileTree'
 
 export * from './loadGobletFile'
+export * from './downloadReport'

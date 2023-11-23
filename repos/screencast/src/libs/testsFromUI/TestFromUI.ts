@@ -4,7 +4,6 @@ GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE
 GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton --tags @whitelist
 
 */
-
 import type { TExTestEventMeta } from "@gobletqa/exam"
 import type { SpawnOptionsWithoutStdio } from 'child_process'
 import type { TTestRun, TExamUIRun, TExamUIChildProcOpts } from '@GSC/types'
@@ -20,7 +19,6 @@ import type {
   TExamUIRunFinishCB,
 } from '@GSC/types'
 
-import path from 'node:path'
 import { spawn } from 'child_process'
 import {isFunc} from "@keg-hub/jsutils"
 import { Logger } from '@GSC/utils/logger'
@@ -28,11 +26,10 @@ import { ENVS } from '@gobletqa/environment'
 import {isArr} from '@keg-hub/jsutils/isArr'
 import { aliases } from '@GConfigs/aliases.config'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
+import { ETestType, EBrowserType } from '@GSC/types'
 import { Logger as EXLogger } from "@gobletqa/exam"
 import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
-import { writeFile, mkdir, copyFile } from 'node:fs/promises'
-import { EUIReportType, ETestType, EBrowserType } from '@GSC/types'
 import { buildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
@@ -40,7 +37,6 @@ import { TestsToSocketEvtMap, InternalPaths } from '@gobletqa/environment/consta
 
 import {
   getDefOpts,
-  buildTempLoc,
   cleanRepoName,
 } from './utils'
 
@@ -73,8 +69,9 @@ export class TestFromUI {
   runId:string
   rootDir:string
   testRun:TTestRun
-  saveHtml?:boolean
-  saveJson?:boolean
+  saveJsonReport?:boolean
+  saveHtmlReport?:boolean
+  htmlReportLoc?:string
   runTimestamp:number
   eventSplit?:string=``
   runAborted?:boolean=false
@@ -84,28 +81,15 @@ export class TestFromUI {
   onRunFinish:TExamUIRunFinishCB[]=[]
 
 
-  #ensureTempDir = async (type:EUIReportType) => {
-    const tempJsonLoc = path.join(InternalPaths.reportsTempDir, type)
-    await mkdir(tempJsonLoc, { recursive: true })
-    
-    return tempJsonLoc
-  }
-
-  #ensureRepoDir = async (subdir:string=`full`) => {
-    const repoLoc = path.join(this.repo.paths.reportsDir, subdir)
-    await mkdir(repoLoc, { recursive: true })
-
-    return repoLoc
-  }
-
-  #generateHtml = async () => {
-    return ``
-  }
-
   #safeLogData = (data:string) => {
     ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
     data && EXLogger.stdout(data)
     ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `1`
+  }
+
+  #parseHtmlReportLoc = (data:string) => {
+    const saveLoc =  data.split(`"`)[1]
+    if(saveLoc) this.htmlReportLoc = saveLoc.trim?.()?.replace(InternalPaths.reportsTempDir, ``)
   }
 
   buildTestParams = (
@@ -131,16 +115,29 @@ export class TestFromUI {
   }
 
   constructor(props:TExamUIRunOpts) {
-    this.repo = props.repo
-    this.runTimestamp = props.runTimestamp
+    const {
+      onEvent,
+      eventSplit,
+      onRunFinish,
+      saveHtmlReport,
+      saveJsonReport,
+      extraEvt=emptyObj,
+    } = props
 
+    this.repo = props.repo
+    this.extraEvt = extraEvt
+
+    // This must core before `this.runId`, because `this.buildRunId` uses it
+    this.runTimestamp = props.runTimestamp
     this.runId = this.buildRunId()
+
     this.testRun = {files: {}, runId: this.runId} as TTestRun
 
-    props.onEvent && this.onEvent.push(props.onEvent)
-    props.onRunFinish && this.onRunFinish.push(props.onRunFinish)
-    this.extraEvt = props.extraEvt ?? emptyObj
-    props.eventSplit && (this.eventSplit = props.eventSplit)
+    onEvent && this.onEvent.push(props.onEvent)
+    eventSplit && (this.eventSplit = props.eventSplit)
+    onRunFinish && this.onRunFinish.push(props.onRunFinish)
+    saveHtmlReport && (this.saveHtmlReport = props.saveHtmlReport)
+    saveJsonReport && (this.saveJsonReport = props.saveJsonReport)
 
   }
 
@@ -222,41 +219,12 @@ export class TestFromUI {
     return `${cleanRepoName(this.repo.name)}.${this.runTimestamp}`
   }
 
-  saveTempJsonReport = async () => {
-    const tempJsonLoc = await this.#ensureTempDir(EUIReportType.json)
-    const loc = buildTempLoc(
-      tempJsonLoc,
-      this.runId,
-      EUIReportType.json
-    )
-
-    Logger.pair(`Saving Exam UI Run events to`, loc)
-    await writeFile(loc, JSON.stringify(this.events))
-  }
-
-  saveTempHtmlReport = async () => {
-    const tempHtmlLoc = await this.#ensureTempDir(EUIReportType.html)
-    const loc = buildTempLoc(
-      tempHtmlLoc,
-      this.runId,
-      EUIReportType.html
-    )
-
-    const html = await this.#generateHtml()
-    await writeFile(loc, html)
-  }
-
-  saveReportToRepo = async (tempLoc:string) => {
-    const repoDir = await this.#ensureRepoDir(`full`)
-    const repoLoc = path.join(repoDir, path.basename(tempLoc))
-
-    await copyFile(tempLoc, repoLoc)
-  }
 
   runFinish = async (args:TExamUIRunFinish) => {
     const {cb, code, extra} = args
 
-    const event = formatTestEvt({} as TExTestEventMeta, {
+    const evtData = { data: { htmlReport: this.htmlReportLoc }} as Partial<TExTestEventMeta>
+    const event = formatTestEvt(evtData, {
       message: `Test Suite finished`,
       name: TestsToSocketEvtMap.ended,
       ...this.extraEvt,
@@ -267,8 +235,6 @@ export class TestFromUI {
 
     ;[cb, ...this.onRunFinish].forEach(cb => cb && cb?.(event, this.testRun))
 
-    // Disabled for now because it's not being used
-    // await this.saveTempJsonReport()
   }
 
   parseEvent = ({
@@ -277,7 +243,13 @@ export class TestFromUI {
   }:{ data:string, ref?:string }) => {
     const events:TExTestEventMeta[] = []
     if(!data.includes(ref)){
+
+      this.saveHtmlReport
+        && data.includes(`- Html Report saved to`)
+        && this.#parseHtmlReportLoc(data)
+
       this.#safeLogData(data)
+
       return events
     }
 

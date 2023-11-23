@@ -65,6 +65,7 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
     skipped,
     timestamp,
     location,
+    htmlReport,
     metaData={},
     description,
   } = data
@@ -85,6 +86,7 @@ export const testRunEventFactory = (evt:TPlayerResEvent, trEvt?:TTestRunEvent) =
     failed,
     passed,
     skipped,
+    htmlReport,
     text: getText(evt),
     metaType: metaData.type,
     description: description || message,

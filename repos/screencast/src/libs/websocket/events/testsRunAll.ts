@@ -39,6 +39,12 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
 
   const testFromUI = new TestFromUI({
     repo,
+    // This should come from the frontend
+    // Hard-coding it for now until UI is updated
+    // saveHtmlReport: data?.testRunOpts?.saveHtmlReport,
+    // saveJsonReport: data?.testRunOpts?.saveJsonReport,
+    saveHtmlReport: true,
+    saveJsonReport: true,
     runTimestamp: new Date().getTime(),
     eventSplit: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
     extraEvt: { group: socket.id, fullTestRun: true },

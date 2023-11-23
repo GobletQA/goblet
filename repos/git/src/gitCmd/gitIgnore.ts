@@ -49,7 +49,7 @@ const gitUnchanged = async (
 
 const checkGlobalIgnore = async () => {
   const [err, resp] = await limbo(access(ENVS.GB_GIT_GLOBAL_IGNORE))
-  const pathExists =  err ? false : Boolean(resp)
+  const pathExists =  err ? false : !Boolean(err)
 
   if(!pathExists)
     await limbo(writeFile(ENVS.GB_GIT_GLOBAL_IGNORE, globalIgnore))

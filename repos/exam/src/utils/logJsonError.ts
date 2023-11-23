@@ -1,4 +1,4 @@
-import type { TExamEvt, TEXErrorResult } from '@GEX/types'
+import type { TExamEvt, TEXErrorResult, TExamConfig } from '@GEX/types'
 import {
   EAstObject,
   EResultStatus,
@@ -41,7 +41,7 @@ const buildJsonErr = (err:TLogJsonError) => {
  * Eventually exam should be updated so that it initializes the reporters early enough
  * To allow errors to be sent to them.
  */
-export const logJsonError = (err:TLogJsonError) => {
+export const logJsonError = (err:TLogJsonError, exam:TExamConfig) => {
   if(!ENVS.EXAM_LOG_ERR_EVENT) return
 
   const jsonErr = buildJsonErr(err)
@@ -55,8 +55,8 @@ export const logJsonError = (err:TLogJsonError) => {
   
   const errObj:TExamEvt<TEXErrorResult> = {
     error: true,
-    location: `/`,
     isRunning: false,
+    location: exam.rootDir,
     name: TestsToSocketEvtMap.error,
     message: jsonErr.message,
     data: {

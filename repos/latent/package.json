@@ -47,8 +47,8 @@
   "devDependencies": {
     "@gobletqa/goblet": "workspace:*",
     "@types/debug": "4.1.9",
-    "@types/node": "20.7.1",
-    "esbuild": "0.19.3",
+    "@types/node": "20.9.3",
+    "esbuild": "0.19.7",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.5.0"
   }

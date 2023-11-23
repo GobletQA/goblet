@@ -12,3 +12,4 @@
     global.browser = undefined
  })()
  
+ export {}

@@ -30,7 +30,7 @@ const EvtReporterMap = {
   // onTestFileStart
   [TestsToSocketEvtMap.suiteStartRoot]: `onTestFileStart`,
  
-  // Event `PLAY-RESULTS` - Maybe switch this for `PLAY-ENDED` || `PLAY-STOPPED`
+  // Event `PLAY-RESULTS`
   // onRunResult
   [TestsToSocketEvtMap.results]: `onRunResult`,
 
@@ -39,22 +39,32 @@ const EvtReporterMap = {
   [TestsToSocketEvtMap.started]: `onRunStart`,
 
   // Event `PLAY-CANCELED`
-  // cancel
+  // onCancel
   [TestsToSocketEvtMap.canceled]: `onCancel`,
 
+  // Event `PLAY-WARNING`
+  // onWarning
   [TestsToSocketEvtMap.warning]: `onWarning`,
 
   // Event `PLAY-ERROR`
   // onError
-  [TestsToSocketEvtMap.error]: `PLAY-ERROR`,
+  [TestsToSocketEvtMap.error]: `onError`,
 
+  // Event `PLAY-ENDED`
+  // onEnded
+  [TestsToSocketEvtMap.ended]: `onEnded`,
 
+  /**
+   * TODO: this event is never actually fired by exam or a runner
+   * Need to figure out if it's needed
+   */
+  // Event `PLAY-STOPPED`
+  // onStopped
+  [TestsToSocketEvtMap.stopped]: `onStopped`,
 
   // TODO: figure out if these are needed
-  // [TestsToSocketEvtMap.ended]: `PLAY-ENDED`,
   // [TestsToSocketEvtMap.action]: `PLAY-ACTION`,
   // [TestsToSocketEvtMap.general]: `PLAY-GENERAL`,
-  // [TestsToSocketEvtMap.stopped]: `PLAY-STOPPED`,
   
 }
 

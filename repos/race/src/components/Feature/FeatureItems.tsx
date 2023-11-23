@@ -150,7 +150,8 @@ export const WorldItem:TFeatureItem = {
   key: ESectionExt.world,
   type: ESectionExt.world,
   text: `Open World Editor`,
-  onClick: () => toggleWorldEditor()
+  onClick: () => {},
+  // onClick: () => toggleWorldEditor()
 }
 
 export const ModeItem:TFeatureItem = {

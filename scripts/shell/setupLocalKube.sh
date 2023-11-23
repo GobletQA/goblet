@@ -65,6 +65,9 @@ pullGobletApp(){
 __main__(){
   gb_load_stdio
 
+  # Add task for doing this
+  # kubectl config set-context --current --namespace=gb-local
+
   registryLogin
   setupKubeSecrets
   pullGobletApp

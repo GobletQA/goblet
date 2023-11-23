@@ -40,7 +40,7 @@ git.commit = async (
   metaData?:TSaveMetaData
 ):Promise<[err:Error, resp:TCmdResp]> => {
   const message = metaData?.message || `test(goblet): auto-commit`
-  const options = validateGitOpts(gitOpts)
+  const options = validateGitOpts(gitOpts, [`local`, `remote`, `branch`])
   const { local } = options
   
   const {

@@ -28,6 +28,7 @@ export type TTestRunEvent = {
   failed?:boolean
   passed?:boolean
   skipped?:boolean
+  htmlReport?:string
   description:string
   type:EPlayerTestType
   action:EResultAction
@@ -95,6 +96,7 @@ export type TTestRun = {
   runId:TTestRunId
   canceled?:boolean
   finished?:boolean
+  htmlReport?:string
   runError?:TTestRunEvent
   stats:TTestRunStats
   status?:TTestRunEvtStatus

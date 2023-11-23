@@ -8,7 +8,7 @@ import {
 } from '@gobletqa/components'
 
 export const TestRunScrollLockContainer = styled(Box)`
-  bottom: 40px;
+  bottom: 20px;
   left: 10px;
   z-index: 200;
   position: relative;
