@@ -3,12 +3,12 @@ import type { TGobletSettings } from '@types'
 import type { AllotmentHandle } from "allotment"
 
 import "allotment/dist/style.css"
-import { useRef, useEffect, useState } from 'react'
-import { LayoutPriority, Allotment } from "allotment"
 import { LayoutCover } from './LayoutCover'
 import { ActionBar } from '@gobletqa/components'
 import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
+import { useRef, useEffect, useState } from 'react'
+import { LayoutPriority, Allotment } from "allotment"
 import {useLayoutResize} from '@hooks/components/useLayoutResize'
 import {useSettingValues} from '@hooks/settings/useSettingValues'
 import {
@@ -72,7 +72,7 @@ export const Layout = (props:TLayout) => {
             className='gb-layout-left-container gb-container-editor'
           >
             {props.children}
-            <LayoutCover />
+            <LayoutCover showBrowser={showBrowser} />
           </LContainer>
         </Allotment.Pane>
 

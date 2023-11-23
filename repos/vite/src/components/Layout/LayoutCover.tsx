@@ -1,42 +1,40 @@
-import type { TTestRunExecEndEvent, TGobletSettings } from '@types'
+import type { TTestRunExecEndEvent } from '@types'
 
 import { useState } from 'react'
-import { cls } from '@keg-hub/jsutils'
 import { EBrowserState } from '@types'
+import { cls } from '@keg-hub/jsutils/cls'
 import { useTestRuns, useApp } from '@store'
 import { TestRunExecEndEvt } from '@constants'
-import { DownloadIcon } from '@gobletqa/components'
-import { downloadReport } from '@actions/files/api/downloadReport'
+import { useOnEvent } from '@gobletqa/components'
+import { LAutomationCover } from './Layout.styled'
+import { LayoutCoverActions } from './LayoutCoverActions'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
-import { useSettingValues } from '@hooks/settings/useSettingValues'
-import { RunTestSuite } from '@components/BrowserActions/TestSuiteAction'
-import { TestRunToggleScroll } from "@components/TestRuns/TestReporter/TestRunToggleScroll"
-import {
-  TestRunDownload,
-  LAutomationCover,
-  TestRunsActionContainer,
-  TestRunsDownloadContainer,
-} from './Layout.styled'
-import {
-  useOnEvent,
-} from '@gobletqa/components'
 
-export const LayoutCover = () => {
+export type TLayoutCover = {
+  showBrowser?:boolean
+}
+
+export const LayoutCover = (props:TLayoutCover) => {
+
+  const {showBrowser} = props
+
+  const { testRunsView } = useApp()
+  const {browserState} = useBrowserState()
   const {
     runs,
     active,
     scrollLock,
     allTestsRunning
   } = useTestRuns()
-  const { testRunsView } = useApp()
-  const { browserState } = useBrowserState()
-  const { browserInBrowser } = useSettingValues<TGobletSettings>(`goblet`)
+
+  const htmlReport = active ? runs?.[active].htmlReport : undefined
   const automationActive = ((allTestsRunning && scrollLock) || browserState !== EBrowserState.idle)
-  const [htmlReport, setHtmlReport] = useState(active ? runs?.[active].htmlReport : undefined)
+  
+  const [runReport, setRunReport] = useState<string>()
 
   useOnEvent<TTestRunExecEndEvent>(TestRunExecEndEvt, ({ runId }) => {
     const run = runs[runId]
-    run.htmlReport && setHtmlReport(run.htmlReport)
+    run.htmlReport && setRunReport(run.htmlReport)
   })
 
   return (
@@ -46,30 +44,15 @@ export const LayoutCover = () => {
           `gb-automation-cover`,
           automationActive && `active`
         )}
-      >
-      </LAutomationCover>
-      {allTestsRunning && (<TestRunToggleScroll scrollLock={scrollLock} />)}
-      {testRunsView && !browserInBrowser && (
-        <>
-          {htmlReport && (
-            <TestRunsDownloadContainer>
-              <TestRunDownload
-                tooltip='Download test run html report'
-                Icon={DownloadIcon}
-                text='Download Report'
-                onClick={(evt:any) => {
-                  evt.preventDefault()
-                  evt.stopPropagation()
-                  downloadReport(htmlReport)
-                }}
-              />
-            </TestRunsDownloadContainer>
-          ) || null}
-          <TestRunsActionContainer>
-            <RunTestSuite variant={`contained`} />
-          </TestRunsActionContainer>
-        </>
-      ) || null}
+      />
+      <LayoutCoverActions
+        scrollLock={scrollLock}
+        showBrowser={showBrowser}
+        testRunsView={testRunsView}
+        allTestsRunning={allTestsRunning}
+        automationActive={automationActive}
+        htmlReport={runReport || htmlReport}
+      />
     </>
   )
 }

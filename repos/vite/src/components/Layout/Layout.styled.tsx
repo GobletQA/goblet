@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import MuiContainer from '@mui/material/Container'
-import { Button, gutter, colors, dims } from '@gobletqa/components'
+import { colors, dims } from '@gobletqa/components'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
@@ -11,26 +11,6 @@ export const LayoutContainer = styled(Box)`
 export const LContainer = styled(MuiContainer)`
   position: relative;
   max-width: 100% !important;
-`
-
-export const LAutomationCover = styled(Box)`
-  top: 0px;
-  left:0px;
-  right:0px;
-  opacity: 0;
-  width: 100%;
-  height: 0%;
-  position: absolute;
-  background-color: ${colors.black03};
-  transition: height ${dims.trans.avgEase}, background-color ${dims.trans.avgEase}, opacity ${dims.trans.avgEase};
-
-  &.active {
-    cursor: wait;
-    height: 100%;
-    z-index: 100;
-    opacity: 0.05;
-  }
-  
 `
 
 export const RContainer = styled(MuiContainer)`
@@ -51,18 +31,23 @@ export const RTSection = styled(Box)`
   max-height: ${dims.browser.actions.hpx};
 `
 
-export const TestRunsActionContainer = styled(Box)`
-  z-index: 201;
-  position: absolute;
-  right: ${gutter.padding.px};
-  bottom: ${gutter.padding.px};
-`
 
-export const TestRunsDownloadContainer = styled(Box)`
-  z-index: 201;
+export const LAutomationCover = styled(Box)`
+  top: 0px;
+  left:0px;
+  right:0px;
+  opacity: 0;
+  width: 100%;
+  height: 0%;
   position: absolute;
-  bottom: ${gutter.padding.px};
-  right: ${gutter.padding.size * 9}px;
-`
+  background-color: ${colors.black03};
+  transition: height ${dims.trans.avgEase}, background-color ${dims.trans.avgEase}, opacity ${dims.trans.avgEase};
 
-export const TestRunDownload = styled(Button)``
+  &.active {
+    cursor: wait;
+    height: 100%;
+    z-index: 100;
+    opacity: 0.05;
+  }
+  
+`
