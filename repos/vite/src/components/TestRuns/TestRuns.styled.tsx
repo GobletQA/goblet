@@ -22,10 +22,10 @@ export const TestRunsContainer = styled(Box)(({ theme }) => `
   bottom: 0px;
   width: 100%;
   z-index: 30;
-  height: 100%;
   display: flex;
   position: absolute;
   flex-direction: column;
+  height: calc( 100% - ${dims.layout.actions.height}px );
   background-color: ${getColor(colors.white, colors.purple23, theme)};
   border-right: 1px solid ${getColor(colors.gray01, colors.black10, theme)};
 `)
@@ -97,7 +97,7 @@ export const TestRunsOptsIcon = styled(TuneIcon)`
 
 
 export const TestRunSectionScroll = styled(Box)(({ theme }) => `
-  height: 100%;
+  height: calc( 100% - ${dims.layout.actions.height}px );
   display: flex;
   overflow-y: auto;
   flex-direction: column;

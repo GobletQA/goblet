@@ -44,9 +44,11 @@ const onTestRunError = (evt:TPlayerResEvent) => {
 
 const onTestRunEnd = (event:TPlayerResEvent<any>) => {
   upsertTestRun({
+    active: true,
     runId: event.runId,
     data: { finished: true, htmlReport: event?.data?.htmlReport }
   })
+
   testRunsDispatch.toggleAllTestsRun(false)
 
   EE.emit<TTestRunExecEndEvent>(TestRunExecEndEvt, {

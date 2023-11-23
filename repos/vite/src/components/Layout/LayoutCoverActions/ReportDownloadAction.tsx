@@ -1,10 +1,9 @@
 import { DownloadIcon } from '@gobletqa/components'
-import { downloadReport } from '@actions/files/api/downloadReport'
+import { useReportDownload } from '@hooks/testRuns/useReportDownload'
 import {
   ReportDownload,
-  ReportDownloadContainer,
+  ReportDownloadActionContainer,
 } from './LayoutCoverActions.styled'
-
 
 export type TReportDownloadAction = {
   htmlReport:string
@@ -13,20 +12,16 @@ export type TReportDownloadAction = {
 export const ReportDownloadAction = (props:TReportDownloadAction) => {
 
   const { htmlReport } = props
+  const {onReportDownload} = useReportDownload(props)
 
   return (
-    <ReportDownloadContainer>
+    <ReportDownloadActionContainer>
       <ReportDownload
-        tooltip='Download test run html report'
+        text='Report'
         Icon={DownloadIcon}
-        text='Download Report'
-        onClick={(evt:any) => {
-          evt.preventDefault()
-          evt.stopPropagation()
-          downloadReport(htmlReport)
-        }}
+        onClick={onReportDownload}
+        tooltip='Download an HTML report of the test run'
       />
-      Report download
-    </ReportDownloadContainer>
+    </ReportDownloadActionContainer>
   )
 }

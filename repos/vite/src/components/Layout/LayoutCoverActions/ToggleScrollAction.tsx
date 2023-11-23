@@ -16,9 +16,10 @@ export const ToggleScrollAction = (props:{ scrollLock?:boolean }) => {
   return (
     <ToggleScrollLockContainer className='gb-test-run-scroll-lock-container' >
       <ToggleScrollLockButton
+        text={scrollLock ? `Locked` : `Unlocked`}
         onClick={() => toggleTestRunScrollLock(!scrollLock)}
         Icon={scrollLock ? ToggleScrollLockIcon : ToggleScrollLockIconOpen}
-        tooltip={scrollLock ? `Scrolling is Locked` : `Scrolling is Unlocked`}
+        tooltip={scrollLock ? `Click to unlock scrolling` : `Click to lock scrolling`}
         className={cls(`gb-test-run-scroll-lock`, scrollLock ? `locked` : `unlocked`)}
       />
     </ToggleScrollLockContainer>

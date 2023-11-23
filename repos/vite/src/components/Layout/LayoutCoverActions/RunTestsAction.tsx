@@ -1,23 +1,16 @@
-import type { TTestRunExecEndEvent, TGobletSettings } from '@types'
+import { RunTestSuite } from '@components/BrowserActions/TestSuiteAction'
+import { RunTestsActionContainer } from './LayoutCoverActions.styled'
 
-import {
-  ReportDownloadContainer,
-} from './LayoutCoverActions.styled'
-
-import {
-  useOnEvent,
-} from '@gobletqa/components'
-
-
-export type RunTestsAction = {
-  
-}
+export type RunTestsAction = {}
 
 export const RunTestsAction = (props:RunTestsAction) => {
 
-
   return (
-    <ReportDownloadContainer>
-    </ReportDownloadContainer>
+    <RunTestsActionContainer className='gb-layout-run-tests-action-container' >
+      <RunTestSuite
+        variant={`contained`}
+        className='gb-layout-run-tests-action'
+      />
+    </RunTestsActionContainer>
   )
 }

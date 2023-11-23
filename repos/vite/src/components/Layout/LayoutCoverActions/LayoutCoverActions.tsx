@@ -1,8 +1,3 @@
-import type { TGobletSettings } from '@types'
-
-import { cls } from '@keg-hub/jsutils'
-import { EBrowserState } from '@types'
-
 import { RunTestsAction } from './RunTestsAction'
 import { ToggleScrollAction } from './ToggleScrollAction'
 import { ReportDownloadAction } from './ReportDownloadAction'
@@ -37,7 +32,6 @@ export const LayoutCoverActions = (props:TLayoutCoverActions) => {
           {!showBrowser ? (<RunTestsAction />) : null}
         </>
       )}
-      
     </LayoutCoverActionsContainer>
   )
   

@@ -13,6 +13,7 @@ const editorTabs = 40
 const sectionHeaderH = 40
 const raceEditorHeader = 45
 const raceSectionHeaderH = 40
+const layoutActionsHeight = 50
 
 const defHeaderH = 35
 
@@ -118,5 +119,10 @@ export const dims = {
     fastest: `50ms`,
     halfAvg: `150ms`,
     avgEase: `300ms ease`
+  },
+  layout: {
+    actions: {
+      height: layoutActionsHeight
+    }
   }
 }

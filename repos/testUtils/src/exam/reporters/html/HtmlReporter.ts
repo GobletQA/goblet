@@ -218,7 +218,7 @@ export class HtmlReporter implements IExamReporter {
 
     return this.#combineAllTests
       ? { html: bodyHtml, stats }
-      : { html: wrapHtml(HeadHtml(title), bodyHtml), stats }
+      : { html: wrapHtml(HeadHtml(title, this.#combineAllTests), bodyHtml), stats }
   }
 
   #saveFile = async (evt:TExamEvt<TExEventData>, html:string) => {
@@ -273,7 +273,7 @@ export class HtmlReporter implements IExamReporter {
       date: new Date().toLocaleString(),
     })
 
-    const html = wrapHtml(HeadHtml(this.#title), bodyHtml)
+    const html = wrapHtml(HeadHtml(this.#title, this.#combineAllTests), bodyHtml)
     await this.#saveFile(evt, html)
 
   }

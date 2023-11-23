@@ -1,4 +1,8 @@
+import type { EResultStatus } from '@ltipton/parkin'
+
 import { colors } from './theme'
+
+export type TIconStatus = EResultStatus | `passed` | `failed`
 
 const propMap = {
   fail: {
@@ -23,7 +27,7 @@ export const SvgIcon = (type:string) => {
 
   return `
     <svg
-      class="step-icon"
+      class="status-icon ${type}-icon"
       viewBox="0 0 24 24"
       style="fill:${color};"
       xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +44,7 @@ const IconMap = {
   skipped: SvgIcon(`skip`)
 }
 
-export const IconsHtml = (state:`passed`|`failed`|`skipped`) => {
+export const IconsHtml = (state:TIconStatus) => {
   return IconMap[state]
 }
 

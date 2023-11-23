@@ -5,6 +5,7 @@ import type { TBuiltStats } from '../utils/getStats'
 import { Script } from './Script'
 import { TestsHtml } from "./TestsHtml"
 import { TitleHtml } from "./TitleHtml"
+import { IconsHtml } from './IconsHtml'
 import { OverviewHtml } from './OverviewHtml'
 
 type TBodyHtml = TReporterOpts & {
@@ -31,6 +32,9 @@ export const BodyHtml = (args:TBodyHtml) => {
     ? `
         <section class="test-section ${data.status ?? ``}" >
           <div class="test-location-container ${data.status ?? ``}" onclick="toggleSection('${data.timestamp}')" >
+            <span class="location-icon-container">
+              ${IconsHtml(data.status)}
+            </span>
             <span class="test-location-text">
               ${data.location}
             </span>

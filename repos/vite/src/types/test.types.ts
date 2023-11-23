@@ -30,6 +30,7 @@ export type TAddTestRun = {
 }
 
 export type TUpsertTestRun = {
+  active?:boolean
   runId:TTestRunId
   data:Partial<TTestRun>
 }
