@@ -18,6 +18,18 @@ GB_RESET_CONNECTION_PATH="$GB_APP_MOUNT_PATH/$GB_APP_TEMP_PATH/$GB_SC_RESET_CONN
 
 [[ "$NODE_ENV" == "local" ]] && SupCfgLoc=supervisord.local.conf || SupCfgLoc=supervisord.conf
 
+# Ensures the logs dir and pwlog file exists in the container
+ensureLogDir(){
+  if [ "$PW_DEBUG_FILE" ]; then
+    export DEBUG_FILE=$PW_DEBUG_FILE
+  else
+    export DEBUG_FILE=/goblet/app/logs/pwlogs.log
+  fi
+
+  LOG_DIR=$( dirname "$DEBUG_FILE" )
+  mkdir -p $LOG_DIR
+  touch $DEBUG_FILE
+}
 
 # Prints an error message to the terminal in the color white
 gb_log(){
@@ -142,6 +154,9 @@ loopConnectionsCheck(){
   fi
 
 }
+
+# Ensure the logs dir exists
+ensureLogDir
 
 # First start supervisor, to ensure all services are running
 startSup "$@"
