@@ -15,11 +15,11 @@ import {
 
 export const LayoutCoverActionsContainer = styled(Box)(({ theme }) => {
   return `
-    width: calc( 100% - ${dims.nav.closedWidth}px );
+    width: 100%;
     bottom: 0px;
     display: flex;
     z-index: 200;
-    position: fixed;
+    position: absolute;
     max-width: 100vw;
     overflow: hidden;
     align-items: center;

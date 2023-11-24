@@ -11,7 +11,6 @@ export type TReportDownloadAction = {
 
 export const ReportDownloadAction = (props:TReportDownloadAction) => {
 
-  const { htmlReport } = props
   const {onReportDownload} = useReportDownload(props)
 
   return (

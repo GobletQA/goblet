@@ -29,13 +29,13 @@ export const PastTestRunList = (props:TPastTestRunList) => {
         <PastTestRunListHeader />
         {
           runs.map((run) => {
-            return (
+            return run && (
               <PastTestRunItem
                 run={run}
                 key={run.runId}
                 onClick={onClick}
               />
-            )
+            ) || null
           })
         }
       </PastTestRunsListItems>

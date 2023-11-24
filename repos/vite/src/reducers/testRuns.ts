@@ -85,7 +85,7 @@ export const testRunsActions = {
     return {
       ...state,
       active: runId,
-      runs: state.runs?.[runId]
+      runs: !runId || state.runs?.[runId]
         ? state.runs
         : {...state.runs, [runId]: {runId, files: {} }}
     } as TTestRunsState

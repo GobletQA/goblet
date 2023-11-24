@@ -9,9 +9,25 @@
 
 import { Logger } from "@gobletqa/exam"
 import { ENVS } from '@gobletqa/environment'
+import {isObj} from "@keg-hub/jsutils/isObj"
+
+const noCircles = (evt:TExamEvt<TExEventData>) => {
+  let cache = []
+  const evtStr = JSON.stringify(evt, (key, value) => {
+    if (isObj(value)) {
+      if (cache.includes(value)) return `[Circular]`
+      cache.push(value)
+    }
+    return value
+  })
+
+  cache = null
+
+  return evtStr
+}
 
 const logEvt = (evt:TExamEvt<TExEventData>, logSplit:string) => {
-  Logger.stdout(`${logSplit}${JSON.stringify(evt)}${logSplit}`)
+  Logger.stdout(`${logSplit}${noCircles(evt)}${logSplit}`)
 }
 
 export class FeatureJsonReporter implements IExamReporter {
