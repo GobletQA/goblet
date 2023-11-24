@@ -1,5 +1,5 @@
-import { EPlayerTestType } from '@GEX/types'
-import { EResultAction } from '@ltipton/parkin'
+// TODO: move EPlayerTestType so it does not depend on exam repo
+// import { EPlayerTestType } from '@GEX/types'
 
 export const ExamCfgArrayItems = [
   `testMatch`,
@@ -71,9 +71,13 @@ export const BuiltExamEnded = {
   timestamp: 0,
   describes: [],
   action: `ended`,
-  id: EPlayerTestType.ended,
-  type: EPlayerTestType.ended,
-  fullName: EPlayerTestType.ended,
+  // TODO: move EPlayerTestType so it does not depend on exam repo
+  // id: EPlayerTestType.ended,
+  // type: EPlayerTestType.ended,
+  // fullName: EPlayerTestType.ended,
+  id: `ended`,
+  type: `ended`,
+  fullName: `ended`,
   description: `Exam test execution has finished`,
 }
 
@@ -84,10 +88,14 @@ export const BuiltExamStopped = {
   passed: false,
   skipped: false,
   action: `stopped`,
-  id: EPlayerTestType.stopped,
-  type: EPlayerTestType.stopped,
+  // TODO: move EPlayerTestType so it does not depend on exam repo
+  // id: EPlayerTestType.stopped,
+  // type: EPlayerTestType.stopped,
+  // fullName: EPlayerTestType.stopped,
+  id: `stopped`,
+  type: `stopped`,
   description: `Exam has stopped`,
-  fullName: EPlayerTestType.stopped,
+  fullName: `stopped`,
 }
 
 
