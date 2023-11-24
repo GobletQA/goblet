@@ -18,7 +18,7 @@ import type { TGobletConfig, TBrowserConf, TExamCfgArgs } from '@GTU/Types'
 import path from 'path'
 import { EExTestMode } from '@gobletqa/exam'
 import { ENVS } from '@gobletqa/environment'
-import { getWorld } from '@gobletqa/repo/world'
+import { getClientWorld } from '@gobletqa/repo'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
@@ -44,7 +44,7 @@ const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
 const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
 
   const config = getGobletConfig(cfgArgs)
-  const world = getWorld(config)
+  const world = getClientWorld(config, false)
   const examConfig = (config?.testConfig || emptyObj) as Partial<TExamConfig>
 
   ENVS.GOBLET_TEST_DEBUG &&

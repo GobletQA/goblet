@@ -10,7 +10,41 @@ import { ENVS } from '@gobletqa/environment'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { DefWorld } from '@gobletqa/environment/constants'
-import { loaderSearch, getGobletConfig, getRepoGobletDir } from '@gobletqa/goblet'
+
+import {
+  loaderSearch,
+  getGobletConfig,
+  getRepoGobletDir,
+  resetGobletRequire,
+} from '@gobletqa/goblet'
+
+let __CACHED_WORLD:Record<string, TGBWorldCfg>={}
+export const getCachedWorld = (username:string) => {
+  return username ? __CACHED_WORLD[username] : undefined
+}
+export const setCachedWorld = (username:string, world:TGBWorldCfg) => {
+  if(!username){
+    console.error(`Tried to set cached world without username key`)
+    return world
+  }
+
+  __CACHED_WORLD[username] = world
+  return __CACHED_WORLD[username]
+}
+export const resetCachedWorld = (username?:string) => {
+  if(username && __CACHED_WORLD[username]){
+    __CACHED_WORLD[username] = undefined
+    resetGobletRequire()
+    return
+  }
+
+  const entries = Object.entries(__CACHED_WORLD)
+  if(entries.length <= 1){
+    __CACHED_WORLD = {}
+    resetGobletRequire()
+  }
+}
+
 
 /**
  * @ **IMPORTANT** - Export for tests only
@@ -67,7 +101,7 @@ export const loadClientWorld = (
 
     worldJson = loaderSearch({
       basePath,
-      clearCache: true,
+      clearCache: false,
       file: `world.json`,
       location: worldPath
     }) as TGBWorldCfg
@@ -90,9 +124,22 @@ export const loadClientWorld = (
  * @return {Object?} - the client's world object, or undefined if it does not exist
  */
 export const getClientWorld = (
-  repo?:TGobletConfig,
+  repo?:Repo|TGobletConfig,
+  fromCache?:boolean
 ):TGBWorldCfg => {
+
   const cfg = repo || getGobletConfig()
-  return loadClientWorld(cfg)
+  
+  let username
+  if(fromCache !== false){
+    username = (cfg as Repo)?.git?.username
+    const cacheWld = getCachedWorld(username)
+    if(cacheWld) return cacheWld
+  }
+
+  const world = loadClientWorld(cfg)
+  username && setCachedWorld(username, world)
+
+  return world
 }
 

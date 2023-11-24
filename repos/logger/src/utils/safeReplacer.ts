@@ -1,5 +1,3 @@
-const orgStdOut = process.stdout.write.bind(process.stdout)
-
 // Taken from here
 // https://github.com/watson/is-secret/blob/master/index.js
 
@@ -54,16 +52,21 @@ const unsafeKeyValuePair = [
   { key: `secret`, value: /.*/i },
 ]
 
-const Injected:string[] = []
+let injectedRegEx:RegExp[] = []
+
+let Injected:string[] = []
+
+export const resetInjectedLogs = () => {
+  Injected = []
+  injectedRegEx = []
+}
 
 export const injectUnsafe = (items:string[]) => {
   try {
     items.map(item => {
       if(Injected.includes(item)) return
-
       Injected.push(item)
-      unsafeKeyValuePair.push({ key: item, value: /.*/i })
-      unsafeValues.push(new RegExp(escapeStrForRegEx(item), "i"))
+      injectedRegEx.push(new RegExp(escapeStrForRegEx(item), `i`))
     })
   }
   catch(err){
@@ -76,6 +79,13 @@ const HIDDEN = `****`
 
 const shouldHideUnsafe = (value:string) => {
   return unsafeValues.some((regexp) => regexp.test(value))
+}
+
+const replaceInjected = (value:string) => {
+  return Injected.reduce((acc, item) => {
+    acc.replaceAll(item, HIDDEN)
+    return acc
+  }, value)
 }
 
 export const safeReplacer = (key:string|number, value:any) => {
@@ -102,18 +112,13 @@ export const safeReplacer = (key:string|number, value:any) => {
   if (possibleArrayKeys.includes(key) && value.indexOf('\n') >= 0)
     return value.split('\n').map((x) => x.trim())
 
-  return value
+  
+  return replaceInjected(value)
 }
 
 export const replaceUnsafe = (str:string) => {
   try {
-    const resp = safeReplacer(str, str)
-    return resp !== HIDDEN
-      ? str
-      : unsafeValues.reduce(
-          (final, unsafe) => final.replaceAll(new RegExp(unsafe, "gi"), HIDDEN),
-          str
-        ) + `\n`
+    return safeReplacer(str, str)
   }
   catch(err){
     // Use set timeout because we are already in a stdout / stderr call and don't want to cause recursive call

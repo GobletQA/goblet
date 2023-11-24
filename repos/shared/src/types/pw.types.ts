@@ -181,7 +181,6 @@ export type TSetBrowserDefaults = {
   repo:Repo
   headers?:boolean
   url?:boolean|string
-  config:TGobletConfig
   browserConf:TBrowserConf
   pwComponents?:TPWComponents
 }

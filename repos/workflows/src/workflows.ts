@@ -7,8 +7,10 @@ import type {
   TRepoFromWorkflow,
 } from '@GWF/types'
 
-import { Repo } from '@gobletqa/repo'
+
+import { resetInjectedLogs } from '@gobletqa/logger'
 import { resetGobletConfig } from '@gobletqa/goblet'
+import { Repo, resetCachedWorld } from '@gobletqa/repo'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 
 import {
@@ -147,6 +149,8 @@ export class Workflows {
   disconnect = async ({ username }:Record<`username`, string>) => {
     // Clear the existing loaded goblet config
     resetGobletConfig()
+    resetCachedWorld(username)
+    resetInjectedLogs()
 
     return await disconnectGoblet({
       user: {

@@ -14,11 +14,11 @@ import type {
 import path from 'path'
 import { env } from '@keg-hub/parse-config'
 import { writeFileSync, existsSync } from 'fs'
-import { injectUnsafe } from '@gobletqa/logger'
 import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 import { EFileType, ELoadFormat } from '@GLT/types'
 import {dataToString} from '@GLT/utils/dataToString'
 import {generateFileNames} from '@GLT/utils/generateFileNames'
+import { injectUnsafe, resetInjectedLogs } from '@gobletqa/logger'
 import { loadTemplate } from '@keg-hub/parse-config/src/utils/utils'
 
 export class LatentFile {
@@ -84,10 +84,19 @@ export class LatentFile {
         : content
   }
 
+  /**
+   * @description - Injects the secret keys and values into the logger
+   * Ensures they are not logged to the console
+   * @member {LatentFile}
+   */
   #injectLogs = (resp:Record<string, any>) => {
+    const keys = Object.keys(resp).filter(Boolean)
+    if(!keys?.length) return resp
 
-    injectUnsafe(Object.keys(resp))
-    injectUnsafe(Object.values(resp))
+    injectUnsafe(keys)
+
+    const values = Object.values(resp).filter(Boolean)
+    values.length && injectUnsafe(values)
 
     return resp
   }
@@ -199,7 +208,14 @@ export class LatentFile {
       current,
     })
 
-    const safe = type === EFileType.secrets
+    const isSecrets = type === EFileType.secrets
+
+    if(isSecrets){
+      resetInjectedLogs()
+      this.#injectLogs(data)
+    }
+
+    const safe = isSecrets
       ? this.latent.crypto.encrypt(content, token || this.latent.encoded, true)
       : content
 

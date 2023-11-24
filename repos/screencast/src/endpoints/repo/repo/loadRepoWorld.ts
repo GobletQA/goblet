@@ -7,7 +7,7 @@ import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
  * Loads the Parkin World object and passes it to the frontend
  */
 export const loadRepoWorld = async (req:Request, res:Response) => {
-  const world = await res.locals.repo.refreshWorld()
+  const world = res.locals.repo.refreshWorld()
   return apiRes(res, { world }, 200)
 }
 

@@ -45,13 +45,6 @@ const loadFromType = <T extends TCfgMerge>(data:T) => {
 }
 
 
-const flattenLoadedArr = <T>(data:T, items:TLoadedFunResp<T>[]) => {
-  const onlyData = items?.length
-    && items.map(item => item.data)
-
-  // Merge all loaded data configs into a single object
-  return onlyData ? deepMerge<T>(data, ...onlyData) : data
-}
 
 /**
  * Builds a require function for loading goblet configs dynamically
@@ -108,7 +101,12 @@ const loadWithMerge = <T extends TCfgMerge=TCfgMerge>(data:T, {
     loadArr: data?.$merge,
   })
 
-  return flattenLoadedArr(data, loadedArr)
+  // Extract the data field from the loadedArr which has data & location
+  const mergeData = loadedArr?.length && loadedArr.map(item => item.data)
+
+  return mergeData
+    ? deepMerge<T>(data, ...mergeData)
+    : data
 }
 
 /**
@@ -204,9 +202,7 @@ export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
   }
 
   return data
-    ? merge
-      ? loadWithMerge(data, { basePath, requireFunc })
-      : data
+    ? loadWithMerge(data, { basePath, requireFunc })
     : undefined
 }
 

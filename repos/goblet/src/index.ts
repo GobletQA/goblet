@@ -5,8 +5,8 @@ import { getPathFromConfig } from './utils/getPathFromConfig'
 import { replaceGobletConfigRef } from './utils/ensureGobletCfg'
 import { buildRefFromRemote, getRepoRef } from './utils/getRepoRef'
 
-import {  resetGobletConfig } from './loaders/configCache'
 import { configFromFolder } from './loaders/configFromFolder'
+import {  resetRequire, resetGobletConfig } from './loaders/configCache'
 import {
   loaderSearch,
   gobletLoader
@@ -29,4 +29,5 @@ export {
   buildRefFromRemote,
   getDefaultGobletConfig,
   replaceGobletConfigRef,
+  resetRequire as resetGobletRequire
 }

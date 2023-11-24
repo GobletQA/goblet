@@ -11,12 +11,12 @@ import type {
   TGScreencastConfig,
 } from '@GRP/types'
 
-import { getWorld } from './world'
 import { Parkin } from '@ltipton/parkin'
 import { LatentRepo } from './latentRepo'
 import { ENVS } from '@gobletqa/environment'
 import { getFileTypes } from '@gobletqa/goblet'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { getClientWorld, resetCachedWorld } from './getClientWorld'
 
 type TRepoWorldRefresh = {
   environment:string
@@ -127,17 +127,17 @@ export class Repo {
      * It's much slower, but ensure it gets an up-to-date world
      * There seem to be some cases when the world is not being properly updated
      * At some point would be nice to switch to something like this
-     * `this.#world = this.#world || getWorld(this)`
+     * `this.#world = this.#world || getClientWorld(this)`
      */
-    this.#world = getWorld(this as TGobletConfig)
+    this.#world = getClientWorld(this as TGobletConfig)
+    if(this.parkin) this.parkin.world = this.#world
     return this.#world
   }
 
   set world(update:TGBWorldCfg){
-    this.#world = getWorld(this as TGobletConfig)
+    this.#world = getClientWorld(this as TGobletConfig)
     if(this.parkin) this.parkin.world = this.#world
   }
-
 
   /**
    * Sets the loaded environment for the repo
@@ -163,19 +163,14 @@ export class Repo {
    *
    * @return {Object} - The reloaded repo.world object
    */
-  refreshWorld = async (
+  refreshWorld = (
     opts:TRepoWorldRefresh=emptyObj as TRepoWorldRefresh
   ) => {
+
     const { environment, refreshEnv } = opts
+    resetCachedWorld(this.git.username)
     // Pass false to ensure we don't get into an infinite loop
     refreshEnv && this.setEnvironment(environment, false)
-
-    // Force refresh of the world object
-    this.world = undefined
-
-    // Then update parkin's instance of the world
-    if(this.parkin) this.parkin.world = this.world
-
     return this.world
   }
 }

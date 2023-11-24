@@ -2,6 +2,7 @@
 const general = () => {
   const {
     NODE_ENV,
+    GOBLET_APP_URL,
     GOBLET_ENV=NODE_ENV,
     DISPLAY=`:0.0`,
     GB_SUB_REPO,
@@ -18,6 +19,7 @@ const general = () => {
     FORCE_COLOR,
     GB_SUB_REPO,
     GB_LOG_LEVEL,
+    GOBLET_APP_URL,
     GB_SC_LOG_LEVEL,
     GOBLET_TEST_COLORS,
   }

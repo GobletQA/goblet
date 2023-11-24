@@ -92,19 +92,17 @@ const getPageUrl = (
   return pageUrl !== GobletQAUrl ? pageUrl : appUrl || GobletQAUrl
 }
 
-export const restartBrowser = async (props:TRestartContext) => {
+export const restartBrowserCtx = async (props:TRestartContext) => {
   const { repo, world=repo.world } = props
   const args = {...props, world}
-  
-  // TODO: need to get the gobletConfig and pass it in here
+
   const browserConf = joinBrowserConf(props.browser)
   const browserOpts = {world, config: repo, browserConf }
   const { browser, context, page } = await GBrowser.get(browserOpts)
 
   const url = getPageUrl(args, page)
 
-
-  const pwComponents = await GBrowser.restart({
+  const pwComponents = await GBrowser.restartContext({
     ...browserOpts,
     initialUrl: url,
     overrides: { context: getCtxOptions(args, browserConf, context) },

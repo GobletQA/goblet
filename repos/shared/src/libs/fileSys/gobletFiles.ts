@@ -212,7 +212,7 @@ const reloadWorld = async (
   content?:string
 ) => {
 
-  const world = await repo.refreshWorld()
+  const world = repo.refreshWorld()
 
   return await buildFileModel({
     content,

@@ -148,7 +148,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
     git: omitKeys(opts, [`token`]),
     ...gobletConfig,
     name: getRepoName(remote),
-  } as TGobletConfig
+  } as TRepoOpts
 
   // const secretsFail = await repoSecrets(opts, repo, true)
   // if(secretsFail) return secretsFail
