@@ -14,6 +14,11 @@ import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
  */
 let __CachedGobletDefs:TDefinitionFileModel[]
 
+export const removeGobletCacheDefs = () => {
+  __CachedGobletDefs = undefined
+}
+
+
 /**
  * Builds the definitions models from the loaded definitions
  */
@@ -116,7 +121,6 @@ export const loadDefinitions = async (
   // Call refreshWorld to ensure repo and parkin have an updated world
   repo.refreshWorld()
   const overrideParkin = parkinOverride(repo)
-  
   const clientDefinitions = await getRepoDefinitions(repo, overrideParkin)
   const gobletDefinitions = await getGobletDefs(repo, overrideParkin, cache)
 
@@ -124,7 +128,6 @@ export const loadDefinitions = async (
   // For now we just load them
   // const supportFiles = await getSupportFiles(repo, overrideParkin)
   await getSupportFiles(repo, overrideParkin)
-
 
   // all the definition file models,
   // Concat client defs into goblet defs

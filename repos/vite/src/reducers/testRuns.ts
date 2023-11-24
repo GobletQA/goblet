@@ -18,7 +18,7 @@ import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
  * **IMPORTANT** - Only include this for testing
  * It should not be included in production builds
  */
-import { runMock } from '@services/__mocks__/testrun.mock'
+// import { runMock } from '@services/__mocks__/testrun.mock'
 
 export type TTestRunsState = {
   active?:string
@@ -28,8 +28,8 @@ export type TTestRunsState = {
 }
 
 export const testRunsState = {
-  runs: runMock,
-  // runs: {},
+  // runs: runMock,
+  runs: {},
   scrollLock: true,
   allTestsRunning: false,
 } as TTestRunsState

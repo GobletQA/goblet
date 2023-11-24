@@ -63,14 +63,21 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
   }
 }
 
+type TPAgeBrowserTrack = {
+  [key in EBrowserEvent]?: boolean
+}
+
+export type TPageGoblet = TPAgeBrowserTrack & {
+  video?:Record<any, any>
+  initFuncs?: string[]
+  initScript?: string[]
+  hasCloseEvt?:boolean
+}
+
 export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   locator:(selector: string, options?: TLocatorOpts) => TLocator
+  __pageGoblet?: TPageGoblet
   __GobletAutomateInstance?: Automate
-  __pageGoblet?: {
-    video?:any
-    initFuncs?: string[]
-    initScript?: string[]
-  }
 }
 
 export type TScreenDims = ViewportSize

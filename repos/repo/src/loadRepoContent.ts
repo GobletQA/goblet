@@ -1,7 +1,6 @@
 import type {
   Repo,
   TRepoContent,
-  TDefGobletConfig,
   TRepoMountStatus,
   TFeatureFileModelList,
   TDefinitionFileModelList,

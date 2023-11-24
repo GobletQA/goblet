@@ -55,8 +55,6 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
   if(!context)
     throw new Error(`Failed to create ${GOBLET_BROWSER} browser context`)
 
-  context.on(`close`, () => global.context = undefined)
-  browser.on(`disconnected`, () => global.browser = undefined)
 
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext
@@ -105,19 +103,36 @@ export const getContext = () => {
  */
 export const getPage = async (num = 0, fromClosePage:boolean=false) => {
   const context = getContext()
-
   const pages = context.pages() || []
-  const page = pages.length
-    ? pages[num]
-    : fromClosePage
-      ? undefined
-      : await context.newPage()
+
+  if(pages.length){
+    const page = pages[num]
+    if(page && !page.isClosed()){
+      global.page = page
+      LAST_ACTIVE_PAGE = page
+
+      return page
+    }
+  }
+
+  const page = await context.newPage()
 
   global.page = page
   LAST_ACTIVE_PAGE = page
+
   page.on(`close`, () => {
     if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
     if(page === global.page) global.page = undefined
+    if(page.__pageGoblet){
+      page.__pageGoblet.video = undefined
+      page.__pageGoblet.initFuncs = undefined
+      page.__pageGoblet.initScript = undefined
+      page.__pageGoblet.hasCloseEvt = undefined
+      page.__pageGoblet = undefined
+      delete page.__pageGoblet
+    }
+    
+    
   })
   page.on(`crash`, (data) => {
     console.error(`ERROR - Browser page crashed`)

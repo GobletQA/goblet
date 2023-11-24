@@ -167,25 +167,28 @@ export class Browser {
       logEnvMsg(`getContext - New context created for browser ${browserConf.type}`)
     }
     else {
-      logEnvMsg(`getContext - Found existing context for browser ${browserConf.type}`)
+      logEnvMsg(`getContext - Found existing context for browser`)
     }
 
     !context.__GobletAutomateInstance
       && Automate.bind({ parent: context })
 
-    context.on(EBrowserEvent.close, async () => {
-      if(context.__GobletAutomateInstance){
-        let automate = context.__GobletAutomateInstance
-        await automate.cleanUp()
-        automate = undefined
-        context.__GobletAutomateInstance = undefined
-      }
-      if(context.__contextGoblet){
-        context.__contextGoblet.initFuncs = undefined
-        context.__contextGoblet.initScript = undefined
-        context.__contextGoblet = undefined
-      }
-    })
+
+    if(newContext)
+      context.on(EBrowserEvent.close, async () => {
+        global.context = undefined
+        if(context.__GobletAutomateInstance){
+          let automate = context.__GobletAutomateInstance
+          await automate.cleanUp()
+          automate = undefined
+          context.__GobletAutomateInstance = undefined
+        }
+        if(context.__contextGoblet){
+          context.__contextGoblet.initFuncs = undefined
+          context.__contextGoblet.initScript = undefined
+          context.__contextGoblet = undefined
+        }
+      })
 
     return { context, browser, newContext }
   }

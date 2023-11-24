@@ -8,8 +8,10 @@ import type {
 } from '@GWF/types'
 
 
-import { resetInjectedLogs } from '@gobletqa/logger'
+import { definitions } from '@gobletqa/shared'
 import { resetGobletConfig } from '@gobletqa/goblet'
+import { resetInjectedLogs } from '@gobletqa/logger'
+
 import { Repo, resetCachedWorld } from '@gobletqa/repo'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 
@@ -151,6 +153,7 @@ export class Workflows {
     resetGobletConfig()
     resetCachedWorld(username)
     resetInjectedLogs()
+    definitions?.removeGobletCacheDefs?.()
 
     return await disconnectGoblet({
       user: {

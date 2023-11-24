@@ -23,16 +23,12 @@ export const LayoutCoverActions = (props:TLayoutCoverActions) => {
     allTestsRunning
   } = props
 
-  return (
+  return testRunsView && (
     <LayoutCoverActionsContainer className='layout-cover-actions-container' >
-      {testRunsView && (
-        <>
-          {allTestsRunning ? (<ToggleScrollAction scrollLock={scrollLock} />) : null}
-          {htmlReport ? (<ReportDownloadAction htmlReport={htmlReport} />) : null}
-          {!showBrowser ? (<RunTestsAction />) : null}
-        </>
-      )}
+      {allTestsRunning ? (<ToggleScrollAction scrollLock={scrollLock} />) : null}
+      {htmlReport ? (<ReportDownloadAction htmlReport={htmlReport} />) : null}
+      {!showBrowser ? (<RunTestsAction />) : null}
     </LayoutCoverActionsContainer>
-  )
+  ) || null
   
 }

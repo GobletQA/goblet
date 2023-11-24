@@ -12,7 +12,10 @@ export const matchStepToDef = (props:THMatchStepToDef) => {
 
   if(!parkin)  return { step }
 
-  const { definition } = parkin?.matcher.search(step.step)
+  const { definition } = parkin?.matcher.search(step.step, { 
+    partial: false,
+    worldReplace: false
+  })
 
   return {
     definition,
