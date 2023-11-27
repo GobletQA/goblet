@@ -24,6 +24,7 @@ const browserAction:RequestHandler = async (req:JWTRequest, res:Response) => {
     ref,
     actions,
     repo:repoBody,
+    resetUrl=false,
     ...browser
   } = body
 
@@ -42,9 +43,9 @@ const browserAction:RequestHandler = async (req:JWTRequest, res:Response) => {
     repo
       && await setBrowserDefaults({
           repo,
-          config:repo,
           browserConf,
           pwComponents,
+          url:resetUrl,
         })
     
     await actionBrowser(pwComponents, {

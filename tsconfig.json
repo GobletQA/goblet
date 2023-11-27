@@ -148,8 +148,6 @@
       "@GTU/PlaywrightEnv": ["repos/testUtils/src/playwright/playwrightTestEnv"],
       "@GTU/Playwright": ["repos/testUtils/src/playwright"],
       "@GTU/Playwright/*": ["repos/testUtils/src/playwright/*"],
-      "@GTU/TestMeta": ["repos/testUtils/src/testMeta"],
-      "@GTU/TestMeta/*": ["repos/testUtils/src/testMeta/testMeta"],
       "@GTU/Types": ["repos/testUtils/src/types"],
       "@GTU/Types/*": ["repos/testUtils/src/types/*"],
       "@GTU": ["repos/testUtils/src"],

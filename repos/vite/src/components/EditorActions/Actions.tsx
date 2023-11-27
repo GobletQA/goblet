@@ -4,11 +4,11 @@ import { PictureAction } from './PictureAction'
 
 import { TestRunsAction } from './TestRunsAction'
 import { DecorationAction } from './DecorationAction'
-import { WorldEditorAction } from './WorldEditorAction'
+// import { WorldEditorAction } from './WorldEditorAction'
 
 export const RaceActions = [
   DecorationAction,
-  WorldEditorAction,
+  // WorldEditorAction,
   TestRunsAction,
   DrawAction,
   SquareAction,

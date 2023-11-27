@@ -102,16 +102,14 @@ const setPageSettings = async ({
   url !== false
     && appUrl
     && await page.goto(appUrl)
-
 }
- 
+
 
 export const setBrowserDefaults = async (props:TSetBrowserDefaults) => {
   const {
     url,
-    config,
+    repo,
     headers,
-    repo=config,
     browserConf,
     pwComponents,
   } = props
@@ -119,15 +117,15 @@ export const setBrowserDefaults = async (props:TSetBrowserDefaults) => {
   const { context, page } = pwComponents || await GBrowser.get({ config: repo, browserConf })
 
   await setContextSettings({
-    config: repo,
-    context,
     headers,
+    context,
+    config: repo,
   })
 
   await setPageSettings({
     url,
-    config,
     page,
+    config: repo,
   })
 
   // TODO: Add default timeout and other config from the mounted users goblet-config

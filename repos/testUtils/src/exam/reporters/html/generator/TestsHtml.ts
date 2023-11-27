@@ -33,6 +33,7 @@ const sortByTimestamp = (tests: TExEventData[]): TExEventData[] => {
   return tests?.sort((a: any, b: any) => a.timestamp - b.timestamp) || []
 }
 
+
 const status = (item:TExEventData) => {
   return item.status
     ? item.status
@@ -79,9 +80,12 @@ const FailedList = (test: TExEventData, opts:TReporterOpts) => {
     return `
       <li class="list-item failed-item step-failed failed">
         <div class="failed-description" >
-          <pre>
+          <div class="failed-description-header" >
+            Step - failed
+          </div>
+          <div class="failed-description-text" >
             ${expectation.description}
-          </pre>
+          </div>
           ${opts?.onRenderError?.(test) || ``}
         </div>
       </li>
@@ -97,12 +101,12 @@ const StepList = (tests: TExEventData[], opts:TReporterOpts) => {
       if(!testTime) testTime = state === `skipped` ? state : `unknown`
       else testTime = `${testTime}s`
       
-        
+      const idRef = `${test?.id}-${idx}`
       
-      const toggleError = test.failedExpectations.length > 0 ? `onclick="toggleError(${idx})"` : ``
+      const toggleError = test.failedExpectations.length > 0 ? `onclick="toggleError('${idRef}')"` : ``
 
       const FailedHtml = test?.failedExpectations?.length
-        ? `<ul class="list-parent failed-list" id="error-${idx}" style="visibility:hidden;max-height:0px;">${FailedList(test, opts)}</ul>`
+        ? `<ul class="list-parent failed-list" id="error-${idRef}" style="visibility:hidden;max-height:0px;">${FailedList(test, opts)}</ul>`
         : ``
 
       return `
@@ -111,7 +115,7 @@ const StepList = (tests: TExEventData[], opts:TReporterOpts) => {
             <span class="step-icon-container">
               ${IconsHtml(state as any)}
             </span>
-            ${TitleHtml(test.description, `step`, state)}
+            ${TitleHtml(test?.description?.trim?.() || ``, `step`, state)}
             <div class="step-time">${testTime}</div>
           </div>
           ${opts?.onRenderTest?.(test) || ``}
@@ -126,7 +130,7 @@ const ScenarioList = (scenarios: TExEventData[], opts:TReporterOpts) => {
     const state = status(scenario)
     return `
       <li class="list-item scenario-item scenario-${state} ${state}">
-        ${TitleHtml(scenario.description || ``, `scenario`)}
+        ${TitleHtml(scenario?.description?.trim?.() || ``, `scenario`)}
         <ul class="scenario-list list-parent" >
           ${StepList(scenario?.tests || [], opts)}
         </ul>
@@ -150,128 +154,11 @@ const FeatureList = (features: TExEventData[], opts:TReporterOpts) => {
   }).join('')
 }
 
-const testStyles = () => {
-  return `
-    <style>
-
-      .list-parent {
-        padding-left: ${padding.px};
-      }
-
-      .root-list.list-parent {
-        padding-left: 0px;
-      }
-
-      .root-list .list-item .item-title {
-        padding: ${padding.qpx} 0px;
-      }
-      
-      .root-list .list-item.step-skipped {
-        opacity: 0.5;
-      }
-
-      .root-list svg.step-icon {
-        height: 20px;
-        width: 20px;
-      }
-      
-      .root-list .title-keyword {
-        padding-right: ${padding.qpx};
-        font-weight: bold;
-      }
-      .root-list .feature-keyword {
-        color: ${colors.primary};
-      }
-      .root-list .scenario-keyword {
-        color: ${colors.secondary};
-      }
-
-
-      .root-list .step-keyword.failed {
-        color: ${colors.fail};
-      }
-      
-      .root-list .step-title .title-text.failed {
-        color: ${colors.fail};
-      }
-
-      .root-list .title-description {
-        color: ${colors.c16};
-      }
-      
-      .root-list .feature-list {
-        padding-left: ${padding.px};
-      }
-      
-      .root-list .scenario-list {
-        padding-left: 0px;
-      }
-
-      .root-list .failed-list {
-        overflow: hidden;
-        padding-left: 0px;
-        transition: max-height 1s ease;
-      }
-
-      .root-list .failed-list .failed-description {
-        margin-top: 0px;
-        color: ${colors.c21};
-        padding: ${padding.dpx};
-        margin-bottom: ${margin.qpx};
-        background-color: ${colors.w01};
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .root-list .failed-list .failed-description pre {
-        margin-top: 0px;
-      }
-
-      .root-list .failed-list .test-image-container {
-        width: 100%;
-        text-align: center;
-      }
-      .root-list .failed-list .test-image {
-        width: 60%;
-        border: ${margin.hpx} solid ${colors.w};
-      }
-
-      .root-list .step-item {
-        width: 100%;
-        margin-bottom: ${margin.qpx};
-      }
-
-      .root-list .step-item .step-description {
-        display: flex;
-        align-items: center;
-        padding: ${padding.hpx} ${padding.px} 7px;
-        justify-content: space-between;
-      }
-
-      .root-list .step-item .step-description.failed {
-        cursor: pointer;
-        background-color: ${colors.failBg};
-      }
-
-      
-      .root-list .step-item .step-description .step-icon-container {
-        margin-right: ${margin.hpx};
-        height: 23px;
-      }
-      
-      .root-list .step-item .step-description .step-time {
-        margin-left: auto;
-      }
-
-    </style>
-  `
-}
 
 export const TestsHtml = (data:TExEventData, opts:TReporterOpts) => {
   const state = status(data)
   return `
-    ${testStyles()}
-    <ul class="root-list list-parent root-${state} ${state}">
+    <ul class="root-list list-parent root-${state} ${state}" id="${data.timestamp}" >
       ${FeatureList(data.describes, opts)}
     </ul>
   `

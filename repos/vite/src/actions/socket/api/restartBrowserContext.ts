@@ -1,12 +1,11 @@
 import type { TBrowserIsLoadedEvent, TSocketEmitData, TBrowserConf } from '@types'
 
-import { emptyObj } from '@keg-hub/jsutils'
-import { SocketMsgTypes } from '@constants'
 import { GobletQAUrl } from '@constants/values'
 import { pageService } from '@services/pageService'
 import { SetBrowserIsLoadedEvent } from '@constants'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { SocketMsgTypes, BrowserResetUrlEvt } from '@constants'
 import { WSService } from '@services/socketService/socketService'
 import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
@@ -25,6 +24,8 @@ export const restartBrowserContext = (
   const opts:TSocketEmitData = { browser: {...browserOpts, ...options} }
 
   if(resetUrl){
+    EE.emit(BrowserResetUrlEvt)
+
     const url = getWorldVal({
       location: `url`,
       fallback: `app.url`,

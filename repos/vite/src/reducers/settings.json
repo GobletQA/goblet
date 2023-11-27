@@ -116,6 +116,16 @@
       "type": "number",
       "group": "goblet",
       "description": "Number of spaces to indent when formatting the world.json file"
+    },
+    "browserInBrowser": {
+      "display": false,
+      "key": "browserInBrowser",
+      "value": true,
+      "active": true,
+      "default": true,
+      "group": "goblet",
+      "type": "boolean",
+      "description": "Enable the Browser within the browser"
     }
   },
   "browser": {
@@ -235,10 +245,10 @@
       "key": "autoSave",
       "value": "blur",
       "active": true,
-      "default": "blur",
+      "default": "change",
       "type": "select",
       "group": "monaco",
-      "emptyOption": "blur",
+      "emptyOption": "change",
       "description": "File changes will be automatically saved based on this setting",
       "options": [
         "blur",

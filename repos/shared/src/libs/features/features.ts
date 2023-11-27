@@ -27,7 +27,7 @@ export const mapStepsToDefinitions = (repo, fileModel) => {
         feature.scenarios.map(scenario => {
           scenario.steps &&
             scenario.steps.map(step => {
-              const match = repo.parkin.steps.match(step.step, step)
+              const match = repo.parkin.steps.match(step.step, step, { worldReplace: false })
               match &&
                 match.definition &&
                 (step.definition = match.definition.uuid)
@@ -125,7 +125,7 @@ const parseFeatures = (repo:Repo, featureFiles:string[], featuresDir:string) => 
       : noPropArr
 
     if(modelErr){
-      Logger.warn(`[Error Feature] Parse File Path => ${Logger.colors.white(file)}`)
+      Logger.warn(`[Error Feature] Build File Model => ${Logger.colors.white(file)}`)
       Logger.error(modelErr.stack)
     }
 

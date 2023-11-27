@@ -2,14 +2,21 @@ import { getFileTypes } from './utils/getFileTypes'
 import { getPathFromBase } from './utils/getPathFromBase'
 import { getRepoGobletDir } from './utils/getRepoGobletDir'
 import { getPathFromConfig } from './utils/getPathFromConfig'
-import { configFromFolder } from './loaders/configFromFolder'
-import { gobletLoader, loaderSearch } from './loaders/loader'
-import { buildRefFromRemote, replaceGobletConfigRef } from './utils/ensureGobletCfg'
+import { replaceGobletConfigRef } from './utils/ensureGobletCfg'
+import { buildRefFromRemote, getRepoRef } from './utils/getRepoRef'
 
+import { configFromFolder } from './loaders/configFromFolder'
+import {  resetRequire, resetGobletConfig } from './loaders/configCache'
+import {
+  loaderSearch,
+  gobletLoader
+} from './loaders/loader'
+
+import { getGobletConfig } from './getGobletConfig'
 import { getDefaultGobletConfig } from './getDefaultGobletConfig'
-import { getGobletConfig, resetGobletConfig } from './getGobletConfig'
 
 export {
+  getRepoRef,
   gobletLoader,
   loaderSearch,
   getFileTypes,
@@ -22,4 +29,5 @@ export {
   buildRefFromRemote,
   getDefaultGobletConfig,
   replaceGobletConfigRef,
+  resetRequire as resetGobletRequire
 }

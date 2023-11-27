@@ -21,7 +21,7 @@ export const removeStory = async (parent?:TRaceFeature) => {
       onClick: () => {
         updateFeature(
           omitKeys<TRaceFeature>(feature, [`perspective`, `reason`, `desire`]),
-          { skipAudit: true }
+          { skipAudit: false }
         )
       }
     }

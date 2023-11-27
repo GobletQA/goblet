@@ -1,8 +1,8 @@
-import { getWorld } from '../world'
+import { getClientWorld } from '../getClientWorld'
 import { Parkin } from '@ltipton/parkin'
 import { getFileTypes } from '@gobletqa/goblet'
 import {
-  workflows,
+  Workflows,
   createGoblet,
   statusGoblet,
   GitlabGraphApi,
@@ -20,14 +20,14 @@ setMox('@ltipton/parkin', {
   Parkin: ParkinMock
 })
 
-const getWorldMock = jest.fn(() => {
+const getClientWorldMock = jest.fn(() => {
   return {
     app: {},
     $merge: {},
     $alias: {},
   }
 })
-setMox('../world', {getWorld: getWorldMock,})
+setMox('../getClientWorld', {getClientWorld: getClientWorldMock,})
 
 const mockConfig = {
   name: ``,
@@ -75,7 +75,7 @@ describe('Repo', () => {
     // // @ts-ignore
     // Parkin.mockImplementation(() => mockParkin)
     // // @ts-ignore
-    // getWorld.mockReturnValue(mockWorld)
+    // getClientWorld.mockReturnValue(mockWorld)
     // // @ts-ignore
     // getFileTypes.mockReturnValue(mockFileTypes)
     // // @ts-ignore
@@ -96,7 +96,7 @@ describe('Repo', () => {
     expect(repo.git).toEqual(mockConfig.git)
     expect(repo.name).toEqual(mockConfig.name)
     expect(repo.paths).toEqual({ ...mockConfig.paths, repoRoot: mockConfig.git.local })
-    expect(getWorld).toHaveBeenCalledWith(repo)
+    expect(getClientWorld).toHaveBeenCalledWith(repo)
     expect(Parkin).toHaveBeenCalledWith(mockWorld)
     expect(getFileTypes).toHaveBeenCalledWith(mockConfig.paths.repoRoot, mockConfig.paths)
   })
@@ -117,12 +117,12 @@ describe('Repo', () => {
 
     mockWorld = { /* updated mock world object */ }
     // @ts-ignore
-    getWorld.mockReturnValue(mockWorld)
+    getClientWorld.mockReturnValue(mockWorld)
 
-    const result = await repo.refreshWorld(opts)
+    const result = repo.refreshWorld(opts)
 
     expect(repo.setEnvironment).toHaveBeenCalledWith(opts.environment)
-    expect(getWorld).toHaveBeenCalledWith(repo)
+    expect(getClientWorld).toHaveBeenCalledWith(repo)
     expect(mockParkin.world).toEqual(mockWorld)
     expect(result).toEqual(mockWorld)
   })
@@ -166,7 +166,7 @@ describe('Repo', () => {
   it('should call the static disconnect method and return the result', async () => {
     const username = 'testuser'
     const expectedDisconnectResult = undefined
-
+    const workflows = new Workflows()
     const result = await workflows.disconnect({ username })
 
     // @ts-ignore
@@ -187,7 +187,7 @@ describe('Repo', () => {
     const description = 'Test repo'
     const organization = 'testorg'
     const expectedCreateResult = { /* mock create result */ }
-
+    const workflows = new Workflows()
     const result = await workflows.create({
       name,
       token,
@@ -230,7 +230,7 @@ describe('Repo', () => {
     mockUrl = { host: 'github.com', pathname: '/testuser/testrepo.git' }
     // @ts-ignore
     URL.mockImplementation(() => mockUrl)
-
+    const workflows = new Workflows()
     const result = await workflows.fromWorkflow({
       token,
       branch,

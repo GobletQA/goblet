@@ -1,5 +1,6 @@
-import type { TExTestEventMeta, TExEventData, TPlayerTestEvent } from '@GSC/types'
+import type { EResultAction } from '@ltipton/parkin'
 import type { TPlayerTestEventMeta } from '@gobletqa/browser'
+import type { TExTestEventMeta, TExEventData, TPlayerTestEvent } from '@GSC/types'
 
 
 import { TestsToSocketEvtMap } from '@GSC/constants'
@@ -31,12 +32,30 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
   return `${capitalize(evtData.eventParent)} - ${status}\n${message}`
 }
 
+/**
+  * TODO: Remove this when parkin-test is fixed
+ * This is a hack in place to fix a bug in parkin
+ * When a scenario end event is fired, but no steps were run,
+ * Then the events action is set to start for some reason
+ */
+const getEvtStatus = (evtData:TPlayerTestEvent) => {
+  if(!evtData?.id || evtData.action !== `start`) return evtData
+
+  if(evtData.status && evtData.action === `start` && (evtData.passed || evtData.failed)){
+    evtData.action = `end` as EResultAction
+    evtData.status = evtData.passed ? `passed` : `failed`
+  }
+
+  return evtData
+}
 
 export const formatTestEvt = (
-  event:TPlayerTestEventMeta|TExTestEventMeta,
+  event:Partial<TPlayerTestEventMeta|TExTestEventMeta>,
   extra?:Partial<TPlayerTestEventMeta|TExTestEventMeta>
 ) => {
-  const data = (event.data || {}) as TPlayerTestEvent
+
+  const data = getEvtStatus((event.data || {}) as TPlayerTestEvent)
+
   const parent = getEventParent(data)
 
   // Get the event parent, and message if they exist

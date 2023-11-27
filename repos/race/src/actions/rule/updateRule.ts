@@ -38,7 +38,7 @@ export const updateRule = async (props:TUpdateRule) => {
   rules[ruleIdx] = {...rule,...omitKeys(update, [`scenarios`, `background`])}
 
   const updated = {...feature, rules}
-  persist !== false && updateFeature(updated, { skipAudit: true })
+  persist !== false && updateFeature(updated, { skipAudit: false })
 
   return updated
 }

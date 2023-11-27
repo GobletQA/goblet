@@ -1,4 +1,5 @@
 import type {
+  TTestRun,
   TTestRuns,
   TTestRunExecEvt,
   TTestRunExecErrEvent
@@ -10,8 +11,10 @@ import { getEvents } from '@utils/testRuns/getEvents'
 
 import { upsertTestRun } from '@actions/testRuns/upsertTestRun'
 import { testRunFactory } from '@utils/testRuns/testRunFactory'
+import { setTestRunActive } from '@actions/testRuns/setTestRunActive'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 import {
+  useInline,
   useOnEvent,
   useForceUpdate,
 } from '@gobletqa/components'
@@ -25,12 +28,21 @@ import {ife} from '@keg-hub/jsutils'
 
 export type TTestRunsReporter = {}
 
+const updateTestRun = (runId:string, data:TTestRun, active?:boolean) => {
+  ife(async () => upsertTestRun({runId, data, active}))
+}
+
 export const useTestRunListen = () => {
   const testRuns = useTestRuns()
   const forceUpdate = useForceUpdate()
 
-  const [runId, setRunId] = useState<string|undefined>(testRuns.active)
+  const [runId, setLocalRunId] = useState<string|undefined>(testRuns.active)
   const testRunsRef = useRef<TTestRuns>(testRuns.runs)
+
+  const setRunId = useInline((id?:string) => {
+    setTestRunActive(id)
+    setLocalRunId(id)
+  })
 
   useOnEvent<TTestRunExecEvt>(TestRunExecEvt, async (data) => {
     const evtRunId = data.runId
@@ -39,10 +51,10 @@ export const useTestRunListen = () => {
     const testRun = addEventsToTestRun(tempRun, events)
 
     testRunsRef.current = {...testRunsRef.current, [evtRunId]: testRun}
+    updateTestRun(evtRunId, testRun)
 
-    ife(async () => upsertTestRun({ runId: evtRunId, data: testRun }))
     // If there's a runId change, then update the state with the new ID
-    evtRunId !== runId && setRunId(evtRunId)
+    evtRunId !== runId && setLocalRunId(evtRunId)
     forceUpdate()
   })
 
@@ -51,7 +63,7 @@ export const useTestRunListen = () => {
 
     const testRun = {...testRunsRef.current[runId], canceled: true}
     testRunsRef.current = {...testRunsRef.current, [runId]: testRun}
-    ife(async () => upsertTestRun({ runId, data: testRun }))
+    updateTestRun(runId, testRun)
     forceUpdate()
   })
 
@@ -63,9 +75,9 @@ export const useTestRunListen = () => {
     const testRun = {...(testRunsRef.current[evtRunId] || { files: {}, runId: evtRunId })}
     testRunsRef.current[evtRunId] = {...testRun, runError: event}
 
-    ife(async () => upsertTestRun({ runId: evtRunId, data: testRunsRef.current[evtRunId] }))
+    updateTestRun(evtRunId, testRunsRef.current[evtRunId])
     // If the error event also created a new testRun, set it as the active test run
-    evtRunId !== runId && setRunId(evtRunId)
+    evtRunId !== runId && setLocalRunId(evtRunId)
     forceUpdate()
   })
 
@@ -75,7 +87,7 @@ export const useTestRunListen = () => {
 
     const activeId = runId
     const activeEql = testRuns.active === runId
-    if(testRuns.active && runId && !activeEql) return setRunId(testRuns.active)
+    if(testRuns.active && runId && !activeEql) return setLocalRunId(testRuns.active)
 
     const exRuns = testRuns.runs
     const runsRef = testRunsRef.current

@@ -6,7 +6,7 @@ import type { TAutoOpt } from '@gobletqa/components'
 import type { TExpOpts, TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useMemo } from 'react'
-import { useParkin, useEditor } from '@GBR/contexts'
+import { useWorld, useEditor } from '@GBR/contexts'
 import { ExpAliasTag } from '@GBR/constants'
 import {
   isStr,
@@ -69,7 +69,7 @@ const useExpOpts = (props:THExpressionOpts, expressionOptions?:TExpOpts) => {
 export const useExpressionOptions = (props:THExpressionOpts) => {
   const { expression } = props
 
-  const { world } = useParkin()
+  const { world } = useWorld()
   const { expressionOptions } = useEditor()
 
   const { aliasVal, aliasOpts } = useWorldAlias(props, world)

@@ -1,13 +1,12 @@
-import type { FocusEvent } from 'react'
 import type {
-  TTestRunsState,
   TTestRunUICfg,
+  TTestRunsState,
   TOnBlurRunTestOpts,
   TTestRunGetUICfgEvt,
   TOnChangeRunTestOpts,
 } from '@types'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ETestRunsSection } from '@types'
 import { PastTestRuns } from './PastTestRuns'
 import { TestRunGetUICfgEvt } from '@constants'
@@ -25,6 +24,7 @@ import {
   useInline,
   useOnEvent,
 } from '@gobletqa/components'
+import {setTestRunActive} from '@actions/testRuns/setTestRunActive'
 
 const useTestRunOpts = (testRuns:TTestRunsState) => {
   const repo = useRepo()
@@ -50,8 +50,15 @@ export const TestRuns = () => {
   
   const {
     testRunCfg,
-    setTestRunCfg
+    setTestRunCfg,
   } = useTestRunOpts(testRuns)
+
+  const {
+    runs,
+    active,
+    setRunId,
+    allTestsRunning,
+  } = useTestRunListen()
 
   const onBlurRunTestOpts = useInline<TOnBlurRunTestOpts>((evt, type) => {
     const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onBlur?.(evt, testRunCfg)
@@ -75,14 +82,15 @@ export const TestRuns = () => {
     testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
   )
 
-  const onChangeSection = useInline((sec:ETestRunsSection) => sec !== section && setSection(sec))
+  const onChangeSection = useInline((sec:ETestRunsSection) => {
+    if(!sec || sec === section) return
 
-  const {
-    runs,
-    active,
-    setRunId,
-    allTestsRunning,
-  } = useTestRunListen()
+    !testRuns.allTestsRunning
+      && sec !== ETestRunsSection.reporter
+      && setTestRunActive(undefined)
+
+    setSection(sec)
+  })
 
   useOnEvent<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, cb => {
     setSection(ETestRunsSection.reporter)
@@ -90,6 +98,17 @@ export const TestRuns = () => {
     cb?.(testRunCfg)
   })
 
+  useEffect(() => {
+    active
+      && !testRuns.active
+      && !testRuns.allTestsRunning
+      && section === ETestRunsSection.reporter
+      && setTestRunActive(active)
+  }, [
+    active,
+    section,
+    testRuns.active
+  ])
 
   const Component = SectionTabMap[section]
 

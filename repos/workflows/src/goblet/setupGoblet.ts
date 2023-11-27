@@ -1,17 +1,25 @@
 import type { TGobletConfig } from '@gobletqa/shared'
-import type { TGitData, TWFArgs, TGitOpts } from '@GWF/types'
+import type {
+  TGitData,
+  TWFArgs,
+  TGitOpts,
+  TGobletCfgLoaderResp
+} from '@GWF/types'
 
 import { Logger } from '@gobletqa/logger'
 import { wait } from '@keg-hub/jsutils/wait'
 import { gobletLoader } from '@gobletqa/goblet'
-
 import { failResp, successResp } from './response'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { copyTemplate } from '../utils/copyTemplate'
 import { repoSecrets } from '@gobletqa/repo/repoSecrets'
+import { replaceGobletConfigRef } from '@gobletqa/goblet'
 import { createRepoWatcher } from '@gobletqa/repo/mountRepo'
 import { configureGitOpts } from '../utils/configureGitOpts'
 import { git, RepoWatcher, getRepoName } from '@gobletqa/git'
+
+const emptyLoaderResp = emptyObj as TGobletCfgLoaderResp
 
 const setupWatcher = async (gitOpts:TGitOpts,) => {
   Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
@@ -36,6 +44,25 @@ const getGitData = async (
   const gitData = omitKeys(gitArgs, ['email', 'token']) as TGitData
 
   return { gitData, gitOpts }
+}
+
+
+const replaceRefInConfig = (gitData:TGitData, location?:string) => {
+  return new Promise((res, rej) => {
+    setTimeout(async () => {
+      try {
+        const replaced = await replaceGobletConfigRef(gitData, location)
+        Logger.success(`Successfully replaced $ref in Goblet Config`)
+        return res(replaced)
+      }
+      catch(err){
+        Logger.warn(`Failed to replace $ref in Goblet Config`)
+        Logger.log(`Goblet Config Location: ${location}`)
+        Logger.log(err.message)
+        return res(false)
+      }
+    }, 10)
+  })
 }
 
 /**
@@ -76,13 +103,20 @@ export const setupGoblet = async (
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = gobletLoader({
+  const {
+    location,
+    refReplaced,
+    config:gobletConfig,
+  } = gobletLoader({
     remote: gitOpts.remote,
     basePath: gitOpts.local,
-  })
+  }) || emptyLoaderResp
 
   if(!gobletConfig)
     return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
+
+  refReplaced
+    && replaceRefInConfig(gitData, location)
 
   const namedGobletCfg = {
     ...gobletConfig,

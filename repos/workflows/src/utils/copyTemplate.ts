@@ -28,13 +28,15 @@ const copyTemplateContent = async (gitData:TGitData, template:string) => {
 const checkGobletExists = (gitData:TGitData, template:string) => {
   Logger.info(`Searching for goblet config...`)
   const config = configFromFolder(gitData.local, { remote: gitData.remote, clearCache: true })
-  
-  if(config){
-    Logger.info(`Found existing goblet config at ${gitData.local}`)
-    console.log(config)
-  }
+  Logger.info(`goblet config | configFromFolder`, config)
 
-  return config
+  if(!config) return false
+
+  Logger.info(`Found existing goblet config at ${gitData.local}`)
+  console.log(config?.config)
+
+  return true
+
 }
 
 const checkGobletFolder = (gitData:TGitData) => existsSync(path.join(gitData.local, `goblet`))
@@ -56,8 +58,8 @@ export const copyTemplate = async (gitData:TGitData, template:string, reCheck:bo
 
   // Has a goblet folder in the repo, but a goblet config could not be found?
   // Could be that the files are not accessible on the HD, so try again in two seconds
-  Logger.info(`Goblet folder found, but config missing. Retrying check in 2 seconds...`)
-  await wait(2000)
+  Logger.info(`Goblet folder found, but config missing. Retrying check in 3 seconds...`)
+  await wait(3000)
 
   return await copyTemplate(gitData, template, false)
 }

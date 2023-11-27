@@ -16,14 +16,14 @@ export const addRule = async (props?:TAddRule) => {
   const { feature } = await getFeature(props?.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  const rule = ruleFactory({feature, empty: true})
+  const rule = await ruleFactory({feature, empty: true})
   if(!rule) return factoryFailed(`rule`, prefix)
   
   const rules = [...(feature.rules || emptyArr)]
   rules.push(rule)
 
   const updated = {...feature, rules}
-  !props?.feature && updateFeature(updated, { expand: rule.uuid, skipAudit: true })
+  !props?.feature && updateFeature(updated, { expand: rule.uuid, skipAudit: false })
 
   return updated
 }

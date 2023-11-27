@@ -41,7 +41,7 @@ export type TInputDecor = {
   [key: string]: any
 }
 
-export type TChangeCB = (evt?:any, value?:TInputValue) => void
+export type TChangeCB = (evt?:any, value?:TInputValue|undefined) => any
 export type TToggleEditCB = (evt?:any, value?:TInputValue, editing?:boolean) => void
 
 export type TInputValue = string|number|boolean|string[]

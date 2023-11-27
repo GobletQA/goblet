@@ -1,6 +1,6 @@
 export * from './FeatureContext'
 export * from './EditorContext'
-export * from './ParkinContext'
+export * from './WorldContext'
 export * from './StepDefsContext'
 export * from './SettingsContext'
 export * from './OperationsContext'

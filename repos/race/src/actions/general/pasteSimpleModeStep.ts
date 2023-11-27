@@ -43,10 +43,10 @@ export const pasteSimpleModeStep = async (props:TPasteSimpleModeStep) => {
   const { scenario:scn, index } = findSimpleScenario({...props, feature})
 
   const { insert, step:stepMeta } = getStepMeta(scn, props.step)
-  const added = buildStep<TRaceStepParent>(
+  const added = await buildStep<TRaceStepParent>(
     feature,
     scn,
-    {...props.step, ...stepMeta },
+    {...props.step, ...stepMeta},
     insert
   )
 

@@ -2,8 +2,7 @@ import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoGraphRepos } from '@gobletqa/shared/types'
 
-
-import { workflows } from '@gobletqa/workflows'
+import { Workflows } from '@gobletqa/workflows'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
@@ -13,6 +12,7 @@ import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
  */
 export const getRepos = async (req:JWTRequest, res:Response) => {
   const { iat, exp, ...user } = req.auth
+  const workflows = new Workflows()
   const repos = await workflows.getUserRepos(user as TRepoGraphRepos)
 
   return apiRes(res, {repos}, 200)

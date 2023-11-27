@@ -23,6 +23,8 @@ export const defCmdOpts:TRunCmdOpts = {
   exec: true
 }
 
+const defValidateKeys = [`local`, `remote`, `branch`, `username`]
+
 /**
  * Validates the gitOpts object has the correct properties
  * @function
@@ -31,12 +33,15 @@ export const defCmdOpts:TRunCmdOpts = {
  *
  * @returns {Void}
  */
-export const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
+export const validateGitOpts = (
+  gitOpts:TGitOpts,
+  validateKeys:string[]=defValidateKeys
+):TGitOpts => {
   // Ensure an object is passed
   !isObj(gitOpts)
     && throwErr(`Git command requires an options object. Received ${typeof gitOpts}`)
 
-  ;['local', 'remote', 'branch', 'username'].map(key => {
+  validateKeys.map(key => {
     !gitOpts[key]
       && throwErr(`Git command requires a ${key} property and value in the git options object`)
   })

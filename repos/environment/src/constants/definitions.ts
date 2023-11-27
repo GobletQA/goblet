@@ -45,6 +45,7 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>({
   options: `options`, // - Dropdown select from options
   attribute: `attribute`, // - Any element attribute
   code: `code`, // - Javascript code via doc script
+  world: `world`,  // - Value from the world object
 })
 
 export const ExpressionElements = deepFreeze<Record<string, string[]>>({
@@ -71,6 +72,7 @@ export const ExpressionElements = deepFreeze<Record<string, string[]>>({
 
 
 export const ExpressionCustomInputs = deepFreeze<Record<string, string>>({
+  world: `world`,
   editor: `editor`,
   textbox: `textarea`,
   textarea: `textarea`,

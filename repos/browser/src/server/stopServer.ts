@@ -52,6 +52,8 @@ export const stopServer = async () => {
     Logger.error(err.message)
   }
 
-  await metadata.remove()
+  try { await metadata.remove() }
+  catch(err){}
+
   clearAllServers()
 }

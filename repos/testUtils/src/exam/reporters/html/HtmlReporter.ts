@@ -1,3 +1,4 @@
+import type { TBuiltStats } from './utils/getStats'
 import type { TGobletTestArtifactOption } from '@GTU/Types'
  import {
   TExamEvt,
@@ -11,10 +12,12 @@ import type { TGobletTestArtifactOption } from '@GTU/Types'
 import path from 'path'
 import { writeFile } from 'fs/promises'
 import { Logger } from "@gobletqa/logger"
+import { getStats } from './utils/getStats'
 import { ImgHtml } from './generator/ImgHtml'
 import { HeadHtml } from './generator/HeadHtml'
 import { BodyHtml } from './generator/BodyHtml'
 import { takeScreenshot } from './takeScreenshot'
+import { PartialsHtml } from './generator/PartialsHtml'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
 import {
@@ -45,6 +48,7 @@ export type TReporterOpts = {
   onRenderError?: (data:TExEventData) => string
 }
 
+export type THtmlPartials = Record<string, { html:string, stats:TBuiltStats }>
 
 
 const buildTitle = (response:TExEventData, reportTitle?:string) => {
@@ -86,6 +90,10 @@ const getTestLength = ({start, end}:TTestTimeCache, testTimeout:number) => {
   return (length / 1000).toFixed(2)
 }
 
+const wrapHtml = (head:string, body:string) => {
+  return `<!DOCTYPE html><html>${head}${body}</html>`
+}
+
 export class HtmlReporter implements IExamReporter {
 
   #page?:any
@@ -99,12 +107,18 @@ export class HtmlReporter implements IExamReporter {
   #saveReport?:TGobletTestArtifactOption
   #saveScreenshot?:TGobletTestArtifactOption
   #testTimes:Record<string, TTestTimeCache> = {}
+  #partialTestTimes:TTestTimeCache = { start: 0, end: 0 }
+
+  #title?:string
+  #combineAllTests?:boolean
+  #htmlPartials:THtmlPartials={}
 
   constructor(
     examCfg:TExamConfig,
     cfg?:TExReporterCfg,
     reporterContext?:TEXInterReporterContext
   ) {
+
     this.#saveReport = cfg?.saveReport || false
 
     if(!this.#saveReport){
@@ -114,19 +128,26 @@ export class HtmlReporter implements IExamReporter {
 
     validate(examCfg)
 
-    const gobletCfg = examCfg?.globals?.__goblet?.config
     this.rootDir = examCfg.rootDir
     this.#testTimeout = examCfg.testTimeout
     this.#suiteTimeout = examCfg.suiteTimeout
+
+    const gobletCfg = examCfg?.globals?.__goblet?.config
     const workDir = gobletCfg?.paths?.workDir
     const reportsDir = gobletCfg?.paths?.reportsDir
 
-    this.reportsDir = workDir
-      ? path.join(this.rootDir, workDir, reportsDir)
-      : path.join(this.rootDir, reportsDir)
+    this.reportsDir = cfg?.reportsDir
+      ? cfg.reportsDir
+      : workDir
+        ? path.join(this.rootDir, workDir, reportsDir)
+        : path.join(this.rootDir, reportsDir)
 
     this.#screenshotExt = cfg?.screenshotExt || `png`
     this.#saveScreenshot = cfg?.saveScreenshot || false
+    this.#combineAllTests = cfg?.combineAllTests || false
+    this.#title = cfg?.reportTitle || gobletCfg?.$ref || `Goblet Test Report`
+
+    
 
   }
 
@@ -170,30 +191,34 @@ export class HtmlReporter implements IExamReporter {
 
   #htmlTemplate = ({
     data,
-    title,
+    title:fileTitle,
     date=new Date().toLocaleString(),
   }:THtmlTemplate) => {
-    const built = buildTitle(data, title)
+    const title = buildTitle(data, fileTitle)
     const totalTime = getTestLength(
-      { start: data?.stats?.runStart, end: data?.stats?.runEnd,  },
+      { start: data?.stats?.runStart, end: data?.stats?.runEnd, },
       this.#suiteTimeout
     )
 
-    return `
-      <!DOCTYPE html>
-      <html>
-        ${HeadHtml(data, built)}
-        ${BodyHtml({
-          data,
-          date,
-          totalTime,
-          title:built,
-          testTimes: this.#testTimes,
-          onRenderError: this.#renderImg.bind(this),
-          onRenderTest: this.#onRenderTest.bind(this),
-        })}
-      </html>
-    `
+    if(data?.stats?.runEnd) this.#partialTestTimes.end = data?.stats?.runEnd
+    if(!this.#partialTestTimes.start) this.#partialTestTimes.start = data?.stats?.runStart
+
+    const stats = getStats(data)
+    const bodyHtml = BodyHtml({
+      data,
+      date,
+      title,
+      stats,
+      totalTime,
+      testTimes: this.#testTimes,
+      combineTests: this.#combineAllTests,
+      onRenderError: this.#renderImg.bind(this),
+      onRenderTest: this.#onRenderTest.bind(this),
+    })
+
+    return this.#combineAllTests
+      ? { html: bodyHtml, stats }
+      : { html: wrapHtml(HeadHtml(title, this.#combineAllTests), bodyHtml), stats }
   }
 
   #saveFile = async (evt:TExamEvt<TExEventData>, html:string) => {
@@ -202,9 +227,10 @@ export class HtmlReporter implements IExamReporter {
       const { dir, nameTimestamp } = getGeneratedName({ location, timestamp })
       const saveDir = await ensureRepoArtifactDir(this.reportsDir, dir)
       const reportLoc = path.join(saveDir, `${nameTimestamp}.html`)
+      const relativeLoc = reportLoc.replace(this.rootDir, ``)
 
       await writeFile(reportLoc, html)
-      Logger.log(Logger.colors.gray(` - Html Report saved for failed test`))
+      Logger.log(Logger.colors.gray(` - Html Report saved to "${relativeLoc}"`))
     }
     catch(err){
       Logger.error(`Error saving html report to`, `${this.reportsDir.replace(this.rootDir, ``)}`)
@@ -235,11 +261,34 @@ export class HtmlReporter implements IExamReporter {
     resp && (this.#screenshots[resp.id] = resp.uri)
   }
 
+  onEnded = async (evt:TExamEvt<TExEventData>) => {
+    if(!this.#combineAllTests) return
+
+    const totalTime = getTestLength(this.#partialTestTimes, this.#suiteTimeout)
+
+    const bodyHtml = PartialsHtml({
+      totalTime,
+      title: this.#title,
+      partials: this.#htmlPartials,
+      date: new Date().toLocaleString(),
+    })
+
+    const html = wrapHtml(HeadHtml(this.#title, this.#combineAllTests), bodyHtml)
+    await this.#saveFile(evt, html)
+
+  }
+
+
   onRunResult = async (evt:TExamEvt<TExEventData>) => {
-    const { status } = evt?.data
+    const { status, location } = evt?.data
     if(!shouldSaveArtifact(this.#saveReport, status)) return
 
-    const html = this.#htmlTemplate({ data: evt.data })
+    const { html, stats } = this.#htmlTemplate({ data: evt.data })
+    if(this.#combineAllTests){
+      this.#htmlPartials[location] = { html, stats }
+      return
+    }
+
     await this.#saveFile(evt, html)
     this.#testTimes = {}
   }

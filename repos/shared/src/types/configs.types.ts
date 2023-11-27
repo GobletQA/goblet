@@ -18,7 +18,6 @@ export type TInternalPaths = {
   userDataTempDir: string
   videosTempDir: string
   downloadsTempDir: string
-  testMetaFile: string
   snapshotsTempDir: string
   reportsTempDir: string
   reportsTempFile: string

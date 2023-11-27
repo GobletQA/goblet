@@ -17,4 +17,3 @@ Given('I pause the page', pagePause, {
   description: `Pauses the steps execution of a feature. Should be used for debugging only.`,
   expressions: [],
 })
-

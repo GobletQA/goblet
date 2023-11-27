@@ -1,4 +1,3 @@
-import type { TProviderData } from '@GWF/utils/getProviderData'
 import type {
   TGitOpts,
   TWFGobletConfig,
@@ -8,8 +7,12 @@ import type {
   TRepoFromWorkflow,
 } from '@GWF/types'
 
+
+import { definitions } from '@gobletqa/shared'
 import { resetGobletConfig } from '@gobletqa/goblet'
-import { getProviderData } from '@GWF/utils/getProviderData'
+import { resetInjectedLogs } from '@gobletqa/logger'
+
+import { Repo, resetCachedWorld } from '@gobletqa/repo'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 
 import {
@@ -19,13 +22,8 @@ import {
   disconnectGoblet,
 } from '@GWF/goblet'
 
-import { Repo } from '@gobletqa/repo'
 
 export class Workflows {
-
-  getProvider = async (opts:TProviderData) => {
-    return getProviderData(opts)
-  }
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -40,14 +38,14 @@ export class Workflows {
       ? new GitlabGraphApi()
       : new GithubGraphApi()
 
-    const data = await this.getProvider(opts)
-    return await graphApi.userRepos({...opts, ...data})
+    return await graphApi.userRepos(opts)
   }
 
 
   create = async (args:TRepoFromCreate) => {
     const {
       name,
+      token,
       branch,
       provider,
       username,
@@ -57,9 +55,8 @@ export class Workflows {
       organization,
     } = args
 
-    const data = await this.getProvider(args)
     const { repo, ...status } = await createGoblet({
-      ...data,
+      token,
       user: {
         gitUser: username
       },
@@ -92,8 +89,8 @@ export class Workflows {
     config:TWFGobletConfig,
     repoData:TGitOpts
   ) => {
-    const data = await this.getProvider(repoData)
-    const { repo, ...status } = await statusGoblet(config, {...repoData, ...data}, false)
+
+    const { repo, ...status } = await statusGoblet(config, repoData, false)
 
     return !repo || !status.mounted
       ? { status }
@@ -106,6 +103,7 @@ export class Workflows {
    */
   fromWorkflow = async (args:TRepoFromWorkflow) => {
     const {
+      token,
       branch,
       repoUrl,
       username,
@@ -119,9 +117,8 @@ export class Workflows {
     const name = repoId.split('/').pop()
     const provider = url.host.split('.').slice(0).join('.')
 
-    const data = await this.getProvider({...args, provider})
     const { repo, ...status } = await initializeGoblet({
-      ...data,
+      token,
       user: {
         gitUser: username
       },
@@ -154,6 +151,9 @@ export class Workflows {
   disconnect = async ({ username }:Record<`username`, string>) => {
     // Clear the existing loaded goblet config
     resetGobletConfig()
+    resetCachedWorld(username)
+    resetInjectedLogs()
+    definitions?.removeGobletCacheDefs?.()
 
     return await disconnectGoblet({
       user: {
@@ -163,6 +163,3 @@ export class Workflows {
   }
 
 }
-
-
-export const workflows = new Workflows()

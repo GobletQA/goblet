@@ -55,12 +55,12 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
         && disconnectRef?.current?.()
 
       if (!screen.current)
-        return console.warn(`Error loading browser. Dom Element could not be found.`)
+        return connected.current && console.warn(`Error loading browser. Dom Element could not be found.`)
 
       screen.current.innerHTML = ''
 
       const _rfb = new RFB(screen.current, url, {
-        wsProtocols: ['binary', 'base64'],
+        wsProtocols: [`binary`, `base64`],
         ...rfbOptions,
       })
 

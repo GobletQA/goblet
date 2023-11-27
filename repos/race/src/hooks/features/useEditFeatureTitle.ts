@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react'
-import type { TChangeCB } from '@gobletqa/components'
+import type { TChangeCB, TInputValue } from '@gobletqa/components'
 import type {
   TRaceFeature,
   TUpdateFeatureOpts
@@ -20,16 +20,16 @@ export type THEditFeatureTitle = {
 export const useEditFeatureTitle = ({ parent }:THEditFeatureTitle) => {
   const { feature, uuid } = (parent || emptyObj)
 
-  return useCallback(((evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value:string) => {
-    const text = value || evt.target.value
+  return useCallback<TChangeCB>(async (evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value?:TInputValue) => {
+    const text = (value || evt.target.value) as string
 
     const opts = uuid === EmptyFeatureUUID ? { create: true } : emptyObj
 
     const updated = !featureIsEmpty(parent)
       ? { ...parent, feature: text }
-      : featureFactory({...parent, feature: text}, true)
+      : await featureFactory({...parent, feature: text}, true)
 
     text && updateFeature(updated, opts as TUpdateFeatureOpts)
-  }) as TChangeCB, [parent, feature, uuid])
+  }, [parent, feature, uuid])
 
 }

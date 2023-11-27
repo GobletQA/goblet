@@ -1,13 +1,18 @@
 import type { MouseEvent } from 'react'
-import type { TSettingNavItem } from '@types'
-
+import type { TSettingNavItem, TGobletSettings } from '@types'
 import { useCallback } from 'react'
 import Box from '@mui/material/Box'
 import { Settings } from './Settings'
 import { HeaderLogo } from './HeaderLogo'
 import Toolbar from '@mui/material/Toolbar'
-import { AppHeader } from './Header.styled'
 import { useStateReset } from '@hooks/useReset'
+import {useSettingValues} from '@hooks/settings/useSettingValues'
+import { updateSettingValue } from '@actions/settings/updateSettingValue'
+import {
+  AppHeader,
+  ToggleBinBAction,
+  ToggleThemeAction,
+} from './Header.styled'
 import {
   gutter,
   IconButton,
@@ -15,22 +20,25 @@ import {
   useThemeType,
   DarkModeIcon,
   LightModeIcon,
+  WebAssetIcon,
+  WebAssetOffIcon,
 } from '@gobletqa/components'
 
 
+
 type THeaderProps = {
-  settings?: TSettingNavItem[]
+  meuItems?: TSettingNavItem[]
 }
 
 const styles = {
-  iconBtn: { marginRight: gutter.margin.hpx },
   icon: { height: `20px`, width: `20px` }
 }
 
 export const Header = (props:THeaderProps) => {
-  const settings = props.settings || []
+  const meuItems = props.meuItems || []
   const { type, setType } = useThemeType()
-  
+  const { browserInBrowser } = useSettingValues<TGobletSettings>(`goblet`)
+
   const onChangeTheme = useCallback(() => {
     const updated = type === EThemeMode.light
       ? EThemeMode.dark
@@ -38,6 +46,13 @@ export const Header = (props:THeaderProps) => {
 
     setType(updated)
   }, [type, setType])
+
+  const onToggleBinB = useCallback(() => {
+    updateSettingValue({
+      value: !browserInBrowser,
+      setting: `goblet.browserInBrowser`,
+    })
+  }, [browserInBrowser])
 
   const [
     anchorEl,
@@ -51,18 +66,28 @@ export const Header = (props:THeaderProps) => {
       <Toolbar disableGutters>
         <HeaderLogo />
         <Box flex={1} />
-        <IconButton
-          style={styles.iconBtn}
+        <ToggleBinBAction
+          onClick={onToggleBinB}
+          tooltip='Show or hide the browser in browser UI'
+        >
+        {
+          browserInBrowser
+            ? (<WebAssetIcon style={styles.icon} />)
+            : (<WebAssetOffIcon style={styles.icon} />)
+        }
+        </ToggleBinBAction>
+        <ToggleThemeAction
           onClick={onChangeTheme}
+          tooltip='Toggle theme to light or dark'
         >
         {
           type === EThemeMode.light
             ? (<LightModeIcon style={styles.icon} />)
             : (<DarkModeIcon style={styles.icon} />)
         }
-        </IconButton>
+        </ToggleThemeAction>
         <Settings
-          settings={settings}
+          settings={meuItems}
           anchorEl={anchorEl}
           onOpenSettings={updateAnchor}
           onCloseSettings={resetAnchor}

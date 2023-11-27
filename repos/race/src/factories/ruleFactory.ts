@@ -2,9 +2,9 @@ import type { TRaceScenario, TRaceFeature, TRaceRule } from '@GBR/types'
 
 import { EAstObject } from '@ltipton/parkin'
 import { scenariosFactory } from './scenarioFactory'
-import { findIndex } from '@GBR/utils/find/findIndex'
 import { backgroundFactory } from './backgroundFactory'
 import { deepMerge, emptyArr } from '@keg-hub/jsutils'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 
 export type TRuleFactory = {
   rule?:Partial<TRaceRule>
@@ -25,13 +25,13 @@ const emptyRule = (rule:Partial<TRaceRule>) => ({
   ...rule
 } as Partial<TRaceRule>)
 
-export const ruleFactory = ({
+export const ruleFactory = async ({
   rule,
   feature,
   empty=false,
 }:TRuleFactory) => {
 
-  const index = findIndex({
+  const index = await ParkinWorker.findIndex({
     feature,
     parent: feature,
     type:EAstObject.rules,
@@ -51,14 +51,14 @@ export const ruleFactory = ({
 
   if(!built) return console.warn(`Error building rule in factory`)
 
-  built.scenarios = (scenariosFactory({
+  built.scenarios = (await scenariosFactory({
     feature,
     parent: built,
     scenarios: rule?.scenarios,
   }) || []) as TRaceScenario[]
   
   rule?.background && (
-    rule.background = backgroundFactory({
+    rule.background = await backgroundFactory({
       feature,
       parent: rule as TRaceRule,
       background: rule?.background,
@@ -68,13 +68,14 @@ export const ruleFactory = ({
   return built
 }
 
-export const rulesFactory = ({
+export const rulesFactory = async ({
   rules,
   feature,
   empty=false
 }:TRulesFactory) => {
-  return rules?.length
-  ? rules.map(rule => rule && ruleFactory({rule, empty, feature})).filter(Boolean) as TRaceRule[]
-  : emptyArr
+  if(!rules?.length) return emptyArr
 
+  const built = await Promise.all(rules.map(async (rule) => rule && await ruleFactory({rule, empty, feature})))
+
+  return built.filter(Boolean) as TRaceRule[]
 }

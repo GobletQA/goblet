@@ -2,9 +2,15 @@ import Box from '@mui/material/Box'
 import MuiMenu from '@mui/material/Menu'
 import AppBar from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
-import IconButton from '@mui/material/IconButton'
+import MuiIconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { colors, getColor, dims, gutter } from '@gobletqa/components'
+import {
+  dims,
+  gutter,
+  colors,
+  getColor,
+  IconButton,
+} from '@gobletqa/components'
 
 export const AppHeader = styled(AppBar)(({ theme }) => {
   return `
@@ -32,7 +38,7 @@ export const LogoContainer = styled(Box)`
   display: flex;
   align-items: center;
 `
-export const LogoBtn = styled(IconButton)`
+export const LogoBtn = styled(MuiIconButton)`
   display: flex;
   position: relative;
   border-radius: 0px;
@@ -51,3 +57,13 @@ export const LogoText = styled(Typography)(({ theme }) => `
   margin-right: 6px;
   color: ${getColor(colors.royalPurple, colors.white, theme)}
 `) as typeof Typography
+
+
+export const ToggleBinBAction = styled(IconButton)`
+  margin-right: ${gutter.margin.qpx};
+`
+
+export const ToggleThemeAction = styled(IconButton)`
+  margin-right: ${gutter.margin.hpx};
+`
+

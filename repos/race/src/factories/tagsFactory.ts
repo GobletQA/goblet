@@ -2,7 +2,7 @@ import type { TRaceTagsParent, TRaceTags, TRaceFeature } from '@GBR/types'
 import { EBlockLoc } from '@ltipton/parkin'
 
 import { ESectionType } from '@GBR/types'
-import { findIndex } from '@GBR/utils/find/findIndex'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { deepMerge, isArr, exists, uuid } from '@keg-hub/jsutils'
 
 export type TTagsFactory = {
@@ -13,7 +13,8 @@ export type TTagsFactory = {
   tags?:Partial<TRaceTags>|string[]
 }
 
-export const tagsFactory = (props:TTagsFactory) => {
+
+export const tagsFactory = async (props:TTagsFactory) => {
   const {
     tags,
     parent,
@@ -21,7 +22,7 @@ export const tagsFactory = (props:TTagsFactory) => {
     type=ESectionType.tags,
   } = props
 
-  const index = props.index || findIndex({
+  const index = props.index || await ParkinWorker.findIndex({
     parent,
     feature,
     loc: EBlockLoc.before,

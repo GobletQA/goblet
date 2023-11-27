@@ -10,7 +10,7 @@ export const runnerStep = async (args:TPipelineArgs, manager?:TStateManager) => 
   const [error, outcomes] = await limbo<TExRunResult[], TestErr>(runTestsTask(args, runners))
 
   if(error){
-    error.result && 
+    error.result &&
      manager.setValue(`TestResults`, [error.result])
 
     throw error
@@ -19,7 +19,7 @@ export const runnerStep = async (args:TPipelineArgs, manager?:TStateManager) => 
   manager.setValue(`TestResults`, outcomes)
 
   args.rewind.push(() => {
-    runners.map(async ({ model, Runner }) => await Runner?.cleanup?.())
+    runners.map(async ({ Runner }) => await Runner?.cleanup?.())
   })
 
 }

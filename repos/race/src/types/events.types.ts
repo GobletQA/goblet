@@ -25,9 +25,7 @@ export type TAskForEditor = {
 export type TWithEditorCB = (data:TAnswerEditor) => void
 
 
-export type TOnParkinInit = {
-  parkin: Parkin
-}
+export type TOnParkinInit = {}
 
 export type TOnWorldUpdate = {
   world: TWorldConfig

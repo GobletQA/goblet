@@ -60,7 +60,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
    */
   const [cache, setCache] = useState<TDecoCache>({
     cache: {},
-    feature: feature.uuid,
+    feature: feature?.uuid,
   })
 
   const addDecoration = useInline<TRaceDecoAdd>((location, deco, meta) => {
@@ -93,14 +93,14 @@ export const useRaceDecoHooks = (props:THDecoration) => {
 
     decosRef.current = decos
     updateDecos(decosRef.current)
-    setCache({ feature: feature.uuid, cache: {} })
+    setCache({ feature: feature?.uuid, cache: {} })
   })
 
   // Listen for any changes to the feature and clear out decorations
   useOnEvent<TOnFeatureEvt>(RaceOnFeatureEvt, ({ feature }) => {
     feature?.path
       && settings.autoClearDecorations
-      && clearDecorations(feature.path)
+      && clearDecorations(feature?.path)
   })
 
   const updateDecorations = useInline<TRaceDecoUpdate>((location, decos, meta) => {
@@ -119,8 +119,8 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   })
 
   useEffect(() => {
-    feature.uuid !== cache.feature
-      && setCache({ feature: feature.uuid, cache: {} })
+    feature?.uuid !== cache.feature
+      && setCache({ feature: feature?.uuid, cache: {} })
   }, [feature, cache])
 
   return {

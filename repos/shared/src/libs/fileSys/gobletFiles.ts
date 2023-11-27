@@ -2,7 +2,7 @@ import type { TFileModel, Repo } from '@GSH/types'
 
 import os from 'os'
 import path from 'path'
-import fs from 'fs-extra'
+import { promises } from 'node:fs'
 import { Exception } from '@GException'
 import { loadReport } from '@GSH/libs/fileSys/loadReport'
 import { loadFeature } from '@GSH/libs/features/features'
@@ -20,9 +20,7 @@ import { isStr } from '@keg-hub/jsutils/isStr'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isBool } from '@keg-hub/jsutils/isBool'
-import { limboify } from '@keg-hub/jsutils/limbo'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-
 
 const nPath = os.platform() === `win32` ? path.win32 : path.posix
 
@@ -34,12 +32,18 @@ const nPath = os.platform() === `win32` ? path.win32 : path.posix
  * @param {string} [format=utf8] - Format of the file
  *
  */
-const writeFile = (
+const writeFile = async (
   location:string,
   data:string,
-  format:string = 'utf8'
+  format:BufferEncoding =`utf8`
 ) => {
-  return limboify<boolean>(fs.writeFile, location, data, format)
+  const [err, res] = await limbo(promises.writeFile(location, data, format))
+  return [err, !Boolean(err)] as [Error, boolean]
+}
+
+const pathExists = async (loc:string) => {
+  const [err, res] = await limbo(promises.access(loc, promises.constants.R_OK | promises.constants.W_OK))
+  return [err, !Boolean(err)] as [Error, boolean]
 }
 
 /**
@@ -53,7 +57,7 @@ const ensureGobletKeep = async (location:string) => {
   const stubFile = `.gobletkeep`
   const loc = path.join(location, stubFile)
 
-  const [err, exists] = await limbo(fs.pathExists(loc))
+  const [err, exists] = await pathExists(loc)
 
   if(err){
     const error = new Exception({
@@ -78,11 +82,11 @@ const ensureGobletKeep = async (location:string) => {
  *
  * @returns {Promise|string} - Content of the file
  */
-const readFile = (
+const readFile = async (
   location:string,
-  format:string='utf8'
+  format:BufferEncoding=`utf8`
 ) => {
-  return limboify(fs.readFile, location, format)
+  return await limbo<string>(promises.readFile(location, { encoding: format }))
 }
 
 
@@ -92,7 +96,7 @@ const readFile = (
  * @throw {Error} if location not found on file system
  */
 const checkPathExists = async (location:string, skipThrow?:boolean) => {
-  const [err, exists] = await limbo(fs.pathExists(location))
+  const [err, exists] = await pathExists(location)
 
   if ((err || !exists) && !skipThrow)
     throw new Exception({
@@ -208,7 +212,7 @@ const reloadWorld = async (
   content?:string
 ) => {
 
-  const world = await repo.refreshWorld()
+  const world = repo.refreshWorld()
 
   return await buildFileModel({
     content,
@@ -239,7 +243,7 @@ export const deleteGobletFile = async (
       403
     )
 
-  const [err] = await limbo(fs.remove(location))
+  const [err] = await limbo(promises.rm(location, { force: true, recursive: true }))
   if (err)
     throw new Exception({
       err,
@@ -464,8 +468,8 @@ export const renameGobletFile = async (
       err: isBool(existingLoc) ? `Unknown file status` : existingLoc,
     })
 
-  const moved = await limbo(fs.move(oldLoc, newLoc))
-  
+  const [err] = await limbo(promises.rename(oldLoc, newLoc))
+
   if(exists(content) && isStr(content)){
     const [err] = await writeFile(newLoc, content)
     if (err)
@@ -480,8 +484,8 @@ export const renameGobletFile = async (
 
   return {
     file,
-    success: moved,
     location: newLoc,
+    success: !Boolean(err),
   }
 
 }
@@ -506,12 +510,12 @@ export const createGobletFile = async (
   inRepoRoot(repo, location)
 
   // Check if the path already exists, so we don't overwrite an existing file
-  const [existsErr, fileExists] = await limbo(fs.pathExists(location))
+  const [existsErr, fileExists] = await pathExists(location)
   if (fileExists)
     throw new Exception(`File already exists at that location!`, 422)
 
   if(fileType === `folder`){
-    const [mkDErr] = await limbo(fs.ensureDir(location))
+    const [mkDErr] = await limbo(promises.mkdir(location, { recursive: true }))
     if (mkDErr) throw new Exception(mkDErr, 422)
 
     const [gobErr] = await ensureGobletKeep(location)
@@ -533,7 +537,7 @@ export const createGobletFile = async (
   const dirname = path.dirname(location)
 
   // Ensure the directory exists for the file
-  const [mkDirErr] = await limbo(fs.ensureDir(dirname))
+  const [mkDirErr] = await limbo(promises.mkdir(dirname, { recursive: true }))
   if (mkDirErr) throw new Exception(mkDirErr, 422)
 
   const [writeErr, writeSuccess] = await writeFile(location, content)

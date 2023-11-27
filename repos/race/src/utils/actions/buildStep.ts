@@ -13,7 +13,7 @@ import {EAstObject} from '@ltipton/parkin'
 const prefix = `[Add Step]`
 
 
-export const buildStep = <T extends TRaceStepParent>(
+export const buildStep = async <T extends TRaceStepParent>(
   feature:TRaceFeature,
   parent:T,
   step?:TRaceStep,
@@ -26,7 +26,7 @@ export const buildStep = <T extends TRaceStepParent>(
     steps.splice(idx, 0, step)
   }
   else {
-    step = stepFactory({ feature, parent })
+    step = await stepFactory({ feature, parent })
     if(!step) return factoryFailed(`step`, prefix)
 
     step.uuid = `${parent.uuid}.${step?.type || EAstObject.step}.${steps.length}`

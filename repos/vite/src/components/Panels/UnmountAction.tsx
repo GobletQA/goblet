@@ -1,7 +1,6 @@
 import type { ComponentProps, MouseEventHandler } from 'react'
 
-import {getStore} from '@store'
-import { noOp } from '@keg-hub/jsutils'
+import { useRepo } from '@store'
 import { Alert } from '@actions/modals/alert'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import {
@@ -15,6 +14,7 @@ import {
   ModalSubText,
   ModalContainer
 } from '@components/Modals/Modal.styled'
+import {noOp} from '@keg-hub/jsutils'
 
 export type TUnmountContent = {}
 export type TUnmountBtn = ComponentProps<typeof CloudOffIcon>
@@ -33,33 +33,11 @@ const styles = {
 const UnmountBtn = (props:TUnmountBtn) => {
   const { onClick, ...rest } = props
   
-  return (
-    <Tooltip
-      loc='bottom'
-      describeChild
-      enterDelay={500}
-      title={`Unmount repository`}
-    >
-      <IconButton
-        sx={styles.button}
-        onClick={onClick as MouseEventHandler<HTMLButtonElement>|undefined}
-      >
-        <CloudOffIcon {...rest} sx={styles.icon} />
-      </IconButton>
-    
-    </Tooltip>
-  )
-}
-
-export const UnmountAction = {
-  id:`connect-repo`,
-  Component: UnmountBtn,
-  className:`goblet-connect-repo`,
-  action:(e:Event) => {
+  const repo = useRepo()
+  
+  const onClickAlert = (e:any) => {
     stopEvent(e)
-    const { repo } = getStore().getState()
     const name = repo?.git?.repoName || repo?.name || `the mounted repo`
-
     Alert({
       title: `Unmount Repo`,
       okText: `Yes`,
@@ -82,6 +60,29 @@ export const UnmountAction = {
         </ModalContainer>
       ),
     })
+  }
+  
+  return (
+    <Tooltip
+      loc='bottom'
+      describeChild
+      enterDelay={500}
+      title={`Unmount repository`}
+    >
+      <IconButton
+        sx={styles.button}
+        onClick={onClickAlert as MouseEventHandler<HTMLButtonElement>|undefined}
+      >
+        <CloudOffIcon {...rest} sx={styles.icon} />
+      </IconButton>
+    
+    </Tooltip>
+  )
+}
 
-  },
+export const UnmountAction = {
+  action:noOp,
+  id:`connect-repo`,
+  Component: UnmountBtn,
+  className:`goblet-connect-repo`,
 }

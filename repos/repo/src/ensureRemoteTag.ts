@@ -1,7 +1,7 @@
 import type { TGitOpts } from '@gobletqa/git'
 
 import { git } from '@gobletqa/git'
-import { latentRepo } from './latentRepo'
+import { LatentRepo } from './latentRepo'
 import { Logger } from '@gobletqa/logger'
 import { ENVS } from '@gobletqa/environment'
 
@@ -61,6 +61,7 @@ export const ensureRemoteTag = async (gitOpts:TGitOpts) => {
   }
 
   Logger.warn(`Goblet repo tag does not match the current repo URL, rekeying secrets...`)
+  const latentRepo = new LatentRepo()
 
   const reKeyErr = latentRepo.rekey({
     old: existing,

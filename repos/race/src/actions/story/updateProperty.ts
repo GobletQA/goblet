@@ -1,4 +1,5 @@
-import type { TRaceFeature } from '@GBR/types'
+import type { TRaceFeature, TRaceBlock } from '@GBR/types'
+
 import { omitKeys, isArr } from '@keg-hub/jsutils'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
@@ -17,14 +18,14 @@ export const updateProperty = async (
     ? updateFeature(omitKeys(feature, [type]))
     : updateFeature({
         ...feature,
-        [type]: isArr<string[]>(content)
-          ? blocksFactory({
+        [type]: isArr<string>(content)
+          ? await blocksFactory({
               feature,
-              blocks: content.map(line => ({ content: line }))
+              blocks: content.map(line => ({ content: line }))  as Partial<TRaceBlock>[]
             })
-          : blockFactory({
+          : await blockFactory({
               feature,
-              block: { ...feature[type], content }
+              block: { ...feature[type], content } as Partial<TRaceBlock>
             })
       })
 }

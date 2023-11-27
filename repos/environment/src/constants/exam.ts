@@ -1,3 +1,6 @@
+// TODO: move EPlayerTestType so it does not depend on exam repo
+// import { EPlayerTestType } from '@GEX/types'
+
 export const ExamCfgArrayItems = [
   `testMatch`,
   `reporters`,
@@ -57,6 +60,42 @@ export const BuiltTestResultFailed = {
   action: `end` as const,
   type: `describe` as const,
   status: `failed`  as const,
+}
+
+export const BuiltExamEnded = {
+  stats: {},
+  testPath: `/`,
+  failed: false,
+  passed: false,
+  skipped: false,
+  timestamp: 0,
+  describes: [],
+  action: `ended`,
+  // TODO: move EPlayerTestType so it does not depend on exam repo
+  // id: EPlayerTestType.ended,
+  // type: EPlayerTestType.ended,
+  // fullName: EPlayerTestType.ended,
+  id: `ended`,
+  type: `ended`,
+  fullName: `ended`,
+  description: `Exam test execution has finished`,
+}
+
+export const BuiltExamStopped = {
+  timestamp: 0,
+  testPath: `/`,
+  failed: false,
+  passed: false,
+  skipped: false,
+  action: `stopped`,
+  // TODO: move EPlayerTestType so it does not depend on exam repo
+  // id: EPlayerTestType.stopped,
+  // type: EPlayerTestType.stopped,
+  // fullName: EPlayerTestType.stopped,
+  id: `stopped`,
+  type: `stopped`,
+  description: `Exam has stopped`,
+  fullName: `stopped`,
 }
 
 

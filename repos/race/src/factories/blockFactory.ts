@@ -16,7 +16,7 @@ export type TBlockFactory = {
   feature: TRaceFeature
 }
 
-export const blockFactory = ({
+export const blockFactory = async ({
   type,
   block,
   index=0
@@ -30,13 +30,15 @@ export const blockFactory = ({
     : undefined
 }
 
-export const blocksFactory = ({
+export const blocksFactory = async ({
   type,
   blocks,
   feature
 }:TBlocksFactory) => {
-  return blocks?.length
-    ? blocks.map(block => block && blockFactory({ block, feature, type }))
-        .filter(Boolean) as TRaceBlock[]
-    : undefined
+  if(!blocks?.length) return undefined
+
+  const built = await Promise.all(blocks.map(async (block) => block && await blockFactory({ block, feature, type })))
+
+  return built.filter(Boolean) as TRaceBlock[]
+
 }

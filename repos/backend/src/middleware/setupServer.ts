@@ -8,6 +8,7 @@ import type { Express } from 'express'
  * @returns {void}
  */
 export const setupServer = (app:Express) => {
+  app.set(`trust proxy`, 1)
   app.disable(`etag`)
   app.disable(`x-powered-by`)
 }

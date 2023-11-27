@@ -23,7 +23,7 @@ export type TAddScenario = {
   defaults?:Partial<TRaceScenario>
 }
 
-const buildScenario = (
+const buildScenario = async (
   props:TAddScenario,
   feature:TRaceFeature,
   parent:TRaceScenarioParent
@@ -34,7 +34,7 @@ const buildScenario = (
   if(scenario)
     scenarios.splice(props.index || scenarios.length - 1, 0, scenario)
   else {
-    scenario = scenarioFactory({
+    scenario = await scenarioFactory({
       parent,
       feature,
       empty: true,
@@ -51,7 +51,7 @@ const buildScenario = (
   }
 }
 
-const toRule = (
+const toRule = async (
   props:TAddScenario,
   feature:TRaceFeature
 ) => {
@@ -63,7 +63,7 @@ const toRule = (
   } = findRule(feature, props.parentId)
   if(!rule) return logNotFound(`rule`, prefix)
 
-  const built = buildScenario(props, feature, rule)
+  const built = await buildScenario(props, feature, rule)
   if(!built) return factoryFailed(`scenario`, prefix)
   const { scenarios, scenario } = built
 
@@ -71,22 +71,22 @@ const toRule = (
 
   const update = {...feature, rules}
 
-  props.persist !== false && updateFeature(update, { expand: scenario.uuid, skipAudit: true })
+  props.persist !== false && updateFeature(update, { expand: scenario.uuid, skipAudit: false })
 
   return update
 }
 
-const toFeature = (
+const toFeature = async (
   props:TAddScenario,
   feature:TRaceFeature,
 ) => {
-  const built = buildScenario(props, feature, feature)
+  const built = await buildScenario(props, feature, feature)
   if(!built) return factoryFailed(`scenario`, prefix)
   const { scenarios, scenario } = built
 
   const updated = {...feature, scenarios}
 
-  props.persist !== false && updateFeature(updated, { expand: scenario.uuid, skipAudit: true })
+  props.persist !== false && updateFeature(updated, { expand: scenario.uuid, skipAudit: false })
 
   return updated
 }
@@ -100,6 +100,6 @@ export const addScenario = async (props:TAddScenario) => {
   if(!feature) return logNotFound(`feature`, prefix)
 
   return !parentId || parentId === feature.uuid
-    ? toFeature(props, feature)
-    : toRule(props, feature)
+    ? await toFeature(props, feature)
+    : await toRule(props, feature)
 }

@@ -10,7 +10,12 @@ export const updateTestRunStats = (
   
   if(event.action === `start`) return
 
-  const stats = {...testRun.stats}
+  const stats = {
+    passed: {...testRun.stats.passed},
+    failed: {...testRun.stats.failed},
+    skipped: {...testRun.stats.skipped},
+  }
+
   const file = testRun.files[event.location]
 
   switch(getTREventType(event)){

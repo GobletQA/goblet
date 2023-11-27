@@ -1,14 +1,16 @@
 import type { TGobletConfig } from '@GSH/types'
 
 import path from 'path'
-import { execSync } from 'child_process'
-import { GitRemoteRef } from '../constants'
 import { exists } from '@keg-hub/jsutils/exists'
 import { ENVS } from '@gobletqa/environment/envs'
 import { EFileType, Latent } from '@gobletqa/latent'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
-import { getPathFromConfig, getGobletConfig } from '@gobletqa/goblet'
+import {
+  getRepoRef,
+  getGobletConfig,
+  getPathFromConfig,
+} from '@gobletqa/goblet'
 
 type TTokenProps = {
   ref?:string
@@ -38,38 +40,6 @@ type TMapValues = {
   existing?:TValuesObj
 }
 
-const gitCmd = (repoRoot:string, ref:string) => execSync(
-  `git config --get remote.${GitRemoteRef}.url`,
-  { cwd: repoRoot }
-)?.toString()?.trim()
-
-const getGitRemote = (repoRoot:string) => {
-  let url = (process.env.GB_GIT_REPO_REMOTE || ``).trim()
-  if(url) return url
-
-  try {
-    try {url = gitCmd(repoRoot, GitRemoteRef)}
-    catch(err){ url = gitCmd(repoRoot, `origin`)}
-  }
-  catch(err){
-    console.log(`[ENV LOADER] Failed to get goblet repo remote url`)
-    console.log(err.message)
-    return ``
-  }
-
-  return url.replace(/\.git$/, ``)
-}
-
-const getRepoRef = ({ref, remote, root}:TTokenProps) => {
-  const found = ref
-    || ENVS.GB_REPO_CONFIG_REF
-    || remote
-    || ENVS.GB_GIT_REPO_REMOTE
-  
-  if(found) return found
-
-  return getGitRemote(root)
-}
 
 
 export class EnvironmentLoader {

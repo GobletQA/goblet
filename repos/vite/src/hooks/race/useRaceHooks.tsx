@@ -10,8 +10,8 @@ import type {
 import { useRepo } from '@store'
 import {exists} from '@keg-hub/jsutils'
 import { useMemo, useRef } from 'react'
-import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
+import { useEffectOnce, useInline } from '@gobletqa/components'
 
 import { useRaceSettings } from '@hooks/race/useRaceSettings'
 import { useRaceStepDefs } from '@hooks/race/useRaceStepDefs'
@@ -155,6 +155,12 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
     decoRef,
     editorRef,
     rootPrefix
+  })
+
+  useEffectOnce(() => {
+    return () => {
+      editorRef.current?.resetParkin?.()
+    }
   })
 
   return {

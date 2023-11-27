@@ -25,11 +25,11 @@ export const useLayoutResize = () => {
 
   })
 
-  useOnEvent(WindowResizeEvt, async () => onBrowserResize())
+  useOnEvent(WindowResizeEvt, () => onBrowserResize())
 
   useOnEvent<TVncConnected>(VNCConnectedEvt, ({ rfb }) => {
     refRef.current = rfb
-    onBrowserResize()
+    setTimeout(() => onBrowserResize(), 1000)
   })
 
   return {

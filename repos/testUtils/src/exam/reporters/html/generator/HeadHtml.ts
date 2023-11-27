@@ -1,7 +1,6 @@
-import type { TExEventData } from "@gobletqa/exam"
 import { Styles } from './styles'
 
-export const HeadHtml = (response:TExEventData, title:string) => {
+export const HeadHtml = (title:string, includePartial:boolean) => {
   return `
   <head>
     <meta charset="utf-8">
@@ -13,7 +12,7 @@ export const HeadHtml = (response:TExEventData, title:string) => {
     <meta name="keywords" content="">
     <meta name="description" content="">
     <title>${title}</title>
-    ${Styles(response)}
+    ${Styles(includePartial)}
   </head>
   `
 }

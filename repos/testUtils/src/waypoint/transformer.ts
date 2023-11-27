@@ -2,8 +2,7 @@ import type { Loader } from 'esbuild'
 
 import path from 'path'
 import {transformSync} from 'esbuild'
-import { getWorld } from '@gobletqa/repo/world'
-import { default as createCacheKey} from '@jest/create-cache-key-function'
+import { getClientWorld } from '@gobletqa/repo'
 
 /**
  * List of default loads that esbuild supports
@@ -29,12 +28,11 @@ const loaders = [
 const nodeVersion = process.env.NODE_ENV === `test` ? `20` : process.versions.node
 
 export const waypointTransformer = {
-  getCacheKey: createCacheKey([], []),
   process: (src:string, file:string, options:Record<string, any>) => {
 
     const name = file.split('/').pop()
     const extname = path.extname(file)
-    const world = getWorld()
+    const world = getClientWorld()
     const worldStr = JSON.stringify(world)
 
     const {

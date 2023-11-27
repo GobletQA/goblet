@@ -312,8 +312,7 @@ export class Recorder {
     const url = await page.url()
 
     this.fireEvent({
-      message: 'page loaded',
-      // TODO: add url and other metadata to data object
+      message: `page loaded`,
       data: {
         url,
         title,

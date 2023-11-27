@@ -4,9 +4,8 @@ import { Then } from '@GTU/Parkin'
 import { get } from '@keg-hub/jsutils/get'
 import { getLocators } from '@GTU/Playwright'
 import { cleanWorldPath, greaterLessEqual } from '@GTU/Support/helpers'
+import { ExpressionCustomInputs, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
-// -- TODO: Needs updated to use the saveWorldData helpers
-//  -- And to use race
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`
@@ -34,6 +33,7 @@ export const compareSavedElementCount = async (
 }
 
 const meta = {
+  race: true,
   name: `Compare saved element count`,
   module : `compareSavedElementCount`,
   examples: [
@@ -43,17 +43,22 @@ const meta = {
   description: `Locates elements by selector and compares the amount of found elements against a previously stored number from the $wold.`,
   expressions: [
     {
-      type: `string`,
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `The selector for the elements.`,
       example: `li.list-item`,
     },
     {
-      type: `string`,
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.options,
+      options: greaterLessEqual.options,
       description: `The word or symbol that defines the validation check. Must be one of ${greaterLessEqual.matchTypes}`,
       example: `<`,
     },
     {
-      type: `string`,
+      kind: ExpressionKinds.world,
+      type: ExpressionTypes.string,
+      kindRef: ExpressionCustomInputs.world,
       description: `Path on the world where the count should be saved`,
       example: `page.items.count`,
     },

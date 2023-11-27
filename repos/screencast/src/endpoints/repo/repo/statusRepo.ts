@@ -2,7 +2,7 @@ import type { Response } from 'express'
 import type { TGitOpts } from '@gobletqa/workflows'
 import type { Request as JWTRequest } from 'express-jwt'
 
-import { workflows } from '@gobletqa/workflows'
+import { Workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
 import { setBrowserDefaults } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/api/express/apiRes'
@@ -19,6 +19,8 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
   const { query } = req
   const { token, username, provider } = req.auth
   const { config } = req.app.locals
+
+  const workflows = new Workflows()
   const { repo, status } = await workflows.status(config, {
     token,
     provider,
@@ -41,8 +43,8 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
   const repoContent = await loadRepoContent(foundRepo, status)
   try {
     await setBrowserDefaults({
+      url: false,
       repo: foundRepo,
-      config: foundRepo,
       browserConf: joinBrowserConf(foundRepo?.screencast?.browser)
     })
   }

@@ -24,7 +24,6 @@ export const InternalPaths = deepFreeze({
   tracesTempDir: `${GOBLET_ROOT}/temp/traces`,
   videosTempDir: `${GOBLET_ROOT}/temp/videos`,
   downloadsTempDir: `${GOBLET_ROOT}/temp/downloads`,
-  testMetaFile: `${GOBLET_ROOT}/temp/testMeta.json`,
   snapshotsTempDir: `${GOBLET_ROOT}/temp/snapshots`,
   reportsTempDir: `${GOBLET_ROOT}/temp/reports`,
   reportsTempFile: `${GOBLET_ROOT}/temp/reports/html-report.html`,

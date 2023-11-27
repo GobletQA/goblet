@@ -1,5 +1,11 @@
 import type { TGobletConfig } from '@gobletqa/shared'
-import type { TWFGobletConfig, TWFResp, TGitOpts, TRepoOpts } from '@GWF/types'
+import type {
+  TWFResp,
+  TGitOpts,
+  TRepoOpts,
+  TWFGobletConfig,
+  TGobletCfgLoaderResp,
+} from '@GWF/types'
 
 import path from 'path'
 import {failResp} from './response'
@@ -15,6 +21,7 @@ import { getRepoName, git, RepoWatcher } from '@gobletqa/git'
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts
+const emptyLoaderResp = noOpObj as TGobletCfgLoaderResp
 
 /**
  * @typedef {Object} RepoStatus
@@ -51,10 +58,12 @@ const statusForLocal = async (config:TWFGobletConfig, opts:TGitOpts) => {
 
   // Check if the local mount folder exists
   // If not then it's empty
-  const gobletConfig = isValidPath && gobletLoader({
-    remote: opts.remote,
-    basePath: RepoLocalMount,
-  })
+  const { config:gobletConfig } = isValidPath
+    ? gobletLoader({
+        remote: opts.remote,
+        basePath: RepoLocalMount,
+      })
+    : emptyLoaderResp
 
   try {
     await repoSecrets(opts, gobletConfig)
@@ -128,16 +137,18 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
   if (!isMounted) return unknownStatus
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = gobletLoader({
+  const {
+    config:gobletConfig
+  } = gobletLoader({
     remote,
-    basePath: local,
-  })
+    basePath: local
+  }) || emptyLoaderResp
 
   const repo = {
     git: omitKeys(opts, [`token`]),
     ...gobletConfig,
     name: getRepoName(remote),
-  } as TGobletConfig
+  } as TRepoOpts
 
   // const secretsFail = await repoSecrets(opts, repo, true)
   // if(secretsFail) return secretsFail

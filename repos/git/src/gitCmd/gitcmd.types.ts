@@ -141,6 +141,16 @@ export type TGitCommit = (
   metaData?:TSaveMetaData
 ) => TGitCmdResp
 
+export type TGitAddMeta = {
+  args?:string[]
+  locations?:string|string[],
+  cmdOpts?:TRunCmdOpts,
+}
+
+export type TGitAdd = (
+  gitOpts:TGitOpts,
+  metaData:TGitAddMeta
+) => TGitCmdResp
 
 export type TGitFetchOpts = TGitOpts & {
   all?:boolean
@@ -180,6 +190,7 @@ export type TGitExec = {
   gitOpts:TGitOpts,
   cmdOpts?:TRunCmdOpts,
   ) => Promise<TLimboCmdResp>
+  add:TGitAdd
   pull:TGitPull
   clone:TGitClone
   branch: TGitBranch

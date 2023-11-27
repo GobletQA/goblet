@@ -1,28 +1,32 @@
 import type {
-  TLoader,
   TCfgMerge,
   TLoopLoad,
-  TLoadedFunc,
   TSearchFile,
   TRequiredFun,
   TGobletConfig,
+  TGobletLoader,
   TLoadedFunResp,
-  TGobletLoader
+  TGobletCfgLoaderResp
 } from '../types'
 
 import path from 'path'
 import { globSync } from 'glob'
-import { createRequire } from 'module'
 import { isStr } from '@keg-hub/jsutils/isStr'
-import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { GobletConfigFileNames } from '../constants'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { ensureGobletCfg } from '../utils/ensureGobletCfg'
+
+import {
+  resetRequire,
+  getGobletCfg,
+  setGobletCfg,
+  getRelativeRequire,
+} from './configCache'
 
 type TBuildReqOpts = {
   safe?:boolean,
-  clearCache?:boolean
-  addLocation?:boolean
 }
+
 
 /**
  * Characters that define if a path
@@ -41,13 +45,6 @@ const loadFromType = <T extends TCfgMerge>(data:T) => {
 }
 
 
-const flattenLoadedArr = <T>(data:T, items:TLoadedFunResp<T>[]) => {
-  const onlyData = items?.length
-    && items.map(item => item.data)
-
-  // Merge all loaded data configs into a single object
-  return onlyData ? deepMerge<T>(data, ...onlyData) : data
-}
 
 /**
  * Builds a require function for loading goblet configs dynamically
@@ -55,23 +52,18 @@ const flattenLoadedArr = <T>(data:T, items:TLoadedFunResp<T>[]) => {
 const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) => {
   const {
     safe=false,
-    clearCache=false,
-    addLocation=false
   } = opts
   
-  const relativeRequire = createRequire(basePath)
-  return (
+  const relativeRequire = getRelativeRequire(basePath)
+  const localRequire = (
     location:string,
     inlineSafe:boolean=false,
-    inlineClearCache:boolean=false
   ) => {
 
     try {
       const fullLoc =  noBasePath.find(start => location.startsWith(start))
         ? location
         : path.join(basePath, location)
-
-      if(clearCache || inlineClearCache) delete require.cache[fullLoc]
 
       const data = relativeRequire(fullLoc) as T
       return data ? { data, location: fullLoc } : undefined
@@ -83,6 +75,8 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
       throw err
     }
   }
+
+  return localRequire
 }
 
 /**
@@ -92,14 +86,13 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
  * Once loaded, then merges each loaded world into a single world object
  * @recursive
  */
-const loadWithMerge = <T extends TCfgMerge>(data:T, {
-  merge,
+const loadWithMerge = <T extends TCfgMerge=TCfgMerge>(data:T, {
   basePath,
   clearCache,
   requireFunc,
 }:Omit<TLoopLoad<T>, `loadArr`>) => {
 
-  if(merge === false || !data?.$merge || !data?.$merge?.length) return data
+  if(!data?.$merge || !data?.$merge?.length) return data
 
   const loadedArr = loopLoadArray<T>({
     basePath,
@@ -108,7 +101,12 @@ const loadWithMerge = <T extends TCfgMerge>(data:T, {
     loadArr: data?.$merge,
   })
 
-  return flattenLoadedArr(data, loadedArr)
+  // Extract the data field from the loadedArr which has data & location
+  const mergeData = loadedArr?.length && loadedArr.map(item => item.data)
+
+  return mergeData
+    ? deepMerge<T>(data, ...mergeData)
+    : data
 }
 
 /**
@@ -124,13 +122,13 @@ const loopLoadArray = <T extends TCfgMerge>(params:TLoopLoad<T>):TLoadedFunResp<
     type,
     safe,
     first,
+    merge,
     loadArr,
     basePath,
-    clearCache,
     requireFunc,
   } = params
 
-  const requireData = requireFunc || buildRequire(basePath, { safe, clearCache })
+  const requireData = requireFunc || buildRequire(basePath, { safe })
   
   const loadedArr:TLoadedFunResp<T>[] = [] as TLoadedFunResp<T>[]
 
@@ -148,7 +146,7 @@ const loopLoadArray = <T extends TCfgMerge>(params:TLoopLoad<T>):TLoadedFunResp<
       const dataByType = loadFromType(loadedData)
       if(!dataByType) continue;
 
-      const loadedMerge = loadWithMerge<T>(dataByType, params)
+      const loadedMerge = merge ? loadWithMerge<T>(dataByType, params) : dataByType
 
       if(loadedMerge && first)
         return [{ data: loadedMerge, location }] as TLoadedFunResp<T>[]
@@ -175,15 +173,16 @@ export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
   const {
     file,
     safe,
+    merge,
     location,
     basePath,
     clearCache,
-    ...rest
   } = params
 
   let data:T
+  if(clearCache) resetRequire()
 
-  const requireFunc = buildRequire<T>(basePath, { safe, clearCache })
+  const requireFunc = buildRequire<T>(basePath, { safe })
 
   // If a location is passed, try to load it
   if(location){
@@ -205,14 +204,16 @@ export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
   return data
     ? loadWithMerge(data, { basePath, requireFunc })
     : undefined
-
 }
 
 
 /**
  * @description - Loads config files based on the passed in basePath and loadArr
  */
-export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
+export const gobletLoader = (params:TGobletLoader):TGobletCfgLoaderResp|undefined => {
+  const cached = getGobletCfg()
+  if(cached) return cached
+
   const {
     ref,
     remote,
@@ -220,18 +221,18 @@ export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
     safe=true,
     clearCache,
     first=true,
-    addLocation,
   ...loadArgs
 } = params
+
+  if(clearCache) resetRequire()
 
   const resp = loopLoadArray<TGobletConfig>({
     safe,
     first,
     basePath,
-    addLocation,
     loadArr: GobletConfigFileNames,
     ...loadArgs,
-    requireFunc: buildRequire(params.basePath, { safe, addLocation, clearCache }),
+    requireFunc: buildRequire(params.basePath, { safe }),
     // enforce not loading multiple goblet configs
     merge: false,
   })
@@ -240,11 +241,12 @@ export const gobletLoader = (params:TGobletLoader):TGobletConfig|undefined => {
 
   const { data: config, location } = resp.pop()
 
-  return ensureGobletCfg(config, {
+  const loaded = ensureGobletCfg(config, {
     ref,
     remote,
     location,
     repoRoot: basePath
-  }) as TGobletConfig
+  })
 
+  return setGobletCfg(loaded)
 }

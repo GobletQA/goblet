@@ -72,8 +72,9 @@ export type TPlayerTestExpectation = {
 export type TPlayerTestShared = {
   timestamp:number
   location?:string
-  status:EResultStatus
+  htmlReport?:string
   metaData?:TRunResultActionMeta
+  status:EResultStatus|`running`|`passed`|`failed`
 }
 
 export type TPlayerTestStart = Omit<TExEventData, `type`|`action`|`status`>

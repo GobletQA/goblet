@@ -28,13 +28,14 @@ export const usePastTestRun = (props:THPastTestRuns) => {
   const { run } = props
 
   return useMemo(() => {
-    const [name, timestamp] = run.runId.split(`.`)
+    const [name=``, timestamp=``] = (run?.runId?.split(`.`) || [])
     const date = new Date()
     date.setTime(toNum(timestamp) * 1000)
 
     return {
       date,
       name: wordCaps(name),
+      htmlReport: run.htmlReport,
       status: getTestRunStatus(run)
     }
   }, [

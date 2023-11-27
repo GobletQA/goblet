@@ -1,10 +1,7 @@
 
-const cardinal = `#B53541`
-const honeyYellow = `#FFB601`
-
-const recordRed = `#DE0D0D`
-const recordBg = `#DE0D0D21`
+const failedRed = `#B53541`
 const royalPurple = `#785B9C`
+const shamrockBg = `#61AB82`
 const shinyShamrock = `#148F4B`
 const coolOrange = `#D99B01`
 const blueGreen = `#2E869A`
@@ -58,17 +55,32 @@ export const margin = {
   dpx: `${marginSize * 2}px`,
 }
 
+const background = {
+  skipped: `
+    background-color: ${coolOrange}33;
+    border-bottom: 2px solid ${coolOrange}66;
+  `,
+  passed: `
+    background-color: ${shamrockBg}33;
+    border-bottom: 2px solid ${shamrockBg}66;
+  `,
+  failed: `
+    background-color: ${failedRed}33;
+    border-bottom: 2px solid ${failedRed}66;
+  `
+}
+
 export const colors = {
   ...scale,
+  background,
   text: scale.c21,
   primary: royalPurple,
   secondary: blueGreen,
   pass: shinyShamrock,
-  fail: recordRed,
-  failBg: recordBg,
+  fail: failedRed,
   skip: coolOrange,
   success: shinyShamrock,
-  error: recordRed,
+  error: failedRed,
   warn: coolOrange,
 }
 export const font = {

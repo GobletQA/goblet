@@ -3,7 +3,11 @@ import type { TUITestEvt, TExamUIChildProcOpts } from '@GSC/types'
 import path from 'node:path'
 import { EUIReportType } from '@GSC/types'
 import { ENVS } from '@gobletqa/environment'
-import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
+import {
+  InternalPaths,
+  ArtifactSaveOpts,
+  TestsToSocketEvtMap
+} from '@gobletqa/environment/constants'
 
 /**
  * Default options when executing a child process
@@ -29,8 +33,31 @@ export const getDefOpts = ():TExamUIChildProcOpts => ({
      * Ensure the log split key is set to the current environments value
      */
     EXAM_EVENT_LOG_SPLIT_KEY: ENVS.EXAM_EVENT_LOG_SPLIT_KEY,
+    /**
+     * Disable colors from being logged
+     */
+    GOBLET_TEST_COLORS: `0`,
+    /**
+     * Custom options to pass to the html reporter
+     */
+    GOBLET_TEST_HTML_REPORTER_OPTS: JSON.stringify({
+      /**
+       * For saving the HTML report
+       */
+      saveReport: ArtifactSaveOpts.always,
+      /**
+       * Save all html reports as a single html file
+       */
+      combineAllTests: true,
+      /**
+       * Save the HTML reports to a temp location
+       * The UI will allow users to download this file if needed
+       */
+      reportsDir: InternalPaths.reportsTempDir,
+    })
   },
 })
+
 
 
 export const cleanRepoName = (name:string) => {
@@ -65,6 +92,7 @@ export const getUuid = (evt:TUITestEvt) => {
   return [name, type, idRef].filter(Boolean).join(`-`)
 
 }
+
 
 export const getText = (evt:TUITestEvt) => {
   if(!evt?.data?.metaData)

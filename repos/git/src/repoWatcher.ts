@@ -17,18 +17,26 @@ import { checkCall } from '@keg-hub/jsutils/checkCall'
 const handleExisting = (
   existingWatcher:RepoWatcher,
   options:TGitOpts,
-  onEvent?:TRepoWatchCb,
-  autoStart?:boolean
+  cfg:TRepoWatcherCreate
 ) => {
+  const { onStop, onEvent, autoStart } = cfg
 
   if(existingWatcher.watcher)
     RepoWatcher.log(`Can not create new RepoWatcher, Already watching path ${options?.local}`, `warn`)
   else {
     if(!existingWatcher.onEvent && onEvent) existingWatcher.onEvent = onEvent
+    if(!existingWatcher.onStop && onStop) existingWatcher.onStop = onStop
     autoStart && existingWatcher.start()
   }
 
   return existingWatcher
+}
+
+export type TRepoWatcherCreate = {
+  onStop?:()=>void
+  autoStart?:boolean
+  onEvent?:TRepoWatchCb,
+  
 }
 
 /**
@@ -40,6 +48,8 @@ export class RepoWatcher {
   options:TGitOpts
   watcher:FSWatcher
   onEvent:TRepoWatchCb
+  onStop:()=>void|Promise<void>
+
   static watchers:Record<string, RepoWatcher> = {}
   static showLogs:boolean = Boolean(process.env.NODE_ENV === 'local')
 
@@ -63,13 +73,15 @@ export class RepoWatcher {
    * Creates a new instance of a RepoWatcher based on the local path
    * Caches the created watcher for removing at a later time
    */
-  static create(options:TGitOpts, onEvent?:TRepoWatchCb, autoStart?:boolean){
+  static create(
+    options:TGitOpts,
+    cfg:TRepoWatcherCreate
+  ){
     const existingWatcher = RepoWatcher.watchers[options?.local]
 
-    if(existingWatcher)
-      return handleExisting(existingWatcher, options, onEvent, autoStart)
+    if(existingWatcher) return handleExisting(existingWatcher, options, cfg)
 
-    const repoWatcher = new RepoWatcher(options, onEvent, autoStart)
+    const repoWatcher = new RepoWatcher(options, cfg)
     RepoWatcher.watchers[options.local] = repoWatcher
 
     return repoWatcher
@@ -91,11 +103,16 @@ export class RepoWatcher {
     delete RepoWatcher.watchers[local]
   }
 
-  constructor(options:TGitOpts, onEvent?:TRepoWatchCb, autoStart?:boolean){
+  constructor(
+    options:TGitOpts,
+    cfg:TRepoWatcherCreate
+  ){
+    const { onStop, onEvent, autoStart } = cfg
     this.options = options
     !this.options?.local
       && error.throwError(`Can not create RepoWatcher, missing local path`)
     
+    if(onStop) this.onStop = onStop
     if(onEvent) this.onEvent = onEvent
 
     autoStart && this.start()
@@ -140,6 +157,8 @@ export class RepoWatcher {
    * This technically means the start method of the RepoWatcher instance could be called again
    */
   async stop(){
+    await checkCall(this?.onStop)
+
     if(!this.watcher)
       return RepoWatcher.log(`Can not stop RepoWatcher instance, watcher does not exist`, `warn`)
     

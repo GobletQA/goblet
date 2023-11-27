@@ -26,6 +26,8 @@ export type TExamUIRunOpts = {
   repo:Repo
   eventSplit?:string
   runTimestamp:number
+  saveHtmlReport?:boolean
+  saveJsonReport?:boolean
   onEvent?:TExamUIRunEvtCB
   onRunFinish:TExamUIRunFinishCB
   extraEvt:Partial<TExamEvtExtra>

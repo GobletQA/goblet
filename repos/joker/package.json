@@ -37,7 +37,7 @@
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
-    "@keg-hub/jsutils": "9.8.3",
+    "@keg-hub/jsutils": "9.10.0",
     "intellinode": "1.4.4",
     "openai": "4.10.0"
   },
@@ -46,8 +46,8 @@
     "@ltipton/esdev": "0.2.1",
     "@types/debug": "4.1.9",
     "@types/express": "4.17.18",
-    "@types/node": "20.7.1",
-    "esbuild": "0.19.3",
+    "@types/node": "20.9.3",
+    "esbuild": "0.19.7",
     "esbuild-register": "3.5.0"
   }
 }

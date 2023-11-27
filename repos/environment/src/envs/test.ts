@@ -36,6 +36,20 @@ const test = (general:TGenEnv) => {
     GOBLET_FEATURE_NAME=PARKIN_FEATURE_NAME,
     GB_LOGGER_FORCE_DISABLE_SAFE,
 
+    /**
+     * Technically this can be used in other environments
+     * But it's really only used for the UI
+     * Allows saving the test reports to a temp dir
+     * Which then allows the user to download them
+     */
+    GOBLET_CUSTOM_REPORTS_DIR,
+    /**
+     * Pass custom options to the exam reporter
+     * Expected to be a stringified JSON object - i.e. JSON.stringify({ ...reporter options })
+     */
+    GOBLET_TEST_HTML_REPORTER_OPTS,
+    GOBLET_TEST_CLI_REPORTER_OPTS,
+    GOBLET_TEST_JSON_REPORTER_OPTS,
   } = process.env
 
   const GOBLET_TEST_DEBUG = asBool(process.env.GOBLET_TEST_DEBUG)
@@ -72,6 +86,10 @@ const test = (general:TGenEnv) => {
     GOBLET_TEST_TRACING_SNAPSHOTS: asBool(GOBLET_TEST_TRACING_SNAPSHOTS ?? true),
     GOBLET_TEST_TRACING_SCREENSHOTS: asBool(GOBLET_TEST_TRACING_SCREENSHOTS ?? true),
 
+    GOBLET_CUSTOM_REPORTS_DIR,
+    GOBLET_TEST_CLI_REPORTER_OPTS,
+    GOBLET_TEST_JSON_REPORTER_OPTS,
+    GOBLET_TEST_HTML_REPORTER_OPTS,
   }
 
 }

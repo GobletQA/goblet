@@ -42,8 +42,6 @@ const addTestRunEvt = createAction<TAddTestRunEvts>(`addTestRunEvt`)
 const setTestRunActive = createAction<TTestRunId>(`setTestRunActive`)
 const cancelTestRun = createAction<TTestRunId|undefined>(`cancelTestRun`)
 const toggleAllTestsRun = createAction<boolean|undefined>(`toggleAllTestsRun`)
-const addEvtAndMakeActive = createAction<TAddTestRunEvts>(`addEvtAndMakeActive`)
-const addActiveTestRunEvt = createAction<TAddActiveTestRunEvts>(`addActiveTestRunEvt`)
 const toggleTestsRunScrollLock = createAction<boolean|undefined>(`toggleTestsRunScrollLock`)
 
 const getEvents = (opts:TAddActiveTestRunEvts) => {
@@ -57,9 +55,10 @@ const getEvents = (opts:TAddActiveTestRunEvts) => {
 export const testRunsActions = {
 
   upsertTestRun: (state:TTestRunsState, action:TDspAction<TUpsertTestRun>) => {
-    const { runId, data } = action?.payload
+    const { active, runId, data } = action?.payload
     return {
       ...state,
+      active: active ? runId : state.active,
       runs: {
         ...state.runs,
         [runId]: deepMerge({ runId, files: {} }, state.runs[runId], data)
@@ -86,7 +85,7 @@ export const testRunsActions = {
     return {
       ...state,
       active: runId,
-      runs: state.runs?.[runId]
+      runs: !runId || state.runs?.[runId]
         ? state.runs
         : {...state.runs, [runId]: {runId, files: {} }}
     } as TTestRunsState
@@ -102,18 +101,6 @@ export const testRunsActions = {
     return {...state, scrollLock }
   },
 
-  addActiveTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddActiveTestRunEvts>) => {
-    if(!state.active){
-      console.warn(`Can not add run events; missing active Test Run ID`)
-      return state
-    }
-
-    const runId = state.active
-    const events = getEvents(action?.payload)
-    const testRun = addEventsToTestRun({...state.runs[runId], runId }, events)
-
-    return {...state, runs: {...state.runs, [runId]: testRun }}
-  },
 
   addTestRunEvt: (state:TTestRunsState, action:TDspAction<TAddTestRunEvts>) => {
     const { runId } = action?.payload
@@ -128,23 +115,6 @@ export const testRunsActions = {
     return {...state, runs: {...state.runs, [runId]: testRun }}
   },
 
-  addEvtAndMakeActive: (state:TTestRunsState, action:TDspAction<TAddTestRunEvts>) => {
-    const { runId } = action?.payload
-    if(!runId){
-      console.warn(`A runId is required to make a testRun active and add events to it`)
-      return state
-    }
-
-    const events = getEvents(action?.payload)
-    const testRun = addEventsToTestRun({...state.runs[runId], runId}, events)
-
-    return {
-      ...state,
-      active: runId,
-      runs: {...state.runs, [runId]: testRun }
-    }
-  },
-  
   cancelTestRun: (state:TTestRunsState, action:TDspAction<TTestRunId|undefined>) => {
     // If an id is passed validate it's the correct ID
     const runId = action?.payload
@@ -181,8 +151,6 @@ export const testRunsReducer = createReducer(
     builder.addCase(cancelTestRun, testRunsActions.cancelTestRun)
     builder.addCase(setTestRunActive, testRunsActions.setTestRunActive)
     builder.addCase(toggleAllTestsRun, testRunsActions.toggleAllTestsRun)
-    builder.addCase(addActiveTestRunEvt, testRunsActions.addActiveTestRunEvt)
-    builder.addCase(addEvtAndMakeActive, testRunsActions.addEvtAndMakeActive)
     builder.addCase(toggleTestsRunScrollLock, testRunsActions.toggleTestsRunScrollLock)
   })
 

@@ -56,17 +56,28 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
     tracer?:any
     cookie?:string
     tracing?:Boolean
+    initFuncs?: string[]
+    initScript?: string[]
     extraHTTPHeaders?:Record<string, string>
     options?:Partial<TBrowserContextOpts>
   }
 }
 
+type TPAgeBrowserTrack = {
+  [key in EBrowserEvent]?: boolean
+}
+
+export type TPageGoblet = TPAgeBrowserTrack & {
+  video?:Record<any, any>
+  initFuncs?: string[]
+  initScript?: string[]
+  hasCloseEvt?:boolean
+}
+
 export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
   locator:(selector: string, options?: TLocatorOpts) => TLocator
+  __pageGoblet?: TPageGoblet
   __GobletAutomateInstance?: Automate
-  __pageGoblet?: {
-    video?:any
-  }
 }
 
 export type TScreenDims = ViewportSize
@@ -177,7 +188,6 @@ export type TSetBrowserDefaults = {
   repo:Repo
   headers?:boolean
   url?:boolean|string
-  config:TGobletConfig
   browserConf:TBrowserConf
   pwComponents?:TPWComponents
 }

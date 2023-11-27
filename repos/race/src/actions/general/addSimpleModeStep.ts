@@ -21,8 +21,8 @@ export type TAddSimpleModeStep = {
 }
 
 
-const addScenarioStep = ({ feature, scenario, ...props }:TAddSimpleModeStep) => {
-  const added = buildStep<TRaceScenario>(
+const addScenarioStep = async ({ feature, scenario, ...props }:TAddSimpleModeStep) => {
+  const added = await buildStep<TRaceScenario>(
     feature,
     scenario,
     props.step
@@ -39,7 +39,7 @@ export const addSimpleModeStep = async (props:TAddSimpleModeStep) => {
   if(!feature) return logNotFound(`feature`, prefix)
 
   const { scenario:scn, index } = findSimpleScenario({...props, feature})
-  const added = addScenarioStep({...props, scenario:scn})
+  const added = await addScenarioStep({...props, scenario:scn})
 
   if(!added) return
 

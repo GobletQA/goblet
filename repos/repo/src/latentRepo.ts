@@ -1,4 +1,5 @@
-import type { Repo } from '@GRP/types'
+import type { Repo  } from '@GRP/types'
+import type { TGitOpts } from '@gobletqa/git'
 
 import type {
   TLTGet,
@@ -10,6 +11,8 @@ import type {
   TFileSaveResp,
 } from '@gobletqa/latent'
 
+import { git } from '@gobletqa/git'
+import { Logger } from '@GRP/utils/logger'
 import { env } from '@keg-hub/parse-config'
 import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
@@ -138,24 +141,38 @@ export class LatentRepo {
 
       let saved:TFileSaveResp
       if(type === EFileType.secrets){
-        console.log(`Repo secrets are being updated...`)
+        Logger.debug(`Repo secrets are being updated...`)
         saved = this.latent.secrets.save(args as TLTSave)
       }
       else {
-        console.log(`Repo values are being updated...`)
+        Logger.debug(`Repo values are being updated...`)
         saved = this.latent.values.save(args as TLTSave)
       }
 
       const { failed } = saved
       const success = (!failed || failed?.length === 0)
 
-      return [
-        success ? undefined : new Error(`Failed to properly save ${type} file`),
-        success
-      ]
+      if(success){
+        const [addErr] = await git.add(
+          /**
+          * **IMPORTANT** - Does not include the users Git Provider Token
+          */
+          {...repo.git, local: repo.paths.repoRoot} as TGitOpts,
+          /**
+           * Force add the file as the files are not tracked in git by default
+           */
+          {args: [`--force`], locations: [location]}
+        )
+
+        if(addErr) throw addErr
+
+        return [undefined, success]
+      }
+
+      return [new Error(`Failed to properly save ${type} file`), success]
     }
     catch(err){
-      console.log(`[Latent Repo] Save File Error`, err.message)
+      Logger.error(`[Latent Repo] Save File Error`, err.message)
       return [err, undefined]
     }
   }

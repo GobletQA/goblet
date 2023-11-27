@@ -20,7 +20,8 @@ export type TExRunResult = Omit<TRunResult, `metadata`|`describes`|`tests`|`stat
   testPath?:string
   location?:string
   timestamp:number
-  stats: TTestStats
+  stats:TTestStats
+  htmlReport?:string
   description?:string
   tests?:TExRunResult[]
   status: EResultStatus
@@ -34,11 +35,15 @@ export type TExRunResult = Omit<TRunResult, `metadata`|`describes`|`tests`|`stat
 
 export enum EPlayerTestType {
   test=`test`,
+  exam=`exam`,
   error=`error`,
   feature=`feature`,
   describe=`describe`,
+  ended=`exam-ended`,
+  stopped=`exam-stopped`,
 }
 
+export type TExEvtAction = EResultAction|`error`|`ended`|`stopped`|``
 
 
 export type TExTestExpectation = {
@@ -51,6 +56,7 @@ export type TEventParent = EAstObject.step
   | EAstObject.background
   | EAstObject.rule
   | EAstObject.feature
+  | `exam`
 
 export type TExTestStart = Omit<TExRunResult, `type`|`action`|`status`> & {
   status:EResultStatus
@@ -75,7 +81,7 @@ export type TExTestResult = Omit<TExRunResult, `type`|`action`|`status`> & {
 
 export type TExTestEvent = Omit<TExRunResult, `type`|`action`|`status`> & {
   type:EPlayerTestType
-  action:EResultAction|`error`
+  action:TExEvtAction
   status?:EResultStatus
   eventParent?: TEventParent
 }
@@ -86,6 +92,12 @@ export type TEXErrorResult = Omit<TExRunResult, `type`|`action`|`status`> & {
   eventParent?:TEventParent
   status:EResultStatus.failed
   type:EPlayerTestType.error|EAstObject.error
+}
+
+export type TExEndedEvent = Omit<TExRunResult, `type`|`action`|`status`> & {
+  eventParent?:`exam`
+  action:TExEvtAction
+  type:EPlayerTestType.exam
 }
 
 export type TExEventData = TExTestEvent

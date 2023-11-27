@@ -1,8 +1,8 @@
 import type { TRaceFeature, TRaceStep, TRaceStepParent } from '@GBR/types'
 
-import { findIndex } from '@GBR/utils/find/findIndex'
 import { EStepType, EAstObject } from '@ltipton/parkin'
 import { deepMerge, emptyArr } from '@keg-hub/jsutils'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 
 export type TStepsFactory = {
   empty?:boolean
@@ -24,14 +24,14 @@ const emptyStep = (step:Partial<TRaceStep>):Partial<TRaceStep> => ({
   ...step
 })
 
-export const stepFactory = ({
+export const stepFactory = async ({
   step,
   parent,
   feature,
   empty=false
 }:TStepFactory) => {
 
-  const index = findIndex({ parent, feature, type:EAstObject.steps })
+  const index = await ParkinWorker.findIndex({ parent, feature, type:EAstObject.steps })
   // TODO: update this to dynamically figure out the whitespace based on the number of parents
   // I.E. (feature - scenario - step === 4 spaces)
   // I.E. (feature - rule - scenario - step === 6 spaces)
@@ -52,13 +52,14 @@ export const stepFactory = ({
       }) as TRaceStep
 }
 
-export const stepsFactory = ({
+export const stepsFactory = async ({
   steps,
   parent,
   feature,
   empty=false
 }:TStepsFactory) => {
-  return steps?.length
-    ? steps.map(step => step && stepFactory({ parent, step, empty, feature })).filter(Boolean)
-    : emptyArr as TRaceStep[]
+  if(!steps?.length) return emptyArr as TRaceStep[]
+
+  const built = await Promise.all(steps.map(async (step) => step && await stepFactory({ parent, step, empty, feature })))
+  return built.filter(Boolean)
 }

@@ -41,19 +41,19 @@
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
-    "@keg-hub/jsutils": "9.8.3",
-    "@ltipton/parkin": "6.3.0",
-    "esbuild": "0.19.3",
+    "@keg-hub/jsutils": "9.10.0",
+    "@ltipton/parkin": "6.3.1",
+    "esbuild": "0.19.7",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.5.0",
     "expect": "29.7.0",
     "glob": "10.3.10",
-    "module-alias": "2.2.2",
-    "playwright": "1.38.1"
+    "module-alias": "2.2.3",
+    "playwright": "1.40.0"
   },
   "devDependencies": {
     "@types/debug": "4.1.9",
     "@types/express": "4.17.18",
-    "@types/node": "20.7.1"
+    "@types/node": "20.9.3"
   }
 }

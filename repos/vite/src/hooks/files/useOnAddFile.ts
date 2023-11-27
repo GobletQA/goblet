@@ -1,9 +1,11 @@
 import type {
   TFileTree,
+  TFileTypes,
   TRepoState,
 } from '@types'
 
 import { useCallback } from 'react'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { createFile } from '@actions/files/api/createFile'
 
@@ -33,7 +35,9 @@ export const useOnAddFile = (
 
     const fileType = isFolder
       ? `folder`
-      : Object.values(repo.fileTypes).find(typeObj => typeObj.ext === ext) || `file`
+      : Object.values((repo.fileTypes || emptyObj) as TFileTypes)
+          .find((typeObj) => typeObj.ext === ext)
+            || `file`
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
 

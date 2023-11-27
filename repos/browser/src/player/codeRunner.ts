@@ -86,9 +86,10 @@ export class CodeRunner {
 
     const results = await this.PTE.run() as TPlayerEventData[]
     const final = clearTestResults(results[0])
-    await this.cleanup()
+    if(this.canceled) return emptyObj as TPlayerEventData
 
-    return this.canceled ? emptyObj as TPlayerEventData : final
+    await this.cleanup()
+    return final
   }
 
   onSpecDone = (result:TPlayerEventData) => {
@@ -107,8 +108,7 @@ export class CodeRunner {
 
     if(result.failed){
       this.cancel()
-      
-      
+
       const failed = result?.failedExpectations?.[0]
       if(!failed){
         Logger.empty()

@@ -25,9 +25,13 @@ const getRoot = () => {
   return __RootDir
 }
 
+const resetRoot = () => {
+  __RootDir = undefined
+}
 
 export {
   getRoot,
   setRoot,
+  resetRoot,
   __RootDir as rootDir,
 }

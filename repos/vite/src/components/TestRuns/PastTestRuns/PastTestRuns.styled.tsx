@@ -15,6 +15,7 @@ import {
   gutter,
   InText,
   getColor,
+  IconButton,
 } from '@gobletqa/components'
 
 const avgEase = dims.trans.avgEase
@@ -53,6 +54,9 @@ export const PastTestRunListItemIcon = styled(ListItemIcon)`
   max-width: 55px;
   justify-content: flex-end;
 `
+
+export const PastTestRunListItemDownload = styled(IconButton)``
+
 
 export const PastTestRunListItemHeader = styled(ListSubheader)(({ theme }) => `
   flex-grow: 1;

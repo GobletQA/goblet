@@ -20,7 +20,7 @@ export const createFeature = async (feat:Partial<TEmptyFeature>, rootPrefix?:str
   const path = await getFeaturePath(feat, rootPrefix)
   if(!path?.length) return logNotFound(`Feature path`, `[Create Feature]`)
 
-  const feature = featureFactory({
+  const feature = await featureFactory({
     uuid: EmptyFeatureUUID,
     ...feat,
     path,

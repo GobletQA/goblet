@@ -17,6 +17,7 @@ import { EventEmitter } from 'node:events'
  * This happens when the using the persistent-context option of playwright
  * It ensures the API is consistent with a normal browser instance
  */
+// @ts-ignore
 export class EmptyBrowser extends EventEmitter implements Browser {
   #type:BrowserType
   #context:TBrowserContext
@@ -77,6 +78,7 @@ export const checkInternalPWContext = (type:EBrowserName):TPWComponents|undefine
 
   const context = [...contexts][0]
   let browser:TBrowser = context?.browser?.()
+  // @ts-ignore
   if(context && browser === null) browser = new EmptyBrowser(context, type)
 
   const components = { browser, context } as TPWComponents

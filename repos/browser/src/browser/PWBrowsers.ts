@@ -128,7 +128,7 @@ export class PWBrowsers {
     
     const context = await playwright[type].launchPersistentContext(opts)
 
-    const browser = new EmptyBrowser(context, type)
+    const browser = new EmptyBrowser(context, type) as unknown as TBrowser
     logEnvMsg(`createPersistentBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, browserConf)
 
@@ -156,14 +156,25 @@ export class PWBrowsers {
     // Set the new browser
     this.#browsers[bType] = browser
 
+    // @ts-ignore
     // Add listener to delete the browser when closed
-    isFunc(browser.on) &&
-      browser.on(`disconnected`, async () => {
+    !browser.__GobletHasDisconnectedEvt
+      && browser?.on?.(`disconnected`, async () => {
+        browser.__browserGoblet = undefined
+        delete browser.__browserGoblet
+        // @ts-ignore
+        browser.__GoblethasDisconnectedEvt = undefined
+
+        if(global.browser === browser) global.browser = undefined
+
         if (!this.#browsers[bType]) return
 
         this.#browsers[bType] = undefined
         delete this.#browsers[bType]
       })
+
+    // @ts-ignore
+    browser.__GobletHasDisconnectedEvt = true
 
     return this.#browsers
   }
@@ -395,12 +406,12 @@ export class PWBrowsers {
   */
   captureNewPages = async (context:TBrowserContext) => {
     // Get all new pages (including popups) in the context
-    context.on('page', async page => {
-      await page.waitForLoadState()
-      const url = page.url()
-      // Handle new pages trying to redirect to new urls
+    // context.on('page', async page => {
+    //   await page.waitForLoadState()
+    //   const url = page.url()
+    //   // Handle new pages trying to redirect to new urls
       
-    })
+    // })
   }
 
 

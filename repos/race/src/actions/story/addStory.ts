@@ -6,8 +6,8 @@ export const addStory = async () => {
   const { feature } = await getFeature()
   if(!feature) return
 
-  const story = storyFactory({ feature, empty: true })
+  const story = await storyFactory({ feature, empty: true })
 
-  updateFeature({...feature, ...story}, { expand: story.uuid, skipAudit: true })
+  updateFeature({...feature, ...story}, { expand: story.uuid, skipAudit: false })
 
 }

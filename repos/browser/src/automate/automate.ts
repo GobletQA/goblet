@@ -28,7 +28,6 @@ import { exposePWFunction } from '@GBB/utils/exposePWFunction'
 type TAutomateEvtGroup = Array<TOnAutomateEvent|[TOnAutomateEvent, Record<any, any>]>
 
 
-
 export class Automate {
 
   /**
@@ -79,20 +78,7 @@ export class Automate {
     // Don't add the UI scripts in CI environment
     if(ENVS.GOBLET_RUN_FROM_CI || ENVS.GOBLET_RUN_FROM_UI) return
 
-    await exposePWFunction(
-      parent,
-      `getGobletHoverOption`,
-      automate.getHoverOption
-    )
-    await exposePWFunction(
-      parent,
-      `onGobletSelectAction`,
-      automate.gobletSelectAction
-    )
-    await addPWInitScripts(
-      parent,
-      [`selector`, `mouseHover`]
-    )
+    await automate.addInitScripts()
   }
 
   static turnOnElementSelect = async (
@@ -140,6 +126,7 @@ export class Automate {
       throw new Error(`Could not find goblet automate instance on parent object`)
 
     const page = Automate.getPage(automate)
+    await automate?.addInitScripts(page)
     await automate?.pageUrl?.(page)
   }
 
@@ -240,6 +227,28 @@ export class Automate {
   }
 
   /**
+   * Helper to add the int script for Goblet UI
+   */
+  addInitScripts = async (parent?:TBrowserPage|TBrowserContext) => {
+    logEnvMsg(`Adding init scripts and exposing methods...`)
+    parent = parent || this.parent
+    await exposePWFunction(
+      parent,
+      `getGobletHoverOption`,
+      this.getHoverOption
+    )
+    await exposePWFunction(
+      parent,
+      `onGobletSelectAction`,
+      this.gobletSelectAction
+    )
+    await addPWInitScripts(
+      parent,
+      [`selector`, `mouseHover`]
+    )
+  }
+
+  /**
    * Adds event callback, called when events are fired
    */
   registerListener = (onEvent:TOnAutomateEvent, args?:TBrowserEventArgs) => {
@@ -302,7 +311,7 @@ export class Automate {
   cleanUp = async () => {
     logEnvMsg(`Automate - Cleaning up automate instance`)
     
-    await this.onCleanup(this)
+    await this.onCleanup?.(this)
 
     if(this.parent) {
       this.parent.__GobletAutomateInstance = undefined

@@ -1,4 +1,5 @@
 import type { MutableRefObject } from 'react'
+import type { TFeatureUIOverride }  from './FeatureContext'
 import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 import type { TTabItem } from '@gobletqa/components'
 import type {
@@ -19,6 +20,7 @@ import type {
   TOnAuditFeatureCB,
 } from '@GBR/types'
 
+import { useWorld } from './WorldContext'
 import { emptyObj } from '@keg-hub/jsutils'
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
@@ -58,9 +60,11 @@ export type TEditorCtx = TRaceMenuActions & {
   audit:TAudit
   rootPrefix:string
   expanded:TExpanded
+  isAuditing?:boolean
   displayMeta?:boolean
   feature:TRaceFeature
   collapseAll:() => void
+  resetParkin:() => void
   setFeature:TOnFeatureCB
   featureGroups:TRaceFeatures
   expressionOptions?:TExpOpts
@@ -76,6 +80,7 @@ export type TEditorCtx = TRaceMenuActions & {
   onFolderRename?:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
   setTabsAndGroups: TSetTabsAndGroups
+  overrideFeatureUI:TFeatureUIOverride
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -114,12 +119,18 @@ export const EditorProvider = (props:TEditorProvider) => {
   } = props
 
   const {
+    resetParkin
+  } = useWorld()
+
+  const {
     feature,
+    overrideFeatureUI,
     setFeature:_setFeature
   } = useFeature()
 
   const {
     audit,
+    isAuditing,
     onAuditFeature
   } = useAudit({ feature })
 
@@ -165,8 +176,10 @@ export const EditorProvider = (props:TEditorProvider) => {
       audit,
       expanded,
       setFeature,
+      isAuditing,
       rootPrefix,
       collapseAll,
+      resetParkin,
       menuContext,
       getOpenedTabs,
       featureGroups,
@@ -184,6 +197,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       featureActions,
       scenarioActions,
       backgroundActions,
+      overrideFeatureUI,
       onFolderRename: onFeatureRename,
       onFolderDelete: onFeatureDelete,
       onFolderCreate: onFeatureCreate,
@@ -195,7 +209,9 @@ export const EditorProvider = (props:TEditorProvider) => {
     expanded,
     setFeature,
     rootPrefix,
+    isAuditing,
     collapseAll,
+    resetParkin,
     getOpenedTabs,
     deleteFeature,
     updateFeature,

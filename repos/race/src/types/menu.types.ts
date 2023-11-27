@@ -22,7 +22,7 @@ export type TOnSubMenu = {
 }
 
 export type TRaceMenuItemClickCtx = Omit<TMenuContextRef, 'context'>
-  & TParkinCtx
+  & Omit<TParkinCtx, `resetParkin`>
   & TStepDefsCtx
   & Omit<TFeatureCtx, `setFeature`>
   & {

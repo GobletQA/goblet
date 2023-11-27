@@ -15,6 +15,7 @@ import type {
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
+import { EBrowserEvent } from '@GBB/types'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
@@ -22,6 +23,24 @@ import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
 import { checkInternalPWContext } from '@GBB/utils/checkInternalPWContext'
+
+/**
+ * Checks for existing contexts, and reuses one if found
+ * If more then one exists, then the first found context is used, and the others are closed
+ */
+const ensureOnlyOneContext = async (browser:TBrowser):Promise<TBrowserContext> => {
+  const contexts = browser.contexts()
+
+  if(!contexts.length) return undefined
+  if(contexts.length === 1) return contexts[0]
+
+  const context = contexts.shift()
+
+  logEnvMsg(`getContext - Closing extra contexts on the browser`)
+  await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
+
+  return context
+}
 
 export class Browser {
 
@@ -123,26 +142,17 @@ export class Browser {
       overrides=emptyObj as TBrowserConf,
     } = args
 
-
+    let newContext = false
     const resp = await pwBrowsers.getBrowser({
       world,
       config,
       browserConf
     })
 
-    let context = resp.context
     const browser = resp.browser
-    
+    let context = resp.context || await ensureOnlyOneContext(browser)
+
     if(!context){
-      const contexts = browser.contexts()
-      const hasContexts = Boolean(contexts.length)
-      const hasMultipleContexts = contexts.length > 1
-
-      if(hasMultipleContexts){
-        logEnvMsg(`getContext - Closing extra contexts on the browser`)
-        await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
-      }
-
       const options = getContextOpts({
         world,
         config,
@@ -151,26 +161,36 @@ export class Browser {
       })
       
       logEnvMsg(`Context Options`, `verbose`, options)
-
-      if(hasContexts){
-        context = contexts[0] as TBrowserContext
-        logEnvMsg(`getContext - Found existing context on browser ${browserConf.type}`)
-      }
-      else {
-        context = await browser.newContext(options) as TBrowserContext
-        context.__contextGoblet = { options }
-
-        logEnvMsg(`getContext - New context created for browser ${browserConf.type}`)
-
-        Automate.bind({ parent: context })
-      }
-
+      context = await browser.newContext(options) as TBrowserContext
+      newContext = true
+      context.__contextGoblet = { options }
+      logEnvMsg(`getContext - New context created for browser ${browserConf.type}`)
     }
     else {
-      logEnvMsg(`getContext - Found Persistent context for browser ${browserConf.type}`)
+      logEnvMsg(`getContext - Found existing context for browser`)
     }
 
-    return { context, browser }
+    !context.__GobletAutomateInstance
+      && Automate.bind({ parent: context })
+
+
+    if(newContext)
+      context.on(EBrowserEvent.close, async () => {
+        global.context = undefined
+        if(context.__GobletAutomateInstance){
+          let automate = context.__GobletAutomateInstance
+          await automate.cleanUp()
+          automate = undefined
+          context.__GobletAutomateInstance = undefined
+        }
+        if(context.__contextGoblet){
+          context.__contextGoblet.initFuncs = undefined
+          context.__contextGoblet.initScript = undefined
+          context.__contextGoblet = undefined
+        }
+      })
+
+    return { context, browser, newContext }
   }
 
   #getBrowser = async (args:TBrowserOnly) => {
@@ -204,8 +224,39 @@ export class Browser {
     }, this.#getPage as TGetPageCB)
   }
 
+  restartContext = async (args:TStartBrowser):Promise<TPWComponents> => {
+    const {
+      world,
+      config,
+      overrides,
+      initialUrl,
+      browserConf
+    } = args
+    
+    logEnvMsg(`Closing context...`)
+    const { newContext, context } = await this.#getContext({
+      world,
+      config,
+      overrides,
+      browserConf,
+    })
+
+    !newContext && await context?.close?.()
+
+    logEnvMsg(`Context closed, creating new context and page...`)
+    return await this.#getPage({
+      world,
+      config,
+      initialUrl,
+      browserConf,
+    })
+  }
+
   restart = async (args:TStartBrowser):Promise<TPWComponents> => {
+    logEnvMsg(`Closing browser...`)
     await pwBrowsers.closeBrowser(args?.browserConf?.type as EBrowserType)
+
+    logEnvMsg(`Browser closed, restarting browser...`)
     return await this.start(args)
   }
 

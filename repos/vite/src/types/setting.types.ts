@@ -90,6 +90,20 @@ export type TBrowserSettings = {
   [key:string]: TSetting
 }
 
+export type TGobletSettings = {
+  unit:boolean
+  features:boolean
+  waypoint:boolean
+  lockResize:boolean
+  customSteps:boolean
+  sidebarLocked:boolean
+  worldAutoFormat:boolean
+  worldIndentation:number
+  parallelEditors:boolean
+  browserInBrowser:boolean
+  browserIntentClick:boolean
+}
+
 export type TBrowserSettingValues = {
   [key: keyof TBrowserSettings]: any
 }

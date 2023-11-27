@@ -1,18 +1,30 @@
-import { useTestRuns } from '@store'
-import { cls } from '@keg-hub/jsutils'
+import type { TTestRunExecEndEvent } from '@types'
+
 import { EBrowserState } from '@types'
+import { cls } from '@keg-hub/jsutils/cls'
+import { useTestRuns, useApp } from '@store'
 import { LAutomationCover } from './Layout.styled'
+import { LayoutCoverActions } from './LayoutCoverActions'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
-import { TestRunToggleScroll } from "@components/TestRuns/TestReporter/TestRunToggleScroll"
 
-      
+export type TLayoutCover = {
+  showBrowser?:boolean
+}
 
-export const LayoutCover = () => {
+export const LayoutCover = (props:TLayoutCover) => {
+
+  const {showBrowser} = props
+
+  const { testRunsView } = useApp()
+  const {browserState} = useBrowserState()
   const {
+    runs,
+    active,
     scrollLock,
     allTestsRunning
   } = useTestRuns()
-  const { browserState } = useBrowserState()
+
+  const htmlReport = active ? runs?.[active].htmlReport : undefined
   const automationActive = ((allTestsRunning && scrollLock) || browserState !== EBrowserState.idle)
 
   return (
@@ -22,9 +34,15 @@ export const LayoutCover = () => {
           `gb-automation-cover`,
           automationActive && `active`
         )}
-      >
-      </LAutomationCover>
-      {allTestsRunning && (<TestRunToggleScroll scrollLock={scrollLock} />)}
+      />
+      <LayoutCoverActions
+        scrollLock={scrollLock}
+        htmlReport={htmlReport}
+        showBrowser={showBrowser}
+        testRunsView={testRunsView}
+        allTestsRunning={allTestsRunning}
+        automationActive={automationActive}
+      />
     </>
   )
 }

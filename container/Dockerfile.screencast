@@ -15,7 +15,6 @@ ENV GB_SUB_REPO=screencast \
 
 RUN mkdir -p /etc/supervisor && \
     rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-* && \
-    sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
     novnc \
@@ -76,6 +75,9 @@ WORKDIR /goblet/app
 
 COPY --from=goblet-pruner /goblet/app/. .
 COPY --from=goblet-tasks /goblet/app/. .
+
+ARG PW_DEBUG_FILE=/goblet/app/logs
+ENV PW_DEBUG_FILE=$PW_DEBUG_FILE
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \
     ln -s /ms-playwright /root/.cache/ms-playwright

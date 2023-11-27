@@ -13,6 +13,25 @@ export const LContainer = styled(MuiContainer)`
   max-width: 100% !important;
 `
 
+export const RContainer = styled(MuiContainer)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 100% !important;
+`
+
+export const RTSection = styled(Box)`
+  width: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  background-color: ${colors.gray04};
+  flex-basis: ${dims.browser.actions.hpx};
+  min-height: ${dims.browser.actions.hpx};
+  max-height: ${dims.browser.actions.hpx};
+`
+
+
 export const LAutomationCover = styled(Box)`
   top: 0px;
   left:0px;
@@ -31,22 +50,4 @@ export const LAutomationCover = styled(Box)`
     opacity: 0.05;
   }
   
-`
-
-export const RContainer = styled(MuiContainer)`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 100% !important;
-`
-
-export const RTSection = styled(Box)`
-  width: 100%;
-  flex-grow: 1;
-  flex-shrink: 0;
-  background-color: ${colors.gray04};
-  flex-basis: ${dims.browser.actions.hpx};
-  min-height: ${dims.browser.actions.hpx};
-  max-height: ${dims.browser.actions.hpx};
 `
