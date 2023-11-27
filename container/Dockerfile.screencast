@@ -75,6 +75,9 @@ WORKDIR /goblet/app
 
 COPY --from=goblet-pruner /goblet/app/. .
 COPY --from=goblet-tasks /goblet/app/. .
+
+ARG PW_DEBUG_FILE=/goblet/app/logs
+ENV PW_DEBUG_FILE=$PW_DEBUG_FILE
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \
     ln -s /ms-playwright /root/.cache/ms-playwright

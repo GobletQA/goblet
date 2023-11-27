@@ -34,10 +34,10 @@ const initApi = async () => {
 
   await setupBrowser(app)
   setupLoggerReq(app)
-  setupBlacklist(app)
   setupCors(app)
   setupJWT(app, SCAuthBypassRoutes)
   setupServer(app)
+  setupBlacklist(app)
   setupRouter(app)
   validateUser({
     route: `/screencast\/*`,
