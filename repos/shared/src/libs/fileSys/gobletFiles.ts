@@ -16,8 +16,8 @@ import {
 } from '@GSH/constants'
 
 import { get } from '@keg-hub/jsutils/get'
-import { isStr } from '@keg-hub/jsutils/isStr'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isBool } from '@keg-hub/jsutils/isBool'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
@@ -52,7 +52,7 @@ const pathExists = async (loc:string) => {
  * @param {string} location - Folder path to where the file should be created
  *
  */
-const ensureGobletKeep = async (location:string) => {
+const ensureGobletKeep = async (location:string, retry:number=0) => {
   const emptyTxt = `// Stub - To ensure the folder path is tracked by git\n`
   const stubFile = `.gobletkeep`
   const loc = path.join(location, stubFile)
@@ -60,6 +60,10 @@ const ensureGobletKeep = async (location:string) => {
   const [err, exists] = await pathExists(loc)
 
   if(err){
+    // If no file exists, then create it
+    if((err as any).code === `ENOENT`)
+      return await writeFile(loc, emptyTxt) 
+
     const error = new Exception({
       err,
       status: 400,

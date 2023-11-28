@@ -12,3 +12,6 @@ env:
 
   # --- Run the conductor in local dev mode --- #
   GB_LOCAL_DEV_MODE: true
+  
+  # Use a websocket for connecting to the browser
+  GB_WS_BROWSER: true

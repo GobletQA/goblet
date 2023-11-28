@@ -9,6 +9,7 @@ const browser = (general:TGenEnv, scEnvs:ReturnType<typeof screencast>) => {
 
   const {
     GOBLET_HEADLESS,
+    GB_WS_BROWSER,
     GOBLET_DEV_TOOLS,
     GOBLET_BROWSER_DEVICES,
     GOBLET_BROWSER = `chromium`,
@@ -28,6 +29,7 @@ const browser = (general:TGenEnv, scEnvs:ReturnType<typeof screencast>) => {
   return {
     GOBLET_BROWSER,
     GOBLET_BROWSER_DEVICES,
+    GB_WS_BROWSER: asBool(GB_WS_BROWSER),
     GOBLET_HEADLESS: asBool(GOBLET_HEADLESS),
     GOBLET_DEV_TOOLS: asBool(GOBLET_DEV_TOOLS),
     GOBLET_BROWSER_SLOW_MO: asNum(GOBLET_BROWSER_SLOW_MO),

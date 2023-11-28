@@ -34,6 +34,7 @@ const {
   GB_SC_IMAGE,
   GB_KD_PORT,
   GB_SC_ACTIVE,
+  GB_WS_BROWSER,
   GB_NO_VNC_PORT,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
@@ -45,6 +46,7 @@ const {
   GB_CD_CONTROLLER_TYPE,
   GOBLET_SCREENCAST_PORT,
   GB_CD_LISTENER_TIMEOUT,
+  PW_CODEGEN_NO_INSPECTOR,
   GB_CD_VALIDATION_HEADER,
   GOBLET_KIND_SERVICE_PORT,
   GOBLET_SCREENCAST_SERVICE_HOST,
@@ -58,6 +60,7 @@ const whiteList = [
   `GB_NO_VNC`,
   `DISPLAY`,
   `PLAYWRIGHT_`,
+  `GB_WS_BROWSER`,
   `GB_CD_VALIDATION`,
   `GB_SERVER_ORIGINS`,
   `GB_BE_WS_PATH`,
@@ -71,6 +74,7 @@ const whiteList = [
   `GB_GIT_GLOBAL_IGNORE`,
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
+  `PW_CODEGEN_NO_INSPECTOR`,
   `GB_BE_JWT_REFRESH_SECRET`,
   `GB_SC_IDLE_INTERVAL`,
   `GB_SC_IDLE_THRESHOLD`,
@@ -226,6 +230,12 @@ export const conductorConfig:TConductorOpts = deepMerge({
 
           // Name of the remote origin used on mounted repos
           GB_GIT_REMOTE_REF,
+
+          // Use a websocket for connecting to the browser
+          GB_WS_BROWSER,
+
+          // Ensure the playwright inspector is disabled
+          PW_CODEGEN_NO_INSPECTOR: ENVS.PW_CODEGEN_NO_INSPECTOR ?? 1,
 
           // Amount to time to wait before auto-killing the container
           GB_SC_IDLE_INTERVAL: containerEnvs.GB_SC_IDLE_INTERVAL || `20`,

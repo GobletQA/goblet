@@ -90,7 +90,7 @@ export const useOnStepAction = (props:THOnStepChange) => {
     }
 
     const found = defs[opt.id as keyof typeof defs]
-    if(!found) return console.warn(`Can not find step definition`, opt, defs)
+    if(!found) return undefined
 
     onChange?.({
       ...step,

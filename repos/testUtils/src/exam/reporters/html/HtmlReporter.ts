@@ -164,7 +164,7 @@ export class HtmlReporter implements IExamReporter {
 
   #getPage = () => {
     if(!this.#saveScreenshot) return
-    this.#page = this.#page || global.getLastActivePage?.() || global?.page
+    this.#page = this.#page || global?.page
     !this.#page
       && console.warn(`Html Reporter "saveScreenshot" is "true", but a Browser Page does not exist`)
 

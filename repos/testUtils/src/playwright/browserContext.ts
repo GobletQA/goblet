@@ -10,14 +10,13 @@ import type {
 import os from 'os'
 import path from 'path'
 import { get } from '@keg-hub/jsutils/get'
+import { exists } from '@keg-hub/jsutils/exists'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
   GBrowser,
   DefaultStateFile,
+  addPageCloseEvts,
 } from '@gobletqa/browser'
-
-let LAST_ACTIVE_PAGE:TBrowserPage
-
 
 /**
  * Sets up the global browser for the test environment
@@ -105,48 +104,22 @@ export const getPage = async (num = 0, fromClosePage:boolean=false) => {
   const context = getContext()
   const pages = context.pages() || []
 
-  if(pages.length){
-    const page = pages[num]
-    if(page && !page.isClosed()){
-      global.page = page
-      LAST_ACTIVE_PAGE = page
+  let page:TBrowserPage
 
-      return page
-    }
-  }
+  if(pages.length)
+    page = exists(num)
+      ? pages[num]
+      : pages.find(pg => pg && !pg?.isClosed?.())
 
-  const page = await context.newPage()
+  if(!page) page = await context.newPage()
 
   global.page = page
-  LAST_ACTIVE_PAGE = page
+  addPageCloseEvts(page)
 
-  page.on(`close`, () => {
-    if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
-    if(page === global.page) global.page = undefined
-    if(page.__pageGoblet){
-      page.__pageGoblet.video = undefined
-      page.__pageGoblet.initFuncs = undefined
-      page.__pageGoblet.initScript = undefined
-      page.__pageGoblet.hasCloseEvt = undefined
-      page.__pageGoblet = undefined
-      delete page.__pageGoblet
-    }
-    
-    
-  })
-  page.on(`crash`, (data) => {
-    console.error(`ERROR - Browser page crashed`)
-    console.log(data)
-  })
-
-  return LAST_ACTIVE_PAGE as TBrowserPage
+  return page as TBrowserPage
 }
 
-export const getLastActivePage = () => LAST_ACTIVE_PAGE as TBrowserPage
-global.getLastActivePage = getLastActivePage
-
-export const setLastActivePage = (page:TBrowserPage) => (LAST_ACTIVE_PAGE = page)
-global.setLastActivePage = setLastActivePage
+export const getLastActivePage = () => global.page as TBrowserPage
 
 export const closePages = async () => {
   const context = getContext()
@@ -156,7 +129,6 @@ export const closePages = async () => {
 
 export const closePage = async (pg?:TBrowserPage, retry:number=1) => {
   const page = pg
-    || LAST_ACTIVE_PAGE
     || global.page
     || await getPage(0, true)
 
@@ -165,7 +137,6 @@ export const closePage = async (pg?:TBrowserPage, retry:number=1) => {
   page && await page.close()
 
   if(page === global.page) global.page = undefined
-  if(page === LAST_ACTIVE_PAGE) LAST_ACTIVE_PAGE = undefined
 }
 
 export const closeContext = async () => {

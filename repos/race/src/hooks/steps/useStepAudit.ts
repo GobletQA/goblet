@@ -2,6 +2,7 @@ import type { TStepDef } from '@ltipton/parkin'
 import type { TExpPart, TRaceStep } from '@GBR/types'
 
 import { useMemo } from 'react'
+import { emptyArr } from '@keg-hub/jsutils'
 import { useEditor, useStepDefs } from '@GBR/contexts'
 
 export type THStepAudit = {
@@ -21,16 +22,18 @@ export const useStepAudit = (props:THStepAudit):THStepAuditRes => {
 
   return useMemo(() => {
     const stepAudit = audit[step?.uuid]
+
     return !stepAudit
       ? { step }
       : {
           step,
-          def: defs[stepAudit?.def?.uuid],
-          expressions: audit[step?.uuid]?.expressions,
+          def: defs[stepAudit?.defId || step.definition as string],
+          expressions: stepAudit?.expressions || emptyArr
         }
   }, [
     defs,
     step?.uuid,
+    step?.step,
     step?.definition,
     audit[step?.uuid],
   ])
