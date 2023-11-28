@@ -52,7 +52,7 @@ const pathExists = async (loc:string) => {
  * @param {string} location - Folder path to where the file should be created
  *
  */
-const ensureGobletKeep = async (location:string, retry:number=0) => {
+const ensureGobletKeep = async (location:string) => {
   const emptyTxt = `// Stub - To ensure the folder path is tracked by git\n`
   const stubFile = `.gobletkeep`
   const loc = path.join(location, stubFile)
