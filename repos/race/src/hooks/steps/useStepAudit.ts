@@ -27,7 +27,7 @@ export const useStepAudit = (props:THStepAudit):THStepAuditRes => {
       ? { step }
       : {
           step,
-          def: defs[stepAudit?.defId || step.definition as string],
+          def: defs?.[stepAudit?.defId || step.definition as string],
           expressions: stepAudit?.expressions || emptyArr
         }
   }, [
