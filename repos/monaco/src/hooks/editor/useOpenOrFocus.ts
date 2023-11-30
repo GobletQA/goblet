@@ -1,7 +1,9 @@
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
 import type {
+  TFileMeta,
   TEditorOpts,
   TCodeEditorRef,
+  TPathChangeOpts,
   TEditorOpenFiles,
 } from '../../types'
 
@@ -9,15 +11,11 @@ import {emptyObj} from '@keg-hub/jsutils'
 import { useEffect, useCallback } from 'react'
 
 export type TUseOpenOrFocus = {
-  editorRef: TCodeEditorRef
-  editorNodeRef: RefObject<HTMLDivElement>
-  optionsRef: MutableRefObject<TEditorOpts>
-  setCurPath: (content: SetStateAction<string>) => void
-  setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
-}
-
-type TOpenOpts = {
-  setLoc?:boolean
+  editorRef:TCodeEditorRef
+  editorNodeRef:RefObject<HTMLDivElement>
+  optionsRef:MutableRefObject<TEditorOpts>
+  setCurPath:(content: SetStateAction<string>) => void
+  setOpenedFiles:(content: SetStateAction<TEditorOpenFiles>) => void
 }
 
 export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
@@ -29,11 +27,14 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
     setOpenedFiles,
   } = props
 
-  const openOrFocusPath = useCallback((loc: string, opts:TOpenOpts=emptyObj) => {
+  const openOrFocusPath = useCallback((loc: string, opts:TPathChangeOpts=emptyObj) => {
     setOpenedFiles(openedFiles => {
-      let exist = false
-      openedFiles.forEach(file => file.path === loc && (exist = true))
-      return exist ? openedFiles : [...openedFiles, { path: loc }]
+      const fileMeta:TFileMeta = { path: loc, editor: { readOnly: false }}
+      if(opts?.editor) fileMeta.editor = opts?.editor
+
+      const found = openedFiles.find(file => file.path === loc)
+      // TODO: add ability to update editor options if they don't exist on the file meta object
+      return found ? openedFiles : [...openedFiles, fileMeta]
     })
 
     opts?.setLoc !== false && setCurPath(loc)

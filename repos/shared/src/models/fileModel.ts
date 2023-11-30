@@ -21,6 +21,8 @@ const Model = {
   content: '',
   fileType: 'file',
   mime: 'text/plain',
+  worldFile: false,
+  gobletFile: false,
   ast: {},
   lastModified: 0,
   uuid: '',

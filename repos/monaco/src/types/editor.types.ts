@@ -16,6 +16,7 @@ import type {
   TEditorFileCB,
   TFileCallback,
   TOnEditorLoaded,
+  TPathChangeOpts,
   TEditorPromiseCB,
   TEditorRenameFile,
 } from './helpers.types'
@@ -83,7 +84,7 @@ export type TEditorRefHandle = {
   getSupportThemes:() => string[],
   resizeSidebar:(width:number) => void
   getValue:(path:string) => string | null,
-  openFile: (loc:string, content?:string|null) => void,
+  openFile: (loc:string, content?:string|null, opts?:TPathChangeOpts) => void,
   setTheme:(name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }
 

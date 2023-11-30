@@ -3,8 +3,8 @@ import type {  TFileMeta, TAutoSave, TModal } from '@GBM/types'
 
 import { useCallback, useMemo } from 'react'
 import { useOnTabClose } from './useOnTabClose'
+import { useInline } from '@gobletqa/components'
 import { fileToTab } from '@GBM/utils/file/fileTabs'
-
 
 export type THTabCallbacks = {
   Modal: TModal
@@ -38,9 +38,7 @@ export const useTabs = (props:THTabCallbacks) => {
       : []
   }, [openedFiles, currentPath])
 
-  const onTabClick = useCallback((tab:TTab) => {
-    tab?.path && onPathChange?.(tab.path)
-  }, [onPathChange])
+  const onTabClick = useInline((tab:TTab) => tab?.path && onPathChange?.(tab.path))
 
   const onTabClose = useOnTabClose({
     Modal,

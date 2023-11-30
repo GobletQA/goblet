@@ -1,4 +1,4 @@
-import { TConnectRepo, TCreateRepo, TBuiltRepo } from '@types'
+import { TConnectRepo, TCreateRepoOpts, TBuiltRepo } from '@types'
 
 import { useInline } from '@hooks/useInline'
 import { connectRepo } from '@actions/repo/api/connect'
@@ -9,7 +9,7 @@ export type TConnectParams = Omit<TConnectRepo, `repo`> & {
   repo:TBuiltRepo,
 }
 
-export type TCreateParams = Omit<TCreateRepo, `repo`> & {
+export type TCreateParams = Omit<TCreateRepoOpts, `repo`> & {
   repo:TBuiltRepo,
 }
 

@@ -1,4 +1,4 @@
-import type { TOpenMode } from './helpers.types'
+import type { TOpenMode, IEditorUpdateOpts } from './helpers.types'
 
 export interface TFilelist {
   [key: string]: string | null
@@ -8,6 +8,7 @@ export type TFileMeta = {
   path: string
   status?: string
   mode?: TOpenMode
+  editor?:IEditorUpdateOpts
 }
 
 export type TFileMetas = TFileMeta[]

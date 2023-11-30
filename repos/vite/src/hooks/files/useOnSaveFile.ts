@@ -5,8 +5,8 @@ import { emptyObj } from '@keg-hub/jsutils'
 import {getWorldLoc} from '@utils/repo/getWorldLoc'
 import { saveFile } from '@actions/files/api/saveFile'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
-import { useWorldSettings } from '@hooks/settings/useWorldSettings'
 import {formatWorldFile} from '@utils/repo/formatWorldFile'
+import { useWorldSettings } from '@hooks/settings/useWorldSettings'
 
 
 export const useOnSaveFile = (
@@ -33,6 +33,9 @@ export const useOnSaveFile = (
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
     const fileModel = files[fullLoc]
+
+    if(fileModel?.gobletFile)
+      return console.warn(`[File Save Error]: Can not save a goblet definition file`)
 
     const hasInlineModel = Boolean(ext.location && ext.content && ext.fileType)
 

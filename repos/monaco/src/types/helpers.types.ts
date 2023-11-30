@@ -5,7 +5,7 @@ import type { MutableRefObject } from 'react'
 export type TMonaco = typeof Monaco
 export type ICodeEditor = editor.ICodeEditor
 export type IEditor = editor.IStandaloneCodeEditor | null
-
+export type IEditorUpdateOpts = editor.IEditorOptions & editor.IGlobalEditorOptions
 
 export type TOpenMode = `keep` | `preview`
 export type TAutoSave = `blur` | `change` | `off`
@@ -44,6 +44,7 @@ export type TPathChangeOpts = {
   setLoc?:boolean
   openLoc?:boolean
   storage?:boolean
+  editor?:IEditorUpdateOpts
 }
 
 export type TPathChange = (loc:string, opts?:TPathChangeOpts) => void

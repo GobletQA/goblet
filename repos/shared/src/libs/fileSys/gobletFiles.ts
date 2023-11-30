@@ -353,6 +353,7 @@ export const getGobletDefaultFile = async (
   // Build the file model for the file
   return await buildFileModel({
     content,
+    gobletFile: true,
     location: repoLoc,
     fileType: `definition`,
   }, repo)

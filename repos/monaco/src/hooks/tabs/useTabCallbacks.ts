@@ -1,11 +1,11 @@
-import type { TFileMeta, TAutoSave, TModal } from '../../types'
 import type { SyntheticEvent } from 'react'
+import type { TFileMeta, TAutoSave, TModal } from '../../types'
 
+import { useMemo } from 'react'
 import { useOnTabClose } from './useOnTabClose'
 import { useOnTabHover } from './useOnTabHover'
+import { useInline } from '@gobletqa/components'
 import { useFileType } from '../file/useFileType'
-
-import { useCallback, useMemo } from 'react'
 
 export type THTabCallbacks = {
   Modal: TModal
@@ -64,13 +64,10 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
 
   const fileType = useFileType(file.path)
 
-  const pathChange = useCallback(
-    (e:SyntheticEvent<HTMLDivElement>) => {
-      const key = e.currentTarget.dataset.src!
-      onPathChange && onPathChange(key)
-    },
-    [onPathChange]
-  )
+  const pathChange = useInline((e:SyntheticEvent<HTMLDivElement>) => {
+    const key = e.currentTarget.dataset.src!
+    onPathChange?.(key)
+  })
 
   const {
     hover,

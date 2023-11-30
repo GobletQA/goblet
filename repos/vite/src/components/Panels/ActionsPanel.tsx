@@ -122,6 +122,7 @@ const ActionsPanelTitle = () => {
 
 export const ActionsPanel:TSidebarPanel = {
   actions: [
+    // TODO: Throws an error in production, need to investigate
     UnmountAction,
     LockAction,
   ],

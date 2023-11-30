@@ -3,7 +3,9 @@ import type { TFileMeta } from '@GBM/types'
 import type { TTabItem, TTab } from '@gobletqa/components'
 
 import { FileIcon } from '@gobletqa/components'
+// @ts-ignore
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+// @ts-ignore
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { TabStyles, TabRefs } from '@GBM/constants/tabs'
 

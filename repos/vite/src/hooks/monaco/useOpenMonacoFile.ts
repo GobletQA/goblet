@@ -46,7 +46,9 @@ export const useOpenMonacoFile = (props:THOpenMonacoFile) => {
 
     setTimeout(() => {
       const relative = rmRootFromLoc(loaded.location, rootPrefix)
-      editorRef?.current?.openFile?.(relative, loaded.content)
+      // Ensure goblet definitions are read only for now
+      // Eventually add ability to create copies of them
+      editorRef?.current?.openFile?.(relative, loaded.content, {editor: { readOnly: true }})
     }, 50)
 
   })

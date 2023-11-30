@@ -9,7 +9,7 @@ import { getPage } from '@GTU/Playwright'
  */
 export const pagePause = async (ctx:TStepCtx) => {
   
-  // TODO: add some UI to resume tests 
+  // TODO: add some UI to resume tests
 
   const page = await getPage()
   await page.pause()
@@ -22,4 +22,7 @@ Given(`I pause the page`, pagePause, {
   name: `Pause Page`,
   module : `pagePause`,
   description: `Pauses the steps execution of a feature. Should be used for debugging only.`,
+  // TODO: this does not currently work, but will be included in the next Parkin release
+  // Disables the timeout for this step only
+  test: { timeout: false }
 })

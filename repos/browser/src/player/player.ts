@@ -99,10 +99,15 @@ export class Player {
 
     if(page) this.page = page
     if(repo) this.repo = repo
-    if(steps) this.steps = steps
     if(context) this.context = context
     if(browser) this.browser = browser
     if(options) this.options = deepMerge(this.options, options)
+
+    if(steps)
+      this.steps = {...steps, shared: {
+        ...steps?.shared,
+        fireEvent:this.fireEvent.bind(this)
+      }}
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup

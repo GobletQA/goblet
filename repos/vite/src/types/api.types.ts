@@ -1,6 +1,6 @@
 import type { TRepoState } from './reducer.types'
 import type { TStepDefs } from '@ltipton/parkin'
-import type { TCreateRepo, TConnectRepo } from './repo.types'
+import type { TCreateRepoOpts, TConnectRepo } from './repo.types'
 import type {
   TRepoMeta,
   TFileTree,
@@ -56,6 +56,6 @@ export type TApiConnectReq = Omit<TConnectRepo, `repo`|`newRepo`|`description`> 
   repoUrl:string
 }
 
-export type TApiCreateReq = Omit<TCreateRepo, `repo`|`newRepo`> & {
+export type TApiCreateReq = Omit<TCreateRepoOpts, `repo`|`newRepo`> & {
   name: string
 }

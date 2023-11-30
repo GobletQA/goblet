@@ -1,11 +1,11 @@
 import type { ComponentProps, MouseEventHandler } from 'react'
 
 import { useRepo } from '@store'
+import {noOp} from '@keg-hub/jsutils'
 import { Alert } from '@actions/modals/alert'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import {
-  Tooltip,
-  stopEvent,
+  useInline,
   IconButton,
   CloudOffIcon,
 } from '@gobletqa/components'
@@ -14,7 +14,7 @@ import {
   ModalSubText,
   ModalContainer
 } from '@components/Modals/Modal.styled'
-import {noOp} from '@keg-hub/jsutils'
+
 
 export type TUnmountContent = {}
 export type TUnmountBtn = ComponentProps<typeof CloudOffIcon>
@@ -35,8 +35,10 @@ const UnmountBtn = (props:TUnmountBtn) => {
   
   const repo = useRepo()
   
-  const onClickAlert = (e:any) => {
-    stopEvent(e)
+  const onClickAlert = useInline((e:any) => {
+    e?.preventDefault?.()
+    e?.stopPropagation?.()
+
     const name = repo?.git?.repoName || repo?.name || `the mounted repo`
     Alert({
       title: `Unmount Repo`,
@@ -60,23 +62,15 @@ const UnmountBtn = (props:TUnmountBtn) => {
         </ModalContainer>
       ),
     })
-  }
-  
+  })
+
   return (
-    <Tooltip
-      loc='bottom'
-      describeChild
-      enterDelay={500}
-      title={`Unmount repository`}
-    >
       <IconButton
         sx={styles.button}
+        tooltip={`Unmount repository`}
         onClick={onClickAlert as MouseEventHandler<HTMLButtonElement>|undefined}
-      >
-        <CloudOffIcon {...rest} sx={styles.icon} />
-      </IconButton>
-    
-    </Tooltip>
+        Icon={(<CloudOffIcon {...rest} sx={styles.icon} />)}
+      />
   )
 }
 

@@ -10,28 +10,22 @@ import type {
 import { ESideNav } from '@types'
 import { useFiles, useRepo } from '@store'
 import { useMemo, useCallback } from 'react'
+import { useEventEmit } from '@gobletqa/components'
 import { confirmModal } from '@actions/modals/modals'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { exists, set, emptyObj } from '@keg-hub/jsutils'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
-import { isCustomDef } from '@utils/definitions/isCustomDef'
 import { useDecorations } from '@hooks/monaco/useDecorations'
 import { useMonacoConfig } from '@hooks/monaco/useMonacoConfig'
-import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import { useOpenMonacoFile } from '@hooks/monaco/useOpenMonacoFile'
 import { useSettingValues } from '@hooks/settings/useSettingValues'
 import { useMonacoLastOpened } from '@hooks/monaco/useMonacoLastOpened'
-import {
-  useOnEvent,
-  useEventEmit,
-} from '@gobletqa/components'
 
 import {
   UpdateModalEvt,
   ToggleSideNavEvt,
-  OpenEditorFileEvt,
 } from '@constants'
 
 import {
