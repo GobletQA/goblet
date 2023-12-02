@@ -56,7 +56,7 @@
     "@keg-hub/args-parse": "10.0.1",
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "6.3.1",
+    "@ltipton/parkin": "6.5.0",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",
     "esbuild-plugin-path-alias": "1.0.7",
