@@ -44,6 +44,9 @@ export const useOpenMonacoFile = (props:THOpenMonacoFile) => {
     const loaded = await loadGobletFile(location)
     if(!loaded) return
 
+    /**
+     * Timeout ensure the callback is called in the next cycle as some values are otherwise undefine 
+     */
     setTimeout(() => {
       const relative = rmRootFromLoc(loaded.location, rootPrefix)
       // Ensure goblet definitions are read only for now

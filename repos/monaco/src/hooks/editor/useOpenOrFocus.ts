@@ -32,9 +32,22 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
       const fileMeta:TFileMeta = { path: loc, editor: { readOnly: false }}
       if(opts?.editor) fileMeta.editor = opts?.editor
 
-      const found = openedFiles.find(file => file.path === loc)
-      // TODO: add ability to update editor options if they don't exist on the file meta object
-      return found ? openedFiles : [...openedFiles, fileMeta]
+      const idx = openedFiles.findIndex(file => file.path === loc)
+      const found = openedFiles[idx]
+      
+      // If the file is found, then ensure the editor options are updated if they exist
+      if(found){
+        if(opts.editor){
+          const updated = {...found, editor: opts.editor}
+          const copy = [...openedFiles]
+          copy[idx] = updated
+          return copy
+        }
+
+        return openedFiles
+      }
+
+      return [...openedFiles, fileMeta]
     })
 
     opts?.setLoc !== false && setCurPath(loc)

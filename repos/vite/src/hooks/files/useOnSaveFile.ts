@@ -35,7 +35,7 @@ export const useOnSaveFile = (
     const fileModel = files[fullLoc]
 
     if(fileModel?.gobletFile)
-      return console.warn(`[File Save Error]: Can not save a goblet definition file`)
+      return console.warn(`[File Save Error]: Can not save a goblet definition file at ${fullLoc}`)
 
     const hasInlineModel = Boolean(ext.location && ext.content && ext.fileType)
 

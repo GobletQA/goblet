@@ -5,24 +5,24 @@ export interface TFilelist {
 }
 
 export type TFileMeta = {
-  path: string
-  status?: string
-  mode?: TOpenMode
+  path:string
+  status?:string
+  mode?:TOpenMode
   editor?:IEditorUpdateOpts
 }
 
 export type TFileMetas = TFileMeta[]
 
 export type TMFile = {
-  ext: string
-  uuid: string
-  name: string
-  content: string
-  location: string
-  relative: string
+  ext:string
+  uuid:string
+  name:string
+  content:string
+  location:string
+  relative:string
 }
 export type TMFiles = {
-  [key:string]: TMFile
+  [key:string]:TMFile
 }
 
 export type TBuildFile = {
@@ -35,34 +35,34 @@ export type TBuildFile = {
 
 export type TBuildFolder = {
   part:string
-  name?: string
-  path?: string
+  name?:string
+  path?:string
   paths:string[]
-  index: number
+  index:number
   children?: TFolderChildren
 }
 
 export type TFolder = {
-  path: string,
-  name: string,
-  _isDirectory: boolean,
+  path:string,
+  name:string,
+  _isDirectory:boolean,
   children: TFolderChildren,
 }
 
 export type TRootDir = {
-  path: string,
-  isDirectory: boolean,
+  path:string,
+  isDirectory:boolean,
   children: TFolderChildren,
 }
 
 export type TFile = {
   ext:string
-  path: string
-  name: string
-  content: string|null
+  path:string
+  name:string
+  content:string|null
   uuid?:string
-  location?: string
-  relative?: string
+  location?:string
+  relative?:string
 }
 
 export type TFolderChildren = Record<string, TFileItem>

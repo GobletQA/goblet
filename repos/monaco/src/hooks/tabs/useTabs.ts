@@ -1,7 +1,7 @@
 import type { TTabItem, TTab } from '@gobletqa/components'
 import type {  TFileMeta, TAutoSave, TModal } from '@GBM/types'
 
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useOnTabClose } from './useOnTabClose'
 import { useInline } from '@gobletqa/components'
 import { fileToTab } from '@GBM/utils/file/fileTabs'

@@ -66,7 +66,9 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
 
   const pathChange = useInline((e:SyntheticEvent<HTMLDivElement>) => {
     const key = e.currentTarget.dataset.src!
-    onPathChange?.(key)
+    key
+      ? onPathChange?.(key)
+      : console.warn(`Missing path src on current target's dataset`, e.currentTarget.dataset)
   })
 
   const {
