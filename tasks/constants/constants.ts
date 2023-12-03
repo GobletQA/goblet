@@ -99,6 +99,8 @@ export const PWDebug = {
   ]),
 }
 
+export const DockerBuildxBuilder = `goblet`
+
 export const constants = deepFreeze<TTaskConstants>({
   PWDebug,
   browsers: Browsers,

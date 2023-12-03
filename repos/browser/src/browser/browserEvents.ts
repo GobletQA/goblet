@@ -11,6 +11,7 @@ import type {
 import { Automate } from '../automate'
 import { EBrowserEvent } from '@GBB/types'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { addPageCloseEvts } from '@GBB/utils/addPageCloseEvts'
 
 type ListenerList = Record<EBrowserEvent, BrowserEvents>
 type TBrowserEvtsRegister = {
@@ -102,41 +103,7 @@ export class BrowserEvents {
     if(this.onCloseListen) return
 
     this.onCloseListen = true
-    if(!page?.__pageGoblet?.hasCloseEvt){
-      page.on(EBrowserEvent.close, async () => {
-        let listeners = Object.entries({...BrowserEvents.listeners})
-        listeners.forEach(([name, listener]) => {
-          listener.methods = undefined
-          delete listener.methods
-
-          BrowserEvents.listeners[name] = undefined
-          delete BrowserEvents.listeners[name]
-        })
-
-        listeners = undefined
-        BrowserEvents.listeners = {} as ListenerList
-        
-        if(page.__GobletAutomateInstance){
-          let automate = page.__GobletAutomateInstance
-          if(automate?.parent === page) await automate?.cleanUp?.()
-
-          automate = undefined
-          page.__GobletAutomateInstance = undefined
-        }
-        
-        if(page.__pageGoblet){
-          page.__pageGoblet.video = undefined
-          page.__pageGoblet.initFuncs = undefined
-          page.__pageGoblet.initScript = undefined
-          page.__pageGoblet.hasCloseEvt = undefined
-        }
-        page.__pageGoblet = undefined
-      })
-      
-      page.__pageGoblet = page?.__pageGoblet || {}
-      page.__pageGoblet.hasCloseEvt = true
-    }
-    
+    addPageCloseEvts(page)
   }
 
 

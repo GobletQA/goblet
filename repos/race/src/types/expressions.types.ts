@@ -27,6 +27,6 @@ export type TExpPart = TPartsMatch & {
 }
 
 export type TMatchExpRes = {
-  def:TStepDef
+  defId:string
   expressions:TExpPart[]
 }

@@ -99,7 +99,12 @@ function onAdd(item:TStepDef, event?:any) {
   addStepFromDefinition({ clipboard: true, definition: item as TStepDef})
 }
 
-function onOpen(item:TStepDef, onClose:TOnClose, event?:any) {
+function onOpen(
+  item:TStepDef,
+  onClose:TOnClose,
+  event?:any
+) {
+
   event?.stopPropagation?.()
   event?.preventDefault?.()
   EE.emit(OpenEditorFileEvt, item)

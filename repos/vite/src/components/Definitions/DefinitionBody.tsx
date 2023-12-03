@@ -22,7 +22,6 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
     sx,
     tabs,
     active,
-    onClose
   } = props
 
   const idx = active | 0

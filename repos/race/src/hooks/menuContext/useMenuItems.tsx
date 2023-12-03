@@ -37,7 +37,7 @@ export const useMenuItems = (props:THMenuItems) => {
 
   const { defs, options, setDefs } = useStepDefs()
   const onChange = useInline(props.onChange)
-  const { feature, audit, updateFeature } = useEditor()
+  const { feature, audit, updateFeature, overrideFeatureUI } = useEditor()
   
   const { world, updateWorld } = useWorld()
   
@@ -114,6 +114,7 @@ export const useMenuItems = (props:THMenuItems) => {
               updateWorld,
               updateFeature,
               setInputProps,
+              overrideFeatureUI,
             } as TRaceMenuItemClickCtx, evt)
           }
         } as TMenuItem
@@ -134,6 +135,7 @@ export const useMenuItems = (props:THMenuItems) => {
     contextItems,
     setInputProps,
     updateFeature,
+    overrideFeatureUI
   ])
 
   return {

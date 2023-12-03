@@ -9,6 +9,7 @@ import backend from './backend'
 import browser from './browser'
 import conductor from './conductor'
 import screencast from './screencast'
+import playwright from './playwright'
 import { exists } from '../utils/helpers'
 
 const buildEnvs = () => {
@@ -24,6 +25,7 @@ const buildEnvs = () => {
     ...joker(generalEnvs),
     ...backend(generalEnvs),
     ...conductor(generalEnvs),
+    ...playwright(generalEnvs),
     ...browser(generalEnvs, scEnvs),
   }
 }

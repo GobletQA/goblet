@@ -6,6 +6,7 @@ import type {
   TEditorTheme,
   IMultiRefType,
   TDecorationFns,
+  TPathChangeOpts,
   TEditorRefHandle,
 } from '@GBM/types'
 
@@ -40,14 +41,18 @@ export const useExposeEditor = (props:THExposeEditor) => {
    * Function exposed to the host application
    * Allows opening files externally to the editor
    */
-  const openFile = useCallback((path:string, content?:string) => {
+  const openFile = useCallback((
+    path:string,
+    content?:string,
+    opts?:TPathChangeOpts
+  ) => {
 
     if(isStr(content)){
       createOrUpdateModel(path, content)
       filesRef.current[path] = content
     }
 
-    pathChange(path)
+    pathChange(path, opts)
   }, [])
 
 

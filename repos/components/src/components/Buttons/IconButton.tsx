@@ -24,7 +24,7 @@ export const IconButtonComp = forwardRef((props:TIconButton, ref:ForwardedRef<HT
         Icon
           ? isValidFuncComp(Icon)
             ? <Icon {...iconProps} />
-            : children
+            : Icon
           : children
       }
     </MuiIconBtn>

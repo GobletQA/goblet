@@ -25,11 +25,17 @@ if(!process.env.EXAM_ENV){
 export const setupBlacklist = (app:Express) => {
   app = app || getApp()
 
-  app.use(rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  }))
+  try {
+    app.use(rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 1000, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
+      standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+      legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    }))
+  }
+  catch(err){
+    console.log(`------- RateLimit - Error -------`)
+    console.log(err)
+  }
 
 }

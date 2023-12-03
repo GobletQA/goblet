@@ -143,3 +143,9 @@ On every page load
 
 
 Basically the select in browser issue caused an issue with your session container. When you logged out, it cause the session container to shutdown, but there's no update to the frontend about that. So when you  logged back in it would not allow you to mount until the container fully restarted.
+
+
+
+Two Commands:
+* How many other elements have the same selector
+* playwright.$() - helper in devtools

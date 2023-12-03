@@ -39,8 +39,8 @@ const auditExpressions = (props:TMatchExpReq) => {
   const expressions = mapStepTokens({ exps, tokens })
 
   return {
-    def,
-    expressions
+    expressions,
+    defId: def.uuid,
   } as TMatchExpRes
 }
 

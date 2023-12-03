@@ -49,7 +49,7 @@ class FilesApi {
   loadFile = async <T=TFileResp>(location:string) => await this._req<T>(`/files/load?location=${location}`)
 
   loadGobletFile = async <T=TFileResp>(location:string) => await this._req<T>(
-    `/files/definition?location=${location}`
+    `/goblet/files/definition?location=${location}`
   )
 
   downloadReport = async <T=any>({

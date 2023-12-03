@@ -1,5 +1,5 @@
 import type { TTab } from '@gobletqa/components'
-import type { TFileMeta, TAutoSave, TModal } from '@GBM/types'
+import type { TAutoSave, TModal } from '@GBM/types'
 
 import { useCallback } from 'react'
 import { fileFromTab } from '@GBM/utils/file/fileTabs'

@@ -14,13 +14,13 @@ const generateStepItems = (ctx:TRaceMenuItemClickCtx) => {
   const { audit, onChange } = ctx
 
   return Object.entries(audit as TAudit).reduce((acc, [id, match]) => {
-    const { expressions, def } = match
+    const { expressions, defId } = match
     ;(expressions as TExpPart[]).map(exp => {
       exp.value
         && acc.push({
             closeMenu: true,
             closeParent:true,
-            key: `${def.uuid}-${exp.index}`,
+            key: `${defId}-${exp.index}`,
             children: (
               <ContextItem
                 name={exp.value}

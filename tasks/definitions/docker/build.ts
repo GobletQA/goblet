@@ -8,6 +8,7 @@ import { loadEnvs } from '../../utils/envs/loadEnvs'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
 import { setupBuildX } from '../../utils/docker/setupBuildX'
 import { toBuildArgsArr } from '../../utils/docker/buildArgs'
+import { DockerBuildxBuilder } from '../../constants/constants'
 import { getDockerFile } from '../../utils/docker/getDockerFile'
 import { resolveImgTags } from '../../utils/docker/resolveImgTags'
 import { resolveImgFrom } from '../../utils/docker/resolveImgFrom'
@@ -31,7 +32,7 @@ const buildImg = async (args:TTaskActionArgs) => {
   const allEnvs = { ...envs, NPM_TOKEN: token }
 
   // Ensure we are using the correct buildx builder instance
-  builder && (await setupBuildX(isStr(builder) ? builder : `goblet`, appRoot, allEnvs))
+  builder && (await setupBuildX(isStr(builder) ? builder : DockerBuildxBuilder, appRoot, allEnvs))
 
   // Get the context for the docker image being built
   const docFileCtx = getLongContext(context)
@@ -116,7 +117,7 @@ export const build:TTask = {
       description: `Log command before they are build`,
     },
     builder: {
-      default: `goblet`,
+      default: DockerBuildxBuilder,
       description: `Name of the docker buildx builder instance to use`,
     },
     cache: {

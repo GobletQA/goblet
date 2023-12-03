@@ -38,17 +38,20 @@ env:
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
   GB_NODE_VERSION: 20
-  # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.40.0
   GB_PNPM_VERSION: 8.7.4
   GB_GIT_GLOBAL_IGNORE: /goblet/.gitignore
+  GB_KUBE_SCRT_DOC_AUTH: docker-auth
+  GB_KUBE_SCRT_FB_SA: firebase-sa
+
+# ---- Playwright Specific ENVs ---- #
+  # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
+  PLAYWRIGHT_BROWSERS_VERSION: 1.40.0
 
   # Log file for all playwright logs
   # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
   PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
-
-  GB_KUBE_SCRT_DOC_AUTH: docker-auth
-  GB_KUBE_SCRT_FB_SA: firebase-sa
+  # Disables the playwright inspector when the page is paused
+  PW_CODEGEN_NO_INSPECTOR: 1
 
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
@@ -92,13 +95,6 @@ env:
   GB_AUTH_ACTIVE: true
   GB_APP_TEMP_PATH: temp
   GB_APP_MOUNT_PATH: /goblet/app
-
-
-# ---- Playwright Image ENVs ---- #
-  GB_PW_IMAGE_TAG: latest
-  GB_PW_DEPLOYMENT: goblet-playwright
-  GB_PW_IMAGE: ghcr.io/gobletqa/goblet-playwright
-  GB_PW_IMAGE_FROM: ubuntu:focal
 
 # ---- Base ENVs ---- #
   GB_BS_IMAGE_TAG: latest

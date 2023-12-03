@@ -4,6 +4,7 @@ import { appRoot } from '../../paths'
 import { loadEnvs } from '../envs/loadEnvs'
 import { addPlatforms } from './addPlatforms'
 import { loadScript } from '../helpers/loadScript'
+import { DockerBuildxBuilder } from '../../constants/constants'
 import { docker as dockerCmd, Logger } from '@keg-hub/cli-utils'
 import {
   isStr,
@@ -37,13 +38,15 @@ const buildX = (
   options:Record<string, any>=emptyObj,
   params:TTaskParams=emptyObj as TTaskParams
 ) => {
-  const { push } = params
+  const { push, builder=DockerBuildxBuilder } = params
 
   // Add the build platform for the image
   const platformOpts = !push
     ? [ cmd, `--load`]
     : [
         cmd,
+        `--builder`,
+        builder,
         `--push`,
         ...addPlatforms(
           [ ...(params?.platforms || emptyArr), ...(options?.platforms || emptyArr) ],

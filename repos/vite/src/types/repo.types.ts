@@ -1,17 +1,4 @@
 
-export type TGitData = {
-  name: string
-  local: string
-  remote: string
-  repoId?:string
-  username:string
-  branch: string
-  repoName?:string
-  newBranch:string
-  provider?:boolean
-  branchFrom?:boolean
-}
-
 export type TBuiltRepo = {
   id: string
   key: string
@@ -28,7 +15,7 @@ type TSharedRepo = {
   branchFrom?:boolean
 }
 
-export type TCreateRepo = TSharedRepo & {
+export type TCreateRepoOpts = TSharedRepo & {
   repo:never,
   newRepo:string
   description?:string

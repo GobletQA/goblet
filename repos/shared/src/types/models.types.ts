@@ -3,14 +3,16 @@ export type TGeneralAst = Record<any, any>
 export type TFileModel = {
   name: string
   ext: string
+  mime: string
+  uuid: string
+  content: string
   location: string
   relative: string
-  content: string
   fileType: string
-  mime: string
   ast: TGeneralAst,
+  worldFile?:boolean
+  gobletFile?:boolean
   lastModified: number,
-  uuid: string
 }
 
 
