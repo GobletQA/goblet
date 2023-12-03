@@ -1,4 +1,4 @@
-import { deepFreeze } from '../utils/helpers'
+import {deepFreeze} from '@keg-hub/jsutils/deepFreeze'
 
 // Default Folder name of the folder where step-definition overrides are placed
 // Used when a mounted repo overrides a default step-definition

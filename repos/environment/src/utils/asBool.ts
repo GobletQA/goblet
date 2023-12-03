@@ -3,7 +3,8 @@ import type { TEnvConvertOpts } from '../types'
 
 import { ensureVal } from './ensureVal'
 import { responseVal } from './responseVal'
-import {isBool, toBool} from '../utils/helpers'
+import {toBool} from '@keg-hub/jsutils/toBool'
+import {isBool} from '@keg-hub/jsutils/isBool'
 
 const valToBool = (item:any) => (item === `f` ? false : toBool(item))
 

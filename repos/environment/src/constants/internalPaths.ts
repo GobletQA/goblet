@@ -1,10 +1,13 @@
-const {
+import {
+// @ts-ignore
   SUB_REPOS,
+  // @ts-ignore
   GOBLET_ROOT,
+  // @ts-ignore
   GOBLET_PW_METADATA_DIR,
-} = require('@GConfigs/paths.config')
+}  from '@GConfigs/paths.config'
 
-const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
+import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 
 export const InternalPaths = deepFreeze({
   gobletRoot: GOBLET_ROOT,

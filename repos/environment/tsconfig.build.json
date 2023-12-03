@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "baseUrl": ".",
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "typeRoots": [
       "./src/types",
       "../shared/src/types",

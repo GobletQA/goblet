@@ -1,1 +1,1 @@
-export * from './dist/esm/envs/index.js'
+export * from './dist/envs/index.mjs'

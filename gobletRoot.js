@@ -1,5 +1,5 @@
 const path = require('path')
-const { inDocker } = require('@keg-hub/cli-utils')
+const { inDocker } = require('@keg-hub/jsutils/node/inDocker')
 
 const resolveRoot = () => {
 

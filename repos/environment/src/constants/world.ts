@@ -1,5 +1,5 @@
 import type { TGBWorldCfg } from '../types'
-import {deepFreeze} from '../utils/helpers'
+import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 
 
 export const DefWorld:TGBWorldCfg = deepFreeze({

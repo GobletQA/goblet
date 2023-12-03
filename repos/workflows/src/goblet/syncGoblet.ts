@@ -1,13 +1,10 @@
 import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@gobletqa/workflows/types'
 
 import { Logger } from '@gobletqa/logger'
+import { ENVS } from '@gobletqa/environment'
 import { git, RepoWatcher } from '@gobletqa/git'
-import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { GitResetBranch } from '@gobletqa/workflows/constants'
 import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
-import { GitRemoteRef, GitResetBranch } from '@gobletqa/workflows/constants'
-
-
-const emptyOpts = emptyObj as TGitOpts
 
 export const syncGoblet = async (
   config:TWFGobletConfig,
@@ -59,7 +56,7 @@ export const syncGoblet = async (
 
   const [mergeErr, mergeResp] = await git.merge(opts, {}, {
     arg,
-    from: `${GitRemoteRef}/${branchFrom}`,
+    from: `${ENVS.GB_GIT_REMOTE_REF}/${branchFrom}`,
     message: `[Goblet Sync] <${branchFrom}>-<${arg}>-<${branch}>`
   })
 

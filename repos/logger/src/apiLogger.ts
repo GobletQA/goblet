@@ -3,7 +3,7 @@ import type { TSetupLogger, TWLogger } from './types'
 import './stdio'
 import { ENVS } from '@gobletqa/environment'
 import { buildLogger } from './utils/buildLogger'
-import { CliLogger, getLoggerColors } from '@gobletqa/logger'
+import { CliLogger, getLoggerColors } from './cliLogger'
 import { capitalize, isStr, isColl, exists } from './utils/helpers'
 
 const { GB_SUB_REPO } = ENVS

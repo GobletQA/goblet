@@ -12,7 +12,7 @@ import type {
 
 import { git, gitCmd } from './gitCmd'
 import { Logger } from '@gobletqa/logger'
-import { GitRemoteRef } from '@GGT/constants'
+import { ENVS } from '@gobletqa/environment'
 import { throwErr } from '@GGT/utils/throwErr'
 import { ensurePath } from '@GGT/utils/ensurePath'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
@@ -51,7 +51,7 @@ git.remote.add = async (
 ) => {
   const options = validateGitOpts(gitOpts)
   const url = opts?.url || options.remote
-  const origin = opts?.origin || GitRemoteRef
+  const origin = opts?.origin || ENVS.GB_GIT_REMOTE_REF
   const cmdArgs = [`remote`, `add`, origin, url]
 
   const [err, resp] = await git(cmdArgs, {}, options.local)
@@ -71,7 +71,7 @@ git.remote.print = async (
   cmdOpts:TRunCmdOpts=emptyObj
 ) => {
 
-  const origin = opts?.origin || GitRemoteRef
+  const origin = opts?.origin || ENVS.GB_GIT_REMOTE_REF
   const [err, resp] = await gitCmd(
     [`config`, `--get`, `remote.${origin}.url`],
     gitOpts,

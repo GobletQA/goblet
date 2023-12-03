@@ -1,1 +1,1 @@
-module.export = require('./dist/cjs/constants/index.js')
+module.export = require('./dist/constants/index.js')

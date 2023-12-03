@@ -10,7 +10,7 @@ import browser from './browser'
 import conductor from './conductor'
 import screencast from './screencast'
 import playwright from './playwright'
-import { exists } from '../utils/helpers'
+import {exists} from '@keg-hub/jsutils/exists'
 
 const buildEnvs = () => {
   const generalEnvs = general()

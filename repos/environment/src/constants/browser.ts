@@ -1,4 +1,4 @@
-import { deepFreeze } from '../utils/helpers'
+import {deepFreeze} from '@keg-hub/jsutils/deepFreeze'
 
 export const PWAutomateEvent = `PW-AUTOMATE-EVENT`
 

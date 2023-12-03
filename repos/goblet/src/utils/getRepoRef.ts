@@ -1,5 +1,4 @@
 import { execSync } from 'child_process'
-import { GitRemoteRef } from '../constants'
 import { ENVS } from '@gobletqa/environment/envs'
 
 type TTokenProps = {
@@ -12,7 +11,7 @@ type TTokenProps = {
  * Gets the git repo remote url
  */
 const gitCmd = (repoRoot:string, ref:string) => execSync(
-  `git config --get remote.${GitRemoteRef}.url`,
+  `git config --get remote.${ENVS.GB_GIT_REMOTE_REF}.url`,
   { cwd: repoRoot }
 )?.toString()?.trim()
 
@@ -41,7 +40,7 @@ const getGitRemoteRef = (repoRoot:string) => {
   if(url) return url
 
   try {
-    try {url = gitCmd(repoRoot, GitRemoteRef)}
+    try {url = gitCmd(repoRoot, ENVS.GB_GIT_REMOTE_REF)}
     catch(err){ url = gitCmd(repoRoot, `origin`)}
   }
   catch(err){

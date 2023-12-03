@@ -1,5 +1,5 @@
 import type { EBrowserName } from '../types'
-import {deepFreeze} from '../utils/helpers'
+import {deepFreeze} from '@keg-hub/jsutils/deepFreeze'
 
 export const ChildBrowserServerKey = `child-playwright-server`
 export const GobletQAUrl = process.env.GB_GOBLET_URL || `https://www.gobletqa.com`

@@ -2,7 +2,8 @@ import type { TEnvConvertOpts } from '../types'
 
 import { ensureVal } from './ensureVal'
 import { responseVal } from './responseVal'
-import {isNum, toNum} from '../utils/helpers'
+import {toNum} from '@keg-hub/jsutils/toNum'
+import {isNum} from '@keg-hub/jsutils/isNum'
 
 export const asNum = (item:any, opts:TEnvConvertOpts<number>={}) => {
   return isNum(item)

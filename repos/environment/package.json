@@ -19,8 +19,8 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm env:build && tsc --emitDeclarationOnly --outDir dist",
-    "env:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build": "pnpm build:tsup && pnpm types",
+    "build:tsup": "pnpm tsup --config ./configs/tsup.config.ts",
     "clean": "pnpm clean:build; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -30,12 +30,13 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "types": "tsc --emitDeclarationOnly --outDir dist",
+    "types": "tsc --project tsconfig.build.json",
     "validate": "tsc --noEmit"
   },
+  "dependencies": {
+    "@keg-hub/jsutils": "9.10.0"
+  },
   "devDependencies": {
-    "@keg-hub/jsutils": "9.10.0",
-    "esbuild": "0.19.7",
-    "esbuild-register": "3.5.0"
+    "tsup": "8.0.1"
   }
 }

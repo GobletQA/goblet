@@ -7,7 +7,7 @@ import { ENVS } from '@gobletqa/environment'
 import { levels, getLevelMethods } from './utils/levels'
 import {loggerColorDisabled} from './utils/stripColors'
 
-const getLoggerColors = ():TLogColors => {
+export const getLoggerColors = ():TLogColors => {
   const noColors = loggerColorDisabled()
 
   return noColors
@@ -18,7 +18,7 @@ const getLoggerColors = ():TLogColors => {
     : Logger.colors
 }
 
-const CliLogger:TCLILogger = Object.assign({
+export const CliLogger:TCLILogger = Object.assign({
   ...Logger,
   levels,
   colors: getLoggerColors(),
@@ -38,7 +38,5 @@ export const getLevelLogger = (logLevel:string|number):TCLILogger => {
 }
 
 export {
-  CliLogger,
-  getLoggerColors,
   CliLogger as Logger,
 }
