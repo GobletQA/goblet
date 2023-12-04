@@ -33,6 +33,8 @@ const logEvt = (evt:TExamEvt<TExEventData>, logSplit:string) => {
 export class FeatureJsonReporter implements IExamReporter {
   rootDir:string
   logSplit?:string
+  saveJsonEvents?:boolean
+  #events:Record<string, Record<string, TExamEvt<TExEventData>>>={}
 
   constructor(
     examCfg:TExamConfig,
@@ -40,18 +42,59 @@ export class FeatureJsonReporter implements IExamReporter {
     reporterContext?:TEXInterReporterContext
   ) {
     this.rootDir = examCfg.rootDir
+    this.saveJsonEvents = cfg.saveJsonEvents
     this.logSplit = cfg?.logSplit || ENVS.EXAM_EVENT_LOG_SPLIT_KEY
   }
 
-  onRunStart = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onRunResult = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onTestFileStart = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onTestFileResult = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onSuiteStart = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onTestStart = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onTestResult = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onSuiteResult = (evt:TExamEvt<TExEventData>) => logEvt(evt, this.logSplit)
-  onError = (evt:any) => logEvt(evt, this.logSplit)
+  #cacheEvt = (evt:TExamEvt<TExEventData>) => {
+    if(!this.saveJsonEvents) return
+    
+    const loc = evt?.location ?? evt?.data?.location
+    this.#events[loc] = this.#events[loc] || {}
+    this.#events[loc][evt?.data?.id] = evt
+  }
+
+  onRunStart = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onRunResult = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onTestFileStart = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onTestFileResult = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onSuiteStart = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onTestStart = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onTestResult = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onSuiteResult = (evt:TExamEvt<TExEventData>) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  onError = (evt:any) => {
+    this.#cacheEvt(evt)
+    logEvt(evt, this.logSplit)
+  }
+  
+  onFinished = (evt:TExamEvt<TExEventData>) => {
+    this.#events = {}
+    // console.log(require('util').inspect(evt, false, null, true))
+  }
 
 }
 

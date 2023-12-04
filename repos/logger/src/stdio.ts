@@ -5,6 +5,8 @@ import { replaceUnsafe } from './utils/safeReplacer'
 const orgStdOut = process.stdout.write.bind(process.stdout)
 const orgStdErr = process.stderr.write.bind(process.stderr)
 
+// ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `true`
+
 process.stdout.write = function (data:Uint8Array|string, ...args:any[]){
   const str = stripColors(data.toString())
   const replaced = ENVS.GB_LOGGER_FORCE_DISABLE_SAFE
