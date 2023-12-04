@@ -18,7 +18,7 @@ export const TestsToSocketEvtMap = {
   suiteStart: `PLAY-SUITE-START`,
   suiteDoneRoot: `PLAY-SUITE-DONE-ROOT`,
   suiteStartRoot: `PLAY-SUITE-START-ROOT`,
-  ended: `PLAY-ENDED`,
+  finished: `PLAY-FINISHED`,
   error: `PLAY-ERROR`,
   action: `PLAY-ACTION`,
   general: `PLAY-GENERAL`,

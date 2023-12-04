@@ -68,7 +68,7 @@ export const events = {
   recordAction: function(message:TSocketEvt){
     recordAction(message)
   },
-  recordEnded: function(message:TSocketEvt){
+  recordFinished: function(message:TSocketEvt){
     setBrowserRecording(message)
   },
   recordGeneral: function(message:TSocketEvt){
@@ -91,13 +91,13 @@ export const events = {
   playCanceled: function(message:TPlayerCancelEvent){
     clearEditorDecorations(message.location)
   },
-  playEnded: playEvent,
   playError: playEvent,
   playAction: playEvent,
   playGeneral: playEvent,
   playResults: playEvent,
   playStarted: playEvent,
   playSpecDone: playEvent,
+  playFinished: playEvent,
   playSuiteDone: playEvent,
   playSpecStart: playEvent,
   playSuiteStart: playEvent,

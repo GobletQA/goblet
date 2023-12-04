@@ -22,7 +22,7 @@ import { buildCmdParams } from '@utils/browser/buildCmdParams'
 import { filterFileContext } from '@utils/files/filterFileContext'
 import {
   BrowserStateEvt,
-  PlayerEndedEvent,
+  PlayerFinishedEvent,
   WSCancelPlayerEvent,
 } from '@constants'
 
@@ -104,7 +104,7 @@ export const startBrowserPlay = async (
     WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
 
     // Then listen for the response event fired from the websocket service
-    const onPlayerEnd = EE.on<TPlayerResEvent>(PlayerEndedEvent, () => res(emptyObj))
+    const onPlayerEnd = EE.on<TPlayerResEvent>(PlayerFinishedEvent, () => res(emptyObj))
 
     /**
     * Listens for a cancel event

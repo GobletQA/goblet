@@ -232,7 +232,7 @@ export class Player {
       Player.isPlaying = false
 
       this.fireEvent({
-        name: TestsToSocketEvtMap.ended,
+        name: TestsToSocketEvtMap.finished,
         message: `Playing stopped`,
       })
     }

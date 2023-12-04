@@ -261,7 +261,7 @@ export class HtmlReporter implements IExamReporter {
     resp && (this.#screenshots[resp.id] = resp.uri)
   }
 
-  onEnded = async (evt:TExamEvt<TExEventData>) => {
+  onFinished = async (evt:TExamEvt<TExEventData>) => {
     if(!this.#combineAllTests) return
 
     const totalTime = getTestLength(this.#partialTestTimes, this.#suiteTimeout)

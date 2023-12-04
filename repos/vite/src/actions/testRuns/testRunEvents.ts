@@ -63,7 +63,7 @@ const onTestRunEnd = (event:TPlayerResEvent<any>) => {
 export const testRunEvents = (evt:TPlayerResEvent) => {
 
   switch(evt.name){
-    case TestsToSocketEvtMap.ended: {
+    case TestsToSocketEvtMap.finished: {
       return onTestRunEnd(evt)
     }
     case TestsToSocketEvtMap.error: {

@@ -226,7 +226,7 @@ export class TestFromUI {
     const evtData = { data: { htmlReport: this.htmlReportLoc }} as Partial<TExTestEventMeta>
     const event = formatTestEvt(evtData, {
       message: `Test Suite finished`,
-      name: TestsToSocketEvtMap.ended,
+      name: TestsToSocketEvtMap.finished,
       ...this.extraEvt,
       runId: this.runId,
       error: !Boolean(code),

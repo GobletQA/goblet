@@ -12,7 +12,7 @@ import { EResultAction } from '@ltipton/parkin'
 import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { TestsToSocketEvtMap } from '@GEX/constants'
 import {
-  BuiltExamEnded,
+  BuiltExamFinished,
   NoTestsFoundPass,
   BuiltTestResultFailed,
 } from "@GEX/constants"
@@ -45,18 +45,18 @@ export const buildFailedTestResult = (result?:TBuildResult) => {
   } as TExEventData
 }
 
-export const buildExamEndedEvt = (config:TExamConfig, results:TExRunResult[]) => {
-  return ExamEvents.ended({
+export const buildExamFinishedEvt = (config:TExamConfig, results:TExRunResult[]) => {
+  return ExamEvents.finished({
     location: config.rootDir,
     data:{
-      ...BuiltExamEnded,
+      ...BuiltExamFinished,
       stats: {},
       testPath: `/`,
-      action: `ended`,
+      action: `finished`,
       describes: results,
       location: config.rootDir,
-      type: EPlayerTestType.ended,
-      id: TestsToSocketEvtMap.ended,
+      type: EPlayerTestType.finished,
+      id: TestsToSocketEvtMap.finished,
       fullName: EPlayerTestType.exam,
       timestamp: new Date().getTime(),
     }

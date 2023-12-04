@@ -19,7 +19,7 @@ import { buildDecoration } from '@utils/decorations/buildDecoration'
 import {
   PlayerTestEvt,
   PlayerErrorEvent,
-  PlayerEndedEvent,
+  PlayerFinishedEvent,
   TestsToSocketEvtMap,
   PlayerClearDecorationEvt,
 } from '@constants'
@@ -50,7 +50,7 @@ export const useRaceDecorations = ({
   const featureRef = useRef<TPlayerEventData|undefined>(undefined)
   const scenarioRef = useRef<TPlayerEventData|undefined>(undefined)
 
-  useOnEvent<TPlayerResEvent>(PlayerEndedEvent, (event:TPlayerResEvent) => {
+  useOnEvent<TPlayerResEvent>(PlayerFinishedEvent, (event:TPlayerResEvent) => {
     updateRefs<TFileMeta>({
       fileRef,
       stepRef,

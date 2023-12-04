@@ -6,7 +6,7 @@ import type {
 
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { loadFilesTask } from '../tasks/loadFilesTask'
-import { buildExamEndedEvt } from '@GEX/utils/buildResult'
+import { buildExamFinishedEvt } from '@GEX/utils/buildResult'
 
 export const postRunnerStep = async (args:TPipelineArgs, manager?:TStateManager) => {
   const { config } = args
@@ -17,6 +17,6 @@ export const postRunnerStep = async (args:TPipelineArgs, manager?:TStateManager)
 
   const { EventReporter, TestResults } = manager.getState()
 
-  EventReporter?.event?.(buildExamEndedEvt(config, TestResults as TExRunResult[]))
+  EventReporter?.event?.(buildExamFinishedEvt(config, TestResults as TExRunResult[]))
 
 }

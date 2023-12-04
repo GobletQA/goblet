@@ -60,7 +60,7 @@ export const BuiltTestResultFailed = {
   status: `failed`  as const,
 }
 
-export const BuiltExamEnded = {
+export const BuiltExamFinished = {
   stats: {},
   testPath: `/`,
   failed: false,
@@ -68,10 +68,10 @@ export const BuiltExamEnded = {
   skipped: false,
   timestamp: 0,
   describes: [],
-  id: `ended` as const,
-  type: `ended` as const,
-  action: `ended` as const,
-  fullName: `ended` as const,
+  id: `finished` as const,
+  type: `finished` as const,
+  action: `finished` as const,
+  fullName: `finished` as const,
   description: `Exam test execution has finished`,
 }
 

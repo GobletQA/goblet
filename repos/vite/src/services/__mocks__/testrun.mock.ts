@@ -7,7 +7,7 @@ const endEvent = {
   "error": false,
   "data": {},
   "group": "0OJ1sRnL77Qw6fJJAAAP",
-  "name": "PLAY-ENDED",
+  "name": "PLAY-FINISHED",
   "isRunning": false,
   "timestamp": 1695500838946,
   "fullTestRun": true,

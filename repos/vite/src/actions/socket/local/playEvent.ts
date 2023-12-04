@@ -4,7 +4,7 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {
   PlayerTestEvt,
   PlayerErrorEvent,
-  PlayerEndedEvent,
+  PlayerFinishedEvent,
   PlayerStartedEvent,
   TestsToSocketEvtMap,
 } from '@constants'
@@ -25,8 +25,8 @@ export const playEvent = (meta:TPlayerResEvent) => {
     case TestsToSocketEvtMap.error: {
       return EE.emit(PlayerErrorEvent, meta)
     }
-    case TestsToSocketEvtMap.ended: {
-      return EE.emit(PlayerEndedEvent, meta)
+    case TestsToSocketEvtMap.finished: {
+      return EE.emit(PlayerFinishedEvent, meta)
     }
     default: {
       return EE.emit(PlayerTestEvt, meta)

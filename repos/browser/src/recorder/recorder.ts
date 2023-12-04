@@ -242,7 +242,7 @@ export class Recorder {
       // --- TODO - Probably don't want to do this any more
 
       this.fireEvent({
-        name: constants.recordEnded,
+        name: constants.recordFinished,
         message: 'Recording stopped',
       })
 
