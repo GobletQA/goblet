@@ -1,4 +1,4 @@
-import type { Repo  } from '@GRP/types'
+import type { Repo } from '@GRP/repo'
 import type { TGitOpts } from '@gobletqa/git'
 
 import type {

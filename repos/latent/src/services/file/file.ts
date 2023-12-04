@@ -1,14 +1,13 @@
 import type { Latent } from '@GLT/latent'
 import type {
-  TEnvObj,
   TFileOpts,
   TLoadOpts,
   TSaveOpts,
+  TReadOpts,
+  TFileNames,
   TLatentFile,
   TFileSaveResp,
   TLoadSingleOpts,
-  TFileNames,
-  TReadOpts,
 } from '@GLT/types'
 
 import path from 'path'

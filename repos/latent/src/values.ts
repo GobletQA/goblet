@@ -1,13 +1,13 @@
-import {
+import type {
   TLTGet,
   TLTAdd,
   TLTLoad,
   TLTSave,
   TLTCreate,
-  EFileType,
 } from "@GLT/types"
 
 import {Latent} from "./latent"
+import { EFileType } from "@GLT/types"
 import {exists} from "@keg-hub/jsutils/exists"
 
 

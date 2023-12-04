@@ -1,11 +1,13 @@
-import {
+import type {
   TLatent,
   TLTLoad,
   TLTSave,
+} from "@GLT/types"
+
+import {
   EFileType,
   ELatentEnv,
 } from "@GLT/types"
-
 import { Values } from '@GLT/values'
 import { Secrets } from '@GLT/secrets'
 import { ENVS } from '@gobletqa/environment'
@@ -13,7 +15,6 @@ import { LatentFile } from '@GLT/services/file'
 import { LatentToken } from '@GLT/services/token'
 import {emptyObj} from "@keg-hub/jsutils/emptyObj"
 import { LatentCrypto } from '@GLT/services/crypto'
-
 
 
 export class Latent {
