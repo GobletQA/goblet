@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "description": "Sets up the environment for GobletQA repos",
   "main": "index.js",
+  "module": "index.mjs",
+  "types": "build/esm/index.d.ts",
   "author": "Lance Tipton",
   "license": "ISC",
   "keywords": [],
@@ -19,7 +21,7 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:tsup && pnpm types",
+    "build": "pnpm build:tsup",
     "build:tsup": "pnpm build:envs && pnpm build:const",
     "build:envs": "pnpm tsup --config ./configs/tsup.envs.config.ts",
     "build:const": "pnpm tsup --config ./configs/tsup.const.config.ts",
@@ -32,7 +34,6 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "types": "tsc --project tsconfig.build.json",
     "validate": "tsc --noEmit"
   },
   "dependencies": {

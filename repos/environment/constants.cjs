@@ -1,1 +1,0 @@
-module.export = require('./dist/constants/index.js')

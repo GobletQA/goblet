@@ -419,18 +419,15 @@ importers:
         specifier: 4.0.0
         version: 4.0.0
     devDependencies:
-      '@ltipton/esdev':
-        specifier: 0.2.1
-        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
       '@types/debug':
         specifier: 4.1.9
         version: 4.1.9
       '@types/node':
         specifier: 20.9.3
         version: 20.9.3
-      nodemon:
-        specifier: 3.0.1
-        version: 3.0.1
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(@microsoft/api-extractor@7.38.3)(ts-node@10.9.1)(typescript@5.2.2)
 
   repos/git:
     dependencies:
@@ -576,25 +573,25 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
+      '@keg-hub/jsutils':
+        specifier: 9.10.0
+        version: 9.10.0
       winston:
         specifier: 3.11.0
         version: 3.11.0
     devDependencies:
+      '@microsoft/api-extractor':
+        specifier: 7.38.3
+        version: 7.38.3(@types/node@20.9.3)
       '@types/debug':
         specifier: 4.1.9
         version: 4.1.9
       '@types/node':
         specifier: 20.9.3
         version: 20.9.3
-      esbuild:
-        specifier: 0.19.7
-        version: 0.19.7
-      esbuild-plugin-path-alias:
-        specifier: 1.0.7
-        version: 1.0.7(esbuild@0.19.7)
-      esbuild-register:
-        specifier: 3.5.0
-        version: 3.5.0(esbuild@0.19.7)
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(@microsoft/api-extractor@7.38.3)(ts-node@10.9.1)(typescript@5.2.2)
 
   repos/monaco:
     dependencies:
@@ -3524,6 +3521,16 @@ packages:
       - '@types/node'
     dev: true
 
+  /@microsoft/api-extractor-model@7.28.2(@types/node@20.9.3):
+    resolution: {integrity: sha512-vkojrM2fo3q4n4oPh4uUZdjJ2DxQ2+RnDQL/xhTWSRUNPF6P4QyrvY357HBxbnltKcYu+nNNolVqc6TIGQ73Ig==}
+    dependencies:
+      '@microsoft/tsdoc': 0.14.2
+      '@microsoft/tsdoc-config': 0.16.2
+      '@rushstack/node-core-library': 3.61.0(@types/node@20.9.3)
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: true
+
   /@microsoft/api-extractor@7.38.3(@types/node@18.15.13):
     resolution: {integrity: sha512-xt9iYyC5f39281j77JTA9C3ISJpW1XWkCcnw+2vM78CPnro6KhPfwQdPDfwS5JCPNuq0grm8cMdPUOPvrchDWw==}
     hasBin: true
@@ -3532,6 +3539,26 @@ packages:
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
       '@rushstack/node-core-library': 3.61.0(@types/node@18.15.13)
+      '@rushstack/rig-package': 0.5.1
+      '@rushstack/ts-command-line': 4.17.1
+      colors: 1.2.5
+      lodash: 4.17.21
+      resolve: 1.22.2
+      semver: 7.5.4
+      source-map: 0.6.1
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: true
+
+  /@microsoft/api-extractor@7.38.3(@types/node@20.9.3):
+    resolution: {integrity: sha512-xt9iYyC5f39281j77JTA9C3ISJpW1XWkCcnw+2vM78CPnro6KhPfwQdPDfwS5JCPNuq0grm8cMdPUOPvrchDWw==}
+    hasBin: true
+    dependencies:
+      '@microsoft/api-extractor-model': 7.28.2(@types/node@20.9.3)
+      '@microsoft/tsdoc': 0.14.2
+      '@microsoft/tsdoc-config': 0.16.2
+      '@rushstack/node-core-library': 3.61.0(@types/node@20.9.3)
       '@rushstack/rig-package': 0.5.1
       '@rushstack/ts-command-line': 4.17.1
       colors: 1.2.5
@@ -4007,6 +4034,24 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.15.13
+      colors: 1.2.5
+      fs-extra: 7.0.1
+      import-lazy: 4.0.0
+      jju: 1.4.0
+      resolve: 1.22.2
+      semver: 7.5.4
+      z-schema: 5.0.5
+    dev: true
+
+  /@rushstack/node-core-library@3.61.0(@types/node@20.9.3):
+    resolution: {integrity: sha512-tdOjdErme+/YOu4gPed3sFS72GhtWCgNV9oDsHDnoLY5oDfwjKUc9Z+JOZZ37uAxcm/OCahDHfuu2ugqrfWAVQ==}
+    peerDependencies:
+      '@types/node': '*'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+    dependencies:
+      '@types/node': 20.9.3
       colors: 1.2.5
       fs-extra: 7.0.1
       import-lazy: 4.0.0

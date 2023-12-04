@@ -1,1 +1,1 @@
-export * from './dist/constants/index.mjs'
+module.export = require('./dist/constants')

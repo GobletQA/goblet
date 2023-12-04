@@ -1,1 +1,1 @@
-export * from './dist/envs/index.mjs'
+module.export = require('./dist/envs')

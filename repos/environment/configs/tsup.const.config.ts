@@ -22,6 +22,7 @@ export default defineConfig(async () => {
       constIn,
     ],
     async onSuccess() {
+      await fs.rm(path.join(constOutdir, `Users`), { recursive: true, force: true })
       console.log(`Module "@gobletqa/environment/constants" built successfully`)
     },
   }

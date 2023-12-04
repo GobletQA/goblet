@@ -1,1 +1,1 @@
-import './dist/stdio'
+require('./dist/stdio/stdio')

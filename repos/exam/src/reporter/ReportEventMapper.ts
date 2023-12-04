@@ -69,7 +69,7 @@ const EvtReporterMap = {
 }
 
 const EvtTags = Object.entries(TestsToSocketEvtMap)
-  .reduce((acc, [key, val]) => {
+  .reduce((acc, [key, val]:[string, string]) => {
     acc[val] = EvtTag(val)
     return acc
   }, {})
