@@ -16,6 +16,7 @@ import type {
 import { CodeRunner } from './codeRunner'
 import { noOp } from '@keg-hub/jsutils/noOp'
 import { exists } from '@keg-hub/jsutils/exists'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { TestsToSocketEvtMap } from '@GBB/constants'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
@@ -87,7 +88,6 @@ export class Player {
     const {
       page,
       repo,
-      steps,
       context,
       browser,
       options,
@@ -95,6 +95,7 @@ export class Player {
       onCleanup,
       onConsole,
       forwardLogs,
+      steps=emptyObj as TParkinRunStepOptsMap,
     } = config
 
     if(page) this.page = page
@@ -103,11 +104,11 @@ export class Player {
     if(browser) this.browser = browser
     if(options) this.options = deepMerge(this.options, options)
 
-    if(steps)
-      this.steps = {...steps, shared: {
-        ...steps?.shared,
-        fireEvent:this.fireEvent.bind(this)
-      }}
+
+    this.steps = {...steps, shared: {
+      ...steps?.shared,
+      fireEvent:this.fireEvent.bind(this)
+    }}
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup
