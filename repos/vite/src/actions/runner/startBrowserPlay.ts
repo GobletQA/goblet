@@ -2,7 +2,7 @@
 // Has to be very long, could be based on the global timeout option from Exam / Parkin
 
 import type {
-  TGitData,
+  TRepoApiObj,
   TFileModel,
   TStartPlaying,
   TPlayerResEvent,
@@ -36,12 +36,12 @@ type TBuildOpts = {
 }
 
 type TBrowserPlay = Omit<TStartPlaying, `repo`|`id`|`onEvent`|`browserConf`|`onCleanup`> & {
-  repo:TGitData
+  repo:TRepoApiObj
 }
 
 const buildOptions = (
   { options, params, file, appUrl, forwardLogs }:TBuildOpts,
-  repo:TGitData
+  repo:TRepoApiObj
 ) => {
   return {
     repo,
@@ -94,7 +94,7 @@ export const startBrowserPlay = async (
       file: model,
       forwardLogs,
     },
-    pickKeys<TGitData>(
+    pickKeys<TRepoApiObj>(
       repo?.git,
       [`local`, `remote`, `username`, `branch`, `name`]
     )

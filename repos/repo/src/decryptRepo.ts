@@ -1,4 +1,5 @@
-import type { TGitOpts, TGobletConfig } from '../../workflows/src/types'
+import type { TGitOpts } from '@gobletqa/git'
+import type { TGobletConfig } from '@GRP/types'
 
 import { LatentRepo } from './latentRepo'
 import { getPathFromConfig } from '@gobletqa/goblet'

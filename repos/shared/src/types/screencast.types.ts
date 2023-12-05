@@ -1,6 +1,5 @@
 import type { TJwtConfig } from './helpers.types'
 import type { TSocketConfigOpts } from './socket.types'
-import type { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
 export * from '../../../screencast/src/types'
 export type TChildProcArgs = {
@@ -14,11 +13,6 @@ export type TSSLCreds = {
   ca: string
   key: string
   cert: string
-}
-
-export type TRecorderOpts = {
-  locator: string
-  [key:string]: any
 }
 
 export type TScreencastServer = {

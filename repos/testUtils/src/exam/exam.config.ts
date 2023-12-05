@@ -13,7 +13,7 @@
 import { aliases } from './setupTestAliases'
 
 import type { TExamConfig } from '@gobletqa/exam'
-import type { TGobletConfig, TBrowserConf, TExamCfgArgs } from '@GTU/Types'
+import type { TBrowserConf, TExamCfgArgs } from '@GTU/Types'
 
 import path from 'path'
 import { EExTestMode } from '@gobletqa/exam'

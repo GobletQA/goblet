@@ -1,6 +1,7 @@
 import type { Express } from 'express'
+import type { TGitData } from '@gobletqa/repo'
+
 import type {
-  TGitData,
   TTokenUser,
 } from '@GSC/types'
 

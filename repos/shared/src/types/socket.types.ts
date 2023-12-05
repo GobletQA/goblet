@@ -2,7 +2,6 @@ import type { TGitData } from './repo.types'
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
 import type { TBrowserConf } from './pw.types'
-import type { TExamUIRun } from './exam.types'
 import type {
   SocketManager,
   TWebSocketEvent,

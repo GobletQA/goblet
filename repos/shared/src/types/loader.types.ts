@@ -1,4 +1,4 @@
-import {TGobletConfig} from "./configs.types"
+import type { TGobletConfig } from "./goblet.types"
 
 export type TCfgMerge = { $merge?: string[] | false | null | undefined }
 

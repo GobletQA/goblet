@@ -1,9 +1,8 @@
-export * from '../../../exam/src/types/index'
+export * from '../../../exam/src/types'
 
 import type { TCmdExecOpts } from './socket.types'
-import type { TExTestEventMeta } from '../../../exam/src/types/index'
-import type { TInitExamOpts } from  '../../../exam/src/types/index'
 import type { TBuildTestArgs, TBuildBddEnvs } from './testUtils.types'
+import type { TExamConfig, TInitExamOpts, TExTestEventMeta } from '../../../exam/src/types'
 
 export type TExamUIRunCallbacks = {
   onDone?: (code?:number) => void
@@ -27,4 +26,8 @@ export type TExamUIChildProcOpts = TCmdExecOpts & {
 
 export type TExamCfgArgs = {
   base?:string
+}
+
+export {
+  TExamConfig
 }

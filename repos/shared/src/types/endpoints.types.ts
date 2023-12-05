@@ -1,7 +1,7 @@
-import type { Repo } from './workflows.types'
+import type { Repo } from './repo.types'
 import type { Express, Request } from 'express'
 import type { TTokenUser } from './user.types'
-import type { TDefGobletConfig } from './configs.types'
+import type { TDefGobletConfig } from '@gobletqa/goblet'
 
 export type TParsedQs = { [key: string]: undefined | string | string[] | TParsedQs | TParsedQs[] }
 

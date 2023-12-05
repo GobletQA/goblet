@@ -46,4 +46,6 @@ export type TRepoApiObj = {
   local:string
   remote:string
   branch:string
+  name?:string
+  username?:string
 }

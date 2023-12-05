@@ -1,3 +1,5 @@
+export * from './types'
+
 import { getFileTypes } from './utils/getFileTypes'
 import { getPathFromBase } from './utils/getPathFromBase'
 import { getRepoGobletDir } from './utils/getRepoGobletDir'
