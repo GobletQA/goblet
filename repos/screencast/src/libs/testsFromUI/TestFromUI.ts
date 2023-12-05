@@ -82,6 +82,9 @@ export class TestFromUI {
 
 
   #safeLogData = (data:string) => {
+    if(ENVS.NODE_ENV !== `production`)
+      return EXLogger.stdout(data)
+
     ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
     data && EXLogger.stdout(data)
     ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = `1`

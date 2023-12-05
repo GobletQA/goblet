@@ -86,7 +86,7 @@ const FailedList = (test: TExEventData, opts:TReporterOpts) => {
           <div class="failed-description-text" >
             ${expectation.description}
           </div>
-          ${opts?.onRenderError?.(test) || ``}
+          ${opts?.onRenderError?.(test, opts) || ``}
         </div>
       </li>
     `
@@ -118,7 +118,7 @@ const StepList = (tests: TExEventData[], opts:TReporterOpts) => {
             ${TitleHtml(test?.description?.trim?.() || ``, `step`, state)}
             <div class="step-time">${testTime}</div>
           </div>
-          ${opts?.onRenderTest?.(test) || ``}
+          ${opts?.onRenderTest?.(test, opts) || ``}
           ${FailedHtml}
         </li>
       `

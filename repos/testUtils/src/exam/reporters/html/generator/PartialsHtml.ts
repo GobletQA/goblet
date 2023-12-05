@@ -31,7 +31,7 @@ export const PartialsHtml = (args:TPartialsHtml) => {
   return `
     <body>
       ${TitleHtml(title, date, totalTime)}
-      ${OverviewHtml(joinedStats)}
+      ${joinedStats && OverviewHtml(joinedStats)}
       ${htmlArr.join(`\n`)}
       ${Script()}
     </body>
