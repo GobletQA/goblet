@@ -5,7 +5,7 @@ import { toNum } from '@keg-hub/jsutils'
 import { EAuthType, EContainerState } from '@types'
 import { signOutAuthUser } from './signOutAuthUser'
 import { formatUser } from '@utils/admin/formatUser'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
+import { Exception } from '@services/sharedService'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 

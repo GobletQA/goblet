@@ -11,11 +11,11 @@ import type {
 
 import { EBrowserState } from '@types'
 import { addToast } from '@actions/toasts'
+import { EE } from '@services/sharedService'
 import { WSService } from '@services/socketService'
 import { pickKeys, emptyObj } from '@keg-hub/jsutils'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { getRepoData } from '@utils/store/getStoreData'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'

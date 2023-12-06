@@ -1,6 +1,6 @@
 import type { TPlayerResEvent } from '@types'
 
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import {
   PlayerTestEvt,
   PlayerErrorEvent,

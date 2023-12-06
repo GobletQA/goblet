@@ -1,10 +1,10 @@
 import type { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { EBrowserState } from '@types'
+import { EE } from '@services/sharedService'
 import { EditorPathChangeEvt } from '@constants'
 import { DangerousIcon } from '@gobletqa/components'
 import { useCallback, useMemo, useState } from 'react'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { getFileModel } from '@utils/files/getFileModel'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'

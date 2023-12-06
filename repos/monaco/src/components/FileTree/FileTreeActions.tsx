@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import type { TPanelHeaderAction } from '@gobletqa/components'
 import type { MouseEvent } from 'react'
 
-import { noOp } from '@keg-hub/jsutils/noOp'
+import { noOp } from '@keg-hub/jsutils'
 import {
   Tooltip,
   NewFileIcon,

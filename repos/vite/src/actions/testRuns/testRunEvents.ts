@@ -5,8 +5,8 @@ import type {
   TTestRunExecErrEvent,
 } from '@types'
 
+import { EE } from '@services/sharedService'
 import {getStore, testRunsDispatch} from "@store"
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { testRunEventFactory } from '@utils/testRuns/testRunEventFactory'
 import {
   TestRunErrEvt,

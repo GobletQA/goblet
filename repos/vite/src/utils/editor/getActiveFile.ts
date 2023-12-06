@@ -1,4 +1,4 @@
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { GetActiveFileEvent } from '@gobletqa/components'
 
 export type TActiveFile = {

@@ -10,11 +10,11 @@ import { addToast } from '@actions/toasts'
 import { connectModal } from '@actions/modals'
 import { removeRepo } from '../local/removeRepo'
 import { apiRequest } from '@utils/api/apiRequest'
+import { Exception } from '@services/sharedService'
 import { StatusTypes, AuthActive } from '@constants'
 import { localStorage } from '@services/localStorage'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
 import { ScreencastPort } from '@constants/screencast'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
 
 type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
   routes?: TStatusRoutes

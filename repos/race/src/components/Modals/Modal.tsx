@@ -29,7 +29,7 @@ export const Modal = (props:TModal) => {
   })
 
   useOnEvent<TToggleRaceModalEvt>(ToggleRaceModalEvt, ({ state, type, ...props }) => {
-    const toggle = exists(state) ? state : !open
+    const toggle = exists<boolean>(state) ? state : !open
     setOpen(toggle)
 
     const updated = exists(type) ? type : undefined

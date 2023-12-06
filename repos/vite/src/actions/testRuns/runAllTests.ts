@@ -8,9 +8,9 @@ import type {
 
 import { emptyObj } from '@keg-hub/jsutils'
 import { SocketMsgTypes } from '@constants'
+import { EE } from '@services/sharedService'
 import { WSService } from '@services/socketService'
 import { testRunsDispatch } from '@store/dispatchers'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
 import {
   TestRunExecEndEvt,

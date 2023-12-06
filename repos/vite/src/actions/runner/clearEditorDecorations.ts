@@ -1,5 +1,5 @@
+import { EE } from '@services/sharedService'
 import { PlayerClearDecorationEvt } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 /**
  * Emits a PlayerClearDecorationEvt event to clear decorations from the monaco editor

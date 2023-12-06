@@ -1,4 +1,4 @@
-import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { deepMerge } from '@keg-hub/jsutils'
 import { buildFile } from './buildFile'
 import { buildFolder } from './buildFolder'
 

@@ -2,10 +2,10 @@ import type { TRawAuthUser } from '@types'
 
 import { authApi } from '@services/authApi'
 import { toNum } from '@keg-hub/jsutils/toNum'
+import { Exception } from '@services/sharedService'
 import { EAuthType, EContainerState } from '@types'
 import { signOutAuthUser } from './signOutAuthUser'
 import { formatUser } from '@utils/admin/formatUser'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 

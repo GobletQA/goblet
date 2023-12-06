@@ -2,7 +2,7 @@ import type { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@go
 
 import { useMemo } from 'react'
 import { EBrowserState } from '@types'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import {
   gutter,

@@ -11,7 +11,7 @@ import {
 
 import { getStore } from '@store'
 import { EBrowserState } from '@types'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { getFileModel } from '@utils/files/getFileModel'
 import {runAllTests} from '@actions/testRuns/runAllTests'
 import { getActiveFile } from '@utils/editor/getActiveFile'
@@ -94,3 +94,4 @@ export const KeyboardCfg:TKeyboard = {
     ),
   }
 }
+

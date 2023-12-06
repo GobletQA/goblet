@@ -1,7 +1,7 @@
 import { EEditorType } from '@types'
+import { EE } from '@services/sharedService'
 import { appDispatch, getStore } from '@store'
 import { EditorPathChangeEvt } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 import { navToggleTestRunsView } from '@actions/testRuns/navToggleTestRunsView'
 

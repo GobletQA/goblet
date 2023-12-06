@@ -1,7 +1,7 @@
 import type { TIndex } from '@GBM/types'
 
 import { EAstObject } from '@ltipton/parkin'
-import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { deepMerge } from '@keg-hub/jsutils'
 
 export type TCompletionItem = {
   kind:number

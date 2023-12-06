@@ -49,6 +49,9 @@
       "@gobletqa/components/*": ["../components/src/*"],
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ],
+      "@gobletqa/environment/constants/frontend": ["../environment/src/constants/frontend"],
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"],
       "GobletRoot": ["../../"]
     }
   },

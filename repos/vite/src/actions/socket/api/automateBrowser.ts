@@ -10,7 +10,7 @@ import {
   WSCancelAutomateEvent,
 } from '@constants'
 
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { getSettingsValues } from '@utils/settings/getSettingsValues'
 

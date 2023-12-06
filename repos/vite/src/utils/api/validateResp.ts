@@ -1,6 +1,7 @@
 import type { TValidateResp } from '@types'
 import type { TResponse } from '@services/axios.types'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
+import { Exception } from '@services/sharedService'
+
 
 /**
  * Validate the response from the Backend API

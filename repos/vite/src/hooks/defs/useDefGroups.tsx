@@ -12,9 +12,9 @@ import type {
 import { useMemo } from 'react'
 import { useInline } from '../useInline'
 import { useDefs, useRepo } from '@store'
+import { EE } from '@services/sharedService'
 import { capitalize } from '@keg-hub/jsutils'
 import { OpenEditorFileEvt } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { FileOpenIcon, AddCircleIcon } from '@gobletqa/components'
 import { addStepFromDefinition } from '@actions/features/local'
 

@@ -7,9 +7,9 @@ import type {
   TBrowserIsLoadedEvent,
 } from '@types'
 
+import { EE } from '@services/sharedService'
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { playEvent } from '@actions/socket/local/playEvent'
 import { parsePlayLogs } from '@actions/runner/parsePlayLogs'
 import { recordAction } from '@actions/socket/local/recordAction'

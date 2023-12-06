@@ -1,8 +1,8 @@
 import type { TThrottle } from '@types'
 
 import { WindowResizeEvt } from '@constants'
+import { EE } from '@services/sharedService'
 import { useEffectOnce } from '../useEffectOnce'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { throttleLast as jsThrottle } from '@keg-hub/jsutils'
 
 const throttle = jsThrottle as TThrottle
