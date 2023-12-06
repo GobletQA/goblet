@@ -3,6 +3,7 @@ import type {
   TStepCtx,
   TLocator,
   TFillInput,
+  TGetIframe,
   TGBWorldCfg,
   TSaveWorldLocator,
 } from '@GTU/Types'
@@ -342,6 +343,7 @@ export const getLocatorContent = async (
  */
 export const clickElement = async ({
   save,
+  parent,
   timeout,
   locator,
   selector,
@@ -349,7 +351,7 @@ export const clickElement = async ({
   ...opts
 }:TClickEl, ctx?:TStepCtx) => {
 
-  locator = locator || getLocator(selector)
+  locator = locator || getLocator(selector, { parent })
   timeout = timeout || getLocatorTimeout(ctx)
 
   await locator.click({ ...opts, timeout })

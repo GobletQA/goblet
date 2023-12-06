@@ -11,12 +11,14 @@ import type {
   Locator,
   Browser,
   Geolocation,
+  FrameLocator,
   ViewportSize,
   LaunchOptions,
   BrowserServer,
   BrowserContext,
   BrowserContextOptions,
 } from 'playwright'
+
 
 /**
  * _guid is an internal playwright property
@@ -74,7 +76,13 @@ export type TPageGoblet = TPAgeBrowserTrack & {
   hasCloseEvt?:boolean
 }
 
-export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
+export type TFrameLocator = Omit<FrameLocator, `locator`|`frameLocator`> & {
+  frameLocator:(selector: string) => TFrameLocator
+  locator:(selector: string, options?: TLocatorOpts) => TLocator
+}
+
+export type TBrowserPage = Omit<Page, `locator`|`frameLocator`> & TWithGuid & {
+  frameLocator:(selector: string) => TFrameLocator
   locator:(selector: string, options?: TLocatorOpts) => TLocator
   __pageGoblet?: TPageGoblet
   __GobletAutomateInstance?: Automate

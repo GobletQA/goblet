@@ -6,6 +6,7 @@ import {
   IconButton,
   GobletIcon,
 } from '@gobletqa/components'
+import { ExpCtxMenuId } from '@GBR/constants/values'
 import { useMenuItems } from '@GBR/hooks/menuContext/useMenuItems'
 
 export type TExpressionMenu = TMenuContextRef & {
@@ -26,7 +27,6 @@ const iconProps = {
 export const ExpressionMenu = (props:TExpressionMenu) => {
 
   const {
-    id=`gb-expressions-menu`,
     submenuId=`gb-expressions-submenu`,
     parentId=`gb-expressions-menu-button`,
   } = props
@@ -48,11 +48,11 @@ export const ExpressionMenu = (props:TExpressionMenu) => {
         Icon={GobletIcon}
         iconProps={iconProps}
         aria-haspopup="true"
-        aria-controls={open ? id : undefined}
+        aria-controls={open ? ExpCtxMenuId : undefined}
         aria-expanded={open ? 'true' : undefined}
       />
       <Menu
-        id={id}
+        id={ExpCtxMenuId}
         open={open}
         items={items}
         onOpen={onOpen}
@@ -62,7 +62,7 @@ export const ExpressionMenu = (props:TExpressionMenu) => {
         SubMenu={submenuProps?.open && (
           <Menu
             id={submenuId}
-            aria-labelledby={id}
+            aria-labelledby={ExpCtxMenuId}
             {...submenuProps}
           />
         ) || null}

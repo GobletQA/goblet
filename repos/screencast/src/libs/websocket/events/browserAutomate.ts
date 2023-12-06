@@ -18,6 +18,9 @@ export const browserAutomate = (app:Express) => withRepo<TSocketEvtCBProps>(asyn
     case ExpressionKinds.url: {
       return await Automate.getPageUrl(pwComponents, data)
     }
+    case ExpressionKinds.iframe: {
+      return await Automate.getPageFrames(pwComponents, data)
+    }
     default: {
       return await Automate.turnOnElementSelect(pwComponents, data)
     }

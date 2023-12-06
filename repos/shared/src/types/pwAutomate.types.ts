@@ -37,8 +37,15 @@ export type TAutomateConfig = {
   parent:TAutomateParent|TPageOrContext
 }
 
+export type TFrameMeta = {
+  url?:string
+  name?:string
+  target?:string
+}
+
 export type TAutomatePageEvent = {
   url?:string
+  frames?:TFrameMeta[]
 }
 
 export type TAutomateElementEvent = TAutomatePageEvent & {

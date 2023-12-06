@@ -1,4 +1,5 @@
 import type {
+  TFrameMeta,
   TBrowserPage,
   TPWComponents,
   TBrowserContext,
@@ -128,6 +129,20 @@ export class Automate {
     const page = Automate.getPage(automate)
     await automate?.addInitScripts(page)
     await automate?.pageUrl?.(page)
+  }
+
+  static getPageFrames = async (
+    pwComponents:Partial<TPWComponents>,
+    options?:TUserAutomateOpts
+  ) => {
+    const parent = Automate.getParent(pwComponents)
+    const automate = parent.__GobletAutomateInstance
+    if(!automate)
+      throw new Error(`Could not find goblet automate instance on parent object`)
+
+    const page = Automate.getPage(automate)
+    await automate?.addInitScripts(page)
+    await automate?.getPageFrames?.(page)
   }
 
   static addEventListener = (
@@ -301,6 +316,47 @@ export class Automate {
     this.fireEvent<TAutomatePageEvent>({
       data: { url },
       name: PWAutomateEvent,
+    })
+  }
+
+  getPageFrames = async (
+    page?:TBrowserPage,
+    options?:TUserAutomateOpts
+  ) => {
+    page = page || Automate.getPage(this)
+    const frames = page.frames()
+
+    const frameMap = await Promise.all(
+      frames.map(async (frame) => {
+        if(frame.isDetached()) return
+
+        // Get the meta-data for each frame on the page
+        // If something fails, we don't care, so just skip it
+        try {
+          const meta:TFrameMeta = {
+            url: frame.url(),
+            name: frame.name(),
+          }
+          const element = await frame.frameElement()
+          const target:string = await page.evaluate(frame => {
+            // @ts-ignore
+            return window.playwright.selector(frame)
+          }, element)
+
+          await element.dispose()
+          meta.target = target
+          
+          return meta
+        }
+        catch(err){}
+
+        return
+      })
+    )
+
+    this.fireEvent<TAutomatePageEvent>({
+      name: PWAutomateEvent,
+      data: { frames: frameMap.filter(Boolean) },
     })
   }
 

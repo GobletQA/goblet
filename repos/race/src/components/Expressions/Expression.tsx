@@ -42,7 +42,7 @@ export const Expression = (props:TExpression) => {
     expression
   } = props
 
-  const onChange = useExpressionChange(props)
+  const {onExpressionChange:onChange} = useExpressionChange(props)
   const { Input, inputType } = useExpressionInput(expression)
 
   return (

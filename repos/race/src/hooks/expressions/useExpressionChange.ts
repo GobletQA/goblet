@@ -1,12 +1,13 @@
-import type { ChangeEvent } from 'react'
+import { ChangeEvent, useMemo, useState } from 'react'
 import type { TStepDef } from '@ltipton/parkin'
 import type { TAutoOpt } from '@gobletqa/components'
 import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useInline } from '@gobletqa/components'
+import { ExpCtxMenuId } from '@GBR/constants/values'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
 import { ExpAliasTag, ExpressionNoQuoteTypes } from '@GBR/constants'
-import { exists, isNum, isStr } from '@keg-hub/jsutils'
+import { isArr, exists, isNum, isStr } from '@keg-hub/jsutils'
 
 export type TExpression = {
   def:TStepDef
@@ -14,10 +15,6 @@ export type TExpression = {
   expression:TExpPart
   parent:TRaceStepParent
   onChange:(step:TRaceStep, old?:TRaceStep) => void
-}
-
-export type TExpOpts = {
-  value?:string|number
 }
 
 const numberTypes = Object.values(ExpressionNoQuoteTypes)
@@ -77,13 +74,13 @@ export const useExpressionChange = (props:TExpression) => {
     expression,
   } = props
 
-
-  return useInline((evt:ChangeEvent<HTMLInputElement>, prop?:unknown) => {
+  const onExpressionChange = useInline((evt:ChangeEvent<HTMLInputElement>, prop?:unknown) => {
 
     // Ensure only changes to the input || select update the expression
     const fromSelect = !exists(prop) || prop && !isStr(prop)
-
-    if(!fromSelect && evt.target.tagName !== `INPUT`){
+    const fromCtxMenu = evt.target?.parentElement?.id === ExpCtxMenuId
+    
+    if(fromCtxMenu || (!fromSelect && evt.target.tagName !== `INPUT`)){
       evt?.stopPropagation?.()
       evt?.preventDefault?.()
       return
@@ -110,4 +107,8 @@ export const useExpressionChange = (props:TExpression) => {
     onChange?.({...step, step: result}, step)
 
   })
+  
+  return {
+    onExpressionChange
+  }
 }

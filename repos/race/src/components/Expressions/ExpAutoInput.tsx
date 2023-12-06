@@ -7,6 +7,7 @@ import { ESectionType } from '@GBR/types'
 import { emptyArr } from '@keg-hub/jsutils'
 import { AutoInput } from '@gobletqa/components'
 import { ExpressionMenu } from './ExpressionMenu'
+import { useExpMergeOpts } from '@GBR/hooks/expressions/useExpMergeOpts'
 import {
   sharedLabelProps,
   sharedHelperTextProps,
@@ -48,6 +49,10 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
     ...rest
   } = props
 
+  const {
+    options,
+    setRemoteOptions
+  } = useExpMergeOpts({ expression })
   const [decorInputProps, setDecorInputProps] = useState<Partial<ComponentProps<typeof AutoInput>>>({})
 
   return (
@@ -56,6 +61,7 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
       {...expressionProps}
       {...rest}
       {...decorInputProps}
+      options={options}
       onBlur={onBlur}
       decor={{
         items,
@@ -65,6 +71,7 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
         active: expression,
         Component: ExpressionMenu,
         type:ESectionType.expression,
+        setOptions: setRemoteOptions,
         setInputProps:setDecorInputProps,
         context: ESectionType.expression,
       }}

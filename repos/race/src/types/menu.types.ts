@@ -76,6 +76,7 @@ export type TMenuContextSetInputProps = (props:Partial<ComponentProps<any>>) => 
 export type TMenuContextRef = {
   type: EAstObject
   context?:keyof TRaceContextMenu
+  setOptions?:(opts:string[]) => void
   setInputProps:TMenuContextSetInputProps
   gran: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario
   parent: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep

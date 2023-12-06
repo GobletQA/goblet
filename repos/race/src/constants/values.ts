@@ -65,3 +65,5 @@ export const ExpInputTypes = deepFreeze(keyMap([
 export const ExpAliasTag = `Alias: `
 export const ExpPageTag = `Page: `
 export const SimpleScenarioTag = `@goblet-simple-steps`
+
+export const ExpCtxMenuId = `gb-expressions-menu`

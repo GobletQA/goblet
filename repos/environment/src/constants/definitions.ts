@@ -46,6 +46,7 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>({
   attribute: `attribute`, // - Any element attribute
   code: `code`, // - Javascript code via doc script
   world: `world`,  // - Value from the world object
+  iframe: `iframe`  // - Iframe elements on the page
 })
 
 export const ExpressionElements = deepFreeze<Record<string, string[]>>({
@@ -68,6 +69,7 @@ export const ExpressionElements = deepFreeze<Record<string, string[]>>({
     `[role="radio"]`,
     `[role="checkbox"]`,
   ],
+  iframe: [`iframe`]
 })
 
 
