@@ -24,6 +24,12 @@ export type TGetIframe = {
   iframe:string
 }
 
+export type TGetIframeLocator = {
+  iframe?:string
+  selector:string
+  frame?:TFrameLocator
+}
+
 export type TFillInput = TClickEl & {
   text:string
 }

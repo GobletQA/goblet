@@ -1,8 +1,8 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
-import { getIframe } from '@GTU/Playwright'
-import { clickElement, getLocatorTimeout } from '@GTU/Support/helpers'
+import { getIframe, getILocator } from '@GTU/Playwright'
+import { clickElement } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes, ExpressionElements } from '@GTU/Constants'
 
 /**
@@ -24,11 +24,8 @@ export const clickIframeElementHandler = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const iframe = getIframe({ iframe:frame })
-  const timeout = getLocatorTimeout(ctx)
-  const locator = iframe.locator(selector)
-
-  await locator.click({ timeout })
+  const locator = getILocator(frame, selector)
+  return await clickElement({ locator })
 }
 
 const meta = {
