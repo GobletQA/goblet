@@ -74,12 +74,13 @@ const filterArrItems = <T extends TFilterItem>(
   return items.slice(idx)
 }
 
-const filterFromParent = <T extends TFilterParent>({
-  id,
-  parts,
-  single,
-  parent:parentAst,
-}:TFilterFromParent<T>):T => {
+const filterFromParent = <T extends TFilterParent>(props:TFilterFromParent<T>):T => {
+  const {
+    id,
+    parts,
+    single,
+    parent:parentAst,
+  } = props
 
   const type = parts.shift() as EAstObject
   const idx = parts.shift()

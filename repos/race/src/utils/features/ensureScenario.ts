@@ -42,7 +42,7 @@ export const ensureScenario = (parent:TRaceFeature) => {
     empty: true,
     feature: parent,
     tags: [SimpleScenarioTag],
-    index: findSimpleIdx(parent),
+    index: parent?.scenarios?.length || 0,
     scenario: {
       scenario: `Steps`,
       type: EAstObject.scenario,

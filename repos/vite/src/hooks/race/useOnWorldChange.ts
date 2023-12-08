@@ -8,7 +8,7 @@ import {formatWorldFile} from '@utils/repo/formatWorldFile'
 export type THOnWorldChange = {
   repo:TRepoOpts
   rootPrefix:string
-  onSaveFile: (loc: string, content: string | null, ext?: Partial<TFileModel>) => Promise<void>
+  onSaveFile: (loc: string, content: string | null, ext?: Partial<TFileModel>, checkWorld?:boolean) => Promise<void>
 }
 
 export const useOnWorldChange = (props:THOnWorldChange) => {

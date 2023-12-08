@@ -127,6 +127,7 @@ When(`I drag and drop the element {string} onto the element {string}`, dragAndDr
  */
 When(`I drag iframe {string} element {string} onto {string}`, dragFromIframeAndDrop, {
   ...meta,
+  name: `Drag iframe element onto page`,
   expressions: [
     iframeExp,
     ...meta.expressions
@@ -136,6 +137,7 @@ When(`I drag iframe {string} element {string} onto {string}`, dragFromIframeAndD
 
 When(`I drag element {string} onto iframe {string} element {string}`, dragIntoIframeAndDrop, {
   ...meta,
+  name: `Drag page element onto iframe`,
   expressions: [
     meta.expressions[0],
     iframeExp,
@@ -146,6 +148,7 @@ When(`I drag element {string} onto iframe {string} element {string}`, dragIntoIf
 
 When(`I drag within iframe {string} element {string} onto element {string}`, dragWithinIframeAndDrop, {
   ...meta,
+  name: `Drag iframe element within the same iframe`,
   expressions: [
     iframeExp,
     ...meta.expressions
@@ -155,6 +158,7 @@ When(`I drag within iframe {string} element {string} onto element {string}`, dra
 
 When(`I drag from iframe {string} element {string} onto iframe {string} element {string}`, dragBetweenIframesAndDrop, {
   ...meta,
+  name: `Drag iframe element onto a different iframe`,
   expressions: [
     iframeExp,
     meta.expressions[0],
