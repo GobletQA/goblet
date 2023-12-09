@@ -1,0 +1,47 @@
+name: build-docker-images
+on:
+  release:
+    types: [published]
+
+jobs:
+  pull-images:
+    name: Pull Images
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: app
+            from: main
+            to: latest
+          - service: screencast
+            from: main
+            to: latest
+          - service: backend
+            from: main
+            to: latest
+          - service: action
+            from: main
+            to: latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GIT_USER }}
+          password: ${{ secrets.GIT_TOKEN }}
+
+        - name: Publish Latest Tag
+          id: pull-tag-push
+          run: |
+            docker pull ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}}
+            docker tag ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
+            docker push ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
