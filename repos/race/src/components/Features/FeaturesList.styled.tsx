@@ -21,7 +21,8 @@ type TFeatureItem = ListItemButtonProps & { component?: ElementType }
 export const Features = styled(List)<TListFeatures>`
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-x: none;
+  overflow-y: auto;
   padding-top: 0px;
   position: relative;
 
@@ -126,6 +127,14 @@ export const FeatureItemName = styled(ListItemText)`
     width: 100%;
     height: 100%;
   }
+
+  & > span.MuiTypography-root {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    padding-right: ${gutter.padding.hpx};
+  }
+
 `
 
 export const FeatureItemActionsContainer = styled(Span)(({ theme }) => {

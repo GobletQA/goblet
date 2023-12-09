@@ -4,7 +4,10 @@ import { TreeFile } from './TreeFile'
 import { TreeDirectory } from './TreeDirectory'
 import { useFileHooks } from '../../hooks/file/useFileHooks'
 import { useFileCallbacks } from '../../hooks/file/useFileCallbacks'
-import { TreeFileContentContainer } from './FileTree.styled'
+import {
+  TreeFileContentContainer,
+  TreeFileChildrenContainer,
+} from './FileTree.styled'
 
 export const File = (props:TFileProps) => {
   const {
@@ -77,7 +80,7 @@ export const File = (props:TFileProps) => {
         />
       )
     : (
-        <TreeFileContentContainer className='gb-editor-file-item'>
+        <TreeFileContentContainer className='gb-monaco-tree-file-content-container'>
           {(file as TFolder)?._isDirectory && (
             <TreeDirectory
               nameRef={nameRef}
@@ -98,7 +101,7 @@ export const File = (props:TFileProps) => {
           )}
 
           {(showChild || root) && (
-            <div className='gb-monaco-filelist-container'>
+            <TreeFileChildrenContainer className='gb-monaco-tree-file-children-container'>
               {keys.map(item => (
                 <File
                   key={item}
@@ -122,7 +125,7 @@ export const File = (props:TFileProps) => {
                   onConfirmAddFolder={onConfirmAddFolder}
                 />
               ))}
-            </div>
+            </TreeFileChildrenContainer>
           )}
         </TreeFileContentContainer>
       )
