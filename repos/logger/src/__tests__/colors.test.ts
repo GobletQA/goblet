@@ -1,7 +1,7 @@
 jest.resetModules()
 jest.resetAllMocks()
 
-const { colors }  = require('../colors')
+const { colors }  = require('../utils/colors')
 
 const normalColors = [
   `red`,

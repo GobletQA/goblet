@@ -16,6 +16,7 @@ module.exports = {
     "^@GLT/types/(.*)$": path.join(__dirname, "../src/types/$1"),
     "^@GLT$": path.join(__dirname, "../src"),
     "^@GLT/(.*)$": path.join(__dirname, "../src/$1"),
-    "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1")
+    "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1"),
+    "@gobletqa/shared/(.*)": path.join(__dirname, "../../shared/src/$1")
   },
 }

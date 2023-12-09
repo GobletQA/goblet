@@ -4,6 +4,7 @@
 const KEYS = [
   // generic
   /passw(or)?d/i,
+  /pass/i,
   /^pw$/,
   /^pass$/i,
   /secret/i,
@@ -20,7 +21,7 @@ const VALUES = [
 ]
 
 const isSecret = {
-  key: (str:string) => KEYS.some((regex) => regex.test(str)),
+  key: (str:string) => KEYS.find((regex) => regex.test(str)),
   value: (str:string) => VALUES.some((regex) => regex.test(str))
 }
 
@@ -83,9 +84,18 @@ const shouldHideUnsafe = (value:string) => {
 
 const replaceInjected = (value:string) => {
   return Injected.reduce((acc, item) => {
-    acc.replaceAll(item, HIDDEN)
-    return acc
+    const replaced = acc.replaceAll(item, HIDDEN)
+    return replaced
   }, value)
+}
+
+const replaceSecretMatch = (value:string, text:string, space?:boolean) => {
+  const hasOr = text.includes(`(`) && text.includes(`)`)
+  const extra = space ? ` ` : ``
+  return value.replaceAll(
+    new RegExp(`(${text})((:*|\\\s*)*)(.*)`, `gim`),
+    hasOr ? `$1$3${extra}${HIDDEN}` : `$1$2${extra}${HIDDEN}`
+  )
 }
 
 export const safeReplacer = (key:string|number, value:any) => {
@@ -94,7 +104,11 @@ export const safeReplacer = (key:string|number, value:any) => {
   if (value instanceof Buffer) return value.toString('base64')
   if (value instanceof Date) return value.toString()
 
-  if (typeof key === `string` && isSecret.key(key)) return HIDDEN
+  if (typeof key === `string`){
+    const match = isSecret.key(key)
+    if(match) return replaceSecretMatch(key, match.source, key !== value)
+  }
+
   if (typeof value !== `string`) return value
   if (isSecret.value(value)) return HIDDEN
   if (shouldHideUnsafe(value)) return HIDDEN
@@ -112,7 +126,6 @@ export const safeReplacer = (key:string|number, value:any) => {
   if (possibleArrayKeys.includes(key) && value.indexOf('\n') >= 0)
     return value.split('\n').map((x) => x.trim())
 
-  
   return replaceInjected(value)
 }
 
