@@ -34,6 +34,7 @@ env:
 # ---- General Shared ENVs ---- #
   BUILDKIT_INLINE_CACHE: 1
   IMAGE_TAG: latest
+  DEV_IMG_TAG: main
   DISPLAY: ":0.0"
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
@@ -56,6 +57,7 @@ env:
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
   GB_ACT_IMAGE_TAG: latest
+  GB_ACT_DEV_IMAGE_TAG: main
   
   GB_ACT_PORT: ''
   GB_ACT_DEPLOYMENT: goblet-action
@@ -98,6 +100,7 @@ env:
 
 # ---- Base ENVs ---- #
   GB_BS_IMAGE_TAG: latest
+  GB_BS_DEV_IMAGE_TAG: main
   GB_BS_DEPLOYMENT: goblet-base
   GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
   # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
@@ -114,6 +117,7 @@ env:
   # Default to the backend api and host
   # But should be set when running as own server
   GB_BE_IMAGE_TAG: latest
+  GB_BE_DEV_IMAGE_TAG: main
   GB_BE_DEPLOYMENT: goblet-backend
   GB_BE_IMAGE: 'ghcr.io/gobletqa/goblet-backend'
   # GB_BE_IMAGE_FROM: 'ubuntu:20.04'
@@ -145,6 +149,7 @@ env:
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
   GB_FE_IMAGE_TAG: latest
+  GB_FE_DEV_IMAGE_TAG: main
   # Time to wait until showing an error message when checking the session container status (seconds)
   GB_FE_CONTAINER_WAIT: 20
   # Time to wait between each check for the backend session container (seconds)
@@ -202,6 +207,7 @@ env:
 
 # --- SCREENCAST ENVs --- #
   GB_SC_IMAGE_TAG: latest
+  GB_SC_DEV_IMAGE_TAG: main
   GB_SC_DEPLOYMENT: goblet-screencast
   GB_SC_IMAGE: 'ghcr.io/gobletqa/goblet-screencast'
   # Screencast API port
@@ -267,6 +273,7 @@ env:
   # Required for dind
   GB_DD_PRIVILEGED: true
   GB_DD_IMAGE_TAG: latest
+  GB_DD_DEV_IMAGE_TAG: main
   GB_DD_NETWORK: goblet-proxy
   GB_DD_DEPLOYMENT: goblet-dind
   GB_DD_IMAGE: 'ghcr.io/gobletqa/goblet-dind'
