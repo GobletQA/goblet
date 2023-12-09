@@ -474,6 +474,9 @@ importers:
       '@gobletqa/logger':
         specifier: workspace:*
         version: link:../logger
+      '@keg-hub/jsutils':
+        specifier: 9.10.0
+        version: 9.10.0
       glob:
         specifier: 10.3.10
         version: 10.3.10

@@ -1,13 +1,17 @@
 const path = require('path')
 const rootDir = path.join(__dirname, `..`)
+const baseCfg = require('../../../configs/jest.base.config.js')
 
 module.exports = {
-  ...require('../../../configs/jest.base.config.js'),
+  ...baseCfg,
 
   /* ---- Service specific options here ---- */
   rootDir,
   setupFilesAfterEnv: [`${rootDir}/scripts/jest.setup.ts`],
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
-  moduleNameMapper: {},
+  moduleNameMapper: {
+    ...baseCfg.moduleNameMapper,
+    "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1"),
+  },
 }

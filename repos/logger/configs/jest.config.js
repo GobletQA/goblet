@@ -1,8 +1,9 @@
 const path = require('path')
 const rootDir = path.join(__dirname, `..`)
+const baseCfg = require('../../../configs/jest.base.config.js')
 
 module.exports = {
-  ...require('../../../configs/jest.base.config.js'),
+  ...baseCfg,
 
   /* ---- Service specific options here ---- */
   rootDir,
