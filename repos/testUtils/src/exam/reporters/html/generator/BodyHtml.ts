@@ -11,6 +11,7 @@ import { OverviewHtml } from './OverviewHtml'
 type TBodyHtml = TReporterOpts & {
   title?:string
   date?:string
+  location:string
   data:TExEventData
   stats:TBuiltStats
   combineTests?:boolean
@@ -36,7 +37,7 @@ export const BodyHtml = (args:TBodyHtml) => {
               ${IconsHtml(data.status)}
             </span>
             <span class="test-location-text">
-              ${data.location}
+              ${opts?.location || data?.location}
             </span>
           </div>
           ${TestsHtml(data, opts)}

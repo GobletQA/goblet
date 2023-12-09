@@ -8,3 +8,5 @@ export * from './getLocatorType'
 export * from './getLocators'
 export * from './video'
 export * from './generatedArtifacts'
+export * from './getIframe'
+

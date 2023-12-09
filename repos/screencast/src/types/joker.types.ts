@@ -1,4 +1,5 @@
-import type { Repo, TBrowserConf, TPWComponents } from './shared.types'
+import type { Repo } from '@gobletqa/repo'
+import type { TBrowserConf, TPWComponents } from './shared.types'
 
 
 export type TJokerActExt = {

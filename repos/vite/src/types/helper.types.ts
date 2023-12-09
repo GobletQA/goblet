@@ -1,3 +1,5 @@
+export type TAnyCB = (...args:any[]) => any
+
 export type TAbortError = Error & {
   canceled:boolean
 }

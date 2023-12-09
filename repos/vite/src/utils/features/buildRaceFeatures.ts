@@ -42,7 +42,6 @@ export const buildRaceFeature = ({
   const relative = rmFeaturePrefix(key, repo)
   models[relative] = {
     ...ast,
-    uuid: key,
     path: relative,
     parent: { uuid: key, location: key },
   }

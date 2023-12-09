@@ -1,4 +1,5 @@
 export * from './repo'
+export * from './types'
 export * from './mountRepo'
 export * from './latentRepo'
 export * from './getFeatures'

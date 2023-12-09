@@ -1,3 +1,1 @@
-export { Clipboard } from '@gobletqa/shared/frontend/dom'
-
-
+export * from './downloadBlob'

@@ -5,8 +5,8 @@ import type {
   TTestRunExecErrEvent,
 } from '@types'
 
+import { EE } from '@services/sharedService'
 import {getStore, testRunsDispatch} from "@store"
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { testRunEventFactory } from '@utils/testRuns/testRunEventFactory'
 import {
   TestRunErrEvt,
@@ -63,7 +63,7 @@ const onTestRunEnd = (event:TPlayerResEvent<any>) => {
 export const testRunEvents = (evt:TPlayerResEvent) => {
 
   switch(evt.name){
-    case TestsToSocketEvtMap.ended: {
+    case TestsToSocketEvtMap.finished: {
       return onTestRunEnd(evt)
     }
     case TestsToSocketEvtMap.error: {

@@ -1,1 +1,0 @@
-module.export = require('./dist/cjs/envs/index.js')

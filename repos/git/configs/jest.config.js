@@ -1,8 +1,8 @@
 const path = require('path')
 const rootDir = path.join(__dirname, `..`)
-
+const baseCfg = require('../../../configs/jest.base.config.js')
 module.exports = {
-  ...require('../../../configs/jest.base.config.js'),
+  ...baseCfg,
 
   /* ---- Service specific options here ---- */
   rootDir,
@@ -10,12 +10,7 @@ module.exports = {
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
   moduleNameMapper: {
-    "^@GGT/services$": path.join(__dirname, "../src/services"),
-    "^@GGT/services/(.*)$": path.join(__dirname, "../src/services/$1"),
-    "^@GGT/types$": path.join(__dirname, "../src/types"),
-    "^@GGT/types/(.*)$": path.join(__dirname, "../src/types/$1"),
-    "^@GGT$": path.join(__dirname, "../src"),
-    "^@GGT/(.*)$": path.join(__dirname, "../src/$1"),
-    "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1")
+    ...baseCfg.moduleNameMapper,
+    "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1"),
   },
 }

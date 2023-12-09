@@ -50,9 +50,9 @@ const EvtReporterMap = {
   // onError
   [TestsToSocketEvtMap.error]: `onError`,
 
-  // Event `PLAY-ENDED`
-  // onEnded
-  [TestsToSocketEvtMap.ended]: `onEnded`,
+  // Event `PLAY-FINISHED`
+  // onEnd
+  [TestsToSocketEvtMap.finished]: `onFinished`,
 
   /**
    * TODO: this event is never actually fired by exam or a runner
@@ -69,7 +69,7 @@ const EvtReporterMap = {
 }
 
 const EvtTags = Object.entries(TestsToSocketEvtMap)
-  .reduce((acc, [key, val]) => {
+  .reduce((acc, [key, val]:[string, string]) => {
     acc[val] = EvtTag(val)
     return acc
   }, {})

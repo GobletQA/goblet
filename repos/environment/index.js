@@ -1,1 +1,1 @@
-export * from './dist/esm/index.js'
+module.export = require('./dist/envs')

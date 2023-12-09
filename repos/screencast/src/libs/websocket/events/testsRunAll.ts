@@ -116,16 +116,22 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
 
       testRunAborted = true
       testFromUI.abortRun()
-      !childProc?.killed && childProc?.kill?.(`SIGKILL`)
+
+      let killed:boolean
+      try { killed = childProc?.kill?.(`SIGKILL`) }
+      catch(err){}
 
       cleanup()
       off?.()
       off = undefined
+      Logger.log(`Test Run aborted. Child process killed: ${killed}`)
       res({ code: 130 })
     })
 
   })
   .finally(() => {
+    if(ENVS.NODE_ENV !== `production`) return
+
     // Ensure the force safe disable gets reset
     ENVS.GB_LOGGER_FORCE_DISABLE_SAFE = undefined
   })

@@ -1,16 +1,14 @@
 import type { TFormattedUser, TRouteMeta, TUserState, TValidateResp } from '@types'
 
 import { HttpMethods } from '@constants'
-import {
-  getUserToken,
-  autoRefreshUserToken
-} from './providers'
+import { getUserToken } from './providers'
 import { GitUser } from '@services/gitUser'
 import { apiRequest } from '@utils/api/apiRequest'
+import { Exception } from '@services/sharedService'
 import { localStorage } from '@services/localStorage'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { validateResp } from '@utils/api/validateResp'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
+
 
 export type TAddClaimsRep = {
   jwt?:string

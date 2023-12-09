@@ -64,7 +64,7 @@ const test = (general:TGenEnv) => {
 
     GOBLET_RUN_FROM_UI,
     GOBLET_RUN_FROM_CI,
-    GB_LOGGER_FORCE_DISABLE_SAFE,
+    GB_LOGGER_FORCE_DISABLE_SAFE: general.NODE_ENV !== `production` ? `1` : undefined,
 
     GOBLET_FEATURE_TAGS,
     GOBLET_FEATURE_NAME,

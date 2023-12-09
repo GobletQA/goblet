@@ -1,4 +1,5 @@
-import type { TGBWorldCfg, TOnWorldChange } from '@GBR/types'
+import type { TOnWorldChange } from '@GBR/types'
+import type { TWorldConfig } from '@ltipton/parkin'
 import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
 import { ERaceModal } from '@GBR/types'
@@ -14,13 +15,13 @@ import {
   useInline,
   useOnEvent
 } from '@gobletqa/components'
- 
+
 export const WorldEditorModal:TModalRef = (props:TModalComponent) => {
   const {world, updateWorld} = useWorld()
-  const [copy, setWorld] = useState<TGBWorldCfg>()
+  const [copy, setWorld] = useState<TWorldConfig>()
 
   useEffect(() => {
-    !copy && setWorld(deepMerge<TGBWorldCfg>(world))
+    !copy && setWorld(deepMerge<TWorldConfig>(world))
   }, [])
 
   const onUpdate = useInline<TOnWorldChange>((props) => {

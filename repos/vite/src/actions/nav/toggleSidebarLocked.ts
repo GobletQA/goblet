@@ -1,8 +1,8 @@
 import type { TResizeSideBarEvent } from '@gobletqa/components'
 
 import { exists } from '@keg-hub/jsutils'
+import { EE } from '@services/sharedService'
 import { appDispatch, getStore } from '@store'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { ResizeSideBarEvent, SidebarOpenWidth } from '@gobletqa/components'
 
 export const toggleSidebarLocked = (lock?:boolean) => {

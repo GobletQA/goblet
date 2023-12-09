@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
-import { dims, Span } from '@gobletqa/components'
 import { styled } from '@mui/material/styles'
+import { gutter, Span } from '@gobletqa/components'
 
 
 export const TreeItemActionsContainer = styled(Span)`
@@ -74,9 +74,18 @@ export const TreeItemContainer = styled(Box, {
       
     }
   }
+  
+  & > span.MuiTypography-root {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    padding-right: ${gutter.padding.hpx};
+  }
 
 `)
 
 export const TreeFileContentContainer = styled(Box)`
   user-select: none;
 `
+
+export const TreeFileChildrenContainer = styled(Box)``

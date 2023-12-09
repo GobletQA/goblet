@@ -1,5 +1,19 @@
-import type  { TGitData } from './shared.types'
 import type { RepoWatcher } from '../repoWatcher'
+
+// TODO: fix this - is a duplicate of the type in repo/types
+type TGitData = {
+  name: string
+  local:string
+  remote:string
+  branch:string
+  username:string
+  repoId?:string
+  provider:string
+  repoName?:string
+  newBranch?:string
+  branchFrom?:boolean
+}
+
 
 export type TGitOpts = TGitData & {
   log?:boolean

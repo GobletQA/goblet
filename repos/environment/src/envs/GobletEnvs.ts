@@ -10,7 +10,7 @@ import browser from './browser'
 import conductor from './conductor'
 import screencast from './screencast'
 import playwright from './playwright'
-import { exists } from '../utils/helpers'
+import {exists} from '@keg-hub/jsutils/exists'
 
 const buildEnvs = () => {
   const generalEnvs = general()
@@ -48,7 +48,9 @@ class GobletEnvs {
 
   set(target:any, prop:string, val:any){
     this.#envs[prop] = val
-    return Reflect.set(target, prop, val)
+    return val === undefined || val === null
+      ? Reflect.deleteProperty(target, prop)
+      : Reflect.set(target, prop, val)
   }
 
   deleteProperty(target:any, prop:string) {

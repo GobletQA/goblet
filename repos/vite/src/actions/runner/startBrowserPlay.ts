@@ -2,7 +2,7 @@
 // Has to be very long, could be based on the global timeout option from Exam / Parkin
 
 import type {
-  TGitData,
+  TRepoApiObj,
   TFileModel,
   TStartPlaying,
   TPlayerResEvent,
@@ -11,18 +11,18 @@ import type {
 
 import { EBrowserState } from '@types'
 import { addToast } from '@actions/toasts'
+import { EE } from '@services/sharedService'
 import { WSService } from '@services/socketService'
 import { pickKeys, emptyObj } from '@keg-hub/jsutils'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { getRepoData } from '@utils/store/getStoreData'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@utils/promise/promiseAbort'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
 import { filterFileContext } from '@utils/files/filterFileContext'
 import {
   BrowserStateEvt,
-  PlayerEndedEvent,
+  PlayerFinishedEvent,
   WSCancelPlayerEvent,
 } from '@constants'
 
@@ -36,12 +36,12 @@ type TBuildOpts = {
 }
 
 type TBrowserPlay = Omit<TStartPlaying, `repo`|`id`|`onEvent`|`browserConf`|`onCleanup`> & {
-  repo:TGitData
+  repo:TRepoApiObj
 }
 
 const buildOptions = (
   { options, params, file, appUrl, forwardLogs }:TBuildOpts,
-  repo:TGitData
+  repo:TRepoApiObj
 ) => {
   return {
     repo,
@@ -94,7 +94,7 @@ export const startBrowserPlay = async (
       file: model,
       forwardLogs,
     },
-    pickKeys<TGitData>(
+    pickKeys<TRepoApiObj>(
       repo?.git,
       [`local`, `remote`, `username`, `branch`, `name`]
     )
@@ -104,7 +104,7 @@ export const startBrowserPlay = async (
     WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
 
     // Then listen for the response event fired from the websocket service
-    const onPlayerEnd = EE.on<TPlayerResEvent>(PlayerEndedEvent, () => res(emptyObj))
+    const onPlayerEnd = EE.on<TPlayerResEvent>(PlayerFinishedEvent, () => res(emptyObj))
 
     /**
     * Listens for a cancel event

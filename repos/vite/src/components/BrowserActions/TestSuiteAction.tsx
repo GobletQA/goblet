@@ -3,7 +3,7 @@ import { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@gobletq
 
 import { useMemo } from 'react'
 import { useTestRuns, useApp } from '@store'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { BrowserStateIcon } from './BrowserActions.styled'
 import { runAllTests } from '@actions/testRuns/runAllTests'
 import {

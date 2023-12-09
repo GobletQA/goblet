@@ -1,4 +1,3 @@
-import type { TFileModel } from './shared.types'
 import type { TRepoState, TFilesState } from './reducer.types'
 import type { TRaceFeatures, TFeatureFileModel } from '@gobletqa/race'
 

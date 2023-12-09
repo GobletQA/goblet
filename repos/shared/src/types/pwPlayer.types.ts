@@ -123,7 +123,7 @@ export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = (TPlayerTestEvent & {
   describes: T[]
 })
 
-export type TPlayerEnded = TPlayerResEvent<Record<string, any>>
+export type TPlayerFinished = TPlayerResEvent<Record<string, any>>
 export type TPlayerStarted = TPlayerResEvent<Record<string, any>>
 export type TPlayerResult = TPlayerResEvent<TPlayerSuiteResult[]>
 
@@ -136,7 +136,7 @@ export type TPlayerSuiteResult = TPlayerResEvent<
   TPlayerTestSuiteFinished<TPlayerTestSuiteDone<TPlayerTestResult>>
 >
 
-export type TPlayerTestEventMeta = TPlayerEnded
+export type TPlayerTestEventMeta = TPlayerFinished
   | TPlayerStarted
   | TPlayerResult
   | TPlayerSpecDone

@@ -8,9 +8,9 @@ import type {
 
 
 import { isMac } from '@utils/browser/getOS'
+import { Clipboard } from '@gobletqa/components'
 import { useOnEvent } from '@gobletqa/components/hooks/useEvent'
 import { useRef, useCallback, useState, useEffect } from 'react'
-import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
 import { GlobalCopyEvt, SetBrowserIsLoadedEvent } from '@constants'
 import { useScreencastUrl }  from '@hooks/screencast/useScreencastUrl'
 import { useCheckBrowserStatus } from '@hooks/screencast/useCheckBrowserStatus'

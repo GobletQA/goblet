@@ -23,7 +23,7 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { snakeCase } from '@keg-hub/jsutils/snakeCase'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
-const EventTypeValues = Object.values(WSConstants)
+const EventTypeValues = Object.values(WSConstants) as string[]
 
 /**
  * Gets the current time, used for a timestamp

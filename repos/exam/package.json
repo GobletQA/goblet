@@ -33,9 +33,10 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:ex && pnpm build:cli && pnpm types",
-    "build:ex": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
-    "build:cli": "node --enable-source-maps -r esbuild-register configs/cli.build.config.ts",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm build:ex && pnpm build:cli",
+    "build:ex": "pnpm tsup --config ./configs/tsup.ex.config.ts",
+    "build:cli": "pnpm tsup --config ./configs/tsup.cli.config.ts",
     "ex:dev": "EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
@@ -46,8 +47,6 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "tsc": "tsc",
-    "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },
   "dependencies": {
@@ -56,7 +55,7 @@
     "@keg-hub/args-parse": "10.0.1",
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "6.3.1",
+    "@ltipton/parkin": "6.5.1",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",
     "esbuild-plugin-path-alias": "1.0.7",
@@ -68,9 +67,8 @@
     "p-pipe": "4.0.0"
   },
   "devDependencies": {
-    "@ltipton/esdev": "0.2.1",
     "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
-    "nodemon": "3.0.1"
+    "tsup": "8.0.1"
   }
 }

@@ -1,4 +1,4 @@
-import type { TGBWorldCfg, TLocator } from './shared.types'
+import type { TGBWorldCfg, TLocator, TBrowserPage, TFrameLocator } from './shared.types'
 
 export type TClickOpts = {
   delay?:number
@@ -17,8 +17,18 @@ export type TClickEl = TClickOpts & {
   selector?:string
   locator?:TLocator
   worldPath?:string
+  parent?:TBrowserPage|TFrameLocator
 }
 
+export type TGetIframe = {
+  iframe:string
+}
+
+export type TGetIframeLocator = {
+  iframe?:string
+  selector:string
+  frame?:TFrameLocator
+}
 
 export type TFillInput = TClickEl & {
   text:string
@@ -36,6 +46,7 @@ export type TLocOpts = {
   hasNot?:TLocator
   hasText?:string
   hasNotText?:string
+  parent?:TBrowserPage|TFrameLocator
 }
 
 export type TWaitFor = {

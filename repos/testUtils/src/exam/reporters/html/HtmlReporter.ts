@@ -18,6 +18,7 @@ import { HeadHtml } from './generator/HeadHtml'
 import { BodyHtml } from './generator/BodyHtml'
 import { takeScreenshot } from './takeScreenshot'
 import { PartialsHtml } from './generator/PartialsHtml'
+import { getPage } from '@GTU/Playwright/browserContext'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { ArtifactSaveOpts } from '@gobletqa/environment/constants'
 import {
@@ -43,9 +44,10 @@ export type TTestTimeCache = {
 }
 
 export type TReporterOpts = {
+  location:string
   testTimes:Record<string, TTestTimeCache>
-  onRenderTest?: (data:TExEventData) => string
-  onRenderError?: (data:TExEventData) => string
+  onRenderTest?: (data:TExEventData, opts:TReporterOpts) => string
+  onRenderError?: (data:TExEventData, opts:TReporterOpts) => string
 }
 
 export type THtmlPartials = Record<string, { html:string, stats:TBuiltStats }>
@@ -96,18 +98,17 @@ const wrapHtml = (head:string, body:string) => {
 
 export class HtmlReporter implements IExamReporter {
 
-  #page?:any
   rootDir:string
   reportsDir:string
   disabled?:boolean
   #screenshotExt?:string
   #testTimeout?:number
   #suiteTimeout?:number
-  #screenshots: Record<string, string>={}
   #saveReport?:TGobletTestArtifactOption
   #saveScreenshot?:TGobletTestArtifactOption
   #testTimes:Record<string, TTestTimeCache> = {}
   #partialTestTimes:TTestTimeCache = { start: 0, end: 0 }
+  #screenshots: Record<string, Record<string, string>>={}
 
   #title?:string
   #combineAllTests?:boolean
@@ -162,17 +163,11 @@ export class HtmlReporter implements IExamReporter {
     this.onRunResult = undefined
   }
 
-  #getPage = () => {
-    if(!this.#saveScreenshot) return
-    this.#page = this.#page || global?.page
-    !this.#page
-      && console.warn(`Html Reporter "saveScreenshot" is "true", but a Browser Page does not exist`)
+  #renderImg = (data:TExEventData, opts:TReporterOpts) => {
+    const location = data?.location || opts?.location
+    if(!location || !data?.id) return ``
 
-    return this.#page
-  }
-
-  #renderImg = (data:TExEventData) => {
-    const uri = this.#screenshots[data.id]
+    const uri = this.#screenshots?.[location]?.[data.id]
     return uri
       ? ImgHtml({
           uri,
@@ -183,10 +178,10 @@ export class HtmlReporter implements IExamReporter {
       : ``
   }
 
-  #onRenderTest = (data:TExEventData) => {
+  #onRenderTest = (data:TExEventData, opts:TReporterOpts) => {
     return data.failed && (this.#saveScreenshot === ArtifactSaveOpts.failed)
       ? ``
-      : this.#renderImg(data)
+      : this.#renderImg(data, opts)
   }
 
   #htmlTemplate = ({
@@ -210,6 +205,7 @@ export class HtmlReporter implements IExamReporter {
       title,
       stats,
       totalTime,
+      location: data.location,
       testTimes: this.#testTimes,
       combineTests: this.#combineAllTests,
       onRenderError: this.#renderImg.bind(this),
@@ -244,24 +240,31 @@ export class HtmlReporter implements IExamReporter {
   }
 
   onTestResult = async (evt:TExamEvt<TExEventData>) => {
-    const { id, timestamp, status } = evt?.data
+    try {
+      const { id, timestamp, status, location } = evt?.data
 
-    if(this.#testTimes[id]){
-      this.#testTimes[id].end = timestamp
-      const length = getTestLength(this.#testTimes[id], this.#testTimeout)
-      length && (this.#testTimes[id].length = length)
+      if(this.#testTimes[id]){
+        this.#testTimes[id].end = timestamp
+        const length = getTestLength(this.#testTimes[id], this.#testTimeout)
+        length && (this.#testTimes[id].length = length)
+      }
+
+      if(!shouldSaveArtifact(this.#saveScreenshot, status)) return
+
+      const page = await getPage()
+      if(!page) return
+      const resp = await takeScreenshot(evt, { ext: this.#screenshotExt, page })
+      if(!resp) return
+
+      this.#screenshots[location] = this.#screenshots[location] || {}
+      this.#screenshots[location][resp.id] = resp.uri
     }
-
-    if(!shouldSaveArtifact(this.#saveScreenshot, status)) return
-
-    const page = this.#getPage()
-    if(!page) return
-
-    const resp = await takeScreenshot(evt, { ext: this.#screenshotExt, page })
-    resp && (this.#screenshots[resp.id] = resp.uri)
+    catch(err){
+      console.error(err)
+    }
   }
 
-  onEnded = async (evt:TExamEvt<TExEventData>) => {
+  onFinished = async (evt:TExamEvt<TExEventData>) => {
     if(!this.#combineAllTests) return
 
     const totalTime = getTestLength(this.#partialTestTimes, this.#suiteTimeout)
@@ -297,3 +300,9 @@ export class HtmlReporter implements IExamReporter {
 
 export default HtmlReporter
 
+/**
+  PLAY-SPEC-START - onTestStart
+  PLAY-SPEC-DONE - onTestResult
+  PLAY-FINISHED - onFinished
+  PLAY-RESULTS - onRunResult
+ */

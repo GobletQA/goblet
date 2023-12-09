@@ -1,15 +1,19 @@
 import type { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { EBrowserState } from '@types'
+import { EE } from '@services/sharedService'
 import { EditorPathChangeEvt } from '@constants'
 import { DangerousIcon } from '@gobletqa/components'
 import { useCallback, useMemo, useState } from 'react'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { getFileModel } from '@utils/files/getFileModel'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
-import { useOnEvent, BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
+import {
+  useOnEvent,
+  BaseAction,
+  PlayCircleOutlineIcon
+} from '@gobletqa/components'
 
 import {
   CancelButtonID,
@@ -26,10 +30,13 @@ const onCancelPlayers = () => EE.emit(WSCancelPlayerEvent, {})
 const onCancelAutomation = () => EE.emit(WSCancelAutomateEvent, {})
 
 let __localSetLocation:(loc: string) => void
-EE.once<TEditorPathChange>(EditorPathChangeEvt, (props) => {
+
+const callSetLocation = (props:TEditorPathChange, times=0) => {
   if(__localSetLocation) return __localSetLocation(props.location)
-  setTimeout(() => __localSetLocation(props.location), 1000)
-})
+  times === 0 && setTimeout(() => callSetLocation(props, 1), 1000)
+}
+
+EE.once<TEditorPathChange>(EditorPathChangeEvt, (props) => callSetLocation(props, 0))
 
 export const usePlayAction = (props:TBrowserActionProps) => {
 

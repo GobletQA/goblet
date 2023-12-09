@@ -67,7 +67,7 @@ export const Panel = (props:TPanel) => {
   const style = useMemo(() => {
     return {
       container: { flexGrow: fillHeight ? 1 : 0 },
-      content: startOpen ? { maxHeight: `100vh` } : { maxHeight: `0px` }
+      content: startOpen ? { maxHeight: `calc( 100% + 40px)` } : { maxHeight: `0px` }
     }
   }, [
     startOpen,
@@ -95,7 +95,7 @@ export const Panel = (props:TPanel) => {
         <PanelContent
           ref={panelRef}
           style={style.content}
-          className={cls(`goblet-sidebar-panel-content`, { hide: closed, show: !closed })}
+          className={cls(`goblet-sidebar-panel-content`, closed ? `hide` : `show`)}
         >
           {children}
         </PanelContent>

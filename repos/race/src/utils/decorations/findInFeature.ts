@@ -3,7 +3,7 @@
  */
 
 import type { TRaceFeature } from "@gobletqa/race/types"
-import { get } from "@keg-hub/jsutils/get"
+import { get } from "@keg-hub/jsutils"
 import { EAstObject } from "@ltipton/parkin"
 
 export type TFindFromId = {

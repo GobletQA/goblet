@@ -1,1 +1,1 @@
-export * from '@gobletqa/shared/frontend/constants'
+export * from '@gobletqa/environment/constants/frontend'

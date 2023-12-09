@@ -4,7 +4,7 @@ import type {
   TCmdResp,
   TRepoGitState,
   TSaveMetaData,
-} from '@GWF/types'
+} from './types'
 
 import { git, validateGitOpts } from './gitCmd/git'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'

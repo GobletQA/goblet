@@ -3,6 +3,7 @@ import type {
 } from '@GBR/types'
 
 
+import {hashString} from '@keg-hub/jsutils'
 import { cleanString } from '@GBR/utils/helpers/cleanString'
 
 /**
@@ -35,10 +36,11 @@ export const generateFeatureProps = (
   const relative = `/${nameExt}`
   const fullLoc = `${feat.parent.location.replace(/\/$/, ``)}${relative}`
   const path = fullLoc.replace(rootPrefix, ``)
+  const uuid = `feature-${hashString(feat.feature)}`
 
   return {
     path,
-    uuid: fullLoc,
+    uuid,
     parent: { uuid: fullLoc, location: fullLoc },
   }
 }

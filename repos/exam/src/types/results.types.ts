@@ -39,11 +39,11 @@ export enum EPlayerTestType {
   error=`error`,
   feature=`feature`,
   describe=`describe`,
-  ended=`exam-ended`,
+  finished=`exam-finished`,
   stopped=`exam-stopped`,
 }
 
-export type TExEvtAction = EResultAction|`error`|`ended`|`stopped`|``
+export type TExEvtAction = EResultAction|`error`|`finished`|`stopped`|``
 
 
 export type TExTestExpectation = {
@@ -94,7 +94,7 @@ export type TEXErrorResult = Omit<TExRunResult, `type`|`action`|`status`> & {
   type:EPlayerTestType.error|EAstObject.error
 }
 
-export type TExEndedEvent = Omit<TExRunResult, `type`|`action`|`status`> & {
+export type TExFinishedEvent = Omit<TExRunResult, `type`|`action`|`status`> & {
   eventParent?:`exam`
   action:TExEvtAction
   type:EPlayerTestType.exam
@@ -118,7 +118,7 @@ export type TExTestSuiteFinished<T=TExTestEvent> = TExTestEvent & {
   describes: T[]
 }
 
-export type TExEnded = TExamEvt<Record<string, any>>
+export type TExFinished = TExamEvt<Record<string, any>>
 export type TExStarted = TExamEvt<Record<string, any>>
 
 export type TExSpecDone = TExamEvt<TExTestDone>
@@ -130,7 +130,7 @@ export type TExSuiteResult = TExamEvt<
   TExTestSuiteFinished<TExTestSuiteDone<TExTestResult>>
 >
 
-export type TExTestEventMeta = TExEnded
+export type TExTestEventMeta = TExFinished
   | TExStarted
   | TExSpecDone
   | TExSpecStart

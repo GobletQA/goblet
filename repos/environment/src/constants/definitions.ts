@@ -1,4 +1,4 @@
-import { deepFreeze } from '../utils/helpers'
+import {deepFreeze} from '@keg-hub/jsutils/deepFreeze'
 
 // Default Folder name of the folder where step-definition overrides are placed
 // Used when a mounted repo overrides a default step-definition
@@ -46,6 +46,7 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>({
   attribute: `attribute`, // - Any element attribute
   code: `code`, // - Javascript code via doc script
   world: `world`,  // - Value from the world object
+  iframe: `iframe`  // - Iframe elements on the page
 })
 
 export const ExpressionElements = deepFreeze<Record<string, string[]>>({
@@ -68,6 +69,7 @@ export const ExpressionElements = deepFreeze<Record<string, string[]>>({
     `[role="radio"]`,
     `[role="checkbox"]`,
   ],
+  iframe: [`iframe`]
 })
 
 

@@ -1,4 +1,4 @@
-import type { TRepoState } from '@types'
+import type { TGBWorldCfg, TRepoState } from '@types'
 
 import { getStore } from '@store'
 import { get, exists } from '@keg-hub/jsutils'
@@ -27,11 +27,11 @@ export const getWorldVal = ({
   if(!location && !fallback) return def
 
   repo = repo || getStore()?.getState()?.repo
-  const locationVal = location ? get(repo?.world, location) : undefined
+  const locationVal = location ? get(repo?.world as TGBWorldCfg, location) : undefined
 
   const found = exists(locationVal)
     ? locationVal
-    : fallback && get(repo?.world, fallback)
+    : fallback && get(repo?.world as TGBWorldCfg, fallback)
 
   return exists(found) ? found : def
 }

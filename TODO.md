@@ -110,8 +110,13 @@ On every page load
   * AI outputs a feature file 
     * Should be editable, needs a little tlc
 * Then run the feature
-  * 
 
+
+### Race
+* Drag and drop does not work
+* Drag one step above another, and the UI updates, but when running the steps, it does not update
+  * Also after a page refresh, the steps are not updated, so the change is not actually saved
+* Select from browser - does not work for selecting elements in an iframe
 
 
 ### Main issues
@@ -143,6 +148,8 @@ On every page load
 
 
 Basically the select in browser issue caused an issue with your session container. When you logged out, it cause the session container to shutdown, but there's no update to the frontend about that. So when you  logged back in it would not allow you to mount until the container fully restarted.
+
+
 
 
 

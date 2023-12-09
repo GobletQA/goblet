@@ -3,7 +3,6 @@ import type {
   TExEventData,
   TExFileModel,
   TExRunnerCfg,
-  TExTestEvent,
 } from '@GEX/types'
 
 import { ExamRunner } from './ExamRunner'

@@ -61,7 +61,7 @@ export const StepHeaderSplit = (props:TStepHeaderSplit) => {
 
   return (
     <>
-      {split.map(([type, content, key]) => {
+      {split.map(([type, content, key]:string[]) => {
         return (
           <StepHeaderChunk
             key={key}

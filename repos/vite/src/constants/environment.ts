@@ -1,4 +1,5 @@
 import { toBool, toNum } from '@keg-hub/jsutils'
+export * from '@gobletqa/environment/constants/frontend'
 
 export const Environment = process.env.NODE_ENV || `local`
 

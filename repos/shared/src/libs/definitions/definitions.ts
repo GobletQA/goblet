@@ -13,9 +13,15 @@ import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
  * Cache holder for internal goblet definitions, so they don't have to be reloaded each time
  */
 let __CachedGobletDefs:TDefinitionFileModel[]
+let __CachedRepoDefs:TDefinitionFileModel[]
 
 export const removeGobletCacheDefs = () => {
   __CachedGobletDefs = undefined
+  __CachedRepoDefs = undefined
+}
+
+export const removeRepoCacheDefs = () => {
+  __CachedRepoDefs = undefined
 }
 
 
@@ -54,7 +60,7 @@ const getGobletDefs = async (
   overrideParkin:(...args:any) => any,
   cache:boolean=true
 ) => {
-  if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs 
+  if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs
 
   const definitionFiles = await glob(GlobJSFiles, {
     ...GlobOnlyFiles,
@@ -78,6 +84,7 @@ const getGobletDefs = async (
 const getRepoDefinitions = async (
   repo:Repo,
   overrideParkin:(...args:any) => any,
+  cache:boolean=true
 ) => {
 
   const { stepsDir } = repo.paths
@@ -121,7 +128,7 @@ export const loadDefinitions = async (
   // Call refreshWorld to ensure repo and parkin have an updated world
   repo.refreshWorld()
   const overrideParkin = parkinOverride(repo)
-  const clientDefinitions = await getRepoDefinitions(repo, overrideParkin)
+  const clientDefinitions = await getRepoDefinitions(repo, overrideParkin, cache)
   const gobletDefinitions = await getGobletDefs(repo, overrideParkin, cache)
 
   // TODO: look into returned the support fileModels to the frontend

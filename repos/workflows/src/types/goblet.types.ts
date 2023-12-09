@@ -1,4 +1,7 @@
-import type { TGitMeta, TRepoOpts } from './shared.types'
+import type { TGitMeta } from '@gobletqa/git'
+import type { TRepoOpts } from '@gobletqa/repo'
+import type { TRecorderOpts } from '@gobletqa/goblet'
+
 import type { TRepoMountStatus, TCreateRepo } from './repo.types'
 
 export type TWFArgs = TGitMeta & {
@@ -17,10 +20,6 @@ export type TResArgs = Omit<TRepoMountStatus, `message`> & {
 
 export type TWFResp = TResArgs & {
   message: string
-}
-
-type TRecorderOpts = {
-  locator: string
 }
 
 type TGScreencastConfig = {

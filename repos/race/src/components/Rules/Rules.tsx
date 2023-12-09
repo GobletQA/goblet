@@ -29,7 +29,7 @@ export const Rules = (props:TRules) => {
           <Rule
             rule={rule}
             key={rule.uuid}
-            parent={parent}
+            feature={parent}
             ruleId={rule.uuid}
           />
         )

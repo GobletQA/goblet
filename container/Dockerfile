@@ -39,29 +39,8 @@ COPY configs/app.pm2.config.js configs/
 COPY configs/tasks.config.js configs/
 # ---- End Stage ---- #
 
-
-# ---- Shared Stage  ---- #
-FROM $IMAGE_FROM as goblet-repo-files
-WORKDIR /goblet/app
-COPY repos/conductor repos/conductor/
-COPY repos/logger repos/logger/
-COPY repos/latent repos/latent/
-COPY repos/goblet repos/goblet/
-COPY repos/git repos/git/
-COPY repos/repo repos/repo/
-COPY repos/workflows repos/workflows/
-COPY repos/browser repos/browser/
-COPY repos/backend repos/backend/
-COPY repos/screencast repos/screencast/
-COPY repos/testUtils repos/testUtils/
-COPY repos/exam repos/exam/
-COPY repos/shared repos/shared/
-COPY repos/environment repos/environment/
-# ---- End Stage ---- #
-
-
 # ---- Workflows Stage  ---- #
-FROM $IMAGE_FROM AS goblet-repos
+FROM $IMAGE_FROM AS goblet-package
 WORKDIR /goblet/app
 COPY repos/conductor/package.json repos/conductor/
 COPY repos/logger/package.json repos/logger/
@@ -80,16 +59,23 @@ COPY repos/environment/package.json repos/environment/
 RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
 # ---- End Stage ---- #
 
-
 # ---- Shared Stage  ---- #
-FROM goblet-repos AS goblet-built
+FROM goblet-package as goblet-repo-files
 WORKDIR /goblet/app
-COPY --from=goblet-build-files /goblet/app .
-COPY --from=goblet-repo-files /goblet/app .
-# WORKDIR /goblet/app/repos/backend
-# RUN pnpm build:docker
-# WORKDIR /goblet/app/repos/screencast
-# RUN pnpm build:docker
+COPY repos/conductor repos/conductor/
+COPY repos/logger repos/logger/
+COPY repos/latent repos/latent/
+COPY repos/goblet repos/goblet/
+COPY repos/git repos/git/
+COPY repos/repo repos/repo/
+COPY repos/workflows repos/workflows/
+COPY repos/browser repos/browser/
+COPY repos/backend repos/backend/
+COPY repos/screencast repos/screencast/
+COPY repos/testUtils repos/testUtils/
+COPY repos/exam repos/exam/
+COPY repos/shared repos/shared/
+COPY repos/environment repos/environment/
 # ---- End Stage ---- #
 
 
@@ -99,7 +85,8 @@ WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 
 COPY --from=goblet-run-files /goblet/app/ .
-COPY --from=goblet-built /goblet/app/ .
+COPY --from=goblet-build-files /goblet/app .
+COPY --from=goblet-repo-files /goblet/app .
 
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \

@@ -1,7 +1,7 @@
+import type { TGitOpts } from '@gobletqa/git'
 import type { AxiosRequestConfig } from 'axios'
 import type {
   TApiConf,
-  TGitOpts,
   TRepoResp,
   TRepoData,
   TGitApiRes,

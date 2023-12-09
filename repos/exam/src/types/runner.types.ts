@@ -1,9 +1,8 @@
+import type { TExFileModel } from './file.types'
 import type { TStateObj } from './pipeline.types'
 import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
-import type { TTransformResp } from './transform.types'
 import type {IExamEnvironment} from './environment.types'
-import {TExFileModel} from './file.types'
 
 
 export type TExRunnerCfg = {

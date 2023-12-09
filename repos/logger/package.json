@@ -19,8 +19,10 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm l:build && pnpm types",
-    "l:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm build:log && pnpm build:stdio",
+    "build:log": "pnpm tsup --config ./configs/tsup.log.config.ts",
+    "build:stdio": "pnpm tsup --config ./configs/tsup.stdio.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -30,18 +32,17 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "types": "tsc --emitDeclarationOnly",
     "validate": "tsc --noEmit"
   },
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
+    "@keg-hub/jsutils": "9.10.0",
     "winston": "3.11.0"
   },
   "devDependencies": {
     "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
-    "esbuild": "0.19.7",
-    "esbuild-register": "3.5.0",
-    "esbuild-plugin-path-alias": "1.0.7"
+    "@microsoft/api-extractor": "7.38.3",
+    "tsup": "8.0.1"
   }
 }

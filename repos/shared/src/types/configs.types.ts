@@ -1,12 +1,5 @@
-import type { Repo } from './workflows.types'
-import type { TRepoPaths } from './repo.types'
-import type { TExamConfig } from './exam.types'
 import type { TLogLevel } from './helpers.types'
-import type { TGFileTypes } from './files.types'
-import type { TGBWorldCfg } from './parkin.types'
 import type { TBrowserConf, TBrowserContextOpts } from './pw.types'
-
-import type { TRecorderOpts, TGScreencastConfig } from './screencast.types'
 
 export type TInternalPaths = {
   gobletRoot: string
@@ -47,16 +40,3 @@ export type TGobletPWConfig = {
   context?: TBrowserContextOpts
 }
 
-export type TDefGobletConfig = {
-  $ref?:string
-  $merge?: string[],
-  paths: TRepoPaths
-  world?:TGBWorldCfg
-  fileTypes: TGFileTypes
-  recorder: TRecorderOpts
-  playwright?:TGobletPWConfig
-  screencast: TGScreencastConfig
-  testConfig?:Partial<TExamConfig>
-}
-
-export type TGobletConfig = Repo | TDefGobletConfig

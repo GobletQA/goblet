@@ -1,5 +1,5 @@
 import type { TEnvConvertOpts } from '../types'
-import { exists } from '../utils/helpers'
+import {exists} from '@keg-hub/jsutils/exists'
 
 export const ensureVal = <T=any>(
   item:T,

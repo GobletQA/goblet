@@ -1,8 +1,9 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
+import { getIframe, getILocator } from '@GTU/Playwright'
 import { clickElement } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes, ExpressionElements } from '@GTU/Constants'
 
 /**
  * Click the element matching `selector`
@@ -15,6 +16,17 @@ export const clickElementHandler = async (
   return await clickElement({ selector }, ctx)
 }
 
+/**
+ * TODO: Temp step until the step tags system can be implemented
+ */
+export const clickIframeElementHandler = async (
+  frame:string,
+  selector:string,
+  ctx:TStepCtx
+) => {
+  const locator = getILocator(frame, selector)
+  return await clickElement({ locator })
+}
 
 const meta = {
   name: `Click element`,
@@ -47,5 +59,28 @@ When(`I click the page`, async (ctx:TStepCtx) => await clickElementHandler(`body
   name: `Click page`,
   expressions: [],
   examples: [`When I click the page`],
+  race: true
+})
+
+When(`I click iframe {string} element {string}`, clickIframeElementHandler, {
+  ...meta,
+  name: `Click iframe element`,
+  alias: [`Touch`, `Press`],
+  info: `Action to simulate clicking, touching, or pressing an element within an iframe`,
+  expressions: [
+    {
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.iframe,
+      kindRef: ExpressionElements.iframe,
+      description: `The selector of an iframe that exists on the page`,
+      example: `iframe#sub-page`,
+    },
+    {
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
+      description: `The selector of an element that exists on the page`,
+      example: `button[name='btn-name']`,
+    },
+  ],
   race: true
 })

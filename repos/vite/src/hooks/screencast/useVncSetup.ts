@@ -10,9 +10,9 @@ import {
 import { useApp } from "@store"
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
+import { EE } from '@services/sharedService'
 import { VNCConnectedEvt } from '@constants'
 import { useRFBConfig } from './useRFBConfig'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {useInline} from '@gobletqa/components'
 
 export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {

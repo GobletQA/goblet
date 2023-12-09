@@ -1,6 +1,7 @@
+import type { TGlobalCopyEvent } from '@types'
+
 import { GlobalCopyEvt } from '@constants'
-import { TGlobalCopyEvent } from '@types'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 
 const addCopyToDocument = () => {
   document.oncopy = async (event:Event) => {

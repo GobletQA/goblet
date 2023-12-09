@@ -3,7 +3,7 @@ import type { TPlayerResEvent } from '@types'
 import { useState } from 'react'
 import { EBrowserState } from '@types'
 import { useOnEvent } from '@gobletqa/components'
-import { BrowserStateEvt, PlayerStartedEvent, PlayerEndedEvent } from '@constants'
+import { BrowserStateEvt, PlayerStartedEvent, PlayerFinishedEvent } from '@constants'
 
 export const useBrowserState = () => {
 
@@ -18,7 +18,7 @@ export const useBrowserState = () => {
     setBrowserState(EBrowserState.playing)
   })
 
-  useOnEvent(PlayerEndedEvent, (event:TPlayerResEvent) => {
+  useOnEvent(PlayerFinishedEvent, (event:TPlayerResEvent) => {
     setBrowserState(EBrowserState.idle)
   })
 

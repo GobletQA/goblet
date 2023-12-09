@@ -1,10 +1,10 @@
 import type { TBrowserIsLoadedEvent, TSocketEmitData, TBrowserConf } from '@types'
 
+import { EE } from '@services/sharedService'
 import { GobletQAUrl } from '@constants/values'
 import { pageService } from '@services/pageService'
 import { SetBrowserIsLoadedEvent } from '@constants'
 import { getWorldVal } from '@utils/repo/getWorldVal'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { SocketMsgTypes, BrowserResetUrlEvt } from '@constants'
 import { WSService } from '@services/socketService/socketService'
 import { getSettingsValues } from '@utils/settings/getSettingsValues'

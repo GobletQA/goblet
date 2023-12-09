@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { UpdateModalEvt } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { createContext, useEffect, useState, memo } from 'react'
 
 export type TModalProvider = {

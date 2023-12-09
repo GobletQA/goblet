@@ -2,7 +2,7 @@ import type { TMenuItem } from '@gobletqa/components'
 import type { TToggleRaceModalEvt } from '@gobletqa/race'
 
 import { WorldIcon } from '@gobletqa/components'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { ToggleRaceModalEvt, ERaceModal } from '@gobletqa/race'
 
 

@@ -1,13 +1,13 @@
-import { dims } from '@GBC/theme'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { SidebarOpenWidth } from '@GBC/constants' 
+import { SidebarOpenWidth, dims, gutter } from '@gobletqa/components'
 
 export const SidebarContainer = styled(Box, {
   shouldForwardProp: (prop:string) => prop !== 'maxWidth'
 })(({ maxWidth=SidebarOpenWidth }) => `
 
   width: 100%;
+  padding-bottom: ${gutter.padding.px};
 
   display: flex;
   flex-direction: column;

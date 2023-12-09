@@ -2,7 +2,7 @@ import type RFB from '@novnc/novnc/core/rfb'
 import type { TBrowserIsLoadedEvent, TVncConnected } from '@types'
 
 import { useRef } from 'react'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EE } from '@services/sharedService'
 import { useInline, useOnEvent } from '@gobletqa/components'
 import {
   VNCConnectedEvt,

@@ -2,7 +2,6 @@
  * Most of the types in this file should be exported from parkin instead
  * They were added before parkin had types, but now that it does they should be updated
  */
-import type { TProcessHtmlOpts } from './screencast.types'
 import type {
   Parkin,
   TStepDef,
@@ -95,9 +94,7 @@ export type TParkinRun = (
 ) => any
 
 
-export type TWorldJokerCfg = {
-  html: TProcessHtmlOpts
-}
+export type TWorldJokerCfg = {}
 export type TGBWorldCfg = TWorldConfig & {
   joker?:TWorldJokerCfg
 }

@@ -1,5 +1,6 @@
+import type { TRepoApiObj } from './repo.types'
 import type { SocketService } from '@services/socketService'
-import {TGitData, TRepoApiObj} from './repo.types'
+
 
 export type TSockCmdObj = {
   id:string
@@ -55,6 +56,6 @@ export type TSocketService = TEndpointConf & {
 }
 
 export type TSocketEmitData = {
-  repo?:TRepoApiObj|TGitData
+  repo?:TRepoApiObj
   [K:string]:any
 }

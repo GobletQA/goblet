@@ -11,7 +11,7 @@ import path from 'path'
 import {failResp} from './response'
 import { Logger } from '@gobletqa/logger'
 import { fileSys } from '@keg-hub/cli-utils'
-import { RepoLocalMount } from '../constants'
+import { ENVS } from '@gobletqa/environment'
 import { gobletLoader } from '@gobletqa/goblet'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
@@ -22,6 +22,10 @@ import { getRepoName, git, RepoWatcher } from '@gobletqa/git'
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts
 const emptyLoaderResp = noOpObj as TGobletCfgLoaderResp
+
+export const RepoLocalMount = ENVS.GOBLET_MOUNT_ROOT && ENVS.GB_SH_LOCAL_MOUNT
+  ? path.join(ENVS.GOBLET_MOUNT_ROOT, ENVS.GB_SH_LOCAL_MOUNT)
+  : `/goblet/repos/goblet-local`
 
 /**
  * @typedef {Object} RepoStatus

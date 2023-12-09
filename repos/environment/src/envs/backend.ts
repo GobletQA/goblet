@@ -1,5 +1,5 @@
 import type { TGenEnv } from '../types'
-import {toBool} from '../utils/helpers'
+import {toBool} from '@keg-hub/jsutils/toBool'
 
 
 

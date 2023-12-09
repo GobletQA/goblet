@@ -36,6 +36,7 @@
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
+    "@keg-hub/jsutils": "9.10.0",
     "glob": "10.3.10"
   },
   "devDependencies": {

@@ -7,9 +7,9 @@ import type {
   TBrowserIsLoadedEvent,
 } from '@types'
 
+import { EE } from '@services/sharedService'
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { playEvent } from '@actions/socket/local/playEvent'
 import { parsePlayLogs } from '@actions/runner/parsePlayLogs'
 import { recordAction } from '@actions/socket/local/recordAction'
@@ -68,7 +68,7 @@ export const events = {
   recordAction: function(message:TSocketEvt){
     recordAction(message)
   },
-  recordEnded: function(message:TSocketEvt){
+  recordFinished: function(message:TSocketEvt){
     setBrowserRecording(message)
   },
   recordGeneral: function(message:TSocketEvt){
@@ -91,13 +91,13 @@ export const events = {
   playCanceled: function(message:TPlayerCancelEvent){
     clearEditorDecorations(message.location)
   },
-  playEnded: playEvent,
   playError: playEvent,
   playAction: playEvent,
   playGeneral: playEvent,
   playResults: playEvent,
   playStarted: playEvent,
   playSpecDone: playEvent,
+  playFinished: playEvent,
   playSuiteDone: playEvent,
   playSpecStart: playEvent,
   playSuiteStart: playEvent,

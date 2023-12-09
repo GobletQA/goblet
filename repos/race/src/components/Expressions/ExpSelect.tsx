@@ -7,6 +7,7 @@ import { ESectionType } from '@GBR/types'
 import { Select } from '@gobletqa/components'
 import { ExpressionMenu } from './ExpressionMenu'
 import { exists, emptyArr } from '@keg-hub/jsutils'
+import { useExpMergeOpts } from '@GBR/hooks/expressions/useExpMergeOpts'
 import {
   sharedLabelProps,
   sharedInputStyles,
@@ -38,13 +39,17 @@ export const ExpSelect = (props:TExpSelect) => {
     step,
     value,
     parent,
-    options,
     onChange,
     expression,
     defaultValue,
     items=emptyArr,
     ...rest
   } = props
+
+  const {
+    options,
+    setRemoteOptions
+  } = useExpMergeOpts({ expression })
 
   const [
     decorInputProps,
@@ -60,6 +65,7 @@ export const ExpSelect = (props:TExpSelect) => {
         onChange: onChange,
         Component: ExpressionMenu,
         type:ESectionType.expression,
+        setOptions: setRemoteOptions,
         context: ESectionType.expression,
         setInputProps:setDecorInputProps,
       }
@@ -71,8 +77,8 @@ export const ExpSelect = (props:TExpSelect) => {
       {...rest}
       {...decorInputProps}
       decor={decor}
+      options={options}
       onChange={onChange}
-      options={expression.options || options}
       value={!exists(value) && !exists(defaultValue) ? `` : value}
     />
   )

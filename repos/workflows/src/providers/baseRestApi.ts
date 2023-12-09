@@ -1,16 +1,15 @@
+import type { TGitOpts } from '@gobletqa/git'
 import type { AxiosRequestConfig } from 'axios'
 import type {
-  TGitOpts,
   TRepoData,
   TGitApiRes,
   TGitApiConf,
   TBranchData,
-  TRepoApiMeta,
   TBuildApiUrl,
   IGitApiStatic,
   StaticImplements,
   TGitCreateRepoOpts,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import url from 'url'
 import path from 'path'

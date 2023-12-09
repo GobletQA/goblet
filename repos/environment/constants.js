@@ -1,1 +1,1 @@
-export * from './dist/esm/constants/index.js'
+module.export = require('./dist/constants')

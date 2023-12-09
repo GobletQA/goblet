@@ -2,6 +2,8 @@ import { ComponentType } from 'react'
 
 import { ExpInput } from './ExpInput'
 import { ExpSelect } from './ExpSelect'
+import { ExpAutoInput } from './ExpAutoInput'
+
 import { ExpressionTypes, ExpressionKinds } from '@GBR/constants'
 
 type TKindKeys = keyof typeof ExpressionKinds
@@ -9,7 +11,8 @@ type TKindKeys = keyof typeof ExpressionKinds
 
 export const ExpressionKindMap:Record<TKindKeys, ComponentType<any>> = {
   [ExpressionKinds.options]: ExpSelect,
-  
+  [ExpressionKinds.iframe]: ExpAutoInput,
+
   [ExpressionKinds.url]: ExpInput,
   [ExpressionKinds.text]: ExpInput,
   [ExpressionKinds.number]: ExpInput,

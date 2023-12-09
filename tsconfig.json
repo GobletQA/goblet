@@ -164,6 +164,7 @@
       "@GLogs/*": ["logs/*"],
       "@GTasks": ["tasks"],
       "@GTasks/*": ["tasks/*"],
+      "@GConfigs": ["configs"],
       "@GConfigs/*": ["configs/*"],
       "@GException": ["repos/shared/src/exceptions/Exception"],
       "@GEnvironment": ["repos/shared/src/environment/environment"],

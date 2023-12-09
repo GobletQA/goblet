@@ -198,7 +198,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     options?.expand
       && updateExpanded(options?.expand)
-  
+
     setFeature(updated, options)
   })
 

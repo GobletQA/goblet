@@ -1,10 +1,9 @@
-import type { TFileTree } from '@types'
 
 import { ESideNav } from '@types'
 import { useCallback } from 'react'
 import { emptyObj } from '@keg-hub/jsutils'
+import { EE } from '@services/sharedService'
 import { localStorage } from '@services/localStorage'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { EditorPathChangeEvt, ToggleSideNavEvt } from '@constants'
 
 export type TPathOpts = {

@@ -1,5 +1,4 @@
-import {TTestRun, TTestRuns} from "@gobletqa/shared/types"
-import { TTestRunEvents, TTestRunFileData } from '@types'
+import { TTestRuns, TTestRunEvents, TTestRunFileData } from '@types'
 
 const endEvent = {
   "id": "f77c5353-3dd2-4552-9ec3-eefd3aee5252",
@@ -7,7 +6,7 @@ const endEvent = {
   "error": false,
   "data": {},
   "group": "0OJ1sRnL77Qw6fJJAAAP",
-  "name": "PLAY-ENDED",
+  "name": "PLAY-FINISHED",
   "isRunning": false,
   "timestamp": 1695500838946,
   "fullTestRun": true,

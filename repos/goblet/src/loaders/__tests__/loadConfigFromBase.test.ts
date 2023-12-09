@@ -1,94 +1,122 @@
 
 
 import fs from 'fs'
-import path from 'path'
-import { findConfig } from '../findConfig'
-import { Logger } from '@keg-hub/cli-utils'
-import { loadConfigFromBase } from '../loadConfigFromBase'
+import { Logger } from '@gobletqa/logger'
+
+const mockConfig = {}
+const mockFindConfig = jest.fn(() => (mockConfig))
+jest.setMock(`../findConfig`, {
+  findConfig: mockFindConfig
+})
+
 
 jest.mock('fs')
-jest.mock('../helpers')
-jest.mock('@keg-hub/cli-utils')
+jest.mock('@gobletqa/logger')
+jest.mock('../../utils/helpers')
+let orgWarn = Logger.warn
 
-describe('loadConfigFromBase', () => {
+const { loadConfigFromBase } = require('../loadConfigFromBase')
+
+
+describe(`loadConfigFromBase`, () => {
+  
+  beforeAll(() => {
+    Logger.warn = jest.fn()
+  })
+  
+  afterAll(() => {
+    Logger.warn = orgWarn
+  })
+
   beforeEach(() => {
     jest.resetAllMocks()
-    jest.spyOn(console, 'trace').mockImplementation(() => {})
   })
 
-  it('should return null if the base path is not provided', () => {
-    const result = loadConfigFromBase('')
-
+  it(`should return null if the base path is not provided`, () => {
+    // @ts-ignore
+    const result = loadConfigFromBase({ base: ''})
     expect(result).toBeNull()
+
     expect(fs.existsSync).not.toHaveBeenCalled()
     expect(Logger.warn).not.toHaveBeenCalled()
-    expect(console.trace).not.toHaveBeenCalled()
-    expect(findConfig).not.toHaveBeenCalled()
+    expect(mockFindConfig).not.toHaveBeenCalled()
   })
 
-  it('should return null and log a warning if the base path does not exist', () => {
+  it(`should return null and log a warning if the base path does not exist`, () => {
+
     // @ts-ignore
     fs.existsSync.mockReturnValue(false)
-
-    const result = loadConfigFromBase('/path/to/non-existent')
+    const result = loadConfigFromBase({base: `/path/to/non-existent`})
 
     expect(result).toBeNull()
-    expect(fs.existsSync).toHaveBeenCalledWith('/path/to/non-existent')
+    expect(fs.existsSync).toHaveBeenCalledWith(`/path/to/non-existent`)
+
     expect(Logger.warn).toHaveBeenCalledTimes(1)
-    expect(Logger.warn).toHaveBeenCalledWith(expect.stringContaining('The base path does not exist'))
-    expect(console.trace).toHaveBeenCalledTimes(1)
-    expect(findConfig).not.toHaveBeenCalled()
+    expect(Logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining(`Goblet config folder /path/to/non-existent does not exist`)
+    )
+    expect(mockFindConfig).not.toHaveBeenCalled()
+
   })
 
-  it('should return the result of findConfig if the base path exists', () => {
+  it(`should return the result of findConfig if the base path exists`, () => {
     // @ts-ignore
     fs.existsSync.mockReturnValue(true)
     // @ts-ignore
-    findConfig.mockReturnValue('config-file-path')
+    fs.lstatSync.mockReturnValue({
+      isDirectory: jest.fn(() => true),
+      isSymbolicLink: jest.fn(() => false)
+    })
 
-    const result = loadConfigFromBase('/path/to/existent')
+    mockFindConfig.mockReturnValue(`config-file-path`)
 
-    expect(result).toBe('config-file-path')
-    expect(fs.existsSync).toHaveBeenCalledWith('/path/to/existent')
+    const result = loadConfigFromBase({ base: `/path/to/existent`})
+
+    expect(result).toBe(`config-file-path`)
+    expect(fs.existsSync).toHaveBeenCalledWith(`/path/to/existent`)
     expect(Logger.warn).not.toHaveBeenCalled()
-    expect(console.trace).not.toHaveBeenCalled()
-    expect(findConfig).toHaveBeenCalledWith('/path/to/existent')
+    expect(mockFindConfig).toHaveBeenCalledWith(`/path/to/existent`, {remote: undefined})
   })
 
-  it('should return the result of findConfig if the base path is a directory or symbolic link', () => {
+  it(`should return the result of findConfig if the base path is a directory or symbolic link`, () => {
     // @ts-ignore
     fs.existsSync.mockReturnValue(true)
     // @ts-ignore
-    fs.lstatSync.mockReturnValue({ isDirectory: () => true })
     // @ts-ignore
-    findConfig.mockReturnValue('config-file-path')
+    fs.lstatSync.mockReturnValue({
+      isDirectory: jest.fn(() => true),
+      isSymbolicLink: jest.fn(() => false)
+    })
+    // @ts-ignore
+    mockFindConfig.mockReturnValue(`config-file-path`)
 
-    const result = loadConfigFromBase('/path/to/existent')
+    const result = loadConfigFromBase({ base: `/path/to/existent`})
 
-    expect(result).toBe('config-file-path')
-    expect(fs.existsSync).toHaveBeenCalledWith('/path/to/existent')
-    expect(fs.lstatSync).toHaveBeenCalledWith('/path/to/existent')
+    expect(result).toBe(`config-file-path`)
+    expect(fs.existsSync).toHaveBeenCalledWith(`/path/to/existent`)
+    expect(fs.lstatSync).toHaveBeenCalledWith(`/path/to/existent`)
     expect(Logger.warn).not.toHaveBeenCalled()
-    expect(console.trace).not.toHaveBeenCalled()
-    expect(findConfig).toHaveBeenCalledWith('/path/to/existent')
+    expect(mockFindConfig).toHaveBeenCalledWith(`/path/to/existent`, {remote: undefined})
   })
 
-  it('should return the result of findConfig if the base path is a symbolic link and GOBLET_RUN_FROM_CI is set', () => {
+  it(`should return the result of findConfig if the base path is a symbolic link and GOBLET_RUN_FROM_CI is set`, () => {
     // @ts-ignore
     fs.existsSync.mockReturnValue(true)
     // @ts-ignore
-    fs.lstatSync.mockReturnValue({ isDirectory: () => false })
-    process.env.GOBLET_RUN_FROM_CI = 'true'
-    // @ts-ignore
-    findConfig.mockReturnValue('config-file-path')
+    fs.lstatSync.mockReturnValue({
+      isDirectory: jest.fn(() => false),
+      isSymbolicLink: jest.fn(() => false)
+    })
+    process.env.GOBLET_RUN_FROM_CI = `true`
 
-    const result = loadConfigFromBase('/path/to/existent')
+    mockFindConfig.mockReturnValue(`config-file-path`)
 
-    expect(result).toBe('config-file-path')
-    expect(fs.existsSync).toHaveBeenCalledWith('/path/to/existent')
-    expect(fs.lstatSync).toHaveBeenCalledWith('/path/to/existent')
+    const result = loadConfigFromBase({ base: `/path/to/existent`})
+
+    expect(result).toBe(`config-file-path`)
+    expect(fs.existsSync).toHaveBeenCalledWith(`/path/to/existent`)
+    expect(fs.lstatSync).toHaveBeenCalledWith(`/path/to/existent`)
     expect(Logger.warn).not.toHaveBeenCalled()
-    expect(console.trace).not.toHaveBeenCalled()
-    expect(findConfig).toHaveBeenCalledWith('/path')
+    expect(mockFindConfig).toHaveBeenCalledWith(`/path/to`, {remote: undefined})
   })
 })

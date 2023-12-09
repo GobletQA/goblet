@@ -1,11 +1,11 @@
-import type { Handler } from 'express'
+import type { Express, NextFunction, Request, Response } from 'express'
 
-import { Express } from 'express'
 import { TLogOpts } from '@GSH/types'
 import expressWinston from 'express-winston'
-import { buildLogger, npmLevels } from '@gobletqa/logger'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { buildLogger, npmLevels } from '@gobletqa/logger'
 
+export type THandler = (req: Request, res: Response, next: NextFunction) => void
 
 /**
  * Adds middleware logging for requests
@@ -30,7 +30,6 @@ export const setupLoggerReq = (app:Express, middlewareOpts?:Record<any, any>) =>
 
   app.use(requestLogger)
 
-  return requestLogger
 }
 
 /**
@@ -54,6 +53,5 @@ export const setupLoggerErr = (app:Express, middlewareOpts?:Record<any, any>) =>
 
   app.use(errorLogger)
 
-  return errorLogger
 }
 

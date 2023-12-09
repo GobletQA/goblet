@@ -7,8 +7,8 @@ import { EAppStatus } from '@types'
 import { WSSocketResetEvt } from '@constants'
 import { TagPrefix } from '@constants/websocket'
 
+import { EE } from '@services/sharedService'
 import * as WSEventTypes from '@constants/websocket'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {
   callAction,
   getTransports,

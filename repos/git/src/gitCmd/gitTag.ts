@@ -16,7 +16,7 @@ import type {
 } from './gitcmd.types'
 
 import { git } from './gitCmd'
-import { GitRemoteRef } from '@GGT/constants'
+import { ENVS } from '@gobletqa/environment'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import {
@@ -221,7 +221,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || GitRemoteRef,
+        origin || ENVS.GB_GIT_REMOTE_REF,
         gitUrl
       ], joinedOpts, options.local)
 
@@ -242,7 +242,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || GitRemoteRef,
+        origin || ENVS.GB_GIT_REMOTE_REF,
         options.remote
       ], joinedOpts, options.local)
     

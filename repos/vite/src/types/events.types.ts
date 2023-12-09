@@ -1,9 +1,6 @@
-import type { TPlayerResEvent } from './shared.types'
 import type RFB from '@novnc/novnc/core/rfb'
-import { TTestRunUICfg } from './test.types'
-import type { TTestRunId, TTestRunEvent } from './shared.types'
-
-
+import type { TTestRunUICfg } from './test.types'
+import type { TTestRunId, TTestRunEvent, TPlayerResEvent } from './shared.types'
 
 export type TGlobalCopyEvent = {
   text: string

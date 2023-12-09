@@ -1,3 +1,4 @@
+import type { TRecorderOpts } from '@gobletqa/goblet'
 import type {
   TGitData,
   TRepoOpts,
@@ -6,10 +7,10 @@ import type {
   TExamConfig,
   TGBWorldCfg,
   TGobletConfig,
-  TRecorderOpts,
   TGobletPWConfig,
   TGScreencastConfig,
 } from '@GRP/types'
+
 
 import { Parkin } from '@ltipton/parkin'
 import { LatentRepo } from './latentRepo'

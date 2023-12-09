@@ -17,7 +17,7 @@ const constants = {
   pointerover: `pointerover`,
   contentloaded: `contentloaded`,
 
-  recordEnded: `RECORD-ENDED`,
+  recordFinished: `RECORD-FINISHED`,
   recordError: `RECORD-ERROR`,
   recordAction: `RECORD-ACTION`,
   recordGeneral: `RECORD-GENERAL`,

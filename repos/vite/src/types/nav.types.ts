@@ -1,7 +1,6 @@
 import { TAnyCB } from './shared.types'
 import type {
   Dispatch,
-  ReactNode,
   ElementType,
   CSSProperties,
   SetStateAction,
