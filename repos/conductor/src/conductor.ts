@@ -20,6 +20,7 @@ import {
   createWSProxy,
   createApiProxy,
   createVNCProxy,
+  createDebugProxy,
 } from './proxy'
 
 export class Conductor {
@@ -218,8 +219,14 @@ export class Conductor {
       ...app?.locals?.config?.wsProxy,
       proxyRouter,
     }, app)
+
     const vncProxy = createVNCProxy({
       ...app?.locals?.config?.vncProxy,
+      proxyRouter,
+    }, app)
+
+    const debugProxy = createDebugProxy({
+      ...app?.locals?.config?.debugProxy,
       proxyRouter,
     }, app)
 
@@ -227,6 +234,7 @@ export class Conductor {
       wsProxy,
       apiProxy,
       vncProxy,
+      debugProxy
     })
   }
 

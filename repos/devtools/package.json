@@ -1,0 +1,23 @@
+{
+  "name": "@gobletqa/devtools",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "clean": "pnpm clean:public; pnpm clean:nm",
+    "clean:full": "pnpm clean; pnpm install",
+    "clean:public": "node scripts/cleanPublic.js",
+    "clean:nm": "rm -rf node_modules",
+    "copy:dt": "node scripts/copyDevTools.js",
+    "copy:cfg": "node scripts/copyCfg.js",
+    "build": "",
+    "prod": "",
+    "postinstall": "pnpm copy:dt; pnpm copy:cfg",
+    "serve:port": "node scripts/getPort.js",
+    "serve": "serve -p $(pnpm --silent serve:port) -c ../configs/serve.json --no-port-switching -C -n -u public",
+    "start": ""
+  },
+  "dependencies": {
+    "@ltipton/chrome-devtools": "0.0.1",
+    "serve": "14.2.1"
+  }
+}

@@ -337,5 +337,8 @@ env:
   GB_GIT_REMOTE_REF: goblet-ref
   GB_SECRETS_TAG_REF: goblet-do-not-delete
 
-  # --- CHROME Inspector debug port --- #
-  GB_REMOTE_DEBUG_PORT: 9020
+  # --- CHROME Inspector remote debugging --- #
+  GB_DT_SERVER_PORT: 8000
+  GB_SC_REMOTE_DEBUG_PORT: 9020
+  GB_SC_REMOTE_BROWSER_ORIGINS: "*"
+  GB_BE_WS_DEBUG_PATH: /goblet-debug

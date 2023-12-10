@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import { Browser } from '@components/Browser'
+import { DebuggerSlider } from '@components/Debugger'
 import { useColor } from '@hooks/theme/useColor'
 import { useScreencastHooks } from '@hooks/screencast/useScreencastHooks'
 
@@ -24,18 +25,21 @@ export const ScreencastView = (props:TScreencastViewProps) => {
   const background = useColor(`colors.white`, `colors.black15`)
 
   return (
-    <Browser
-      ref={vncRef}
-      url={screencastUrl}
-      autoConnect={false}
-      isLoaded={isLoaded}
-      scaleViewport={true}
-      displayUrl={repoUrl}
-      onConnect={onConnect}
-      onKeyDown={onKeyDown}
-      background={background}
-      onClipboard={onClipboard}
-      onDisconnect={onDisconnect}
-    />
+    <>
+      <Browser
+        ref={vncRef}
+        url={screencastUrl}
+        autoConnect={false}
+        isLoaded={isLoaded}
+        scaleViewport={true}
+        displayUrl={repoUrl}
+        onConnect={onConnect}
+        onKeyDown={onKeyDown}
+        background={background}
+        onClipboard={onClipboard}
+        onDisconnect={onDisconnect}
+      />
+      <DebuggerSlider />
+    </>
   )
 }

@@ -17,11 +17,12 @@ type TProxies = {
   apiProxy?:HttpProxyMiddleware
   wsProxy?:HttpProxyMiddleware
   vncProxy?:HttpProxyMiddleware
+  debugProxy?:HttpProxyMiddleware
 }
 
 export const proxyUpgrade = (conductor:Conductor, proxies:TProxies) => {
 
-  const { vncProxy, wsProxy } = proxies
+  const { vncProxy, wsProxy, debugProxy } = proxies
 
   const onUpgrade = (req:Request, socket:Socket, head:any) => {
     if(!conductor.controller.devRouterActive){
@@ -36,10 +37,17 @@ export const proxyUpgrade = (conductor:Conductor, proxies:TProxies) => {
     }
 
     // @ts-ignore
-    req.url.includes(vncProxy?.middleware?.path)
-      ? vncProxy?.middleware?.upgrade(req, socket, head)
-      : wsProxy?.middleware?.upgrade(req, socket, head)
-    
+    if(req.url.includes(vncProxy?.middleware?.path))
+      vncProxy?.middleware?.upgrade(req, socket, head)
+
+    // @ts-ignore
+    else if(req.url.includes(wsProxy?.middleware?.path))
+      wsProxy?.middleware?.upgrade(req, socket, head)
+
+    // @ts-ignore
+    else if(req.url.includes(debugProxy?.middleware?.path))
+      debugProxy?.middleware?.upgrade(req, socket, head)
+
   }
 
   return {...proxies, onUpgrade}

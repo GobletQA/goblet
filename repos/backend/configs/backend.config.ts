@@ -31,6 +31,9 @@ const buildBackendConf = () => {
         },
         wsProxy: {
           port: ENVS.GB_DD_WS_PROXY_PORT,
+        },
+        debugProxy: {
+          port: ENVS.GB_SC_REMOTE_DEBUG_PORT
         }
       }
     : {
@@ -39,6 +42,9 @@ const buildBackendConf = () => {
         },
         wsProxy: {
           port: ENVS.GB_KD_WS_PROXY_PORT,
+        },
+        debugProxy: {
+          port: ENVS.GB_SC_REMOTE_DEBUG_PORT
         }
       }
 }
@@ -75,6 +81,14 @@ export const backendConfig:TBackendConfig = deepMerge<TBackendConfig>({
   wsProxy: {
     host: controllerHost,
     path: ENVS.GB_BE_WS_PATH,
+    protocol: ENVS.GB_BE_WS_PROTOCOL,
+    headers: {
+      [ENVS.GB_CD_VALIDATION_HEADER]: ENVS.GB_CD_VALIDATION_KEY
+    }
+  },
+  debugProxy: {
+    host: controllerHost,
+    path: ENVS.GB_BE_WS_DEBUG_PATH,
     protocol: ENVS.GB_BE_WS_PROTOCOL,
     headers: {
       [ENVS.GB_CD_VALIDATION_HEADER]: ENVS.GB_CD_VALIDATION_KEY

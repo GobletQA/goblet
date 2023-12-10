@@ -67,6 +67,7 @@ repos/resizer
 repos/race
 repos/traceViewer
 repos/vite
+repos/inspector
 repos/**/node_modules
 release-please-config.json
 .release-please-manifest.json

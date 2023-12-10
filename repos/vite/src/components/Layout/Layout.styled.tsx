@@ -15,6 +15,7 @@ export const LContainer = styled(MuiContainer)`
 
 export const RContainer = styled(MuiContainer)`
   display: flex;
+  position: relative;
   align-items: center;
   flex-direction: column;
   justify-content: center;

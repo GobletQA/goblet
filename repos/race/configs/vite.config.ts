@@ -7,7 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 
 const rootDir = path.join(__dirname, '..')
-
+// @ts-ignore
 export default defineConfig(async () => {
   return {
     root: rootDir,

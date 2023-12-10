@@ -25,7 +25,6 @@ export type TEditorProps = {}
 export default function Editor(props:TEditorProps){
   const { testRunsView, editor, sidebarLocked } = useApp()
   const { Component, ...rest } = EditorComps[editor]
-  TestRuns
 
   return (
     <Layout>

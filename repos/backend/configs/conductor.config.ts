@@ -228,6 +228,10 @@ export const conductorConfig:TConductorOpts = deepMerge({
           // Name of the remote origin used on mounted repos
           GB_GIT_REMOTE_REF,
 
+          // Allow connecting to a remote browser instance
+          GB_SC_REMOTE_DEBUG_PORT: ENVS.GB_SC_REMOTE_DEBUG_PORT,
+          GB_SC_REMOTE_BROWSER_ORIGINS: ENVS.GB_SC_REMOTE_BROWSER_ORIGINS,
+
           // Use a websocket for connecting to the browser
           GB_WS_BROWSER,
 

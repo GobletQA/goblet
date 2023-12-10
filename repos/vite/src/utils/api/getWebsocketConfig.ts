@@ -1,22 +1,19 @@
 import type { TContainerState } from '@types'
 
 import { WS_CONFIG } from '@constants'
+import { getBaseUrl } from './getBaseUrl'
 import {getSocketQueryData} from './getSocketQueryData'
-import { getBaseApiUrl } from '@utils/api/getBaseApiUrl'
 
 /**
  * Returns the generated screencast url if VNC_ACTIVE is active
  */
 export const getWebsocketConfig = (container?:TContainerState) => {
-  const base = getBaseApiUrl()
-  const { host } = new URL(base)
-  const { protocol } = new URL(window.location.origin)
-  const isHttps = Boolean(protocol.includes(`https`))
-  
+
+  const { url, https, protocol } = getBaseUrl()
   const socketData = getSocketQueryData(`api`, container)
 
   return {
-    host,
+    host: url.host,
     ...WS_CONFIG,
     extraHeaders: {
       ...WS_CONFIG?.headers,
@@ -28,8 +25,8 @@ export const getWebsocketConfig = (container?:TContainerState) => {
       // doesn't pass extra headers for some protocols
       ...socketData
     },
-    endpoint: `${protocol}//${host}`,
-    protocol: isHttps ? 'wss' : 'ws',
-    port: isHttps ? '' : WS_CONFIG.port,
+    endpoint: `${protocol}//${url.host}`,
+    protocol: https ? 'wss' : 'ws',
+    port: https ? '' : WS_CONFIG.port,
   }
 }

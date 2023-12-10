@@ -41,9 +41,13 @@ const getDefOpts = () => {
         `--disable-gpu`,
         `--start-maximized`,
         `--start-fullscreen`,
+
         // Hides the top-bar header. Should validate this this is what we want
         `--window-position=0,-75`,
-        `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
+
+        // Allow connecting to a remote browser instance
+        `--remote-debugging-port=${ENVS.GB_SC_REMOTE_DEBUG_PORT}`,
+        `--remote-allow-origins=${ENVS.GB_SC_REMOTE_BROWSER_ORIGINS}`,
 
 
         // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this

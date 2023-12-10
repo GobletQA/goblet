@@ -148,6 +148,7 @@ module.exports = {
       portForward: {
         ports: [
           `GB_BE_PORT`,
+          `GB_DT_SERVER_PORT`,
         ]
       },
       sync: {
@@ -156,6 +157,7 @@ module.exports = {
           '!/tsconfig.json',
           '!/repos/backend',
           '!/repos/conductor',
+          '!/repos/devtools',
           '!/repos/environment',
           '!/repos/goblet',
           '!/repos/git',
@@ -165,14 +167,15 @@ module.exports = {
           '!/repos/shared',
           '!/repos/workflows',
           // Ignore the dist folders so local bundles are not synced
+          '/repos/git',
           '/repos/repo/dist',
           '/repos/goblet/dist',
-          '/repos/git',
           '/repos/logger/dist',
           '/repos/shared/dist',
           '/repos/backend/dist',
           '/repos/workflows/dist',
           '/repos/conductor/dist',
+          '/repos/devtools/public',
           '/repos/environment/dist',
         ]
       },
@@ -196,6 +199,7 @@ module.exports = {
           `DISPLAY`,
           `PLAYWRIGHT_*`,
           `GOBLET_KIND_*`,
+          `GB_SC_REMOTE_*`,
           `GB_SC_ACTIVE`,
           `GB_LOG_LEVEL`,
           `GB_KUBE_CONTEXT`,
@@ -203,6 +207,7 @@ module.exports = {
           `GB_SERVER_ORIGINS`,
           `GB_LOCAL_DEV_MODE`,
           `GB_GIT_REMOTE_REF`,
+          `GB_DT_SERVER_PORT`,
           `GB_LT_TOKEN_SECRET`,
           `GB_GIT_PROVIDER_DATA`,
           `GB_GIT_GLOBAL_IGNORE`,

@@ -12,6 +12,7 @@ const monacoEditor = monacoEditorPlugin.default
 const rootDir = path.join(__dirname, '..')
 const gobletRoot = path.join(rootDir, `../..`)
 
+// @ts-ignore
 export default defineConfig(async () => {
 
   const { aliases, environment, envs, port } = loadConfig()

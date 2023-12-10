@@ -42,6 +42,7 @@ COPY configs/tasks.config.js configs/
 # ---- Workflows Stage  ---- #
 FROM $IMAGE_FROM AS goblet-package
 WORKDIR /goblet/app
+COPY repos/devtools/package.json repos/devtools/
 COPY repos/conductor/package.json repos/conductor/
 COPY repos/logger/package.json repos/logger/
 COPY repos/latent/package.json repos/latent/
@@ -62,6 +63,7 @@ RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
 # ---- Shared Stage  ---- #
 FROM goblet-package as goblet-repo-files
 WORKDIR /goblet/app
+COPY repos/devtools repos/devtools/
 COPY repos/conductor repos/conductor/
 COPY repos/logger repos/logger/
 COPY repos/latent repos/latent/

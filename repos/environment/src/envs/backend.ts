@@ -23,9 +23,12 @@ const backend = (general:TGenEnv) => {
     GB_DD_WS_PROXY_PORT,
     GB_DD_VNC_PROXY_PORT,
 
+    GB_BE_WS_DEBUG_PATH,
+
     GB_CD_VALIDATION_KEY,
     GB_CD_CONTROLLER_TYPE,
     GB_CD_VALIDATION_HEADER,
+    
 
     GB_BE_JWT_EXP,
     GB_BE_JWT_SECRET,
@@ -52,6 +55,8 @@ const backend = (general:TGenEnv) => {
 
     GB_DD_WS_PROXY_PORT,
     GB_DD_VNC_PROXY_PORT,
+    
+    GB_BE_WS_DEBUG_PATH,
 
     GB_CD_VALIDATION_KEY,
     GB_CD_CONTROLLER_TYPE,
