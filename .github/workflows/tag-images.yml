@@ -43,6 +43,6 @@ jobs:
       - name: Publish Latest Tag
         id: pull-tag-push
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}}
-          docker tag ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
-          docker push ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
+          docker pull ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.from}}
+          docker tag ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.to}}
+          docker push ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.to}}
