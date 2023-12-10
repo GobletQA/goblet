@@ -11,6 +11,7 @@ jobs:
   pull-images:
     name: Pull Images
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     defaults:
       run:
         shell: bash
