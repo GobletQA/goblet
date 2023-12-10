@@ -1,5 +1,6 @@
-name: build-docker-images
+name: tag-docker-images
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
