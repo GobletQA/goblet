@@ -39,9 +39,9 @@ jobs:
           username: ${{ secrets.GIT_USER }}
           password: ${{ secrets.GIT_TOKEN }}
 
-        - name: Publish Latest Tag
-          id: pull-tag-push
-          run: |
-            docker pull ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}}
-            docker tag ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
-            docker push ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
+      - name: Publish Latest Tag
+        id: pull-tag-push
+        run: |
+          docker pull ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}}
+          docker tag ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
+          docker push ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
