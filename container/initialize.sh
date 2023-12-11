@@ -20,15 +20,17 @@ goblet_run_pm2(){
 }
 
 goblet_screencast(){
+
   if [ "$PW_DEBUG_FILE" ]; then
     export DEBUG_FILE=$PW_DEBUG_FILE
-  else
-    export DEBUG_FILE=/goblet/app/logs/pwlogs.log
-  fi
+    LOG_DIR=$( dirname "$DEBUG_FILE" )
+    mkdir -p $LOG_DIR
+    touch $DEBUG_FILE
 
-  LOG_DIR=$( dirname "$DEBUG_FILE" )
-  mkdir -p $LOG_DIR
-  touch $DEBUG_FILE
+    # If DEBUG_FILE is set, but not DEBUG, then set a default
+    # Otherwise the DEBUG_FILE is pointless
+    [ -z "${DEBUG}" ] && export DEBUG=pw:*
+  fi
 
   cd /goblet/app/repos/screencast
 

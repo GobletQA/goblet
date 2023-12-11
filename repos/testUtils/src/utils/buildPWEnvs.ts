@@ -62,5 +62,8 @@ export const buildPWEnvs = (
   addEnv(env, `GOBLET_TEST_SCREENSHOT`, params.screenshot)
   addEnv(env, `NODE_ENV`, params.nodeEnv)
 
+  // Disable adding playwright to the browser console
+  addEnv(env, `PWDEBUG`, 0)
+
   return env
 }

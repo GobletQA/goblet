@@ -17,7 +17,7 @@ import {
   setupCors,
   setupLoggerReq,
   setupLoggerErr,
-  setupBlacklist,
+  setupRateLimit,
   setupServerListen,
   validateUser,
 } from '@gobletqa/shared/api/middleware'
@@ -37,7 +37,7 @@ const initApi = async () => {
   setupCors(app)
   setupJWT(app, SCAuthBypassRoutes)
   setupServer(app)
-  setupBlacklist(app)
+  setupRateLimit(app)
   setupRouter(app)
   validateUser({
     route: `/screencast\/*`,

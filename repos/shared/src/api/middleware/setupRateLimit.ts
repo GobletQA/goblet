@@ -3,15 +3,15 @@ import type { Express } from 'express'
 import fs from 'node:fs'
 import path from 'node:path'
 import { getApp } from '@GSH/api/express/app'
+import { ENVS } from '@gobletqa/environment'
 import { rateLimit } from 'express-rate-limit'
 import { aliases } from '@GConfigs/aliases.config'
-
 
 if(!process.env.EXAM_ENV){
   /** Path to the logs directory */
   let logDir = aliases[`@GLogs`]
-  if(!logDir && process.env.PW_DEBUG_FILE)
-    logDir = path.dirname(process.env.PW_DEBUG_FILE)
+  if(!logDir && ENVS.PW_DEBUG_FILE)
+    logDir = path.dirname(ENVS.PW_DEBUG_FILE)
 
   /** Ensure the logs directory exists */
   if(logDir) !fs.existsSync(logDir) && fs.mkdirSync(logDir)
@@ -19,10 +19,9 @@ if(!process.env.EXAM_ENV){
 
 
 /**
- * Sets up IP blocking via a blacklist
- * Attempts to track suspicious activity and then block that IP from access
+ * Sets up Rate limiting based on requests IP
  */
-export const setupBlacklist = (app:Express) => {
+export const setupRateLimit = (app:Express) => {
   app = app || getApp()
 
   try {
@@ -34,8 +33,8 @@ export const setupBlacklist = (app:Express) => {
     }))
   }
   catch(err){
-    console.log(`------- RateLimit - Error -------`)
-    console.log(err)
+    console.warn(`[RateLimit Err] RateLimit middleware through the following error:`)
+    console.error(err)
   }
 
 }

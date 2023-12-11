@@ -14,7 +14,7 @@ import {
   setupJWT,
   setupCors,
   validateUser,
-  setupBlacklist,
+  setupRateLimit,
   setupLoggerReq,
   setupLoggerErr,
   setupServerListen,
@@ -31,7 +31,7 @@ export const initApi = async () => {
   const app = getApp(backendConfig) as Express
 
   setupLoggerReq(app)
-  setupBlacklist(app)
+  setupRateLimit(app)
   setupCors(app)
   setupJWT(app, BEAuthBypassRoutes)
   setupServer(app)

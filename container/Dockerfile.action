@@ -23,7 +23,6 @@ RUN pnpm add --global turbo && \
 
 # ---- Image Stage ---- #
 FROM $IMAGE_FROM as goblet-image
-ARG DEBUG_FILE=/github/logs/pwlogs.log
 ARG GB_PNPM_VERSION=8.7.4
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
 ENV PWDEBUG=0
@@ -42,7 +41,6 @@ RUN npm uninstall -g yarn && \
     curl && \
     rm -rf /var/lib/apt/lists/* && \
     curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - && \
-    mkdir -p $(dirname "${DEBUG_FILE}") && \
     mkdir -p /github/app/temp && \
     mkdir -p /github/app/.tmp
 # ---- End Stage ---- #

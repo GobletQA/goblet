@@ -47,12 +47,16 @@ env:
 # ---- Playwright Specific ENVs ---- #
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
   PLAYWRIGHT_BROWSERS_VERSION: 1.40.0
-
-  # Log file for all playwright logs
-  # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
-  PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
+  # Add playwright to the browser-in-browser inspector
+  PWDEBUG: console
   # Disables the playwright inspector when the page is paused
   PW_CODEGEN_NO_INSPECTOR: 1
+
+  # **IMPORTANT** - Enable these to enable playwright logging to file
+  # Log file for all playwright logs
+  # PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
+  # DEBUG: pw:*
+
 
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
