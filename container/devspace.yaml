@@ -54,6 +54,12 @@ vars:
   IMAGE_TAG:
     command: "node scripts/ds/getYamlValue.js IMAGE_TAG"
 
+# ----- Devtools Proxy Values ----- #
+  GB_DT_PROXY_PORT:
+    command: "node scripts/ds/getYamlValue.js GB_DT_PROXY_PORT"
+  GB_DT_REMOTE_DEBUG_PORT:
+    command: "node scripts/ds/getYamlValue.js GB_DT_REMOTE_DEBUG_PORT"
+
 # ----- Screencast API Values ----- #
   GB_SC_DEPLOYMENT:
     command: "node scripts/ds/getYamlValue.js GB_SC_DEPLOYMENT"
@@ -79,6 +85,8 @@ vars:
     command: "node scripts/ds/getYamlValue.js GB_BE_WS_PATH"
   GB_NO_VNC_PATH:
     command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PATH"
+  GB_BE_WS_DEBUG_PATH:
+    command: "node scripts/ds/getYamlValue.js GB_BE_WS_DEBUG_PATH"
   GB_KUBE_SCRT_DOC_AUTH:
     command: "node scripts/ds/getYamlValue.js GB_KUBE_SCRT_DOC_AUTH"
   GB_KUBE_SCRT_FB_SA:
@@ -129,7 +137,7 @@ deployments:
         - image: ${GB_SC_IMG_URI}
           imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js SC)
           env: $(node scripts/ds/resolveDSEnvs.js screencast)
-        service: $(node scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
+        service: $(node scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT $GB_DT_PROXY_PORT $GB_DT_REMOTE_DEBUG_PORT)
         ingress:
           name: ${GB_SC_DEPLOYMENT}-ingress
           rules:
@@ -145,6 +153,19 @@ deployments:
           - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
             serviceName: ${GB_SC_DEPLOYMENT}
             servicePort: ${GB_NO_VNC_PORT}
+          - host: ${GB_SC_INGRESS_HOST}
+            serviceName: ${GB_SC_DEPLOYMENT}
+            servicePort: ${GB_DT_PROXY_PORT}
+          - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
+            serviceName: ${GB_SC_DEPLOYMENT}
+            servicePort: ${GB_DT_PROXY_PORT}
+          - host: ${GB_SC_INGRESS_HOST}
+            serviceName: ${GB_SC_DEPLOYMENT}
+            servicePort: ${GB_DT_REMOTE_DEBUG_PORT}
+          - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
+            serviceName: ${GB_SC_DEPLOYMENT}
+            servicePort: ${GB_DT_REMOTE_DEBUG_PORT}
+            
 
   # ----- Backend API Deployment ----- #
   goblet-backend:
@@ -178,7 +199,7 @@ deployments:
           imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js BE)
           env: $(node scripts/ds/resolveDSEnvs.js backend $GB_KUBE_SCRT_DOC_AUTH:user $GB_KUBE_SCRT_DOC_AUTH:password $GB_KUBE_SCRT_FB_SA:$GB_KUBE_SCRT_FB_SA:FIREBASE_SERVICE_ACCOUNT)
         service: $(node scripts/ds/resolveService.js BE $GB_BE_PORT)
-        ingress: $(node scripts/ds/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
+        ingress: $(node scripts/ds/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH" "$GB_BE_WS_DEBUG_PATH")
 
 # Gets the apps that should sync with the host machine
 dev: $(node scripts/ds/resolveDev.js BE SC)

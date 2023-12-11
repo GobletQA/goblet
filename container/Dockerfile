@@ -5,6 +5,17 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 FROM bitnami/kubectl:latest as kubectl
 # ---- End Stage ---- #
 
+# ---- Run files Stage ---- #
+FROM $IMAGE_FROM as goblet-run-files
+WORKDIR /goblet/app
+COPY tasks ./tasks
+COPY configs ./configs
+COPY container ./container
+COPY tsconfig.json gobletRoot.js ./
+RUN rm -rf repos \
+    rm -rf node_modules
+# ---- End Stage ---- #
+
 
 # ---- Setup Stage ---- #
 FROM $IMAGE_FROM as goblet-setup
@@ -13,35 +24,14 @@ RUN mkdir -p /etc/supervisor && \
     sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
+    socat \
     novnc \
     net-tools \
     supervisor \
     tigervnc-standalone-server && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/lib/apt/lists.d/*
-# ---- End Stage ---- #
 
-
-# ---- Build files Stage ---- #
-FROM $IMAGE_FROM as goblet-build-files
-WORKDIR /goblet/app
-COPY tsconfig.json gobletRoot.js ./
-COPY configs/alias* configs/goblet* configs/paths.config.js configs/
-# ---- End Stage ---- #
-
-
-# ---- Run files Stage ---- #
-FROM $IMAGE_FROM as goblet-run-files
-WORKDIR /goblet/app
-COPY tasks ./tasks
-COPY container ./container
-COPY configs/app.pm2.config.js configs/
-COPY configs/tasks.config.js configs/
-# ---- End Stage ---- #
-
-# ---- Workflows Stage  ---- #
-FROM $IMAGE_FROM AS goblet-package
-WORKDIR /goblet/app
 COPY repos/devtools/package.json repos/devtools/
 COPY repos/conductor/package.json repos/conductor/
 COPY repos/logger/package.json repos/logger/
@@ -58,11 +48,7 @@ COPY repos/exam/package.json repos/exam/
 COPY repos/shared/package.json repos/shared/
 COPY repos/environment/package.json repos/environment/
 RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
-# ---- End Stage ---- #
 
-# ---- Shared Stage  ---- #
-FROM goblet-package as goblet-repo-files
-WORKDIR /goblet/app
 COPY repos/devtools repos/devtools/
 COPY repos/conductor repos/conductor/
 COPY repos/logger repos/logger/
@@ -78,6 +64,12 @@ COPY repos/testUtils repos/testUtils/
 COPY repos/exam repos/exam/
 COPY repos/shared repos/shared/
 COPY repos/environment repos/environment/
+
+RUN rm -rf tasks \
+    rm -rf configs \
+    rm -rf container \
+    rm -rf tsconfig.json \
+    rm -rf gobletRoot.js
 # ---- End Stage ---- #
 
 
@@ -85,10 +77,7 @@ COPY repos/environment repos/environment/
 FROM goblet-setup as goblet-runner
 WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
-
 COPY --from=goblet-run-files /goblet/app/ .
-COPY --from=goblet-build-files /goblet/app .
-COPY --from=goblet-repo-files /goblet/app .
 
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \

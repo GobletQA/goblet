@@ -18,7 +18,7 @@ export type TDebuggerParams = {
 export const scDebugger = async (req:Request, res:Response) => {
   const url = req?.query?.url
 
-  const response = await fetch(`http://localhost:${ENVS.GB_SC_REMOTE_DEBUG_PORT}/json`)
+  const response = await fetch(`http://localhost:${ENVS.GB_DT_REMOTE_DEBUG_PORT}/json`)
   const configs = await response.json() as TBrowserDebuggerCfg[]
   const debuggers = ensureArr(configs)
   const found = url && debuggers.find(cfg => cfg.url === url) || debuggers[0]

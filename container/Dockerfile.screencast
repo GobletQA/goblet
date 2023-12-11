@@ -8,18 +8,21 @@ WORKDIR /goblet/app
 ARG GB_SC_PORT=19011
 ARG GB_NO_VNC_PORT=26369
 ARG GB_VNC_SERVER_PORT=26370
-ARG GB_SC_REMOTE_DEBUG_PORT=9020
+ARG GB_DT_PROXY_PORT=19019
+ARG GB_DT_REMOTE_DEBUG_PORT=19020
 ENV GB_SUB_REPO=screencast \
     GB_SC_PORT=$GB_SC_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
-    GB_SC_REMOTE_DEBUG_PORT=$GB_SC_REMOTE_DEBUG_PORT
+    GB_DT_PROXY_PORT=$GB_DT_PROXY_PORT \
+    GB_DT_REMOTE_DEBUG_PORT=$GB_DT_REMOTE_DEBUG_PORT
 
 RUN mkdir -p /etc/supervisor && \
     rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-* && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
     novnc \
+    socat \
     net-tools \
     supervisor \
     tigervnc-standalone-server && \
@@ -89,7 +92,8 @@ WORKDIR /goblet/app/repos/screencast
 EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT
 EXPOSE $GB_VNC_SERVER_PORT
-EXPOSE $GB_SC_REMOTE_DEBUG_PORT
+EXPOSE $GB_DT_PROXY_PORT
+EXPOSE $GB_DT_REMOTE_DEBUG_PORT
 
 ENV NODE_ENV=production
 CMD [ "/bin/bash", "scripts/initialize.sh" ]

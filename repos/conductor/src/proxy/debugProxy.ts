@@ -1,7 +1,9 @@
 import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
+
 import { createProxy } from './createProxy'
+import { ENVS } from '@gobletqa/environment'
 import { getApp } from '@gobletqa/shared/api/express/app'
 import { queryToObj } from '@keg-hub/jsutils/queryToObj'
 
@@ -17,6 +19,7 @@ export const createDebugProxy = (config:TProxyOpts, app:Express) => {
     path,
     host,
     target,
+    headers,
     protocol,
     proxyRouter,
     changeOrigin,
@@ -31,18 +34,24 @@ export const createDebugProxy = (config:TProxyOpts, app:Express) => {
   const debugProxy = createProxy(path, {
     ws: true,
     xfwd:true,
-    toProxy: true,
-    logLevel: 'debug',
+    logLevel: `info`,
     ignorePath: true,
     target: pxTarget,
     changeOrigin: true,
+    headers: {
+      ...headers,
+      // Required to chrome does not refuse the connection request
+      Host: `localhost`
+    },
     router: (req:Request) => {
-      const routed = proxyRouter({ ...req, headers: queryToObj(req.url) } as Request)
-      
-      console.log(`------- routed -------`)
-      console.log(routed)
-      
-      return routed
+
+      const urlObj = new URL(`http://ignored.placeholder.io:${ENVS.GB_DT_PROXY_PORT}${req.url}`)
+      const headers = queryToObj<Record<string, string>>(req.url)
+      const routed = proxyRouter({ ...req, headers } as Request)
+      const built = `${routed.protocol}//${routed.host}:${urlObj.port}${urlObj.pathname}`
+
+      return built
+
     },
     ...options,
   })

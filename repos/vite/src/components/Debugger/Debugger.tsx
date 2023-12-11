@@ -6,9 +6,16 @@ import {
 
 export type TDebugger = {
   debugUrl?:string
+  debugHost?:string
 }
 
 export const Debugger = (props:TDebugger) => {
+
+  const {
+    debugUrl,
+    debugHost,
+  } = props
+
   return (
     <DebuggerContainer className='gb-debugger-container' >
       <DebuggerFrame
@@ -18,7 +25,7 @@ export const Debugger = (props:TDebugger) => {
         name="gobletqa-debugger"
         className='gb-debugger-frame'
         title="GobletQA Browser Debugger"
-        src={`https://lancetipton.github.io/chrome-devtools/${props.debugUrl || ``}`}
+        src={`${debugHost}?${debugUrl}`}
       />
     </DebuggerContainer>
   )

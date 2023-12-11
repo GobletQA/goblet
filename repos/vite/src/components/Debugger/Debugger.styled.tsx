@@ -27,6 +27,7 @@ export const DebuggerHeaderContainer = styled(Box)(({ theme }) => `
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: ${gutter.padding.hpx};
   background-color: ${getColor(colors.white, colors.black19, theme)};
 `)
 

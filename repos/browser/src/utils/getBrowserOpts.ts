@@ -22,6 +22,7 @@ const getDefOpts = () => {
       args: [
         `--allow-insecure-localhost`,
         `--use-fake-ui-for-media-stream`,
+        `--allow-running-insecure-content`,
         `--use-fake-device-for-media-stream`,
         `--unsafely-treat-insecure-origin-as-secure`,
       ],
@@ -46,8 +47,10 @@ const getDefOpts = () => {
         `--window-position=0,-75`,
 
         // Allow connecting to a remote browser instance
-        `--remote-debugging-port=${ENVS.GB_SC_REMOTE_DEBUG_PORT}`,
-        `--remote-allow-origins=${ENVS.GB_SC_REMOTE_BROWSER_ORIGINS}`,
+        `--disable-web-security`,
+        `--remote-debugging-address=0.0.0.0`,
+        `--remote-debugging-port=${ENVS.GB_DT_REMOTE_DEBUG_PORT}`,
+        `--remote-allow-origins=${ENVS.GB_DT_REMOTE_BROWSER_ORIGINS}`,
 
 
         // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this

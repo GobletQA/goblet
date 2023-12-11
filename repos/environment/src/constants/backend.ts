@@ -7,5 +7,6 @@ export const BEAuthBypassRoutes = [
   `/favicon.ico`,
   `/goblet-socket`,
   `/goblet-socket/`,
+  `/devtools/page`,
   `/repo/disconnect`,
 ]

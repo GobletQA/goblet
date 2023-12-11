@@ -37,6 +37,7 @@ const {
   GB_NO_VNC_PORT,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
+  GB_DT_PROXY_PORT,
   GB_KUBE_NAMESPACE,
   GB_LOCAL_DEV_MODE,
   GB_GIT_REMOTE_REF,
@@ -44,6 +45,7 @@ const {
   GB_CD_CONTROLLER_TYPE,
   GOBLET_SCREENCAST_PORT,
   GB_CD_LISTENER_TIMEOUT,
+  GB_DT_REMOTE_DEBUG_PORT,
   GB_CD_VALIDATION_HEADER,
   GOBLET_KIND_SERVICE_PORT,
   GOBLET_SCREENCAST_SERVICE_HOST,
@@ -123,6 +125,12 @@ const devRouter = screencastManual
             port: GB_NO_VNC_PORT,
             host: screencastHost,
             containerPort: GB_NO_VNC_PORT,
+            protocol: `http:` as TProtocol,
+          },
+          [GB_DT_REMOTE_DEBUG_PORT]: {
+            host: screencastHost,
+            port: GB_DT_REMOTE_DEBUG_PORT,
+            containerPort: GB_DT_REMOTE_DEBUG_PORT,
             protocol: `http:` as TProtocol,
           }
         }
@@ -211,6 +219,10 @@ export const conductorConfig:TConductorOpts = deepMerge({
           toNum(GB_SC_PORT),
           // NoVnc Websocket Port
           toNum(GB_NO_VNC_PORT),
+          // Devtools Websocket Port
+          toNum(GB_DT_REMOTE_DEBUG_PORT),
+          // Devtools Proxy Port
+          toNum(GB_DT_PROXY_PORT),
         ].filter(Boolean),
         envs: {
           ...containerEnvs,
@@ -229,8 +241,9 @@ export const conductorConfig:TConductorOpts = deepMerge({
           GB_GIT_REMOTE_REF,
 
           // Allow connecting to a remote browser instance
-          GB_SC_REMOTE_DEBUG_PORT: ENVS.GB_SC_REMOTE_DEBUG_PORT,
-          GB_SC_REMOTE_BROWSER_ORIGINS: ENVS.GB_SC_REMOTE_BROWSER_ORIGINS,
+          GB_DT_PROXY_PORT: ENVS.GB_DT_PROXY_PORT,
+          GB_DT_REMOTE_DEBUG_PORT: ENVS.GB_DT_REMOTE_DEBUG_PORT,
+          GB_DT_REMOTE_BROWSER_ORIGINS: ENVS.GB_DT_REMOTE_BROWSER_ORIGINS,
 
           // Use a websocket for connecting to the browser
           GB_WS_BROWSER,

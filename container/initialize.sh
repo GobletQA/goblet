@@ -50,6 +50,10 @@ goblet_backend(){
     unset FIREBASE_SERVICE_ACCOUNT
     export GOOGLE_APPLICATION_CREDENTIALS=/etc/fb-service-account.json
   fi
+
+  cd /goblet/app/repos/devtools
+  pnpm start >> /proc/1/fd/1 &
+
 }
 
 # If a sub-repo is defined only run that one repo

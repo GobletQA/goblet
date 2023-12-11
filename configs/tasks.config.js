@@ -199,7 +199,7 @@ module.exports = {
           `DISPLAY`,
           `PLAYWRIGHT_*`,
           `GOBLET_KIND_*`,
-          `GB_SC_REMOTE_*`,
+          `GB_DT_REMOTE_*`,
           `GB_SC_ACTIVE`,
           `GB_LOG_LEVEL`,
           `GB_KUBE_CONTEXT`,
@@ -211,6 +211,8 @@ module.exports = {
           `GB_LT_TOKEN_SECRET`,
           `GB_GIT_PROVIDER_DATA`,
           `GB_GIT_GLOBAL_IGNORE`,
+          `GB_DT_REMOTE_DEBUG_PORT`,
+          `GB_DT_REMOTE_BROWSER_ORIGINS`,
         ],
         /**
         * ENVs to not include in the backend
@@ -285,6 +287,12 @@ module.exports = {
     },
     screencast: {
       contexts: [`screencast`, `sc`],
+      portForward: {
+        ports: [
+          `GB_DT_PROXY_PORT`,
+          `GB_DT_REMOTE_DEBUG_PORT`,
+        ]
+      },
       sync: {
         excludePaths: [
           '**',

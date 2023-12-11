@@ -54,13 +54,14 @@ export const loadConfig = () => {
     GB_NO_VNC_PATH,
     GB_AUTH_ACTIVE,
     GB_WS_TRANSPORTS,
+    GB_DT_PROXY_PORT,
     GB_VNC_VIEW_WIDTH,
     GB_VNC_VIEW_HEIGHT,
     GB_BE_WS_DEBUG_PATH,
     GB_FE_CONTAINER_WAIT,
     GB_GITHUB_AUTH_USERS,
     FIRE_BASE_PERSISTENCE,
-    GB_SC_REMOTE_DEBUG_PORT,
+    GB_DT_REMOTE_DEBUG_PORT,
     GB_CD_FORWARD_HOST_HEADER,
     GB_CD_FORWARD_PORT_HEADER,
     GB_CD_FORWARD_PROTO_HEADER,
@@ -85,7 +86,8 @@ export const loadConfig = () => {
   const debugProxyConfig = {
     port: GB_BE_PORT,
     path: GB_BE_WS_DEBUG_PATH,
-    debugPort: GB_SC_REMOTE_DEBUG_PORT,
+    proxyPort: GB_DT_PROXY_PORT,
+    debugPort: GB_DT_REMOTE_DEBUG_PORT,
   }
 
   const envs = Object.entries({
@@ -97,10 +99,11 @@ export const loadConfig = () => {
     GB_VNC_ACTIVE,
     GB_AUTH_ACTIVE,
     GB_NO_VNC_PATH,
+    GB_DT_PROXY_PORT,
     GB_BE_WS_DEBUG_PATH,
     GB_GITHUB_AUTH_USERS,
     GB_FE_CONTAINER_WAIT,
-    GB_SC_REMOTE_DEBUG_PORT,
+    GB_DT_REMOTE_DEBUG_PORT,
     GB_CD_FORWARD_HOST_HEADER,
     GB_CD_FORWARD_PORT_HEADER,
     GB_CD_FORWARD_PROTO_HEADER,
