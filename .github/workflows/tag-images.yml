@@ -1,5 +1,9 @@
-name: build-docker-images
+name: tag-docker-images
 on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
   release:
     types: [published]
 
@@ -7,6 +11,7 @@ jobs:
   pull-images:
     name: Pull Images
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     defaults:
       run:
         shell: bash
@@ -39,9 +44,9 @@ jobs:
           username: ${{ secrets.GIT_USER }}
           password: ${{ secrets.GIT_TOKEN }}
 
-        - name: Publish Latest Tag
-          id: pull-tag-push
-          run: |
-            docker pull ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}}
-            docker tag ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
-            docker push ghcr.io/${{ github.repository_owner }}/goblet-${{ matrix.service }}:${{matrix.to}}
+      - name: Publish Latest Tag
+        id: pull-tag-push
+        run: |
+          docker pull ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.from}}
+          docker tag ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.from}} ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.to}}
+          docker push ghcr.io/gobletqa/goblet-${{ matrix.service }}:${{matrix.to}}
