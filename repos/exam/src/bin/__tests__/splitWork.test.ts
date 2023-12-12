@@ -2,7 +2,7 @@ jest.resetModules()
 jest.resetAllMocks()
 jest.clearAllMocks()
 
-import { splitWork } from './splitWork'
+import { splitWork } from '../splitWork'
 import { ExamCfg } from '@GEX/constants'
 import { doIt } from '@keg-hub/jsutils/doIt'
 
@@ -13,6 +13,8 @@ const files = (amt:number, skip=0) => doIt(amt, {}, (idx:number) => (`/test-file
 
 /** This is only used in when testing to ensure the CPU CORE are consistent */
 process.env.EXAM_CPU_AMOUNT = `10`
+process.env.EXAM_ENV = `1`
+process.env.EXAM_DEV_CLI = `1`
 
 const runs:TRuns = [
   [
@@ -117,8 +119,9 @@ const runs:TRuns = [
   ],
   [
     {
+      // only: true,
       title: `No workers or concurrency - Default to 1 worker getting all files`,
-      chunks: 3
+      chunks: 3,
     },
     {
       total: 3,
@@ -175,15 +178,21 @@ describe(`splitWork`, () => {
   const list = only.length && only || runs
 
   list.map((item, idx) => {
-    const [{ chunks, title, ...cfg}, outcome] = item
+    const [{
+      only,
+      title,
+      chunks,
+      ...cfg
+    }, outcome] = item
     
     test(title || `Test item ${idx} - generates the correct chunks per worker`, () => {
-      // @ts-ignore
+
       const resp = splitWork(buildCfg(cfg), files(chunks))
 
       item[0].print || item[0].debug
         ? console.log(`Test item ${idx}:\n`, resp)
         : expect(resp).toEqual(outcome)
+
     })
 
   })

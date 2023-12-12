@@ -4,6 +4,11 @@ import { exists } from '@keg-hub/jsutils/exists'
 
 let __CpuCount:number
 
+/**
+ * Used for tests only
+ */
+export const resetCPUCount = () => (__CpuCount = undefined)
+ 
 export const getCPUCount = () => {
   if(__CpuCount) return __CpuCount
 
@@ -15,7 +20,7 @@ export const getCPUCount = () => {
 
   if(exists(EXAM_ENV) && exists(EXAM_DEV_CLI) && exists(EXAM_CPU_AMOUNT))
     return toNum(process.env.EXAM_CPU_AMOUNT)
-  
+
   __CpuCount = os.cpus().length - 1
 
   return __CpuCount

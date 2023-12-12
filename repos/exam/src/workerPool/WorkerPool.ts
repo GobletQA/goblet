@@ -10,9 +10,9 @@ import type {
 
 import EventEmitter from 'events'
 import { Logger } from '@GEX/utils/logger'
-import { nanoid } from '@GEX/utils/nanoid'
 import { Errors } from '@GEX/constants/errors'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { exists } from '@keg-hub/jsutils/exists'
 import { WkrPoolTag } from '@GEX/constants/tags'
 import { AggregateError } from '@GEX/utils/error'
