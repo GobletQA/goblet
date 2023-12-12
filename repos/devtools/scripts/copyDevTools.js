@@ -7,7 +7,7 @@ const devtoolsLoc = path.join(rootDir, `node_modules`, `@ltipton/chrome-devtools
 
 const pathExists = async (loc) => {
   try {
-    await promises.access(loc, promises.constants.F_OK)
+    await fs.access(loc, fs.constants.F_OK)
     return [undefined, true]
   }
   catch(err) {

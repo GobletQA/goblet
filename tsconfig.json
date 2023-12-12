@@ -91,6 +91,7 @@
       "@GJK/*": ["repos/joker/src/*"],
 
       "@GLT/cli/types": ["repos/latent/src/bin/cli.types.ts"],
+      "@GLT/services": ["repos/latent/src/services"],
       "@GLT/templates": ["repos/latent/src/templates"],
       "@GLT/libs": ["repos/latent/src/libs"],
       "@GLT/libs/*": ["repos/latent/src/libs/*"],

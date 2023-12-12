@@ -1,6 +1,6 @@
 export const repoUrl = `https://github.com/GobletQA/gobletqa`
 export const altUrl = `https://github.com/GobletQA/different-repo`
-export const repoToken = `ZmM3ZDQ4Y2UxNzVhNGIxMGE1YmJmODU0MmRmMjhkZjJhZWJhM2NhMmY3NjU1Mjc2ZmI4YzllNjZmNDE3MjFkZQ==`
+export const repoToken = `Yjc2YzFjZTRmMDFkMjJiNDViMGNlZDAyMWMyNTI5ZGJlN2M0Y2JhZmQ4MzkyMGE2ZmU1NWMzMzQ2ZGRjZTM4NA==`
 
 export const mockEnvObj = {
   TEST_URL: repoUrl,
