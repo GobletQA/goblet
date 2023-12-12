@@ -51,9 +51,7 @@ export default defineConfig(async () => {
       }),
     ],
     worker: {
-      plugins: [
-        comlink()
-      ]
+      plugins: () => [comlink()]
     }
   }
 

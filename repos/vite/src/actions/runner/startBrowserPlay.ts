@@ -1,11 +1,13 @@
 // TODO: should add a Promise timeout here to avoid memory leaks
 // Has to be very long, could be based on the global timeout option from Exam / Parkin
-
+import type { TProm } from '@utils/promise/promiseAbort'
 import type {
+  TOffCB,
   TRepoApiObj,
   TFileModel,
   TStartPlaying,
   TPlayerResEvent,
+  TBrowserStateEvt,
   TStartBrowserPlayOpts
 } from '@types'
 
@@ -22,6 +24,7 @@ import { buildCmdParams } from '@utils/browser/buildCmdParams'
 import { filterFileContext } from '@utils/files/filterFileContext'
 import {
   BrowserStateEvt,
+  PlayerStartedEvent,
   PlayerFinishedEvent,
   WSCancelPlayerEvent,
 } from '@constants'
@@ -100,11 +103,13 @@ export const startBrowserPlay = async (
     )
   )
 
-  let promise = PromiseAbort((res, rej) => {
-    WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
+  WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
+  EE.emit(PlayerStartedEvent, {})
+
+  let promise:TProm<any>|undefined = PromiseAbort((res, rej) => {
 
     // Then listen for the response event fired from the websocket service
-    const onPlayerEnd = EE.on<TPlayerResEvent>(PlayerFinishedEvent, () => res(emptyObj))
+    let onPlayerEnd:TOffCB
 
     /**
     * Listens for a cancel event
@@ -112,25 +117,36 @@ export const startBrowserPlay = async (
     * Calls clean up events on both backend and frontend
     *
     */
-    const cancelOff = EE.on(
+    let cancelOff = EE.on(
       WSCancelPlayerEvent,
       () => {
-        // Turn off the select listener above
+        
+        // Turn off the on player end listener
         onPlayerEnd?.()
+
         // Send event to cancel on the backend
         WSService.emit(SocketMsgTypes.CANCEL_AUTOMATE, { player: true })
 
         // Sent event to cancel on the frontend
-        EE.emit(BrowserStateEvt, {browserState: EBrowserState.idle})
+        EE.emit<TBrowserStateEvt>(BrowserStateEvt, {browserState: EBrowserState.idle})
 
         // Finally stop listening, cancel and reject
         cancelOff?.()
-        promise.cancel()
-        rej(emptyObj)
-        // @ts-ignore
+        promise?.cancel?.()
         promise = undefined
+        cancelOff = undefined
+        rej?.(emptyObj)
       }
     )
+    
+    onPlayerEnd = EE.on<TPlayerResEvent>(PlayerFinishedEvent, () => {
+      onPlayerEnd?.()
+      cancelOff?.()
+      promise = undefined
+      cancelOff = undefined
+      onPlayerEnd = undefined
+      res?.(emptyObj)
+    })
   })
 
 }

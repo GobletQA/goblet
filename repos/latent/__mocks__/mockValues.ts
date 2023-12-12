@@ -1,17 +1,18 @@
 export const repoUrl = `https://github.com/GobletQA/gobletqa`
 export const altUrl = `https://github.com/GobletQA/different-repo`
-export const repoToken = `Yjc2YzFjZTRmMDFkMjJiNDViMGNlZDAyMWMyNTI5ZGJlN2M0Y2JhZmQ4MzkyMGE2ZmU1NWMzMzQ2ZGRjZTM4NA==`
+export const genRepoToken = `Yjc2YzFjZTRmMDFkMjJiNDViMGNlZDAyMWMyNTI5ZGJlN2M0Y2JhZmQ4MzkyMGE2ZmU1NWMzMzQ2ZGRjZTM4NA==`
+export const mockRepoToken = `ZmM3ZDQ4Y2UxNzVhNGIxMGE1YmJmODU0MmRmMjhkZjJhZWJhM2NhMmY3NjU1Mjc2ZmI4YzllNjZmNDE3MjFkZQ==`
 
 export const mockEnvObj = {
   TEST_URL: repoUrl,
-  TEST_TOKEN: repoToken,
+  TEST_TOKEN: mockRepoToken,
   SOME_ENV: `SECRET-TEST-VALUE`,
 }
 
 export const mockFileContent = `
   SOME_ENV="SECRET-TEST-VALUE"
   TEST_URL=${repoUrl}
-  TEST_TOKEN=${repoToken}
+  TEST_TOKEN=${mockRepoToken}
 `
 export const mockFooContent = `foo=bar\n`
 export const mockWriteFileContent = mockFileContent + `\n${mockFooContent}`

@@ -1,4 +1,5 @@
 import type { RepoWatcher } from '../repoWatcher'
+import type { EProvider } from './shared.types'
 
 // TODO: fix this - is a duplicate of the type in repo/types
 type TGitData = {
@@ -8,9 +9,9 @@ type TGitData = {
   branch:string
   username:string
   repoId?:string
-  provider:string
   repoName?:string
   newBranch?:string
+  provider:EProvider
   branchFrom?:boolean
 }
 

@@ -1,11 +1,9 @@
-import { TAbortError } from '@types'
-
 type TRes<T> = (result:T) => void
 type TRej = (reason?:any)=>void
 
 export type TPromiseAbortCB<T=any> = (res:TRes<T>, rej:TRej) => void
 
-type TProm<T> = Promise<T> & {
+export type TProm<T> = Promise<T> & {
   cancel: () => void
 }
 

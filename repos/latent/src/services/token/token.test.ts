@@ -6,7 +6,7 @@ import { LatentToken } from './token'
 import {
   altUrl,
   repoUrl,
-  repoToken
+  genRepoToken
 } from '../../../__mocks__'
 
 const latentToken = new LatentToken()
@@ -34,7 +34,7 @@ describe(`LatentToken`, () => {
       expect(typeof token1).toBe(`string`)
       expect(typeof token2).toBe(`string`)
       expect(token1).toBe(token2)
-      expect(token1).toBe(repoToken)
+      expect(token1).toBe(genRepoToken)
     })
 
 
@@ -44,16 +44,16 @@ describe(`LatentToken`, () => {
       const token3 = latentToken.generate(`12345`)
       const token4 = latentToken.generate(` `)
 
-      const half = repoToken.slice(0, repoToken.length / 2)
-      const third = repoToken.slice(0, repoToken.length / 3)
-      const quarter = repoToken.slice(0, repoToken.length / 4)
+      const half = genRepoToken.slice(0, genRepoToken.length / 2)
+      const third = genRepoToken.slice(0, genRepoToken.length / 3)
+      const quarter = genRepoToken.slice(0, genRepoToken.length / 4)
 
       const token5 = latentToken.generate(half)
       const token6 = latentToken.generate(third)
       const token7 = latentToken.generate(quarter)
-      const token8 = latentToken.generate(`${repoToken}${half}`)
-      const token9 = latentToken.generate(`${repoToken}${third}`)
-      const token10 = latentToken.generate(`${repoToken}${quarter}`)
+      const token8 = latentToken.generate(`${genRepoToken}${half}`)
+      const token9 = latentToken.generate(`${genRepoToken}${third}`)
+      const token10 = latentToken.generate(`${genRepoToken}${quarter}`)
 
       expect(token1.length).toBe(88)
       expect(token2.length).toBe(88)
@@ -73,11 +73,11 @@ describe(`LatentToken`, () => {
   describe(`LatentToken.validate`, () => {
 
     it(`should validate a consistent token when called with same inputs`, () => {
-      expect(latentToken.validate(repoUrl, repoToken)).toBe(repoUrl)
+      expect(latentToken.validate(repoUrl, genRepoToken)).toBe(repoUrl)
     })
 
     it(`should throw an error if the token fails validation`, () => {
-      expect(() => latentToken.validate(altUrl, repoToken)).toThrow()
+      expect(() => latentToken.validate(altUrl, genRepoToken)).toThrow()
       expect(console.error).toHaveBeenCalled()
     })
 
