@@ -1,0 +1,49 @@
+{
+  "name": "@gobletqa/fs",
+  "version": "0.0.0",
+  "description": "File system access GobletQA repos",
+  "main": "index.js",
+  "author": "Lance Tipton",
+  "license": "ISC",
+  "keywords": [],
+  "private": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "url": "git+https://github.com/GobletQA/goblet.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/GobletQA/goblet/issues"
+  },
+  "scripts": {
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm tsup --config ./configs/tsup.config.ts",
+    "clean": "pnpm clean:dist; pnpm clean:nm",
+    "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
+    "clean:full": "pnpm clean; pnpm install",
+    "clean:nm": "rm -rf node_modules",
+    "format": "pnpm lint && pnpm pretty",
+    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
+    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
+    "test": "jest --colors --config ./configs/jest.config.js",
+    "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
+    "validate": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gobletqa/environment": "workspace:*",
+    "@gobletqa/goblet": "workspace:*",
+    "@gobletqa/logger": "workspace:*",
+    "@keg-hub/jsutils": "9.10.0",
+    "fs-extra": "11.2.0",
+    "mime": "3.0.0"
+  },
+  "devDependencies": {
+    "@types/debug": "4.1.9",
+    "@types/fs-extra": "11.0.4",
+    "@types/node": "20.9.3",
+    "tsup": "8.0.1"
+  }
+}
