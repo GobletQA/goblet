@@ -23,7 +23,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
+    "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
@@ -43,8 +43,7 @@
     "express-rate-limit": "7.1.4",
     "glob": "10.3.10",
     "http-proxy-middleware": "2.0.6",
-    "mime": "3.0.0",
-    "module-alias": "2.2.3"
+    "mime": "3.0.0"
   },
   "devDependencies": {
     "@types/dockerode": "3.3.9",
