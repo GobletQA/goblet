@@ -1,4 +1,13 @@
 {
   "name": "@gobletqa/configs",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    "depcheck": "depcheck --ignores=\"@gobletqa/configs\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*"
+  },
+  "dependencies": {
+    "@keg-hub/jsutils": "9.10.0",
+    "esbuild": "0.19.7",
+    "esbuild-register": "3.5.0",
+    "module-alias": "2.2.3"
+  }
 }
