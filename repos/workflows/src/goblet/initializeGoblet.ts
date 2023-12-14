@@ -4,10 +4,9 @@ import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
 import { setupGoblet } from './setupGoblet'
 import { getGitApi } from '@GWF/providers/getGitApi'
-import { ensureMounted } from '@gobletqa/repo/ensureMounted'
 import { validateInitArgs } from '@GWF/utils/validateInitArgs'
 import { configureGitOpts } from '@GWF/utils/configureGitOpts'
-import { ensureBranchExists } from '@gobletqa/repo/ensureBranchExists'
+import { ensureMounted, ensureBranchExists } from '@gobletqa/repo'
 
 /**
  * Workflow for initializing goblet within a git repo

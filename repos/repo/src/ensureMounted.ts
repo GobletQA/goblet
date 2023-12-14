@@ -2,7 +2,7 @@ import type { TGitOpts, TWFArgs } from '@GRP/types'
 
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
-import { mountRepo } from '@gobletqa/repo/mountRepo'
+import { mountRepo } from '@GRP/mountRepo'
 
 export const ensureMounted = async (
   args:TWFArgs,

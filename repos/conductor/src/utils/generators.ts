@@ -1,4 +1,4 @@
-import type { Conductor } from '@gobletqa/conductor/conductor'
+import type { Conductor } from '@GCD/conductor'
 import {
   ForwardHostHeader,
   ForwardPortHeader,
@@ -15,7 +15,7 @@ import {
   TGenRoutes,
   TProxyRoute,
   TPublicUrls,
-} from '@gobletqa/conductor/types'
+} from '@GCD/types'
 
 
 /**

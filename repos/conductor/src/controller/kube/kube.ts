@@ -12,7 +12,7 @@ import type {
   TEventWatchObj,
   TContainerMeta,
   TKubeController,
-} from '@gobletqa/conductor/types'
+} from '@GCD/types'
 
 import { Kubectl } from './kubectl'
 import { Controller } from '../controller'
@@ -30,10 +30,10 @@ import { buildImgUri } from '../docker/image/buildImgUri'
 import { isEmptyColl } from '@keg-hub/jsutils/isEmptyColl'
 import { buildContainerMap } from './pod/buildContainerMap'
 import { getPodAnnotations } from './pod/getPodAnnotations'
-import { EContainerState } from '@gobletqa/conductor/types'
+import { EContainerState } from '@GCD/types'
 import { buildLabels } from '../docker/container/buildLabels'
 import { generateRoute, generateRoutes } from '../../utils/generators'
-import { ERestartPolicy, EImgPullPolicy } from '@gobletqa/conductor/types'
+import { ERestartPolicy, EImgPullPolicy } from '@GCD/types'
 import { DevUserHash, PodAnnotations, ConductorUserHashLabel } from '@GCD/constants'
 import {toNum} from '@keg-hub/jsutils'
 

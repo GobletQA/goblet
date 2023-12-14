@@ -6,7 +6,7 @@ import {
   TImgConfig,
   TPublicUrls,
   TCreatePortsObj,
-} from '@gobletqa/conductor/types'
+} from '@GCD/types'
 
 import { buildLabels } from './buildLabels'
 import { buildContainerEnvs } from './buildEnvs'

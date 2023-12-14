@@ -1,6 +1,6 @@
 import type { IncomingMessage } from 'http'
 import type { Request, Response, Router } from 'express'
-import type { TProxyConfig } from '@gobletqa/conductor/types'
+import type { TProxyConfig } from '@GCD/types'
 
 import { createProxy } from './createProxy'
 import { exists } from '@keg-hub/jsutils/exists'

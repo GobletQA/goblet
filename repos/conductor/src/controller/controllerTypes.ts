@@ -1,5 +1,5 @@
 import type { Conductor } from '../conductor'
-import { TControllerConfig } from '@gobletqa/conductor/types'
+import { TControllerConfig } from '@GCD/types'
 
 import { Kube } from './kube/kube'
 // import { Docker } from './docker/docker'

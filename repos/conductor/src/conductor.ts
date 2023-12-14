@@ -8,13 +8,13 @@ import type {
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
-} from '@gobletqa/conductor/types'
+} from '@GCD/types'
 
 import { buildConfig } from './utils/buildConfig'
 import { proxyUpgrade } from './utils/proxyUpgrade'
 import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/api/express/app'
-import { EContainerState } from '@gobletqa/conductor/types'
+import { EContainerState } from '@GCD/types'
 import { getController } from './controller/controllerTypes'
 import {
   createWSProxy,

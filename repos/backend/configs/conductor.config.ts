@@ -10,10 +10,10 @@ import { ENVS } from '@gobletqa/environment'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { toBool } from '@keg-hub/jsutils/toBool'
 import { exists } from '@keg-hub/jsutils/exists'
+import { getKindHost } from '@gobletqa/conductor'
+import { getDindHost } from '@gobletqa/conductor'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { getKindHost } from '@gobletqa/conductor/utils/getKindHost'
-import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
 
 const {
   NODE_ENV=`local`,

@@ -13,11 +13,10 @@ import { failResp, successResp } from './response'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { copyTemplate } from '../utils/copyTemplate'
-import { repoSecrets } from '@gobletqa/repo/repoSecrets'
 import { replaceGobletConfigRef } from '@gobletqa/goblet'
-import { createRepoWatcher } from '@gobletqa/repo/mountRepo'
 import { configureGitOpts } from '../utils/configureGitOpts'
 import { git, RepoWatcher, getRepoName } from '@gobletqa/git'
+import { repoSecrets, createRepoWatcher } from '@gobletqa/repo'
 
 const emptyLoaderResp = emptyObj as TGobletCfgLoaderResp
 

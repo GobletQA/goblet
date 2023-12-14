@@ -4,10 +4,9 @@ import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
 import { setupGoblet } from './setupGoblet'
 import { GithubApi } from '@GWF/providers/githubApi'
-import { ensureMounted } from '@gobletqa/repo/ensureMounted'
 import { configureGitOpts } from '@GWF/utils/configureGitOpts'
 import { validateCreateArgs } from '@GWF/utils/validateCreateArgs'
-import { ensureBranchExists } from '@gobletqa/repo/ensureBranchExists'
+import { ensureBranchExists, ensureMounted } from '@gobletqa/repo'
 
 const buildCreateUrl = (args:TWFCreateArgs) => {
   const { create } = args

@@ -11,7 +11,7 @@ setMox('@gobletqa/shared/libs/features/features', {
 
 const definitionsMock = {}
 const getDefinitionsMock = jest.fn(() => ({ definitions: definitionsMock}))
-setMox('@gobletqa/repo/getDefinitions', {
+setMox('@GRP/getDefinitions', {
   getDefinitions: getDefinitionsMock
 })
 

@@ -14,7 +14,7 @@ import type {
   TContainerInfo,
   TContainerMeta,
   TContainerInspect
-} from '@gobletqa/conductor/types'
+} from '@GCD/types'
 
 import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
@@ -30,7 +30,7 @@ import { buildPorts } from './container/buildPorts'
 import { resolveHost } from './container/resolveHost'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { isEmptyColl } from '@keg-hub/jsutils/isEmptyColl'
-import { EContainerState } from '@gobletqa/conductor/types'
+import { EContainerState } from '@GCD/types'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
 import { buildContainerMap } from './container/buildContainerMap'

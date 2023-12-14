@@ -1,4 +1,4 @@
-import type { TPod, TContainerMap } from '@gobletqa/conductor/types'
+import type { TPod, TContainerMap } from '@GCD/types'
 import { Logger } from '../../../utils/logger'
 
 export const shouldRemove = (

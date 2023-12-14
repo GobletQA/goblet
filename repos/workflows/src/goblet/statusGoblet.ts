@@ -15,9 +15,8 @@ import { ENVS } from '@gobletqa/environment'
 import { gobletLoader } from '@gobletqa/goblet'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { repoSecrets } from '@gobletqa/repo/repoSecrets'
-import { createRepoWatcher } from '@gobletqa/repo/mountRepo'
 import { getRepoName, git, RepoWatcher } from '@gobletqa/git'
+import { repoSecrets, createRepoWatcher } from '@gobletqa/repo'
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts

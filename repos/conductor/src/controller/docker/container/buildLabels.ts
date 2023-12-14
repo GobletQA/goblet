@@ -1,4 +1,4 @@
-import type { TImgConfig , TContainerLabels} from '@gobletqa/conductor/types'
+import type { TImgConfig , TContainerLabels} from '@GCD/types'
 
 import { exists } from '@keg-hub/jsutils/exists'
 import {
