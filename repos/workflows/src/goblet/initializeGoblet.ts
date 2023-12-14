@@ -1,4 +1,4 @@
-import type { TWFArgs, TWFResp } from '@gobletqa/workflows/types'
+import type { TWFArgs, TWFResp } from '@GWF/types'
 
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'

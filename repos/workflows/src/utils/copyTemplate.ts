@@ -5,7 +5,7 @@ import { existsSync } from 'fs'
 import { Logger } from '@gobletqa/logger'
 import { copyContent } from './copyContent'
 import { wait } from '@keg-hub/jsutils/wait'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { replaceGobletConfigRef, configFromFolder } from '@gobletqa/goblet'
 
 

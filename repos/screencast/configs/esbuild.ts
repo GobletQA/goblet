@@ -2,7 +2,7 @@ import type { TNMOpts } from '@ltipton/esdev'
 
 import { GSCRoot } from '../resolveRoot'
 import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { loadConfigs } from '@keg-hub/parse-config'
 
 /**

@@ -13,15 +13,13 @@ export default defineConfig(async () => {
   await fs.rm(outdir, { recursive: true, force: true })
   
   return {
-    dts: true,
     clean: true,
     name: `latent`,
     outDir: outdir,
     sourcemap: true,
     splitting: false,
     entry: [infile],
-    external: [`esbuild`],
-    format: [`cjs`, `esm`],
+    format: [`cjs`],
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),

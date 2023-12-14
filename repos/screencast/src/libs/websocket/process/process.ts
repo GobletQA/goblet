@@ -1,5 +1,5 @@
 import type { Socket } from 'socket.io'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import type { SocketManager } from '../manager/manager'
 import type {
   TCmdMessage,

@@ -10,7 +10,7 @@ import type {
   TGLRepoApiMeta,
   TGLBranchMeta,
   TGitCreateRepoOpts,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import { Rest } from '../constants'
 import { Logger } from '@gobletqa/logger'

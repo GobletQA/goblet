@@ -1,6 +1,6 @@
 const path = require('path')
 const rootDir = path.join(__dirname, `..`)
-const baseConfig = require('../../../configs/jest.base.config.js')
+const baseConfig = require('@gobletqa/configs/jest.base.config.js')
 
 module.exports = {
   ...baseConfig,

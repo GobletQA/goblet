@@ -23,7 +23,7 @@ export default defineConfig(async () => {
     splitting: false,
     sourcemap: true,
     outDir: cliOutdir,
-    format: [`cjs`, `esm`],
+    format: [`cjs`],
     entry: [
       cliIn,
       workerEntry,

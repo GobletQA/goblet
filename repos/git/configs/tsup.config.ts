@@ -18,7 +18,7 @@ export default defineConfig(async () => {
     splitting: false,
     entry: [entry],
     outDir: outdir,
-    format: [`cjs`, `esm`],
+    format: [`cjs`],
     esbuildOptions:(options, context) => {
       options && (
         options.external = [

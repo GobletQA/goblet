@@ -23,12 +23,13 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared,@GConfigs/*,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
+    "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
   },
   "dependencies": {
+    "@gobletqa/configs": "workspace:../../configs",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",

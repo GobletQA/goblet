@@ -9,7 +9,7 @@
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@*/*,@GobletRoot,@gobletqa/vite,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
+    "depcheck": "depcheck --ignores=\"@*/*,@GobletRoot,@gobletqa/vite\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "prod": "GOBLET_ENV=production NODE_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "cache": "GOBLET_ENV=local NODE_ENV=local vite --force --clearScreen false -c configs/vite.config.ts",
     "serve": "GOBLET_ENV=production NODE_ENV=production serve -p 19006 dist",
@@ -41,6 +41,7 @@
     "socket.io-client": "4.7.2"
   },
   "devDependencies": {
+    "@gobletqa/configs": "workspace:../../configs",
     "@gobletqa/components": "workspace:*",
     "@mui/lab": "5.0.0-alpha.153",
     "@types/node": "20.9.3",

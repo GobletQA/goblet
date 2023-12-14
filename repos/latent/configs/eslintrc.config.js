@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('../../../configs/eslintrc.config.js'),
+  ...require('@gobletqa/configs/eslintrc.config.js'),
   /* ---- Repo specific options here ---- */
   parserOptions: {
     project: 'tsconfig.eslint.json',

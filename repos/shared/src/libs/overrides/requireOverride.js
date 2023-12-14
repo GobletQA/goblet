@@ -1,5 +1,5 @@
 const Module = require('module')
-const { aliases } = require('@GConfigs/aliases.config')
+const { aliases } = require('@gobletqa/configs/aliases.config')
 const { GobletRoot } = aliases
 
 const overrideNoOp = (request) => true

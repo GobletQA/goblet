@@ -5,7 +5,7 @@ import { build } from 'esbuild'
 import { globSync } from "glob"
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import aliasPlugin from 'esbuild-plugin-path-alias'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))

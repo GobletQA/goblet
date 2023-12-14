@@ -1,10 +1,10 @@
-import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@gobletqa/workflows/types'
+import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@GWF/types'
 
 import { Logger } from '@gobletqa/logger'
 import { ENVS } from '@gobletqa/environment'
 import { git, RepoWatcher } from '@gobletqa/git'
-import { GitResetBranch } from '@gobletqa/workflows/constants'
-import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
+import { GitResetBranch } from '@GWF/constants'
+import { getGitApi } from '@GWF/providers/getGitApi'
 
 export const syncGoblet = async (
   config:TWFGobletConfig,

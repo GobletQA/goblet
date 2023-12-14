@@ -41,6 +41,7 @@
     "dep": "node -r ./configs/aliases.js tasks/entry.ts deploy",
     "dprod": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/deployToProd.sh",
     "depcheck": "pnpm -r depcheck",
+    "doc:tscfg": "node -r ./configs/aliases.js scripts/js/dockerTSCfg.ts",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:all": "pnpm format && pnpm -r format",
     "format:lint": "pnpm lint .",

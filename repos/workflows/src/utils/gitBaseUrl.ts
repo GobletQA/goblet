@@ -1,4 +1,4 @@
-import { EProvider } from '@gobletqa/workflows/types'
+import { EProvider } from '@GWF/types'
 
 /**
  * Removes the `.git` extension from the url if it exists

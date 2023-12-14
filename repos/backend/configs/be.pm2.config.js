@@ -1,6 +1,6 @@
 require('../resolveRoot')
 const path = require('path')
-const { aliases } = require('@GConfigs/aliases.config')
+const { aliases } = require('@gobletqa/configs/aliases.config')
 
 /** Path to the logs directory */
 const logDir = aliases[`@GLogs`]

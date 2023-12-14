@@ -6,7 +6,7 @@ import { ENVS } from '@gobletqa/environment'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { toBool } from '@keg-hub/jsutils/toBool'
 import { socketCmds } from './socketCmds.config'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/api/origin/generateOrigins'
 

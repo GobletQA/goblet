@@ -2,7 +2,7 @@ import { GBERoot } from '../resolveRoot'
 
 import path from 'path'
 import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { loadConfigs } from '@keg-hub/parse-config'
 
 const nodeEnv = process.env.NODE_ENV || `local`

@@ -1,4 +1,5 @@
-require('../../configs/aliases')
+require('@gobletqa/configs/aliases')
+
 
 /**
  * Will be needed when the package is bundled

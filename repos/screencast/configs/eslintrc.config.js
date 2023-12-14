@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('../../../configs/eslintrc.config.js'),
+  ...require('@gobletqa/configs/eslintrc.config.js'),
 }

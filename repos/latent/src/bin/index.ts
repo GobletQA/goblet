@@ -1,3 +1,3 @@
 #! /usr/bin/env node --no-warnings
-import '../../../../configs/aliases'
+import '@gobletqa/configs/aliases'
 export * from './latent'

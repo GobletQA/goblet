@@ -5,7 +5,7 @@ import type {
   TGraphProvider,
   TGraphPageInfo,
   TRepoGraphRepos,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import { ApiCache } from './apiCache'
 import { get } from '@keg-hub/jsutils/get'

@@ -3,7 +3,7 @@ import { GJKRoot } from '../resolveRoot'
 
 import path from 'path'
 import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { loadConfigs } from '@keg-hub/parse-config'
 
 const dev = process.env.DEV_BUILD === `1`

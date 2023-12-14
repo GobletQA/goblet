@@ -5,7 +5,7 @@ import path from 'node:path'
 import { getApp } from '@GSH/api/express/app'
 import { ENVS } from '@gobletqa/environment'
 import { rateLimit } from 'express-rate-limit'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 
 if(!process.env.EXAM_ENV){
   /** Path to the logs directory */

@@ -1,6 +1,6 @@
 import path from 'path'
 import { writeFileSync, rmSync } from 'fs'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 
 export const writePid = (name:string, pid:string|number) => {
   if(process.env.EXAM_ENV) return ``

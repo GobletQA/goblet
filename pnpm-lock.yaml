@@ -93,6 +93,9 @@ importers:
 
   repos/backend:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@kubernetes/client-node':
         specifier: 0.20.0
         version: 0.20.0
@@ -167,6 +170,9 @@ importers:
 
   repos/browser:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -176,9 +182,6 @@ importers:
       '@keg-hub/jsutils':
         specifier: 9.10.0
         version: 9.10.0
-      '@keg-hub/parse-config':
-        specifier: '>=2.1.0'
-        version: 2.1.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
@@ -189,18 +192,12 @@ importers:
         specifier: 1.40.1
         version: 1.40.1
     devDependencies:
-      '@ltipton/esdev':
-        specifier: 0.2.1
-        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
       '@types/node':
         specifier: 20.9.3
         version: 20.9.3
-      esbuild:
-        specifier: 0.19.7
-        version: 0.19.7
-      esbuild-register:
-        specifier: 3.5.0
-        version: 3.5.0(esbuild@0.19.7)
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
 
   repos/components:
     dependencies:
@@ -265,6 +262,9 @@ importers:
 
   repos/conductor:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -324,6 +324,9 @@ importers:
 
   repos/environment:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@keg-hub/jsutils':
         specifier: 9.10.0
         version: 9.10.0
@@ -334,6 +337,9 @@ importers:
 
   repos/exam:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -383,6 +389,9 @@ importers:
 
   repos/git:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -408,6 +417,9 @@ importers:
 
   repos/goblet:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -433,6 +445,9 @@ importers:
 
   repos/latent:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -614,6 +629,9 @@ importers:
 
   repos/repo:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -632,28 +650,25 @@ importers:
       '@keg-hub/jsutils':
         specifier: 9.10.0
         version: 9.10.0
+      '@keg-hub/parse-config':
+        specifier: '>=2.1.0'
+        version: 2.1.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
     devDependencies:
-      '@keg-hub/parse-config':
-        specifier: '>=2.1.0'
-        version: 2.1.0
-      '@ltipton/esdev':
-        specifier: 0.2.1
-        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
-      esbuild:
-        specifier: 0.19.7
-        version: 0.19.7
-      esbuild-register:
-        specifier: 3.5.0
-        version: 3.5.0(esbuild@0.19.7)
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
 
   repos/screencast:
     dependencies:
       '@gobletqa/browser':
         specifier: workspace:*
         version: link:../browser
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -733,6 +748,9 @@ importers:
 
   repos/shared:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -800,6 +818,9 @@ importers:
       '@gobletqa/browser':
         specifier: workspace:*
         version: link:../browser
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -925,6 +946,9 @@ importers:
       '@gobletqa/components':
         specifier: workspace:*
         version: link:../components
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@mui/lab':
         specifier: 5.0.0-alpha.153
         version: 5.0.0-alpha.153(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.18)(@types/react@18.2.38)(react-dom@18.2.0)(react@18.2.0)
@@ -967,6 +991,9 @@ importers:
 
   repos/workflows:
     dependencies:
+      '@gobletqa/configs':
+        specifier: workspace:../../configs
+        version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
         version: link:../environment
@@ -995,24 +1022,18 @@ importers:
         specifier: 1.6.2
         version: 1.6.2
     devDependencies:
-      '@keg-hub/parse-config':
-        specifier: '>=2.1.0'
-        version: 2.1.0
-      '@ltipton/esdev':
-        specifier: 0.2.1
-        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
       '@types/node':
         specifier: 20.9.3
         version: 20.9.3
       esbuild:
         specifier: 0.19.7
         version: 0.19.7
-      esbuild-plugin-path-alias:
-        specifier: 1.0.7
-        version: 1.0.7(esbuild@0.19.7)
       esbuild-register:
         specifier: 3.5.0
         version: 3.5.0(esbuild@0.19.7)
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
 
 packages:
 

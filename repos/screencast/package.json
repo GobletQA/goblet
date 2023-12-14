@@ -24,7 +24,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GSC/*,@gobletqa/screencast,@GConfigs/*,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
+    "depcheck": "depcheck --ignores=\"@GSC/*,@gobletqa/screencast,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "sv": "supervisorctl",
     "sv:local": "supervisord -c configs/supervisord.local.conf",
     "sv:prod": "supervisord -c configs/supervisord.conf",
@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@gobletqa/browser": "workspace:*",
+    "@gobletqa/configs": "workspace:../../configs",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/exam": "workspace:*",
     "@gobletqa/logger": "workspace:*",

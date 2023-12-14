@@ -1,4 +1,4 @@
-const { registerAliases,} = require('../../configs/aliases.config')
+const { registerAliases,} = require('@gobletqa/configs/aliases.config')
 registerAliases()
 
 

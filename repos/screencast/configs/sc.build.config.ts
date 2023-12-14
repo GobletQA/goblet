@@ -5,7 +5,7 @@ import * as esbuild from 'esbuild'
 import config from '../package.json'
 import { promises as fs } from 'node:fs'
 import aliasPlugin from 'esbuild-plugin-path-alias'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 
 const outdir = path.join(GSCRoot, `dist`)
 const entryFile = path.join(GSCRoot, `index.ts`)

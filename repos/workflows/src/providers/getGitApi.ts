@@ -1,6 +1,6 @@
-import { EProvider } from '@gobletqa/workflows/types'
-import { GitlabApi } from '@gobletqa/workflows/providers/gitlabApi'
-import { GithubApi } from '@gobletqa/workflows/providers/githubApi'
+import { EProvider } from '@GWF/types'
+import { GitlabApi } from '@GWF/providers/gitlabApi'
+import { GithubApi } from '@GWF/providers/githubApi'
 
 export type TGetGitApi = {
   provider:EProvider

@@ -8,7 +8,7 @@
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GBR/*,@gobletqa/race,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,tmp,*jest*",
+    "depcheck": "depcheck --ignores=\"@GBR/*,@gobletqa/race\" --ignore-patterns=build,dist,.*,coverage,temp,tmp,*jest*",
     "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "serve": "serve -p 19006 dist",

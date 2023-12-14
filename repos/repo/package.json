@@ -19,13 +19,13 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm r:build && pnpm types",
-    "r:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm tsup-node --config ./configs/tsup.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GRP/*,@gobletqa/repo,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*,*__tests__*",
+    "depcheck": "depcheck --ignores=\"@GRP/*,@gobletqa/repo\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*,*__tests__*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -35,18 +35,17 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/configs": "workspace:../../configs",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
     "@gobletqa/git": "workspace:*",
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
+    "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/jsutils": "9.10.0",
     "@ltipton/parkin": "6.5.1"
   },
   "devDependencies": {
-    "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/esdev": "0.2.1",
-    "esbuild": "0.19.7",
-    "esbuild-register": "3.5.0"
+    "tsup": "8.0.1"
   }
 }

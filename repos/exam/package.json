@@ -42,7 +42,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GEX/*,@gobletqa/exam,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,__mocks__/*",
+    "depcheck": "depcheck --ignores=\"@GEX/*,@gobletqa/exam\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,__mocks__/*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -51,8 +51,9 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/logger": "workspace:*",
+    "@gobletqa/configs": "workspace:../../configs",
     "@gobletqa/environment": "workspace:*",
+    "@gobletqa/logger": "workspace:*",
     "@keg-hub/args-parse": "10.0.1",
     "@keg-hub/jsutils": "9.10.0",
     "@ltipton/parkin": "6.5.1",

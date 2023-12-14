@@ -27,7 +27,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GLG/*,@gobletqa/logger,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*",
+    "depcheck": "depcheck --ignores=\"@GLG/*,@gobletqa/logger\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",

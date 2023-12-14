@@ -8,7 +8,7 @@
   "scripts": {
     "webpack": "webpack",
     "build": "webpack --config configs/webpack.build.js",
-    "depcheck": "depcheck --ignores=\"@GBM/*,@gobletqa/monaco,@GConfigs/*,*raw-loader*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*,src/vendor*",
+    "depcheck": "depcheck --ignores=\"@GBM/*,@gobletqa/monaco,*raw-loader*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*,src/vendor*",
     "dev": "webpack serve --config configs/webpack.config.js",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:lint": "pnpm lint .",

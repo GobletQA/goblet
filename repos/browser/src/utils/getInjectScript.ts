@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 
 let _LOADED_SCRIPTS:Record<string, string>
 

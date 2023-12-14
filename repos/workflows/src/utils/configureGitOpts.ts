@@ -1,9 +1,10 @@
-import path from 'path'
+import type { TWFArgs, TGitOpts } from '@GWF/types'
+
+import path from 'node:path'
 import { throwErr } from './throwErr'
 import { getRepoPath } from '@gobletqa/git'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { isStr } from '@keg-hub/jsutils/isStr'
-import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
 
 const formatBranch = (branch:string) => {
   return branch.trim()

@@ -21,7 +21,7 @@ export default defineConfig(async () => {
     splitting: false,
     entry: [examIn],
     outDir: examOutdir,
-    format: [`cjs`, `esm`],
+    format: [`cjs`],
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),

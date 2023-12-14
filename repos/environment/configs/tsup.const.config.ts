@@ -13,12 +13,11 @@ export default defineConfig(async () => {
   await fs.rm(constOutdir, { recursive: true, force: true })
   
   return {
-    dts: true,
     clean: true,
     sourcemap: true,
     splitting: false,
     outDir: constOutdir,
-    format: [`cjs`, `esm`],
+    format: [`cjs`],
     entry: [constIn],
     esbuildOptions:(options, context) => {
       options.external = [

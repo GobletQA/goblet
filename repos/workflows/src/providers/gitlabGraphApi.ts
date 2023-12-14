@@ -1,8 +1,8 @@
-import type { TRepoGraphRepos } from '@gobletqa/workflows/types/shared.types'
+import type { TRepoGraphRepos } from '@GWF/types/shared.types'
 import type {
   TRepoMeta,
   TGraphApiOpts,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import { Graph } from '../constants/graph'
 import { get } from '@keg-hub/jsutils/get'

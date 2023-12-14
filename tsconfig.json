@@ -165,8 +165,6 @@
       "@GLogs/*": ["logs/*"],
       "@GTasks": ["tasks"],
       "@GTasks/*": ["tasks/*"],
-      "@GConfigs": ["configs"],
-      "@GConfigs/*": ["configs/*"],
       "@GException": ["repos/shared/src/exceptions/Exception"],
       "@GEnvironment": ["repos/shared/src/environment/environment"],
       "@GEnvironment/values": ["repos/shared/src/environment/values"],
@@ -177,6 +175,9 @@
 
       "@gobletqa/browser": ["repos/browser/src"],
       "@gobletqa/browser/*": ["repos/browser/src/*"],
+
+      "@gobletqa/configs": ["configs"],
+      "@gobletqa/configs/*": ["configs/*"],
 
       "@gobletqa/components": ["repos/components/src"],
       "@gobletqa/components/*": ["repos/components/src/*"],

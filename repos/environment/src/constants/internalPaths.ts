@@ -5,7 +5,7 @@ import {
   GOBLET_ROOT,
   // @ts-ignore
   GOBLET_PW_METADATA_DIR,
-}  from '@GConfigs/paths.config'
+}  from '@gobletqa/configs/paths.config'
 
 import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 

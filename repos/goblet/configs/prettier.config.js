@@ -1,4 +1,4 @@
 module.exports = {
-  ...require('../../../configs/prettier.config.js'),
+  ...require('@gobletqa/configs/prettier.config.js'),
   /* ---- Repo specific options here ---- */
 }
