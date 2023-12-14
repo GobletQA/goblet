@@ -65,10 +65,11 @@ COPY repos/exam repos/exam/
 COPY repos/shared repos/shared/
 COPY repos/environment repos/environment/
 
-RUN rm -rf tasks \
-    rm -rf configs \
-    rm -rf container \
-    rm -rf tsconfig.json \
+RUN pnpm build:tsup && \
+    rm -rf tasks && \
+    rm -rf configs && \
+    rm -rf container && \
+    rm -rf tsconfig.json && \
     rm -rf gobletRoot.js
 # ---- End Stage ---- #
 

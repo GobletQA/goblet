@@ -2,3 +2,4 @@ packages:
   # all packages in direct sub dirs of repos/
   - 'repos/*'
   - '!repos/joker'
+  - 'configs'

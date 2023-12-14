@@ -33,7 +33,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
     "@gobletqa/git": "workspace:*",

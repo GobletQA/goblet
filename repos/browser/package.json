@@ -34,9 +34,10 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
+    "@gobletqa/shared": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
     "@ltipton/parkin": "6.5.1",
     "expect": "29.7.0",

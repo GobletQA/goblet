@@ -91,10 +91,12 @@ importers:
         specifier: 29.7.0
         version: 29.7.0(@types/node@18.15.13)(ts-node@10.9.1)
 
+  configs: {}
+
   repos/backend:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@kubernetes/client-node':
         specifier: 0.20.0
@@ -171,7 +173,7 @@ importers:
   repos/browser:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -179,6 +181,9 @@ importers:
       '@gobletqa/logger':
         specifier: workspace:*
         version: link:../logger
+      '@gobletqa/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@keg-hub/jsutils':
         specifier: 9.10.0
         version: 9.10.0
@@ -260,7 +265,7 @@ importers:
   repos/conductor:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -322,7 +327,7 @@ importers:
   repos/environment:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@keg-hub/jsutils':
         specifier: 9.10.0
@@ -335,7 +340,7 @@ importers:
   repos/exam:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -387,7 +392,7 @@ importers:
   repos/git:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -415,7 +420,7 @@ importers:
   repos/goblet:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -443,7 +448,7 @@ importers:
   repos/latent:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -621,7 +626,7 @@ importers:
   repos/repo:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -658,7 +663,7 @@ importers:
         specifier: workspace:*
         version: link:../browser
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -740,7 +745,7 @@ importers:
   repos/shared:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -810,7 +815,7 @@ importers:
         specifier: workspace:*
         version: link:../browser
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*
@@ -938,7 +943,7 @@ importers:
         specifier: workspace:*
         version: link:../components
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@mui/lab':
         specifier: 5.0.0-alpha.153
@@ -983,7 +988,7 @@ importers:
   repos/workflows:
     dependencies:
       '@gobletqa/configs':
-        specifier: workspace:../../configs
+        specifier: workspace:*
         version: link:../../configs
       '@gobletqa/environment':
         specifier: workspace:*

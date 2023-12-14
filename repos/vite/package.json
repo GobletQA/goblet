@@ -41,7 +41,7 @@
     "socket.io-client": "4.7.2"
   },
   "devDependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/components": "workspace:*",
     "@mui/lab": "5.0.0-alpha.153",
     "@types/node": "20.9.3",

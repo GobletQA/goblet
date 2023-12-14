@@ -29,7 +29,7 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
   },
   "dependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",

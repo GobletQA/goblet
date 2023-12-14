@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@gobletqa/browser": "workspace:*",
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/exam": "workspace:*",
     "@gobletqa/logger": "workspace:*",

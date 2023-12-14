@@ -37,7 +37,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0"

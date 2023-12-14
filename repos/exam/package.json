@@ -51,7 +51,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
     "@keg-hub/args-parse": "10.0.1",

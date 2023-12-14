@@ -38,7 +38,7 @@
     "docker-events": "0.0.2"
   },
   "dependencies": {
-    "@gobletqa/configs": "workspace:../../configs",
+    "@gobletqa/configs": "workspace:*",
     "@kubernetes/client-node": "0.20.0",
     "esbuild": "0.19.7",
     "module-alias": "2.2.3",

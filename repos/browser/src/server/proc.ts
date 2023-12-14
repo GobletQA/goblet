@@ -1,1 +1,1 @@
-export * from '../../../shared/src/libs/proc'
+export * from '@gobletqa/shared/libs/proc'

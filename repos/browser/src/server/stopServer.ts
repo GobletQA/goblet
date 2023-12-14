@@ -4,8 +4,8 @@ import { Logger } from '@GBB/utils/logger'
 import { wait } from '@keg-hub/jsutils/wait'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { metadata } from '@GBB/utils/metadata'
-import { DefaultBrowser } from '@GBB/constants'
 import { findProc, killProcAsync } from './proc'
+import { DefaultBrowser } from '@gobletqa/environment/constants'
 import { clearAllServers, clearServer, getServer } from './server'
 
 /**
@@ -36,7 +36,7 @@ export const stopServer = async () => {
 
     Logger.info({ message: `Stopping All Browser Server...` })
 
-    const pwServer = getServer(DefaultBrowser)
+    const pwServer = getServer(DefaultBrowser as EBrowserName)
     pwServer?.close && (await pwServer?.close())
 
     // Kill all browsers

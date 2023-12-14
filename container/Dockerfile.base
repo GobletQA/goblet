@@ -103,6 +103,7 @@ RUN pnpm add --global jqn && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     echo "$(cat package.json | jqn 'delete $.optionalDependencies;JSON.stringify($, null, 2)')" > package.json && \
     CI=1 pnpm install --fix-lockfile --prod --prefer-offline && \
+    CI=1 pnpm add typescript -w -D --prod --prefer-offline && \
     pnpm remove --global jqn
 
 # ---- End Stage ---- #

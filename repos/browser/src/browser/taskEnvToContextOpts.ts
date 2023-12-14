@@ -1,8 +1,8 @@
 import type {
   TScreenDims,
   TBrowserContextGeo,
-  TBrowserContextOpts,
   TBrowserContextVideo,
+  TBrowserContextOpts,
 } from '@GBB/types'
 
 import { ENVS } from '@gobletqa/environment'
