@@ -17,6 +17,7 @@
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GBC/*,@gobletqa/components,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "serve": "serve -p 19006 dist",
@@ -33,7 +34,6 @@
   },
   "devDependencies": {
     "@gobletqa/shared": "workspace:*",
-    "@keg-hub/cli-utils": "0.9.0",
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.16",
     "@vitejs/plugin-react-swc": "3.5.0",

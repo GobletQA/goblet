@@ -1,2 +1,12 @@
 export * from '../types'
-export * from '@GTasks/types'
+export type {
+  TTask,
+  TTaskOption,
+  TTaskAction,
+  TTaskOptions,
+  TParamValue,
+  TTaskParams,
+  TTaskOptionType,
+  TTaskActionArgs,
+} from '../../../../tasks/types/tasks.types'
+

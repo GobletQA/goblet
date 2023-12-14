@@ -1,4 +1,4 @@
-import type { TGitOpts, TWFArgs } from '@GGT/types'
+import type { TGitOpts, TWFArgs } from '@GRP/types'
 
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'

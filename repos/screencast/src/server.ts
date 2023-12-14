@@ -10,6 +10,7 @@ import {
   setupRouter,
   setupServer,
   setupBrowser,
+  setupOnReqEnd,
   setupEndpoints
 } from '@GSC/middleware'
 import {
@@ -44,6 +45,7 @@ const initApi = async () => {
     bypassRoutes: SCAuthBypassRoutes
   })
   setupRepo()
+  setupOnReqEnd()
   await setupEndpoints()
   setupLoggerErr(app)
 

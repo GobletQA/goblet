@@ -1,6 +1,10 @@
-import type { EResultAction } from '@ltipton/parkin'
 import type { TPlayerTestEventMeta } from '@gobletqa/browser'
-import type { TExTestEventMeta, TExEventData, TPlayerTestEvent } from '@GSC/types'
+import type {
+  TExEventData,
+  EResultAction,
+  TExTestEventMeta,
+  TPlayerTestEvent,
+} from '@GSC/types'
 
 
 import { TestsToSocketEvtMap } from '@GSC/constants'

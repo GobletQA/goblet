@@ -1,7 +1,5 @@
 import type { CSSProperties, ReactNode, MutableRefObject, ComponentType } from 'react'
-
-import type Monaco from 'monaco-editor'
-import type { editor } from 'monaco-editor'
+import type { Monaco, editor } from './monaco.types'
 import type { TMonacoDefinition } from './gherkin.types'
 import type { TFilelist, TFileMeta } from './file.types'
 import type { TDecorationFns } from './decorations.types'

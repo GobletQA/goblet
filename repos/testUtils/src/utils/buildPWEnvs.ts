@@ -1,8 +1,11 @@
 import type { TBuildPWEnvs } from '@GTU/Types'
-import type { TEnvObject } from '@gobletqa/shared'
 
 import { addEnv } from '@gobletqa/shared'
 import { ENVS } from '@gobletqa/environment'
+
+type TEnvObject = {
+  [k:string]:string|boolean|number
+}
 
 /**
  * Adds the default playwright ENVs to the current process

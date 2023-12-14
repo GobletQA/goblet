@@ -196,9 +196,6 @@
       "@gobletqa/git": ["repos/git/src"],
       "@gobletqa/git/*": ["repos/git/src/*"],
 
-      "@gobletqa/joker": ["repos/joker/src"],
-      "@gobletqa/joker/*": ["repos/joker/src/*"],
-
       "@gobletqa/latent": ["repos/latent/src"],
       "@gobletqa/latent/*": ["repos/latent/src/*"],
 

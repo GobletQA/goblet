@@ -1,6 +1,5 @@
-import type Monaco from 'monaco-editor'
-import type { editor } from 'monaco-editor'
 import type { MutableRefObject } from 'react'
+import type { Monaco, editor } from './monaco.types'
 
 export type TMonaco = typeof Monaco
 export type ICodeEditor = editor.ICodeEditor

@@ -6,7 +6,7 @@ import type {
   SocketManager,
   TWebSocketEvent,
   TWebSocketEvents,
-} from '@gobletqa/screencast/types/socket.types'
+} from '../../../screencast/src/types/socket.types'
 
 
 

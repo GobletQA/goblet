@@ -1,4 +1,4 @@
-import type { IMarkdownString } from 'monaco-editor'
+import type { IMarkdownString } from '@gobletqa/monaco'
 import type { TPlayerTestEvent, TBuildDecoration, TBuiltDeco, TPlayerEventData } from '@types'
 
 

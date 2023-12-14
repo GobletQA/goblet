@@ -12,6 +12,7 @@ import { definitions } from '@gobletqa/shared'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'
 
+import { wfcache, WfCache } from './wfCache'
 import { Repo, resetCachedWorld } from '@gobletqa/repo'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 
@@ -24,6 +25,8 @@ import {
 
 
 export class Workflows {
+
+  cache:WfCache=wfcache
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -76,10 +79,14 @@ export class Workflows {
         `[ERROR] Could not create new repo ${name}.\n${status ? status.message : ''}`
       )
 
-    return {
+    const resp = {
       repo: new Repo(repo),
       status: status as TRepoMountStatus,
     }
+
+    this.cache.save(username, resp, resp?.repo?.paths?.repoRoot)
+
+    return resp
   }
 
   /**
@@ -89,12 +96,18 @@ export class Workflows {
     config:TWFGobletConfig,
     repoData:TGitOpts
   ) => {
+    
+    const cached = this.cache.find(repoData.username)
+    if(cached) return cached
 
     const { repo, ...status } = await statusGoblet(config, repoData, false)
+    if(!repo || !status.mounted)
+      return { status }
 
-    return !repo || !status.mounted
-      ? { status }
-      : { status, repo: new Repo(repo) }
+    const resp = { status, repo: new Repo(repo) }
+    this.cache.save(repoData.username, resp, resp?.repo?.paths?.repoRoot)
+
+    return resp
   }
 
 
@@ -110,6 +123,9 @@ export class Workflows {
       newBranch,
       branchFrom,
     } = args
+
+    const cached = this.cache.find(username)
+    if(cached) return cached
 
     const url = new URL(repoUrl)
 
@@ -138,10 +154,14 @@ export class Workflows {
         `[ERROR] Could not mount repo ${repoUrl}.\n${status ? status.message : ''}`
       )
 
-    return {
+    const resp = {
       repo: new Repo(repo),
       status: status as TRepoMountStatus,
     }
+
+    this.cache.save(username, resp, resp?.repo?.paths?.repoRoot)
+
+    return resp
   }
 
 
@@ -153,7 +173,8 @@ export class Workflows {
     resetGobletConfig()
     resetCachedWorld(username)
     resetInjectedLogs()
-    definitions?.removeGobletCacheDefs?.()
+    definitions?.removeCachedDefs?.()
+    this.cache.remove(username)
 
     return await disconnectGoblet({
       user: {

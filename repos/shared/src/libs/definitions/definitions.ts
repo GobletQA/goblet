@@ -15,15 +15,18 @@ import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 let __CachedGobletDefs:TDefinitionFileModel[]
 let __CachedRepoDefs:TDefinitionFileModel[]
 
-export const removeGobletCacheDefs = () => {
+const removeGobletCacheDefs = () => {
   __CachedGobletDefs = undefined
-  __CachedRepoDefs = undefined
 }
 
 export const removeRepoCacheDefs = () => {
   __CachedRepoDefs = undefined
 }
 
+export const removeCachedDefs = () => {
+  removeRepoCacheDefs()
+  removeGobletCacheDefs()
+}
 
 /**
  * Builds the definitions models from the loaded definitions
@@ -86,6 +89,8 @@ const getRepoDefinitions = async (
   overrideParkin:(...args:any) => any,
   cache:boolean=true
 ) => {
+  
+  if(cache && __CachedRepoDefs?.length) return __CachedRepoDefs
 
   const { stepsDir } = repo.paths
   if(!stepsDir) return []
@@ -95,7 +100,10 @@ const getRepoDefinitions = async (
     cwd: getPathFromBase(stepsDir, repo)
   })
 
-  return await parseDefinitions(repo, definitionFiles, overrideParkin) || []
+  const repoDefs = await parseDefinitions(repo, definitionFiles, overrideParkin) || []
+  __CachedRepoDefs = repoDefs
+
+  return repoDefs
 }
 
 
@@ -121,6 +129,10 @@ export const loadDefinitions = async (
   repo:Repo,
   cache:boolean=true
 ) => {
+
+  if(cache && __CachedRepoDefs && __CachedGobletDefs)
+    return __CachedGobletDefs.concat(__CachedRepoDefs)
+
   // Clear out any steps that were already loaded
   DefinitionsParser.clear(repo)
 

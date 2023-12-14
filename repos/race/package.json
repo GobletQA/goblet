@@ -8,6 +8,7 @@
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GBR/*,@gobletqa/race,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,tmp,*jest*",
     "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "serve": "serve -p 19006 dist",
@@ -19,7 +20,6 @@
     "@gobletqa/components": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
     "@ltipton/parkin": "6.5.1",
-    "@mui/icons-material": "5.14.18",
     "@mui/lab": "5.0.0-alpha.153",
     "@mui/material": "5.14.18",
     "comlink": "4.4.1"
@@ -27,7 +27,6 @@
   "devDependencies": {
     "@gobletqa/shared": "workspace:*",
     "@types/react": "18.2.38",
-    "@types/react-dom": "18.2.16",
     "@vitejs/plugin-react-swc": "3.5.0",
     "esbuild-register": "3.5.0",
     "react": "18.2.0",

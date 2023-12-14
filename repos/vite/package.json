@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build": "VITE_CJS_IGNORE_WARNING=true GOBLET_ENV=production NODE_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "build": "VITE_CJS_IGNORE_WARNING=true GOBLET_ENV=production NODE_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
+    "depcheck": "depcheck --ignores=\"@*/*,@GobletRoot,@gobletqa/vite,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "prod": "GOBLET_ENV=production NODE_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "cache": "GOBLET_ENV=local NODE_ENV=local vite --force --clearScreen false -c configs/vite.config.ts",
     "serve": "GOBLET_ENV=production NODE_ENV=production serve -p 19006 dist",
@@ -36,7 +37,6 @@
     "react-dom": "18.2.0",
     "react-redux": "8.1.3",
     "react-router-dom": "6.19.0",
-    "react-selecto": "1.26.1",
     "redux": "4.2.1",
     "socket.io-client": "4.7.2"
   },

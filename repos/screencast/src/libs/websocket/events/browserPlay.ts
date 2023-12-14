@@ -21,7 +21,7 @@ export const browserPlay = (app:Express) => withRepo<TSocketEvtCBProps>(async ({
 
   const { action, browser, forwardLogs } = data
   const browserConf = joinBrowserConf(browser, app)
-  await getDefinitions(repo, false)
+  await getDefinitions(repo)
 
   const player = await playBrowser({
     repo,

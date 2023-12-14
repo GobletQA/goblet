@@ -4,7 +4,7 @@ import type {
   TAutomateEvent,
   TBrowserEventArgs
 } from '@GSC/types'
-import { Logger } from '@GBB/utils/logger'
+import { Logger } from './logger'
 import { wait } from '@keg-hub/jsutils/wait'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import {

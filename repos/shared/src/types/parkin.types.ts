@@ -9,9 +9,10 @@ import type {
   TFeatureAst,
   EExpParmType,
   TWorldConfig,
+  EResultAction,
 } from '@ltipton/parkin'
 
-
+export { EResultAction }
 export type TParse = Parkin["parse"]
 export type TMatcher = Parkin["matcher"]
 export type TParkinSteps = Parkin["steps"]

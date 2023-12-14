@@ -23,6 +23,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared,@GConfigs/*,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
@@ -45,7 +46,6 @@
     "module-alias": "2.2.3"
   },
   "devDependencies": {
-    "@types/debug": "4.1.9",
     "@types/dockerode": "3.3.9",
     "@types/express": "4.17.18",
     "@types/node": "20.9.3",

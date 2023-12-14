@@ -29,6 +29,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GLT/*,@gobletqa/latent,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lt:dev": "node --enable-source-maps -r esbuild-register .bin/index.js",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
@@ -38,16 +39,15 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/environment": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0"
   },
   "devDependencies": {
     "@keg-hub/cli-utils": "0.9.0",
     "@gobletqa/goblet": "workspace:*",
-    "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
     "esbuild": "0.19.7",
-    "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.5.0",
     "tsup": "8.0.1"
   }

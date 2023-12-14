@@ -1,5 +1,4 @@
-import type { Automate } from '@gobletqa/browser'
-import type { TBrowserEventArgs, TBrowserConf, TBrowserContext, TBrowserPage } from './pw.types'
+import type { Automate, TBrowserEventArgs, TBrowserConf, TBrowserContext, TBrowserPage } from './pw.types'
 
 export type TAutomateEventData<T=Record<string, any>> = T
 

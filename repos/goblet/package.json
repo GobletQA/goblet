@@ -25,6 +25,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GGB/*,@gobletqa/goblet,@GConfigs/*,esbuild-register\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -40,7 +41,6 @@
     "glob": "10.3.10"
   },
   "devDependencies": {
-    "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",

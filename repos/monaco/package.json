@@ -8,6 +8,7 @@
   "scripts": {
     "webpack": "webpack",
     "build": "webpack --config configs/webpack.build.js",
+    "depcheck": "depcheck --ignores=\"@GBM/*,@gobletqa/monaco,@GConfigs/*,*raw-loader*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*,src/vendor*",
     "dev": "webpack serve --config configs/webpack.config.js",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:lint": "pnpm lint .",
@@ -27,13 +28,11 @@
     "@emotion/styled": "11.11.0",
     "@gobletqa/components": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
-    "@monaco-editor/react": "4.6.0",
-    "@mui/icons-material": "5.14.18",
+    "@ltipton/parkin": "6.5.1",
     "@mui/lab": "5.0.0-alpha.153",
     "@mui/material": "5.14.18",
     "idb-keyval": "6.2.1",
     "monaco-editor": "0.44.0",
-    "monaco-editor-textmate": "4.0.0",
     "monaco-textmate": "3.0.1",
     "onigasm": "2.2.5"
   },

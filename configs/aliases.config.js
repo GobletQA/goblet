@@ -3,10 +3,7 @@ const moduleAlias = require('module-alias')
 const { get } = require('@keg-hub/jsutils/get')
 const { SUB_REPOS } = require('./paths.config')
 const { GobletRoot } = require('../gobletRoot')
-const { fileSys } = require('@keg-hub/cli-utils')
 const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
-
-const { requireFile } = fileSys
 
 const ignoreRepos = [
   `ADMIN_PATH`,
@@ -27,6 +24,24 @@ const addAliasRoot = (rootPath, aliases={}) => {
 
       return acc
     }, {})
+}
+
+const requireFile = (folder = '', file = '', logError) => {
+  const location = path.join(folder, file)
+
+  try {
+    // Build the path to the file
+    // load the data
+    const data = require(location)
+
+    return { data, location }
+  }
+  catch (err) {
+    logError &&
+      console.error(`requireFile error for path "${location}"`, err.stack)
+
+    return {}
+  }
 }
 
 

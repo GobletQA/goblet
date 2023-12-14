@@ -1,10 +1,19 @@
 // @ts-ignore
-import type { GhostCursor, ClickOptions } from "ghost-cursor-pw"
-// @ts-ignore
-import { createCursor } from "ghost-cursor-pw"
 import type { TLocatorOpts, TLocator, TBrowserPage, TLocatorClickOpts } from '@GBB/types'
 
 import { isFunc } from '@keg-hub/jsutils/isFunc'
+
+/**
+ * This needs more investigations for for it can be used
+ */
+
+// import type { GhostCursor, ClickOptions } from "ghost-cursor-pw"
+// import { createCursor } from "ghost-cursor-pw"
+type ClickOptions = any
+type GhostCursor = any
+const createCursor = (page:TBrowserPage) => {
+  return {} as GhostCursor
+}
 
 const pageProxyMethod = [
   `click`,

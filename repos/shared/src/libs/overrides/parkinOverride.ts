@@ -1,5 +1,4 @@
-import type { Repo } from '@GSH/types'
-import type { TStepCtx } from '@GTU/Types'
+import type { TStepCtx, Repo } from '@GSH/types'
 
 import { wait } from '@keg-hub/jsutils/wait'
 import { isFunc } from '@keg-hub/jsutils/isFunc'

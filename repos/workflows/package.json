@@ -2,7 +2,7 @@
   "name": "@gobletqa/workflows",
   "version": "0.0.0",
   "description": "Goblet Platform Workflows",
-  "main": "dist/index.js",
+  "main": "index.js",
   "author": "Lance Tipton",
   "license": "MIT",
   "private": true,
@@ -23,6 +23,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GWF/*,@gobletqa/workflows,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -35,25 +36,19 @@
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/goblet": "workspace:*",
     "@gobletqa/git": "workspace:*",
-    "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": "9.10.0",
-    "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "6.5.1",
-    "axios": "1.6.2",
-    "module-alias": "2.2.3"
+    "axios": "1.6.2"
   },
   "devDependencies": {
+    "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/esdev": "0.2.1",
-    "@types/debug": "4.1.9",
-    "@types/express": "4.17.18",
     "@types/node": "20.9.3",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",
-    "esbuild-plugin-path-alias": "1.0.7",
-    "nodemon": "3.0.1"
+    "esbuild-plugin-path-alias": "1.0.7"
   }
 }

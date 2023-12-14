@@ -21,6 +21,7 @@ gb_install_repo_deps(){
   if [[ -x "$(command -v pnpm -v 2>/dev/null)" ]]; then
     gb_set_node_version
     gb_global_check_install "pm2" "pm2 -v"
+    gb_global_check_install "depcheck" "depcheck --version"
 
     # Check the root directory for node_modules 
     cd $GB_ROOT_DIR

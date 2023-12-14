@@ -1,7 +1,7 @@
 import type { Response } from 'express'
 import type { TBEParamReq } from '@GBE/types'
 
-import { ForwardSubdomainHeader } from '@GCD/constants'
+import { ForwardSubdomainHeader } from '@gobletqa/conductor'
 import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 export const remove = async (req:TBEParamReq, res:Response) => {

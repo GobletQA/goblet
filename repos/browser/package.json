@@ -25,6 +25,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GBB/*,@gobletqa/browser,@GConfigs/*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -38,15 +39,12 @@
     "@gobletqa/logger": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/parkin": "6.5.1",
     "expect": "29.7.0",
     "playwright": "1.40.0"
   },
   "devDependencies": {
     "@ltipton/esdev": "0.2.1",
-    "@types/debug": "4.1.9",
-    "@types/express": "4.17.18",
     "@types/node": "20.9.3",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0"

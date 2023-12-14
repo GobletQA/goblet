@@ -1,6 +1,6 @@
 import { exists } from '@keg-hub/jsutils'
 
-export type TEnvObject = {
+type TEnvObject = {
   [k:string]:string|boolean|number
 }
 

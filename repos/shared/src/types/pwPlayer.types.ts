@@ -9,6 +9,7 @@ import type {
   TParkinRunStepOptsMap,
 } from '@ltipton/parkin'
 import type {
+  Player,
   TBrowser,
   TBrowserPage,
   TBrowserContext,
@@ -16,8 +17,6 @@ import type {
   TBrowserActionOptions,
 } from './pw.types'
 
-// Exported from browser/src/types
-import type { Player } from '@gobletqa/browser'
 
 export type TPlayerEvent = {
   name:string
