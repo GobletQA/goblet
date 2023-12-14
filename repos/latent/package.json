@@ -19,7 +19,8 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:lt",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm build:lt",
     "build:cli": "pnpm tsup-node --config ./configs/tsup.cli.config.ts",
     "build:lt": "pnpm tsup-node --config ./configs/tsup.latent.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",

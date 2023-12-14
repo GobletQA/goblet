@@ -14,12 +14,12 @@ export default defineConfig(async () => {
   
   return {
     clean: true,
-    name: `latent`,
     outDir: outdir,
     sourcemap: true,
     splitting: false,
     entry: [infile],
     format: [`cjs`],
+    name: `latent/cli`,
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),

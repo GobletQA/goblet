@@ -17,8 +17,8 @@ export default defineConfig(async () => {
   await fs.rm(cliOutdir, { recursive: true, force: true })
   
   return {
-    dts:true,
     clean: true,
+    name: `exam/cli`,
     dtsResolve: true,
     splitting: false,
     sourcemap: true,

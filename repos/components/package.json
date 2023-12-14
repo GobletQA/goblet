@@ -13,15 +13,19 @@
   "module": "dist/gobletComponents.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "build": "echo \"No build configured\" && exit 0",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GBC/*,@gobletqa/components\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
-    "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
-    "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
-    "serve": "serve -p 19006 dist",
-    "start": "vite --clearScreen false -c configs/vite.config.ts --force"
+    "format": "pnpm format:pretty && pnpm format:lint",
+    "format:lint": "pnpm lint .",
+    "format:pretty": "pnpm pretty .",
+    "lint": "eslint --color --cache --fix --ignore-path .eslintignore --config ./configs/eslintrc.config.js",
+    "pretty": "prettier --ignore-path .prettierignore --config ./configs/prettier.config.js --write",
+    "test": "echo \"No test specified\" && exit 0",
+    "validate": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "11.11.1",

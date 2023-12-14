@@ -13,6 +13,7 @@ export default defineConfig(async () => {
   await fs.rm(outdir, { recursive: true, force: true })
   
   return {
+    name: `git`,
     clean: true,
     sourcemap: true,
     splitting: false,

@@ -13,12 +13,13 @@ export default defineConfig(async () => {
   await fs.rm(logOutdir, { recursive: true, force: true })
   
   return {
+    name: `logger`,
     clean: true,
+    entry: [logIn],
     sourcemap: true,
     splitting: false,
-    entry: [logIn],
-    outDir: logOutdir,
     format: [`cjs`],
+    outDir: logOutdir,
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),

@@ -14,6 +14,7 @@ export default defineConfig(async () => {
   
   return {
     clean: true,
+    name: `repo`,
     sourcemap: true,
     splitting: false,
     entry: [entry],

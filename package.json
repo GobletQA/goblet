@@ -26,6 +26,7 @@
     "bdi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildDevImgs.sh",
     "bgi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildGobletImgs.sh",
     "build": "pnpm -r build",
+    "build:tsup": "pnpm -r build:tsup",
     "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r ./configs/aliases.js tasks/entry.ts deploy build -- frontend=true",
     "bundle": "node scripts/bundle.js",

@@ -14,16 +14,16 @@ export default defineConfig(async () => {
   
   return {
     clean: true,
-    sourcemap: true,
-    splitting: false,
     entry: [entry],
     outDir: outdir,
+    sourcemap: true,
     format: [`cjs`],
+    splitting: false,
+    name: `workflows`,
     esbuildOptions:(options, context) => {
       options && (
         options.external = [
           ...(options?.external ?? []),
-          `@gobletqa/configs/aliases`,
           ...(Object.keys(packcfg.dependencies) ?? []),
           ...(Object.keys(packcfg.devDependencies) ?? []),
         ]

@@ -15,8 +15,8 @@ export default defineConfig(async () => {
   await fs.rm(examOutdir, { recursive: true, force: true })
   
   return {
-    dts:true,
     clean: true,
+    name: `exam`,
     sourcemap: true,
     splitting: false,
     entry: [examIn],

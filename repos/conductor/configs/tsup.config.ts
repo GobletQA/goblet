@@ -19,6 +19,7 @@ export default defineConfig(async () => {
     entry: [entry],
     outDir: outdir,
     format: [`cjs`],
+    name: `conductor`,
     esbuildOptions:(options, context) => {
       options && (
         options.external = [

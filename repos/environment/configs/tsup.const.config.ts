@@ -19,6 +19,7 @@ export default defineConfig(async () => {
     outDir: constOutdir,
     format: [`cjs`],
     entry: [constIn],
+    name: `environment/constants`,
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),

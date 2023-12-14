@@ -15,10 +15,11 @@ export default defineConfig(async () => {
   return {
     clean: true,
     sourcemap: true,
+    format: [`cjs`],
     splitting: false,
     entry: [stdioIn],
     outDir: stdioOutdir,
-    format: [`cjs`],
+    name: `logger/stdio`,
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),

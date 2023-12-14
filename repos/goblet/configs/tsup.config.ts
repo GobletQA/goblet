@@ -14,6 +14,7 @@ export default defineConfig(async () => {
   
   return {
     clean: true,
+    name: `goblet`,
     sourcemap: true,
     splitting: true,
     entry: [entry],
