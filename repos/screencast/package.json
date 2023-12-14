@@ -68,7 +68,7 @@
     "module-alias": "2.2.3",
     "on-finished": "2.4.1",
     "parse5": "7.1.2",
-    "playwright": "1.40.0",
+    "playwright": "1.40.1",
     "socket.io": "4.7.2"
   },
   "devDependencies": {

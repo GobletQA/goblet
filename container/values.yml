@@ -46,7 +46,7 @@ env:
 
 # ---- Playwright Specific ENVs ---- #
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.40.0
+  PLAYWRIGHT_BROWSERS_VERSION: 1.40.1
   # Add playwright to the browser-in-browser inspector
   PWDEBUG: console
   # Disables the playwright inspector when the page is paused
@@ -66,7 +66,7 @@ env:
   GB_ACT_PORT: ''
   GB_ACT_DEPLOYMENT: goblet-action
   GB_ACT_IMAGE: 'ghcr.io/gobletqa/goblet-action'
-  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.0-focal'
+  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
 
   GOBLET_MOUNT_ROOT: /goblet/repos
 
@@ -108,7 +108,7 @@ env:
   GB_BS_DEPLOYMENT: goblet-base
   GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
   # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
-  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.0-focal'
+  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
   # GB_BS_IMAGE_FROM: ubuntu:focal
 
 

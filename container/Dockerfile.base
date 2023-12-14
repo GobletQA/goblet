@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.0-focal
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.1-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 
@@ -71,6 +71,7 @@ RUN CI=1 pnpm fetch --no-optional --ignore-scripts
 COPY . .
 RUN pnpm add --global jqn && \
     rm -rf /goblet/app/repos/components && \
+    rm -rf /goblet/app/repos/joker && \
     rm -rf /goblet/app/repos/monaco && \
     rm -rf /goblet/app/repos/race && \
     rm -rf /goblet/app/repos/vite && \

@@ -63,7 +63,7 @@ certs
 bundle
 repos/components
 repos/monaco
-repos/resizer
+repos/joker
 repos/race
 repos/traceViewer
 repos/vite
