@@ -6,15 +6,13 @@ import { promises as fs } from 'node:fs'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
-const outdir = path.join(rootDir, `dist/envs`)
+const outdir = path.join(rootDir, `dist`)
 const entry = path.join(rootDir, `src/index.ts`)
-
 
 export default defineConfig(async () => {
   await fs.rm(outdir, { recursive: true, force: true })
   
   return {
-    dts: true,
     clean: true,
     sourcemap: true,
     splitting: false,
@@ -27,11 +25,15 @@ export default defineConfig(async () => {
           ...(options?.external ?? []),
           ...(Object.keys(packcfg.dependencies) ?? []),
           ...(Object.keys(packcfg.devDependencies) ?? []),
+          // @ts-ignore
+          ...(Object.keys(packcfg.peerDependencies) ?? []),
+          // @ts-ignore
+          ...(Object.keys(packcfg.optionalDependencies) ?? []),
         ]
       )
     },
     async onSuccess() {
-      console.log(`Module "@gobletqa/environment" built successfully`)
+      console.log(`Module "@gobletqa/conductor" built successfully`)
     },
   }
 })

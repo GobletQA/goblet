@@ -5,7 +5,7 @@ import type {
   TGBWorldCfg,
   TGobletPWConfig,
   TGScreencastConfig,
-} from '../../../shared/src/types'
+} from './shared.types'
 
 export type TRecorderOpts = {
   locator: string

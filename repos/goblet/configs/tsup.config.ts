@@ -6,29 +6,20 @@ import { promises as fs } from 'node:fs'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
-const binDir = path.join(rootDir, `src/bin`)
-const cliOutdir = path.join(rootDir, `dist/cli`)
-const cliIn = path.join(rootDir, `src/bin/index.ts`)
-
-const workerEntry = path.join(binDir, `worker.ts`)
-const workerPipeline = path.join(binDir, `workerPipeline.ts`)
+const outdir = path.join(rootDir, `dist`)
+const entry = path.join(rootDir, `src/index.ts`)
 
 export default defineConfig(async () => {
-  await fs.rm(cliOutdir, { recursive: true, force: true })
+  await fs.rm(outdir, { recursive: true, force: true })
   
   return {
-    dts:true,
+    dts: true,
     clean: true,
-    dtsResolve: true,
-    splitting: false,
     sourcemap: true,
-    outDir: cliOutdir,
+    splitting: true,
+    entry: [entry],
+    outDir: outdir,
     format: [`cjs`, `esm`],
-    entry: [
-      cliIn,
-      workerEntry,
-      workerPipeline
-    ],
     esbuildOptions:(options, context) => {
       options.external = [
         ...(options?.external ?? []),
@@ -37,7 +28,7 @@ export default defineConfig(async () => {
       ]
     },
     async onSuccess() {
-      console.log(`Module "@gobletqa/exam/cli" built successfully`)
+      console.log(`Module "@gobletqa/goblet" built successfully`)
     },
   }
 })

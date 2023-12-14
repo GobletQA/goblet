@@ -23,8 +23,8 @@
   "scripts": {
     "build": "pnpm build:tsup",
     "build:tsup": "pnpm build:envs && pnpm build:const",
-    "build:envs": "pnpm tsup --config ./configs/tsup.envs.config.ts",
-    "build:const": "pnpm tsup --config ./configs/tsup.const.config.ts",
+    "build:envs": "pnpm tsup-node --config ./configs/tsup.envs.config.ts",
+    "build:const": "pnpm tsup-node --config ./configs/tsup.const.config.ts",
     "clean": "pnpm clean:build; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -41,7 +41,6 @@
     "@keg-hub/jsutils": "9.10.0"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.38.3",
     "tsup": "8.0.1"
   }
 }

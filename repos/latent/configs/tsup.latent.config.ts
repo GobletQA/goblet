@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'tsup'
+import packcfg from '../package.json'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
 
@@ -20,8 +21,14 @@ export default defineConfig(async () => {
     entry: [infile],
     outDir: outdir,
     format: [`cjs`, `esm`],
+    esbuildOptions:(options, context) => {
+      options.external = [
+        ...(options?.external ?? []),
+        ...(Object.keys(packcfg.dependencies) ?? []),
+        ...(Object.keys(packcfg.devDependencies) ?? []),
+      ]
+    },
     async onSuccess() {
-      // await fs.rm(path.join(outdir, `Users`), { recursive: true, force: true })
       console.log(`Module "@gobletqa/latent" built successfully`)
     },
   }

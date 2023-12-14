@@ -3,9 +3,9 @@ import type {
   TLoopLoad,
   TSearchFile,
   TRequiredFun,
+  TLoadedFunResp,
   TGobletConfig,
   TGobletLoader,
-  TLoadedFunResp,
   TGobletCfgLoaderResp
 } from '../types'
 

@@ -1,8 +1,7 @@
 import type { RepoWatcher } from '../repoWatcher'
 import type { EProvider } from './shared.types'
 
-// TODO: fix this - is a duplicate of the type in repo/types
-type TGitData = {
+export type TGitData = {
   name: string
   local:string
   remote:string
@@ -15,13 +14,13 @@ type TGitData = {
   branchFrom?:boolean
 }
 
-
 export type TGitOpts = TGitData & {
   log?:boolean
   token: string
   email?: string
   headers?:Record<string, string>
 }
+
 
 export type TGitUser = {
   gitUser?: string
@@ -70,4 +69,19 @@ export type TGitCreateRepoOpts = Partial<TGitCreateRepo> & {
   name: string
   token:string
   description?: string
+}
+
+export type TRepoGitState = {
+  repo: boolean
+  branch: boolean
+  mounted: boolean
+}
+
+
+export type TSaveMetaData = {
+  message?: string
+  gitAdd?:boolean
+  addArgs?:string[]
+  locations?:string|string[]
+  [key: string]: any
 }

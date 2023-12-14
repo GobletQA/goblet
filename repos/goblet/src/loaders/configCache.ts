@@ -1,4 +1,4 @@
-import type { TGobletConfig, TGobletCfgLoaderResp } from '../types'
+import type { TGobletCfgLoaderResp } from '../types'
 import { createRequire } from 'module'
 
 let __RelativeRequire:typeof require

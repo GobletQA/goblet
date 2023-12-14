@@ -1,7 +1,7 @@
 import type { Repo } from './repo.types'
 import type { Express, Request } from 'express'
 import type { TTokenUser } from './user.types'
-import type { TDefGobletConfig } from '@gobletqa/goblet'
+import type { TDefGobletConfig } from './goblet.types'
 
 export type TParsedQs = { [key: string]: undefined | string | string[] | TParsedQs | TParsedQs[] }
 

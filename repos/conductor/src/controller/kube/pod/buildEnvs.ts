@@ -31,7 +31,7 @@ export const buildEnvsFrom = (
         configMap,
         prefix=``,
         configMapRef,
-      } = (fromObj || {} as TEnvFrom)
+      } = ((fromObj || {}) as TEnvFrom)
       const hidden = secretRef || secret
       const config = configMapRef || configMap
 

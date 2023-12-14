@@ -8,8 +8,6 @@
     "src",
     "configs",
     "scripts",
-    "../shared",
-    "../testUtils",
-    "../workflows"
+    "../conductor"
   ]
 }

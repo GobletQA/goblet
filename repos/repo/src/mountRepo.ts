@@ -1,4 +1,5 @@
-import type { TGitOpts, TSaveMetaData, TRepoWatchCb } from '@GRP/types'
+import type { TSaveMetaData, TRepoWatchCb } from '@gobletqa/git'
+import type { TGitOpts } from '@GRP/types'
 
 import { Logger } from '@gobletqa/logger'
 import { git, RepoWatcher } from '@gobletqa/git'

@@ -1,1 +1,1 @@
-export * from '@gobletqa/logger/types/logger.types'
+export * from '../../../logger/src/types/logger.types'

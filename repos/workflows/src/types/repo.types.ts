@@ -35,15 +35,6 @@ export type TGraphApiResp<T> = {
   pageInfo?: TGraphPageInfo
 }
 
-
-export type TSaveMetaData = {
-  message?: string
-  gitAdd?:boolean
-  addArgs?:string[]
-  locations?:string|string[]
-  [key: string]: any
-}
-
 export type TRepoMeta = {
   id:string
   url: string
@@ -61,12 +52,6 @@ export type TCreateRepo = {
   branchFrom?:boolean
   description?:string
   organization?:string
-}
-
-export type TRepoGitState = {
-  repo: boolean
-  branch: boolean
-  mounted: boolean
 }
 
 

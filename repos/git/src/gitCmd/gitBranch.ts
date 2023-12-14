@@ -7,7 +7,6 @@ import type {
 import type {
   TGitOpts,
   TRunCmdOpts,
-  TLimboCmdResp,
 } from '@GGT/types'
 
 import { git, gitCmd } from './gitCmd'

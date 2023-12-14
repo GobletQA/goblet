@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { ENVS } from '@gobletqa/environment/envs'
+import { ENVS } from '@gobletqa/environment'
 
 type TTokenProps = {
   ref?:string

@@ -1,8 +1,8 @@
 import type { TGobletConfig } from '@GSH/types'
 
 import path from 'path'
+import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
-import { ENVS } from '@gobletqa/environment/envs'
 import { injectKeyValues } from '@gobletqa/logger'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { EFileType, Latent } from '@gobletqa/latent'

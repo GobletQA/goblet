@@ -18,9 +18,8 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:docker",
-    "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
-    "cd:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm tsup-node --config ./configs/tsup.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -29,7 +28,7 @@
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "types": "tsc --emitDeclarationOnly --outDir dist",
+    "types": "tsc --emitDeclarationOnly",
     "validate": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -50,11 +49,9 @@
     "http-proxy-middleware": "2.0.6"
   },
   "devDependencies": {
-    "@ltipton/esdev": "0.2.1",
     "@types/dockerode": "3.3.9",
     "@types/express": "4.17.18",
     "@types/node": "20.9.3",
-    "esbuild": "0.19.7",
-    "esbuild-register": "3.5.0"
+    "tsup": "8.0.1"
   }
 }

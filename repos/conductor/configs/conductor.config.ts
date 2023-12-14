@@ -3,6 +3,7 @@ import type { TDockerConfig, TConductorConfig, TRouteMeta } from '@GCD/types'
 
 import { inDocker } from '@keg-hub/cli-utils'
 import { toNum } from '@keg-hub/jsutils/toNum'
+import { ENVS } from '@gobletqa/environment'
 import { getDindHost } from '@GCD/utils/getDindHost'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { conductorHeaders } from './conductor.headers.config'
@@ -32,7 +33,7 @@ const {
   GB_DD_API_PROXY_PORT,
 
   // Salting the user hash string. Not intended to be secure, just anonymous
-} = process.env
+} = ENVS
 
 /**
  * Helper to generate the options for connecting to the controller (i.e. docker)

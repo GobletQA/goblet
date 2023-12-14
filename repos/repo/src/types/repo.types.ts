@@ -1,6 +1,6 @@
 import type { Repo } from '../repo'
+import type { TGitData } from '@gobletqa/git'
 import type {
-  EProvider,
   TRootPaths,
   TFileTypes,
   TGBWorldCfg,
@@ -35,18 +35,7 @@ export type TRepoPaths = {
   downloadsDir?:string
 }
 
-export type TGitData = {
-  name: string
-  local:string
-  remote:string
-  branch:string
-  username:string
-  provider:EProvider
-  repoId?:string
-  repoName?:string
-  newBranch?:string
-  branchFrom?:boolean
-}
+
 
 export type TRepoOpts = {
   name:string

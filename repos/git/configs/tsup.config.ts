@@ -6,29 +6,30 @@ import { promises as fs } from 'node:fs'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
-const constOutdir = path.join(rootDir, `dist/constants`)
-const constIn = path.join(rootDir, `src/constants/index.ts`)
+const outdir = path.join(rootDir, `dist`)
+const entry = path.join(rootDir, `src/index.ts`)
 
 export default defineConfig(async () => {
-  await fs.rm(constOutdir, { recursive: true, force: true })
+  await fs.rm(outdir, { recursive: true, force: true })
   
   return {
-    dts: true,
     clean: true,
     sourcemap: true,
     splitting: false,
-    outDir: constOutdir,
+    entry: [entry],
+    outDir: outdir,
     format: [`cjs`, `esm`],
-    entry: [constIn],
     esbuildOptions:(options, context) => {
-      options.external = [
-        ...(options?.external ?? []),
-        ...(Object.keys(packcfg.dependencies) ?? []),
-        ...(Object.keys(packcfg.devDependencies) ?? []),
-      ]
+      options && (
+        options.external = [
+          ...(options?.external ?? []),
+          ...(Object.keys(packcfg.dependencies) ?? []),
+          ...(Object.keys(packcfg.devDependencies) ?? []),
+        ]
+      )
     },
     async onSuccess() {
-      console.log(`Module "@gobletqa/environment/constants" built successfully`)
+      console.log(`Module "@gobletqa/git" built successfully`)
     },
   }
 })

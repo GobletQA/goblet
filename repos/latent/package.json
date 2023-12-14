@@ -7,9 +7,6 @@
   "license": "ISC",
   "keywords": [],
   "private": true,
-  "bin": {
-    "latent": ".bin/index.js"
-  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
@@ -23,8 +20,8 @@
   },
   "scripts": {
     "build": "pnpm build:lt",
-    "build:cli": "pnpm tsup --config ./configs/tsup.cli.config.ts",
-    "build:lt": "pnpm tsup --config ./configs/tsup.latent.config.ts",
+    "build:cli": "pnpm tsup-node --config ./configs/tsup.cli.config.ts",
+    "build:lt": "pnpm tsup-node --config ./configs/tsup.latent.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",

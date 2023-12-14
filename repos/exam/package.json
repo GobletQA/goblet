@@ -35,8 +35,8 @@
   "scripts": {
     "build": "pnpm build:tsup",
     "build:tsup": "pnpm build:ex && pnpm build:cli",
-    "build:ex": "pnpm tsup --config ./configs/tsup.ex.config.ts",
-    "build:cli": "pnpm tsup --config ./configs/tsup.cli.config.ts",
+    "build:ex": "pnpm tsup-node --config ./configs/tsup.ex.config.ts",
+    "build:cli": "pnpm tsup-node --config ./configs/tsup.cli.config.ts",
     "ex:dev": "EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
