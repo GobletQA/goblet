@@ -1,10 +1,10 @@
-import type { TPodContainer } from '../../../types'
+import type { TPodContainer } from '@gobletqa/shared/types'
 import type { V1Container } from '@kubernetes/client-node'
 
 import { addIfExists } from './helpers'
 import { buildPorts } from './buildPorts'
-import { EImgPullPolicy } from '../../../types'
 import { buildEnvs, buildEnvsFrom } from './buildEnvs'
+import { EImgPullPolicy } from '@gobletqa/shared/enums'
 
 export const buildContainers = (
   opts:Record<'containers', Record<string, TPodContainer>>

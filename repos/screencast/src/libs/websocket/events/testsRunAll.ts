@@ -6,8 +6,8 @@ import type {
 } from '@GSC/types'
 
 import path from 'path'
-import { EE } from '@gobletqa/shared'
 import { Logger } from '@GSC/utils/logger'
+import { EE } from '@gobletqa/shared/utils'
 import { ENVS } from '@gobletqa/environment'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { TestFromUI } from '@GSC/libs/testsFromUI/TestFromUI'

@@ -1,8 +1,7 @@
 import type { Response, Request } from 'express'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
-import { renameGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
+
+import { renameGobletFile } from '@gobletqa/shared/fs'
+import { apiRes, AppRouter, Exception, } from '@gobletqa/shared/api'
 
 /**
  * Saves a file to a location within the docker mounted test root folder

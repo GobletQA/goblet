@@ -315,6 +315,7 @@ module.exports = {
           '/repos/exam/dist',
           '/repos/repo/dist',
           '/repos/git/dist',
+          '/repos/latent/dist',
           '/repos/logger/dist',
           '/repos/goblet/dist',
           '/repos/shared/dist',

@@ -1,2 +1,2 @@
-require('@gobletqa/configs/aliases.config').registerAliases()
-module.exports = require('./src')
+const Latent = require('./dist')
+module.exports = {...Latent}

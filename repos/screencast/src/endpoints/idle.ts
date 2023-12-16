@@ -4,8 +4,7 @@ import type { SocketManager } from '@GSC/libs/websocket/manager'
 
 import { toNum } from '@keg-hub/jsutils'
 import { WSIdleStatus } from '@GSC/constants'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 type TIdleSCParams = {
   counter?:string

@@ -2,7 +2,7 @@ import type { TBuildBddEnvs } from '@GTU/Types'
 import type { SpawnOptionsWithoutStdio } from 'child_process'
 
 import { buildPWEnvs } from './buildPWEnvs'
-import { addEnv } from '@gobletqa/shared'
+import { addEnv } from '@gobletqa/shared/utils'
 import { getBrowserType } from '@gobletqa/browser'
 import { EBrowserType, ETestType, EBrowserName } from '@GTU/Types'
 

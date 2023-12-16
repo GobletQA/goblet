@@ -1,16 +1,19 @@
+import type { TRepoMountStatus } from '@gobletqa/repo'
 import type {
   TGitOpts,
   TWFGobletConfig,
   TRepoGraphRepos,
   TRepoFromCreate,
-  TRepoMountStatus,
   TRepoFromWorkflow,
 } from '@GWF/types'
 
-
-import { definitions } from '@gobletqa/shared'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'
+
+/**
+ * Todo: look into dynamically loading this, so it's only loaded on screencast repo, not backend repo
+ */
+import { removeCachedDefs } from '@gobletqa/shared/fs'
 
 import { wfcache, WfCache } from './wfCache'
 import { Repo, resetCachedWorld } from '@gobletqa/repo'
@@ -173,7 +176,7 @@ export class Workflows {
     resetGobletConfig()
     resetCachedWorld(username)
     resetInjectedLogs()
-    definitions?.removeCachedDefs?.()
+    removeCachedDefs?.()
     this.cache.remove(username)
 
     return await disconnectGoblet({

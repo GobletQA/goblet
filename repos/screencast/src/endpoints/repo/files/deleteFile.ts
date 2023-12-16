@@ -1,8 +1,7 @@
 import type { Response, Request } from 'express'
 
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { deleteGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
+import { deleteGobletFile } from '@gobletqa/shared/fs'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Deletes an file located within the docker mounted test root folder

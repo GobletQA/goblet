@@ -3,8 +3,8 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoGraphRepos } from '@GBE/types'
 
 import { Workflows } from '@gobletqa/workflows'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
+
 
 /**
  * **IMPORTANT** - Only repo endpoints that DO NOT interact with repo content are allowed in backend

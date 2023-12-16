@@ -1,4 +1,4 @@
-import type { TGobletConfig } from '@gobletqa/shared'
+import type { TGobletConfig } from '@gobletqa/shared/types'
 import type {
   TGitData,
   TWFArgs,

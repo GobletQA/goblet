@@ -1,4 +1,6 @@
-import type { TPodMeta, TPodMetaOpts } from '../../../types'
+import type { TPodMeta } from '@GCD/types'
+import type { TPodMetaOpts } from '@gobletqa/shared/types'
+
 import { addIfExists } from './helpers'
 
 export const buildMeta = (opts:Record<'meta', TPodMetaOpts>):TPodMeta => {

@@ -4,8 +4,8 @@
 // import type { Response, Request } from 'express'
 // import { isStr } from '@keg-hub/jsutils/isStr'
 // import { limbo } from '@keg-hub/jsutils/limbo'
-// import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-// import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+// import { apiRes } from '@gobletqa/shared/api'
+// import { AppRouter } from '@gobletqa/shared/api'
 
 // /**
 //  * Sends a prompt to Joker AI

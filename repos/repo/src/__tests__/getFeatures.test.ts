@@ -5,7 +5,7 @@ const setMox = jest.setMock.bind(jest)
 
 const featuresMock = {}
 const loadFeaturesMock = jest.fn(() => (featuresMock))
-setMox('@gobletqa/shared/libs/features/features', {
+setMox('@gobletqa/shared/fs', {
   loadFeatures: loadFeaturesMock
 })
 

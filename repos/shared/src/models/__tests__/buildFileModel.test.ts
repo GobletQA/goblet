@@ -1,40 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import mime from 'mime'
-import {Repo} from '@gobletqa/repo/repo'
-import { __getLastModified, buildFileModel } from '../buildFileModel'
+import { Repo } from '@gobletqa/repo'
+import { buildFileModel } from '../buildFileModel'
 
 jest.mock('fs')
-jest.mock('mime')
-
-describe('__getLastModified', () => {
-  beforeEach(() => {
-    jest.resetAllMocks()
-  })
-
-  it('should return the mtimeMs when metaData exists', async () => {
-    const filePath = 'path/to/file.txt'
-    const statResult = { mtimeMs: 1625184000000 }
-    // @ts-ignore
-    fs.stat.mockImplementation((_, cb) => cb(null, statResult))
-
-    const result = await __getLastModified(filePath)
-
-    expect(fs.stat).toHaveBeenCalledWith(filePath, expect.any(Function))
-    expect(result).toEqual(statResult.mtimeMs)
-  })
-
-  it('should return the current time when metaData is null', async () => {
-    const filePath = 'path/to/non-existing-file.txt'
-    // @ts-ignore
-    fs.stat.mockImplementation((_, cb) => cb(new Error('File not found')))
-
-    const result = await __getLastModified(filePath)
-
-    expect(fs.stat).toHaveBeenCalledWith(filePath, expect.any(Function))
-    expect(result).toEqual(expect.any(Number))
-  })
-})
 
 describe('buildFileModel', () => {
   beforeEach(() => {
@@ -61,20 +30,17 @@ describe('buildFileModel', () => {
       location: '/path/to/file.txt',
       mime: 'text/plain',
       ext: 'txt',
-      lastModified: expect.any(Number),
       relative: '/path/to/file.txt',
     }
     // @ts-ignore
     mime.types = { txt: 'text/plain' }
     path.extname = jest.fn(() => '.txt')
-    // @ts-ignore
-    __getLastModified.mockResolvedValue(expectedFileModel.lastModified)
 
     const result = await buildFileModel(data, mockRepo)
 
     expect(result).toEqual(expectedFileModel)
     expect(path.extname).toHaveBeenCalledWith(data.location)
-    expect(__getLastModified).toHaveBeenCalledWith(data.location)
+
   })
 
   it('should build a fileModel for a folder', async () => {
@@ -90,19 +56,15 @@ describe('buildFileModel', () => {
       location: '/path/to/folder/',
       mime: 'text/plain',
       ext: '',
-      lastModified: expect.any(Number),
       relative: '/path/to/folder/',
     }
     // @ts-ignore
     mime.types = { '': 'text/plain' }
     path.extname = jest.fn(() => '')
-    // @ts-ignore
-    __getLastModified.mockResolvedValue(expectedFileModel.lastModified)
 
     const result = await buildFileModel(data, mockRepo)
 
     expect(result).toEqual(expectedFileModel)
     expect(path.extname).toHaveBeenCalledWith(data.location)
-    expect(__getLastModified).toHaveBeenCalledWith(data.location)
   })
 })

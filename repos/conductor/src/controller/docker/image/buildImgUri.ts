@@ -1,6 +1,7 @@
+import type { TImgConfig } from '@gobletqa/shared/types'
+
 import path from 'path'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
-import { TImgConfig } from '@GCD/types'
 
 export const buildImgUri = (image:TImgConfig, withKeys?:string[]) => {
   const hasKeys = Boolean(withKeys && withKeys.length)

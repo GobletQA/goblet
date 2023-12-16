@@ -4,8 +4,7 @@ import type { TRepoContent } from '@gobletqa/shared/types'
 
 import { Workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 
 export type TConnectBody = {

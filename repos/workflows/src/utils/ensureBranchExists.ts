@@ -1,4 +1,5 @@
-import type { GitApi, TGitOpts } from '@GRP/types'
+import type { GitApi } from '@GWF/types'
+import type { TGitOpts } from '@gobletqa/git'
 
 import { Logger } from '@gobletqa/logger'
 

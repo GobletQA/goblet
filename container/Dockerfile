@@ -32,7 +32,6 @@ RUN mkdir -p /etc/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/lib/apt/lists.d/*
 
-COPY pnpm-workspace.yaml ./
 COPY repos/devtools/package.json repos/devtools/
 COPY configs/package.json configs/
 COPY repos/conductor/package.json repos/conductor/

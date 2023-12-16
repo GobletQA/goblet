@@ -1,21 +1,7 @@
 import type { Express } from 'express'
 
-import fs from 'node:fs'
-import path from 'node:path'
 import { getApp } from '@GSH/api/express/app'
-import { ENVS } from '@gobletqa/environment'
 import { rateLimit } from 'express-rate-limit'
-import { aliases } from '@gobletqa/configs/aliases.config'
-
-if(!process.env.EXAM_ENV){
-  /** Path to the logs directory */
-  let logDir = aliases[`@GLogs`]
-  if(!logDir && ENVS.PW_DEBUG_FILE)
-    logDir = path.dirname(ENVS.PW_DEBUG_FILE)
-
-  /** Ensure the logs directory exists */
-  if(logDir) !fs.existsSync(logDir) && fs.mkdirSync(logDir)
-}
 
 
 /**

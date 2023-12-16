@@ -1,14 +1,12 @@
 
+import type { Repo } from '@gobletqa/repo'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type {
   TBrowser,
   TBrowserPage,
   TBrowserContext,
   TBrowserActionOptions,
-} from '@gobletqa/shared'
-
-import type { Repo } from '@gobletqa/repo'
-
+} from '@gobletqa/shared/types'
 import type {
   TExamEventCB,
   TExamCancelCB,

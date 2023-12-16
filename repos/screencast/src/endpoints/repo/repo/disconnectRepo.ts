@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { Workflows } from '@gobletqa/workflows'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Disconnects a connected repo

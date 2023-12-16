@@ -4,7 +4,6 @@ import type {
   TRootPaths,
   TFileTypes,
   TGBWorldCfg,
-  TRepoMountStatus,
   TDefinitionFileModelList,
 } from './shared.types'
 
@@ -36,7 +35,6 @@ export type TRepoPaths = {
 }
 
 
-
 export type TRepoOpts = {
   name:string
   $ref?:string
@@ -57,6 +55,14 @@ export type TRepoFromCreate = {
   branchFrom?:boolean
   description?:string
   organization?:string
+}
+
+export type TRepoMountStatus = {
+  mode?: string
+  setup: boolean
+  status?: string
+  message?:string
+  mounted?: boolean
 }
 
 

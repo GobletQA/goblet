@@ -1,5 +1,5 @@
 // @ts-ignore
-import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
+import { loadEnvs } from '@gobletqa/shared/utils'
 
 loadEnvs({
   force: true,

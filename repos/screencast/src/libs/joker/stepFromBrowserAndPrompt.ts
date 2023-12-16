@@ -12,7 +12,7 @@
 // import { ProcessHtml } from './html/processHtml'
 // import { GBrowser, scrapePage } from '@gobletqa/browser'
 // import { capitalize } from '@keg-hub/jsutils/capitalize'
-// import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
+// import { loadDefinitions } from '@gobletqa/shared/fs'
 
 // const jokerMessage = {
 //   id: 'chatcmpl-37PnXG4HB33nuupEYk2tZQ',

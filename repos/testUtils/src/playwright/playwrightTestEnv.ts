@@ -1,8 +1,8 @@
+import type { TGobletTestOpts } from '@gobletqa/shared/types'
 import type {
   TBrowser,
   TBrowserContext,
 } from '@GTU/Types'
-import type { TGobletTestOpts } from '@gobletqa/shared/types'
 
 import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'

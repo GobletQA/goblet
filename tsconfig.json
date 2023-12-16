@@ -109,8 +109,6 @@
       "@GRP": ["repos/repo/src"],
       "@GRP/*": ["repos/repo/src/*"],
 
-      
-
       "@GSH/libs": ["repos/shared/src/libs"],
       "@GSH/libs/*": ["repos/shared/src/libs/*"],
       "@GSH/templates": ["repos/shared/src/templates"],
@@ -161,11 +159,6 @@
       "@GWF": ["repos/workflows/src"],
       "@GWF/*": ["repos/workflows/src/*"],
 
-      "@GLogs": ["logs"],
-      "@GLogs/*": ["logs/*"],
-      "@GTasks": ["tasks"],
-      "@GTasks/*": ["tasks/*"],
-      "@GException": ["repos/shared/src/exceptions/Exception"],
       "@GEnvironment": ["repos/shared/src/environment/environment"],
       "@GEnvironment/values": ["repos/shared/src/environment/values"],
       "@GEnvironment/secrets": ["repos/shared/src/environment/secrets"],
@@ -215,8 +208,6 @@
       "@gobletqa/screencast": [ "repos/screencast/src" ],
       "@gobletqa/screencast/*": [ "repos/screencast/src/*" ],
 
-      "@gobletqa/shared/utils/loadEnvs": ["repos/shared/src/utils/loadEnvs"],
-      "@gobletqa/shared/utils/getOrigin": ["repos/shared/src/utils/getOrigin"],
       "@gobletqa/shared": [ "repos/shared/src" ],
       "@gobletqa/shared/*": [ "repos/shared/src/*" ],
 
@@ -225,6 +216,10 @@
 
       "@gobletqa/workflows": ["repos/workflows/src"],
       "@gobletqa/workflows/*": ["repos/workflows/src/*"],
+
+      "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
+      "@gobletqa/root": ["./*"],
+
       "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
       "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
     }

@@ -1,5 +1,5 @@
 import type { Controller } from '../controller'
-import type { TContainerMap } from '../types'
+import type { TContainerMap } from '@gobletqa/shared/types'
 
 import { generateRoutes } from './generators'
 import { ConductorUserHashLabel } from '../constants'

@@ -8,8 +8,8 @@ import type {
 } from '@ltipton/parkin'
 
 export enum EStepVariant {
-  regex = 'regex',
-  expression = 'expression'
+  regex = `regex`,
+  expression = `expression`
 }
 
 export type TStepToken = {

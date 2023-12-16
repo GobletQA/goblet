@@ -1,4 +1,4 @@
-import { TImgConfig, TImgRef } from '../types'
+import { TImgConfig, TImgRef } from '@gobletqa/shared/types'
 
 export const checkImgConfig = (img:TImgConfig, imgRef?:TImgRef) => {
   const containerProps = [`ports`]

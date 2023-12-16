@@ -5,8 +5,9 @@ const fs = require('fs')
 const path = require('path')
 const { aliases } = require('./aliases.config')
 
-/** Path to the logs directory */
-const logDir = aliases[`@GLogs`]
+
+const logDir = path.join(aliases.GobletRoot, `logs`)
+
 /** Ensure the logs directory exists */
 !fs.existsSync(logDir) && fs.mkdirSync(logDir)
 

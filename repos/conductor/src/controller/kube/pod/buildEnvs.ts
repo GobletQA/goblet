@@ -1,5 +1,5 @@
 import type { V1EnvVar, V1EnvFromSource } from '@kubernetes/client-node'
-import type { TPodContainer, TEnvRefConfig, TEnvFrom } from '../../../types'
+import type { TPodContainer, TEnvRefConfig, TEnvFrom } from '@gobletqa/shared/types'
 
 import { addIfExists } from './helpers'
 import { isStr } from '@keg-hub/jsutils/isStr'

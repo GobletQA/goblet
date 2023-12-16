@@ -1,7 +1,7 @@
 import type { TBuildPWEnvs } from '@GTU/Types'
 
-import { addEnv } from '@gobletqa/shared'
 import { ENVS } from '@gobletqa/environment'
+import { addEnv } from '@gobletqa/shared/utils'
 
 type TEnvObject = {
   [k:string]:string|boolean|number

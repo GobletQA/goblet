@@ -94,11 +94,3 @@ export type TRepoFromWorkflow = {
   newBranch?:string
   branchFrom?:boolean
 }
-
-export type TRepoMountStatus = {
-  mode?: string
-  setup: boolean
-  status?: string
-  message?:string
-  mounted?: boolean
-}

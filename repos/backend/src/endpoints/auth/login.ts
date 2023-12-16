@@ -1,8 +1,7 @@
 import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { resError } from '@gobletqa/shared/api/express/resError'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
+import { apiRes, resError, AppRouter } from '@gobletqa/shared/api'
 import { validateRefreshToken } from '@GBE/utils/validateRefreshToken'
 
 /**

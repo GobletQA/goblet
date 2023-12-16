@@ -1,6 +1,22 @@
 const path = require('path')
 const { inDocker } = require('@keg-hub/jsutils/node/inDocker')
 
+const subRepos = [
+  `backend`,
+  `conductor`,
+  `environment`,
+  `exam`,
+  `git`,
+  `goblet`,
+  `latent`,
+  `logger`,
+  `repo`,
+  `screencast`,
+  `shared`,
+  `testUtils`,
+  `workflows`,
+]
+
 const resolveRoot = () => {
 
   if(inDocker()) return `/goblet/app`
@@ -21,6 +37,9 @@ const resolveRoot = () => {
         ? path.join(cwd.split(`/dist/`).shift(), `dist`)
         : __dirname
   }
+
+  const found = subRepos.find(name => cwd.includes(`/repos/${name}`))
+  if(found) return path.join(cwd.split(`/repos/${found}`).shift())
 
   // Check if there's a /repos in the path, and take the parent folder
   return cwd.includes(`/repos/`)

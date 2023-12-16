@@ -7,8 +7,7 @@ import { getKindHost } from '@gobletqa/conductor'
 import { getDindHost } from '@gobletqa/conductor'
 import { conductorConfig } from './conductor.config'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
-import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { generateOrigins } from '@gobletqa/shared/api/origin/generateOrigins'
+import { loadEnvs, generateOrigins } from '@gobletqa/shared/api'
 
 const nodeEnv = ENVS.NODE_ENV || `local`
 loadEnvs({

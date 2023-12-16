@@ -3,10 +3,9 @@ import type {
   THostPorts,
   TContainerMap,
   TContainerInspect,
-} from '../../../types'
+} from '@gobletqa/shared/types'
 import type { Docker } from '../docker'
 import { resolveHost } from './resolveHost'
-
 
 export const buildPorts = (ports:THostPorts):TPortsMap => {
   return Object.entries(ports).reduce((acc, [cPortProto, hostData]) => {

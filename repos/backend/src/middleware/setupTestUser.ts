@@ -1,8 +1,7 @@
 import type { Request as JWTRequest } from 'express-jwt'
 import type { Express, Response, NextFunction } from 'express'
 
-import { getApp } from '@gobletqa/shared/api/express/app'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { getApp, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Adds a fake auth user to the request

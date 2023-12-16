@@ -1,12 +1,12 @@
 import type { IncomingMessage } from 'http'
 import type { Request, Response, Router } from 'express'
-import type { TProxyConfig } from '@GCD/types'
+import type { TProxyConfig } from '@gobletqa/shared/types'
 
 import { createProxy } from './createProxy'
+import { getOrigin } from '@gobletqa/shared/api'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
-import { getOrigin } from '@gobletqa/shared/api/origin/getOrigin'
 
 import {
   onProxyError,
@@ -14,7 +14,6 @@ import {
   mapResponseHeaders,
   addAllowOriginHeader,
 } from './proxyHelpers'
-
 
 
 const ensureHeaders = (headers:Record<string, string>) => {

@@ -1,9 +1,10 @@
 import type { Docker } from '../docker'
+import type{ TImgConfig } from '@gobletqa/shared/types'
+
 import { Logger } from '../../../utils/logger'
 import { wait } from '@keg-hub/jsutils/wait'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
-import { TImgConfig } from '@GCD/types'
 import { ContainerCreateOptions, Container, ContainerInspectInfo } from 'dockerode'
 
 /**

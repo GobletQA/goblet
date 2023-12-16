@@ -1,16 +1,15 @@
 const path = require('path')
 const moduleAlias = require('module-alias')
+const { GobletRoot } = require('./gobletRoot')
 const { get } = require('@keg-hub/jsutils/get')
 const { SUB_REPOS } = require('./paths.config')
-const { GobletRoot } = require('../gobletRoot')
 const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
 
+const isProd = process.env.NODE_ENV === `production`
 const ignoreRepos = [
-  `ADMIN_PATH`,
   `EXAMPLE_PATH`,
   `REPOS_PATH`,
   `DEVSPACE_PATH`,
-  `SERVERLESS_PATH`,
   `TRACE_VIEWER_PATH`
 ]
 
@@ -55,9 +54,9 @@ const addRepoAliases = (roots) => {
 
     // If no data is returned, then try to load paths from tsconfig.json
     // Add true as last argument to see any errors when loading the file
-    const tsConfResp = requireFile(location, `tsconfig.json`, true)
+    const tsConfResp = requireFile(location, `tsconfig.json`, !isProd)
 
-    if(!tsConfResp){
+    if(!tsConfResp && !isProd){
       console.log(`[Alias Warning] Could not find tsconfig.json at path ${location}`)
       return acc
     }

@@ -1,11 +1,10 @@
 import type { Response, Request } from 'express'
-import type { TBrowserDebuggerCfg } from '@gobletqa/shared'
+import type { TBrowserDebuggerCfg } from '@gobletqa/shared/types'
 
 import { ENVS } from '@gobletqa/environment'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export type TDebuggerParams = {

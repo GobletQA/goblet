@@ -2,7 +2,7 @@ import type { TBuildTestArgs } from '@GTU/Types'
 
 import { ETestType } from '@GTU/Types'
 import { exists, uniqArr } from '@keg-hub/jsutils'
-import { addParam, addFlag } from '@gobletqa/shared/utils/cmdHelpers'
+import { addParam, addFlag } from '@gobletqa/shared/utils'
 
 
 const buildTestMatch = (

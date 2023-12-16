@@ -1,4 +1,14 @@
 import type { Conductor } from '@GCD/conductor'
+import type { TGenRoute, TGenRoutes } from '@GCD/types'
+import type {
+  TPort,
+  TPortsMap,
+  TUserHash,
+  TRouteMeta,
+  TProxyRoute,
+  TPublicUrls,
+} from '@gobletqa/shared/types'
+
 import {
   ForwardHostHeader,
   ForwardPortHeader,
@@ -6,17 +16,6 @@ import {
   ForwardRouteHeader,
   ForwardSubdomainHeader
 } from '@GCD/constants'
-import {
-  TPort,
-  TPortsMap,
-  TUserHash,
-  TGenRoute,
-  TRouteMeta,
-  TGenRoutes,
-  TProxyRoute,
-  TPublicUrls,
-} from '@GCD/types'
-
 
 /**
  * Figure out a better way to set http vs https

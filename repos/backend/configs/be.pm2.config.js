@@ -2,10 +2,8 @@ require('../resolveRoot')
 const path = require('path')
 const { aliases } = require('@gobletqa/configs/aliases.config')
 
-/** Path to the logs directory */
-const logDir = aliases[`@GLogs`]
 const beRoot = aliases[`@GBE/Root`]
-
+const logDir = path.join(aliases.GobletRoot, `logs`)
 
 module.exports = {
   apps: [

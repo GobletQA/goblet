@@ -1,4 +1,10 @@
-import type { TGitOpts, TWFArgs } from '@GRP/types'
+import type { TGitMeta, TGitOpts } from '@gobletqa/git'
+
+type TWFArgs = TGitMeta & {
+  token: string|boolean
+  repoTemplate?: string
+}
+
 
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'

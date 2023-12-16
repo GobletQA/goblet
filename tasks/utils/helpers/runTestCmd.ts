@@ -3,8 +3,8 @@ import type { TTaskParams } from '../../types'
 
 import { EBrowserType } from '../../types'
 import { runCmd } from '@keg-hub/cli-utils'
-import { runCommands } from '@GTasks/utils/helpers/runCommands'
-import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
+import { runCommands } from '../helpers/runCommands'
+import { handleTestExit } from '../helpers/handleTestExit'
 
 
 export type TRunTestCmd = {

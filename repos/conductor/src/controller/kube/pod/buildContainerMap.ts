@@ -1,4 +1,5 @@
-import type { TPort, TPod, TContainerMap } from '@GCD/types'
+import type { TPod } from '@GCD/types'
+import type { TPort, TContainerMap } from '@gobletqa/shared/types'
 
 export const buildContainerMap = (pod:TPod, ports:Record<string, TPort>) => {
   const container = pod.spec.containers[0]

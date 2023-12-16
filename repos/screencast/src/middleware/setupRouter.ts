@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Adds the AppRouter to the express application

@@ -30,7 +30,8 @@ const screencastBuild = async () => {
     entryPoints: [entryFile],
     external: [
       `fsevents`,
-      ...Object.keys(config.dependencies)
+      ...Object.keys(config.dependencies),
+      ...Object.keys(config.devDependencies),
     ],
   })
   .catch((cause:any) => {

@@ -1,6 +1,6 @@
+import type { TGitData } from '@gobletqa/git'
 import type { TRecorderOpts } from '@gobletqa/goblet'
 import type {
-  TGitData,
   TRepoOpts,
   TFileTypes,
   TRepoPaths,
@@ -8,7 +8,6 @@ import type {
   TGBWorldCfg,
   TGobletConfig,
   TGobletPWConfig,
-  TGScreencastConfig,
 } from '@GRP/types'
 
 
@@ -87,7 +86,6 @@ export class Repo {
   environment:string
   fileTypes:TFileTypes
   recorder: TRecorderOpts
-  screencast?:TGScreencastConfig
   playwright?:TGobletPWConfig={}
 
   constructor(config:TRepoOpts = emptyObj as TRepoOpts) {

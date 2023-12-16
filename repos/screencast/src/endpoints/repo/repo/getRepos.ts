@@ -3,8 +3,7 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoGraphRepos } from '@gobletqa/shared/types'
 
 import { Workflows } from '@gobletqa/workflows'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Endpoint to get all repos from the authorized provider

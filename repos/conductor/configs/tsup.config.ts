@@ -23,13 +23,11 @@ export default defineConfig(async () => {
     esbuildOptions:(options, context) => {
       options && (
         options.external = [
-          ...(options?.external ?? []),
-          ...(Object.keys(packcfg.dependencies) ?? []),
-          ...(Object.keys(packcfg.devDependencies) ?? []),
-          // @ts-ignore
-          ...(Object.keys(packcfg.peerDependencies) ?? []),
-          // @ts-ignore
-          ...(Object.keys(packcfg.optionalDependencies) ?? []),
+          ...(options?.external || []),
+          ...(Object.keys(packcfg.dependencies || {})),
+          ...(Object.keys(packcfg.devDependencies || {})),
+          ...(Object.keys(packcfg.peerDependencies || {})),
+          ...(Object.keys(packcfg.optionalDependencies || {})),
         ]
       )
     },

@@ -2,7 +2,7 @@ import type { Express } from 'express'
 import express from 'express'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
-import { getDefaultGobletConfig } from '@gobletqa/goblet'
+import defConfig from '@gobletqa/configs/goblet.default.config'
 
 let _APP:Express
 
@@ -15,7 +15,7 @@ let _APP:Express
  * @returns {Object} - Express App Object
  */
 const setupApp = <T extends Record<string, any>>(serverConf:T) => {
-  !_APP.locals.config && (_APP.locals.config = deepMerge(getDefaultGobletConfig(), serverConf))
+  !_APP.locals.config && (_APP.locals.config = deepMerge(defConfig, serverConf))
 
   return _APP
 }

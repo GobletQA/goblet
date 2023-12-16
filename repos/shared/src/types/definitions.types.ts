@@ -5,8 +5,8 @@ import type {
 } from '@ltipton/parkin'
 
 export enum EDefinitionVariant {
-  regex = 'regex',
-  expression = 'expression'
+  regex = `regex`,
+  expression = `expression`
 }
 
 export type TDefinitionToken = {

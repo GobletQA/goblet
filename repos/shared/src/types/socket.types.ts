@@ -1,4 +1,4 @@
-import type { TGitData } from './repo.types'
+import type { TGitData } from './git.types'
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
 import type { TBrowserConf } from './pw.types'
@@ -7,8 +7,6 @@ import type {
   TWebSocketEvent,
   TWebSocketEvents,
 } from '../../../screencast/src/types/socket.types'
-
-
 
 export type TSocketEvent = TWebSocketEvent
 

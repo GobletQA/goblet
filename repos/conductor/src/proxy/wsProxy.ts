@@ -3,7 +3,7 @@ import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
 import { createProxy } from './createProxy'
-import { getApp } from '@gobletqa/shared/api/express/app'
+import { getApp } from '@gobletqa/shared/api'
 import { queryToObj } from '@keg-hub/jsutils/queryToObj'
 
 /**

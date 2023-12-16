@@ -1,4 +1,4 @@
-import type { TConductorOpts, TConductorConfig } from '@GCD/types'
+import type { TConductorOpts, TConductorConfig } from '@gobletqa/shared/types'
 
 import { exists } from '@keg-hub/jsutils/exists'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'

@@ -1,20 +1,21 @@
 import type { Request, Router, Express } from 'express'
+import type { TRemoveOpts } from '@GCD/types'
 import type {
   TImgRef,
   TUserHash,
   TSpawnOpts,
   TRouteMeta,
-  TRemoveOpts,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
-} from '@GCD/types'
+} from '@gobletqa/shared/types'
 
+
+import { getApp } from '@gobletqa/shared/api'
 import { buildConfig } from './utils/buildConfig'
 import { proxyUpgrade } from './utils/proxyUpgrade'
 import { Controller } from './controller/controller'
-import { getApp } from '@gobletqa/shared/api/express/app'
-import { EContainerState } from '@GCD/types'
+import { EContainerState } from '@gobletqa/shared/enums'
 import { getController } from './controller/controllerTypes'
 import {
   createWSProxy,

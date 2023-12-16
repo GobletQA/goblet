@@ -1,11 +1,14 @@
 import '@GSC/utils/logger'
-import { onExit } from '@GSC/utils/onExit'
-import { initSocket } from '@GSC/libs/websocket'
-import { SCAuthBypassRoutes } from '@GSC/constants'
-import { setupRepo } from '@GSC/middleware/setupRepo'
-import { getApp } from '@gobletqa/shared/api/express/app'
-
-import { screencastConfig } from '@GSC/Configs/screencast.config'
+import {
+  getApp,
+  setupJWT,
+  setupCors,
+  validateUser,
+  setupLoggerReq,
+  setupLoggerErr,
+  setupRateLimit,
+  setupServerListen,
+} from '@gobletqa/shared/api'
 import {
   setupRouter,
   setupServer,
@@ -13,15 +16,12 @@ import {
   setupOnReqEnd,
   setupEndpoints
 } from '@GSC/middleware'
-import {
-  setupJWT,
-  setupCors,
-  setupLoggerReq,
-  setupLoggerErr,
-  setupRateLimit,
-  setupServerListen,
-  validateUser,
-} from '@gobletqa/shared/api/middleware'
+import { onExit } from '@GSC/utils/onExit'
+import { initSocket } from '@GSC/libs/websocket'
+import { SCAuthBypassRoutes } from '@GSC/constants'
+import { setupRepo } from '@GSC/middleware/setupRepo'
+import { screencastConfig } from '@GSC/Configs/screencast.config'
+
 
 /**
  * Starts a express API server for screencast

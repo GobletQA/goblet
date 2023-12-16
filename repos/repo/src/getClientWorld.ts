@@ -1,6 +1,6 @@
+import type { TGitData } from '@gobletqa/git'
 import type {
   Repo,
-  TGitData,
   TRepoPaths,
   TGBWorldCfg,
   TGobletConfig,

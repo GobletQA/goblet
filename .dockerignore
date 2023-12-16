@@ -32,6 +32,7 @@ logs
 temp
 .temp
 
+
 # Ignore DevSpace cache and log folder
 .devspace/ 
 
@@ -58,6 +59,7 @@ pids
 *.pid.lock*
 **/dist
 repos/**/dist
+repos/**/*.md
 dist
 certs
 bundle
@@ -71,3 +73,6 @@ repos/inspector
 repos/**/node_modules
 release-please-config.json
 .release-please-manifest.json
+tsconfig.eslint.json
+**/tsconfig.eslint.json
+repos/**/tsconfig.eslint.json

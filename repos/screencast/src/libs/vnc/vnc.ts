@@ -7,8 +7,8 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+import { findProc, killProc } from '@gobletqa/shared/utils'
 import { InternalPaths } from '@gobletqa/environment/constants'
-import { findProc, killProc } from '@gobletqa/shared/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 
 

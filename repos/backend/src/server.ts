@@ -1,16 +1,8 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import type { Express } from 'express'
-import { BEAuthBypassRoutes } from '@GBE/constants'
-import { getApp } from '@gobletqa/shared/api/express/app'
-import { backendConfig } from '@GBE/Configs/backend.config'
 import {
-  setupServer,
-  setupRouter,
-  setupEndpoints,
-  setupConductor,
-} from '@GBE/middleware'
-import {
+  getApp,
   setupJWT,
   setupCors,
   validateUser,
@@ -18,7 +10,15 @@ import {
   setupLoggerReq,
   setupLoggerErr,
   setupServerListen,
-} from '@gobletqa/shared/api/middleware'
+} from '@gobletqa/shared/api'
+import {
+  setupServer,
+  setupRouter,
+  setupEndpoints,
+  setupConductor,
+} from '@GBE/middleware'
+import { BEAuthBypassRoutes } from '@GBE/constants'
+import { backendConfig } from '@GBE/Configs/backend.config'
 
 
 /**

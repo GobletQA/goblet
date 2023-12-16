@@ -1,14 +1,14 @@
 import type { Express } from 'express'
-import type { TGitData } from '@gobletqa/repo'
+import type { TGitData } from '@gobletqa/git'
 
 import type {
   TTokenUser,
 } from '@GSC/types'
 
 
+import { getApp } from '@gobletqa/shared/api'
 import { Workflows } from '@gobletqa/workflows'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
-import { getApp } from '@gobletqa/shared/api/express/app'
 
 export type TLoadRepoFromSocket = {
   app?:Express

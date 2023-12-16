@@ -1,7 +1,6 @@
 import type { Express } from 'express'
 
-import { getApp } from '@gobletqa/shared/api/express/app'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { getApp, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Adds teh AppRouter to the express application

@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
 import path from 'node:path'
+import { AppRouter } from '@gobletqa/shared/api'
 import { InternalPaths } from '@gobletqa/environment/constants'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 /**
  * Responds with the test run html report
