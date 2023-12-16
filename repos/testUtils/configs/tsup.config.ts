@@ -8,7 +8,6 @@ import { getEntries } from '../scripts/getEntries'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
 const outdir = path.join(rootDir, `dist`)
-const srcdir = path.join(rootDir, `src`)
 
 export default defineConfig(async () => {
   await fs.rm(outdir, { recursive: true, force: true })
