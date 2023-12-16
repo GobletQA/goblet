@@ -1,6 +1,7 @@
 import type { TBuildTestArgs } from '@GTU/Types'
 
-import { ETestType } from '@GTU/Types'
+
+import { ETestType } from '@gobletqa/shared/enums'
 import { exists, uniqArr } from '@keg-hub/jsutils'
 import { addParam, addFlag } from '@gobletqa/shared/utils'
 

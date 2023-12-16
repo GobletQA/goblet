@@ -5,7 +5,7 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 # ---- Setup Stage  ---- #
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-ARG GB_PNPM_VERSION=8.7.4
+ARG GB_PNPM_VERSION=8.12.1
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
 ENV PNPM_VERSION=$GB_PNPM_VERSION
 ENV PNPM_HOME="/root/.local/share/pnpm"
@@ -67,8 +67,57 @@ EXPOSE $GB_DT_PROXY_PORT
 EXPOSE $GB_DT_REMOTE_DEBUG_PORT
 
 COPY .npmrc pnpm-*.yaml ./
-RUN CI=1 pnpm fetch --no-optional --ignore-scripts
+RUN pnpm fetch --no-optional --ignore-scripts
 COPY . .
+# ---- End Stage ---- #
+
+
+# ---- Run Stage  ---- #
+FROM goblet-setup as goblet-dist
+WORKDIR /goblet/app
+COPY repos/devtools/package.json repos/devtools/
+COPY configs/package.json configs/
+COPY repos/conductor/package.json repos/conductor/
+COPY repos/logger/package.json repos/logger/
+COPY repos/latent/package.json repos/latent/
+COPY repos/goblet/package.json repos/goblet/
+COPY repos/git/package.json repos/git/
+COPY repos/repo/package.json repos/repo/
+COPY repos/workflows/package.json repos/workflows/
+COPY repos/browser/package.json repos/browser/
+COPY repos/testUtils/package.json repos/testUtils/
+COPY repos/exam/package.json repos/exam/
+COPY repos/environment/package.json repos/environment/
+COPY repos/shared/package.json repos/shared/
+COPY repos/backend/package.json repos/backend/
+COPY repos/screencast/package.json repos/screencast/
+
+RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
+
+COPY repos/devtools repos/devtools/
+COPY repos/conductor repos/conductor/
+COPY repos/logger repos/logger/
+COPY repos/latent repos/latent/
+COPY repos/goblet repos/goblet/
+COPY repos/git repos/git/
+COPY repos/repo repos/repo/
+COPY repos/workflows repos/workflows/
+COPY repos/browser repos/browser/
+COPY repos/testUtils repos/testUtils/
+COPY repos/exam repos/exam/
+COPY repos/environment repos/environment/
+COPY repos/shared repos/shared/
+RUN pnpm build:tsup
+
+COPY repos/backend repos/backend/
+COPY repos/screencast repos/screencast/
+RUN pnpm build:docker
+# ---- End Stage ---- #
+
+
+# ---- Run Stage  ---- #
+FROM goblet-setup as goblet-prod
+WORKDIR /goblet/app
 RUN pnpm add --global jqn && \
     rm -rf /goblet/app/repos/components && \
     rm -rf /goblet/app/repos/joker && \
@@ -102,8 +151,22 @@ RUN pnpm add --global jqn && \
     cd /goblet/app && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     echo "$(cat package.json | jqn 'delete $.optionalDependencies;JSON.stringify($, null, 2)')" > package.json && \
-    CI=1 pnpm install --fix-lockfile --prod --prefer-offline && \
+    CI=1 pnpm install --fix-lockfile --prod --prefer-offline --force && \
     CI=1 pnpm add typescript -w -D --prod --prefer-offline && \
     pnpm remove --global jqn
+
+COPY --from=goblet-dist /goblet/app/repos/browser/dist repos/browser/dist
+COPY --from=goblet-dist /goblet/app/repos/conductor/dist repos/conductor/dist
+COPY --from=goblet-dist /goblet/app/repos/environment/dist repos/environment/dist
+COPY --from=goblet-dist /goblet/app/repos/exam/dist repos/exam/dist
+COPY --from=goblet-dist /goblet/app/repos/git/dist repos/git/dist
+COPY --from=goblet-dist /goblet/app/repos/goblet/dist repos/goblet/dist
+COPY --from=goblet-dist /goblet/app/repos/latent/dist repos/latent/dist
+COPY --from=goblet-dist /goblet/app/repos/logger/dist repos/logger/dist
+COPY --from=goblet-dist /goblet/app/repos/repo/dist repos/repo/dist
+COPY --from=goblet-dist /goblet/app/repos/workflows/dist repos/workflows/dist
+COPY --from=goblet-dist /goblet/app/repos/backend/dist repos/backend/dist
+COPY --from=goblet-dist /goblet/app/repos/shared/dist repos/shared/dist
+COPY --from=goblet-dist /goblet/app/repos/screencast/dist repos/screencast/dist
 
 # ---- End Stage ---- #

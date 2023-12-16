@@ -1,4 +1,4 @@
-import type { EBrowserType, EBrowserName } from '@GBB/types'
+import type { EBrowserType, EBrowserName } from '@gobletqa/shared/enums'
 
 import { Logger } from '@GBB/utils/logger'
 import { exists } from '@keg-hub/jsutils/exists'

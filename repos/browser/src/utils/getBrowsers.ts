@@ -1,7 +1,8 @@
-import type { EBrowserName, TGetBrowsers } from '@GBB/types'
+import type { EBrowserName, TGetBrowsers } from '@gobletqa/shared/types'
 
-import { EBrowserType } from '@GBB/types'
+
 import { isStr } from '@keg-hub/jsutils/isStr'
+import { EBrowserType } from '@gobletqa/shared/enums'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { eitherArr } from '@keg-hub/jsutils/eitherArr'
 import { BrowserNames, BrowserMap } from '@GBB/constants'

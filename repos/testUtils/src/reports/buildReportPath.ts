@@ -1,4 +1,5 @@
-import type { EBrowserName, ETestType, TGobletConfig } from '@GTU/Types'
+import type { TGobletConfig } from '@GTU/Types'
+import type { EBrowserName, ETestType } from '@gobletqa/shared/enums'
 
 import path from 'path'
 import { getPathFromBase } from '@gobletqa/goblet'
@@ -47,7 +48,6 @@ export const buildReportPath = (
 
   type = type === `bdd` ? `feature` : type
   const { full } = getGeneratedName({
-    type: type as ETestType,
     browserName: browser as EBrowserName,
     location: getReportName(type, testReportName, context),
   })

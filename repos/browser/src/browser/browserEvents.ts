@@ -5,11 +5,10 @@ import type {
   TBrowserEventCB,
   TOnAutomateEvent,
   TBrowserEventArgs,
-} from '@GBB/types'
-
+} from '@gobletqa/shared/types'
 
 import { Automate } from '../automate'
-import { EBrowserEvent } from '@GBB/types'
+import { EBrowserEvent } from '@gobletqa/shared/enums'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { addPageCloseEvts } from '@GBB/utils/addPageCloseEvts'
 

@@ -1,5 +1,5 @@
 
-import {EProvider} from '../../../workflows/src/types/index'
+import {EProvider} from '@gobletqa/shared/enums'
 
 
 describe(`gitTag`, () => {

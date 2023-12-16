@@ -1,17 +1,17 @@
 import type { Frame, ConsoleMessage } from 'playwright'
-import type {
+
+import {
   TBrowserPage,
   TAutomateEvent,
   TBrowserEventArgs
-} from '@GSC/types'
+} from '@gobletqa/shared/types'
 import { Logger } from './logger'
 import { wait } from '@keg-hub/jsutils/wait'
+import { EBrowserEvent } from '@gobletqa/shared/enums'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import {
   GBrowser,
-  WSPwConsole,
   WSPwUrlChange,
-  EBrowserEvent,
   BrowserEvents,
 } from '@gobletqa/browser'
 

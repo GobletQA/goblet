@@ -1,4 +1,4 @@
-import type { EBrowserType } from '@GSC/types'
+import type { EBrowserType } from '@gobletqa/shared/enums'
 import type { Response, Request } from 'express'
 
 import { GBrowser } from '@gobletqa/browser'

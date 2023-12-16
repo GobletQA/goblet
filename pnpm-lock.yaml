@@ -672,9 +672,6 @@ importers:
 
   repos/screencast:
     dependencies:
-      '@deno/kv':
-        specifier: 0.6.1
-        version: 0.6.1
       '@gobletqa/browser':
         specifier: workspace:*
         version: link:../browser
@@ -751,9 +748,9 @@ importers:
       '@types/node':
         specifier: 20.9.3
         version: 20.9.3
-      nodemon:
-        specifier: 3.0.1
-        version: 3.0.1
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
 
   repos/shared:
     dependencies:
@@ -1767,51 +1764,6 @@ packages:
 
   /@daybrush/utils@1.13.0:
     resolution: {integrity: sha512-ALK12C6SQNNHw1enXK+UO8bdyQ+jaWNQ1Af7Z3FNxeAwjYhQT7do+TRE4RASAJ3ObaS2+TJ7TXR3oz2Gzbw0PQ==}
-    dev: false
-
-  /@deno/kv-darwin-arm64@0.6.1:
-    resolution: {integrity: sha512-lPaYoI4FUwAASAD4SC8E3Z4Xx8hJaCFOzuzuRxkn0TeQfW85L6wx+3WVKp7xBDmh3IztSxBZjTqJFQlWs+Fpvw==}
-    engines: {node: '>= 18'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@deno/kv-darwin-x64@0.6.1:
-    resolution: {integrity: sha512-CfA1R0wUDE0D1o4niaGMINLjrBiqc3K1LQ2P0yR9yPmhPv2SsyrAqPFkzOkFom1/d5B5xlPuy9HwMSYrhmNHMg==}
-    engines: {node: '>= 18'}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@deno/kv-linux-x64-gnu@0.6.1:
-    resolution: {integrity: sha512-g/Ix9VIEpp9beBKVzSxu9nTk9WujbfOZedZ8wRKl6VBBesQu4VCg0X3zAw1bBTiDn7RsfBdMNQXBUCKWHp/JvQ==}
-    engines: {node: '>= 18'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@deno/kv-win32-x64-msvc@0.6.1:
-    resolution: {integrity: sha512-6YcAh5YvcTz0XCZlY1psFpEeDrOzjUpysTbuLhYm0WtrK6iZ5mgm6ZI0R/pGA1pjhPG+DGU8BGF8Ws2wZiBfyA==}
-    engines: {node: '>= 18'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@deno/kv@0.6.1:
-    resolution: {integrity: sha512-bsZhBTk4CFhS4lMZxHgPGd5cRgRpvxQOT4YEJbSwhKI9mX+iy6r8cB3LZoWsH0iueKkWHijToHGPBlTkiQ2R1A==}
-    optionalDependencies:
-      '@deno/kv-darwin-arm64': 0.6.1
-      '@deno/kv-darwin-x64': 0.6.1
-      '@deno/kv-linux-x64-gnu': 0.6.1
-      '@deno/kv-win32-x64-msvc': 0.6.1
     dev: false
 
   /@effect/data@0.17.1:
@@ -4653,6 +4605,8 @@ packages:
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     requiresBuild: true
+    dev: false
+    optional: true
 
   /abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -6090,6 +6044,8 @@ packages:
     dependencies:
       ms: 2.1.3
       supports-color: 5.5.0
+    dev: false
+    optional: true
 
   /debug@4.3.4(supports-color@9.3.1):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -7846,6 +7802,8 @@ packages:
   /ignore-by-default@1.0.1:
     resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
     requiresBuild: true
+    dev: false
+    optional: true
 
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
@@ -9674,6 +9632,7 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     requiresBuild: true
+    dev: false
 
   /mute-stream@0.0.7:
     resolution: {integrity: sha512-r65nCZhrbXXb6dXOACihYApHw2Q6pV0M3V0PSxd74N0+D8nzAdEAITq2oAjA1jVnKI+tGvEBUpqiMh0+rW6zDQ==}
@@ -9778,6 +9737,8 @@ packages:
       supports-color: 5.5.0
       touch: 3.1.0
       undefsafe: 2.0.5
+    dev: false
+    optional: true
 
   /nopt@1.0.10:
     resolution: {integrity: sha512-NWmpvLSqUrgrAC9HCuxEvb+PSloHpqVu+FqcO4eeF2h5qYRhA7ev6KvelyQAKtegUbC6RypJnlEOhd8vloNKYg==}
@@ -9785,6 +9746,8 @@ packages:
     requiresBuild: true
     dependencies:
       abbrev: 1.1.1
+    dev: false
+    optional: true
 
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -10415,6 +10378,8 @@ packages:
   /pstree.remy@1.1.8:
     resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
     requiresBuild: true
+    dev: false
+    optional: true
 
   /pump@3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
@@ -11171,6 +11136,8 @@ packages:
     requiresBuild: true
     dependencies:
       semver: 7.5.4
+    dev: false
+    optional: true
 
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -11851,6 +11818,8 @@ packages:
     requiresBuild: true
     dependencies:
       nopt: 1.0.10
+    dev: false
+    optional: true
 
   /tough-cookie@2.5.0:
     resolution: {integrity: sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==}
@@ -12179,6 +12148,8 @@ packages:
   /undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
     requiresBuild: true
+    dev: false
+    optional: true
 
   /underscore@1.13.6:
     resolution: {integrity: sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==}

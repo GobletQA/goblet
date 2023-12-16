@@ -1,5 +1,5 @@
 import '../resolveRoot'
-import type { EBrowserName, TBrowserConf } from '@GSC/types'
+import type { EBrowserName, TBrowserConf } from '@gobletqa/shared/types'
 
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { parseJSON } from '@keg-hub/jsutils/parseJSON'

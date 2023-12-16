@@ -1,4 +1,5 @@
-import { TGitMeta } from '@GWF/types'
+import type { TGitMeta } from '@gobletqa/git'
+
 import { Logger } from '@gobletqa/logger'
 import { git, getRepoPath }from '@gobletqa/git'
 

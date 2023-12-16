@@ -1,10 +1,9 @@
-export type { TExamConfig } from '../../../shared/src/types/exam.types'
-export type { TGBWorldCfg } from '../../../shared/src/types/parkin.types'
-export type { TGobletConfig } from '../../../shared/src/types/goblet.types'
-export type { TGobletPWConfig } from '../../../shared/src/types/configs.types'
-export type { TGitData, TRepoPaths } from '../../../shared/src/types/repo.types'
-export type { TGScreencastConfig } from '../../../shared/src/types/screencast.types'
-export type { TFileTypes, TGFileTypes } from '../../../shared/src/types/files.types'
+export type { TExamConfig } from '@gobletqa/shared/types/exam.types'
+export type { TGBWorldCfg } from '@gobletqa/shared/types/parkin.types'
+export type { TGobletConfig } from '@gobletqa/shared/types/goblet.types'
+export type { TGobletPWConfig } from '@gobletqa/shared/types/configs.types'
+export type { TGitData, TRepoPaths } from '@gobletqa/shared/types/repo.types'
+export type { TFileTypes, TGFileTypes } from '@gobletqa/shared/types/files.types'
 export type {
   TLoopLoad,
   TCfgMerge,
@@ -14,4 +13,4 @@ export type {
   TGobletLoader,
   TLoadedFunResp,
   TGobletCfgLoaderResp
-} from '../../../shared/src/types/loader.types'
+} from '@gobletqa/shared/types/loader.types'

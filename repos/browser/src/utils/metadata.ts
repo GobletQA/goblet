@@ -4,7 +4,7 @@ import type {
   TGobletConfig,
   TBrowserMetaData,
   TBrowserMetaDataContext,
-} from '@GBB/types'
+} from '@gobletqa/shared/types'
 
 import os from 'os'
 import path from 'path'

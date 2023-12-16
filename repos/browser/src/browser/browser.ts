@@ -1,23 +1,25 @@
 import type {
-  TBrowser,
   TGetCtx,
   TGetPage,
   TGetPageCB,
-  TBrowserPage,
-  TBrowserConf,
-  EBrowserType,
   TBrowserOnly,
-  TPWComponents,
   TStartBrowser,
-  TBrowserContext,
   TGetPWComponents,
 } from '@GBB/types'
+import type {
+  TBrowser,
+  EBrowserType,
+  TBrowserPage,
+  TBrowserConf,
+  TPWComponents,
+  TBrowserContext,
+} from '@gobletqa/shared/types'
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
-import { EBrowserEvent } from '@GBB/types'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { EBrowserEvent } from '@gobletqa/shared/enums'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'

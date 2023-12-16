@@ -1,5 +1,5 @@
-import type { TGitOpts } from '@gobletqa/git'
 import type { AxiosRequestConfig } from 'axios'
+import type { TGitOpts, TGitCreateRepoOpts } from '@gobletqa/git'
 import type {
   TApiConf,
   TRepoResp,
@@ -9,8 +9,8 @@ import type {
   TBranchResp,
   TGLRepoApiMeta,
   TGLBranchMeta,
-  TGitCreateRepoOpts,
 } from '@GWF/types'
+
 
 import { Rest } from '../constants'
 import { Logger } from '@gobletqa/logger'

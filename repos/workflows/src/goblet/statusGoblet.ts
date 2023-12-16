@@ -1,11 +1,12 @@
+import type { TGitOpts } from '@gobletqa/git'
+import type { TRepoOpts } from '@gobletqa/repo'
+import type { TGobletCfgLoaderResp } from '@gobletqa/goblet'
 import type { TGobletConfig } from '@gobletqa/shared/types'
 import type {
   TWFResp,
-  TGitOpts,
-  TRepoOpts,
   TWFGobletConfig,
-  TGobletCfgLoaderResp,
 } from '@GWF/types'
+
 
 import path from 'path'
 import {failResp} from './response'

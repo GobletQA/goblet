@@ -1,10 +1,7 @@
+import type { TWFArgs } from '@GWF/types'
 import type { TGobletConfig } from '@gobletqa/shared/types'
-import type {
-  TGitData,
-  TWFArgs,
-  TGitOpts,
-  TGobletCfgLoaderResp
-} from '@GWF/types'
+import type { TGitOpts, TGitData } from '@gobletqa/git'
+import type { TGobletCfgLoaderResp } from '@gobletqa/goblet'
 
 import { Logger } from '@gobletqa/logger'
 import { wait } from '@keg-hub/jsutils/wait'

@@ -1,10 +1,4 @@
 
-export {
-  EBrowserName,
-  EBrowserType,
-  EBrowserEvent,
-} from '@gobletqa/shared/enums'
-
 export type { TBrowserProcs } from '@gobletqa/shared/types/process.types'
 export type { TGetBrowsers } from '@gobletqa/shared/types/browser.types'
 export type {

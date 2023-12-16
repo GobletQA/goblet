@@ -1,6 +1,6 @@
+import type { EBrowserType } from '@gobletqa/shared/enums'
 import type {
   TGBWorldCfg,
-  EBrowserType,
   TBrowserConf,
   TGobletConfig,
 } from '@GBB/types'

@@ -1,4 +1,5 @@
-import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@GWF/types'
+import type { TGitOpts } from '@gobletqa/git'
+import type { TWFGobletConfig, TWFResp, } from '@GWF/types'
 
 import { Logger } from '@gobletqa/logger'
 import { ENVS } from '@gobletqa/environment'

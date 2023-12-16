@@ -2,8 +2,8 @@ import type {
   TRepoMeta,
   TGraphApiOpts,
   TGHRepoApiMeta,
+  TRepoGraphRepos,
 } from '@GWF/types'
-import type { TRepoGraphRepos } from '@GWF/types/shared.types'
 
 import { Rest } from '../constants/rest'
 import { Graph } from '../constants/graph'

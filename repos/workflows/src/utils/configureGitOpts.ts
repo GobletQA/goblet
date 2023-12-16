@@ -1,4 +1,5 @@
-import type { TWFArgs, TGitOpts } from '@GWF/types'
+import type { TWFArgs } from '@GWF/types'
+import type { TGitOpts } from '@gobletqa/git'
 
 import path from 'node:path'
 import { throwErr } from './throwErr'

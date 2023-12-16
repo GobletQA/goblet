@@ -1,7 +1,8 @@
 import type {
   TBrowserPage,
   TBrowserContext,
-} from '@GBB/types'
+} from '@gobletqa/shared/types'
+
 import type { TScriptsKey } from './getInjectScript'
 
 import { getInjectScript } from './getInjectScript'

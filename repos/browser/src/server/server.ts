@@ -1,4 +1,4 @@
-import type { EBrowserName, TBrowserServer } from '@GBB/types'
+import type { EBrowserName, TBrowserServer } from '@gobletqa/shared/types'
 import type playwright from 'playwright'
 
 /**

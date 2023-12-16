@@ -80,7 +80,7 @@ export type TEnvFrom = {
   configMapRef?: string | TEnvRefConfig
 }
 
-export enum ETProtoType {
+enum ETProtoType {
   UDP=`UDP`,
   TCP=`TCP`,
   SCTP=`SCTP`

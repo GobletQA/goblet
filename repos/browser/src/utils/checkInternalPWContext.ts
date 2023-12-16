@@ -7,7 +7,7 @@ import type {
   TStopTraceOpts,
   TStartTraceOpts,
   TBrowserContext,
-} from '@GBB/types'
+} from '@gobletqa/shared/types'
 
 import playwright from 'playwright'
 import { EventEmitter } from 'node:events'

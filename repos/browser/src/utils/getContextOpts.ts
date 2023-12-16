@@ -1,12 +1,14 @@
-import type { TGBWorldCfg, TBrowserContextOpts, TGobletConfig } from '@GBB/types'
+import type {
+  TGBWorldCfg,
+  TGobletConfig,
+  TBrowserContextOpts
+} from '@gobletqa/shared/types'
 
 import { vncActive } from '@GBB/utils/checkVncEnv'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { taskEnvToContextOpts } from '@GBB/browser/taskEnvToContextOpts'
-
-
 
 /**
  * Default browser options

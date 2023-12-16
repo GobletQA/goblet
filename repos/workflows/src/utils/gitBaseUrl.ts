@@ -1,4 +1,4 @@
-import { EProvider } from '@GWF/types'
+import { EProvider } from '@gobletqa/shared/enums'
 
 /**
  * Removes the `.git` extension from the url if it exists

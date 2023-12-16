@@ -1,4 +1,4 @@
-import type { EBrowserName, EBrowserType, TBrowserStatus } from '@GBB/types'
+import type { EBrowserName, EBrowserType, TBrowserStatus } from '@gobletqa/shared/types'
 
 import { browserStatus } from '@GBB/constants'
 import { getBrowserType } from './getBrowserType'

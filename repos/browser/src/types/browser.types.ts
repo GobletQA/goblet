@@ -5,7 +5,7 @@ import type {
   EBrowserName,
   TPWComponents,
   TGobletConfig,
-} from './shared.types'
+} from '@gobletqa/shared/types'
 
 type TGetBrowserOpts = {
   browserServer?:boolean,

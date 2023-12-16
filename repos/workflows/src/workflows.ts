@@ -1,11 +1,11 @@
-import type { TRepoMountStatus } from '@gobletqa/repo'
+import type { TGitOpts } from '@gobletqa/git'
+import type { TRepoFromCreate, TRepoMountStatus } from '@gobletqa/repo'
 import type {
-  TGitOpts,
   TWFGobletConfig,
   TRepoGraphRepos,
-  TRepoFromCreate,
   TRepoFromWorkflow,
 } from '@GWF/types'
+
 
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'

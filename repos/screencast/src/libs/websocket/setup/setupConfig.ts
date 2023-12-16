@@ -1,7 +1,7 @@
+import type { ESocketEnvironment } from '@gobletqa/shared/enums'
 import type {
   TSocketConfig,
   TSocketConfigOpts,
-  ESocketEnvironment,
 } from '@GSC/types'
 
 import { get } from '@keg-hub/jsutils/get'

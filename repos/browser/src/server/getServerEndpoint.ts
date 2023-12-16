@@ -1,7 +1,7 @@
-import type { EBrowserType, EBrowserName } from '@GBB/types'
+import type { EBrowserType, EBrowserName } from '@gobletqa/shared/types'
 
-import { metadata } from '@GBB/utils/metadata'
 import { getServer } from './server'
+import { metadata } from '@GBB/utils/metadata'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 
 /**

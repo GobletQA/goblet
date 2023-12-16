@@ -1,4 +1,4 @@
-import type { EBrowserName, ETestType } from '@GTU/Types'
+import type { EBrowserName } from '@gobletqa/shared/enums'
 
 import fs from 'fs'
 import path from 'path'

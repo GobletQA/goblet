@@ -1,10 +1,8 @@
  import type { TExamEvt, TExEventData } from "@gobletqa/exam"
  import type { TRmCB } from '@GTU/Exam/reporters/event/EventReporter'
 import type {
-  ETestType,
   TGobletTestOpts,
   TBrowserContext,
-  TGobletGlobalBrowserOpts,
 } from '@GTU/Types'
 
 import path from 'path'

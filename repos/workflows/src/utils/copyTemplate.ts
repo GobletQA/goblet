@@ -1,4 +1,4 @@
-import type { TGitData } from '@GWF/types'
+import type { TGitData } from '@gobletqa/git'
 
 import path from 'path'
 import { existsSync } from 'fs'

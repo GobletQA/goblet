@@ -1,4 +1,9 @@
-import type { TGBWorldCfg, TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
+import type {
+  TGBWorldCfg,
+  TBrowserConf,
+  TGobletConfig,
+  TBrowserLaunchOpts
+} from '@gobletqa/shared/types'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'

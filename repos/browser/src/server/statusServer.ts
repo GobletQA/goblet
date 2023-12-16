@@ -1,4 +1,4 @@
-import type { EBrowserName, TBrowserProcs } from '@GBB/types'
+import type { EBrowserName, TBrowserProcs } from'@gobletqa/shared/types'
 
 import { findProc } from './proc'
 import { BrowserNames } from '@GBB/constants'

@@ -25,11 +25,11 @@ import { Logger } from '@GSC/utils/logger'
 import { ENVS } from '@gobletqa/environment'
 import {isArr} from '@keg-hub/jsutils/isArr'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
-import { ETestType, EBrowserType } from '@GSC/types'
 import { Logger as EXLogger } from "@gobletqa/exam"
 import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { aliases } from '@gobletqa/configs/aliases.config'
+import { ETestType, EBrowserType } from '@gobletqa/shared/enums'
 import { buildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'

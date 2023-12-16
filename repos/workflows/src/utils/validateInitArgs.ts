@@ -1,4 +1,4 @@
-import type { TGitOpts } from '@GWF/types'
+import type { TGitOpts } from '@gobletqa/git'
 import { failResp } from '@GWF/goblet/response'
 
 

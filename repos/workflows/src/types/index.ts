@@ -1,6 +1,5 @@
 export * from './repo.types'
 export * from './goblet.types'
-export * from './shared.types'
 export * from './restapi.types'
 export * from './provider.types'
 export * from './gitlab.types'

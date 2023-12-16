@@ -3,8 +3,7 @@ import type {
   TBrowserConf,
   TGobletConfig,
   TGobletTestOpts,
-  TBrowserContextOpts,
-} from '@GTU/Types'
+} from '@gobletqa/shared/types'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'

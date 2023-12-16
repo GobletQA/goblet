@@ -2,8 +2,8 @@ import type { TNMOpts } from '@ltipton/esdev'
 
 import { GSCRoot } from '../resolveRoot'
 import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@gobletqa/configs/aliases.config'
 import { loadConfigs } from '@keg-hub/parse-config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 
 /**
  * Load the ENVs from <node-env>.env ( local.env || prod.env )

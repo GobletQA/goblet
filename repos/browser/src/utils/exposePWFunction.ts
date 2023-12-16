@@ -1,7 +1,7 @@
 import type {
   TBrowserPage,
   TBrowserContext,
-} from '@GBB/types'
+} from '@gobletqa/shared/types'
 
 const isCtxParent = (parent:TBrowserPage|TBrowserContext):parent is TBrowserContext => {
   return (`__contextGoblet` in parent)

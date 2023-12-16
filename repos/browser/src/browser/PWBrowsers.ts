@@ -1,14 +1,16 @@
 import type {
   TBrowser,
-  TGetPageCB,
   TPWBrowser,
-  TGetBrowser,
-  TBrowserConf,
   EBrowserType,
   EBrowserName,
+  TBrowserConf,
   TPWComponents,
-  TStartBrowser,
   TBrowserContext,
+} from '@gobletqa/shared/types'
+import type {
+  TGetPageCB,
+  TGetBrowser,
+  TStartBrowser,
   TPWBrowsersOpts,
   TCreateBrowserOpts,
 } from '@GBB/types'

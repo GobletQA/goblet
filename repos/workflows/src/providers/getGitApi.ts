@@ -1,4 +1,4 @@
-import { EProvider } from '@GWF/types'
+import { EProvider } from '@gobletqa/shared/enums'
 import { GitlabApi } from '@GWF/providers/gitlabApi'
 import { GithubApi } from '@GWF/providers/githubApi'
 

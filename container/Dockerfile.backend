@@ -2,6 +2,8 @@ ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Kubectrl Stage ( backend only ) ---- #
+# TODO: validate if this is still needed
+# Becuase the kubernetes npm package is used instead
 FROM bitnami/kubectl:latest as kubectl
 # ---- End Stage ---- #
 
@@ -9,7 +11,7 @@ FROM bitnami/kubectl:latest as kubectl
 FROM ubuntu:focal as goblet-setup
 WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
-ARG GB_PNPM_VERSION=8.7.4
+ARG GB_PNPM_VERSION=8.12.1
 ARG GB_NODE_VERSION=20
 ENV PNPM_VERSION=$GB_PNPM_VERSION
 ENV NODE_MAJOR=$GB_NODE_VERSION
@@ -33,54 +35,43 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -
 # ---- End Stage ---- #
 
+# ---- Config Stage ---- #
+FROM $IMAGE_FROM as goblet-config
+# ---- End Stage ---- #
 
 # ---- Prune Stage ---- #
-FROM $IMAGE_FROM as goblet-pruner
+FROM goblet-config as goblet-pruner
 WORKDIR /goblet/app
 
 RUN pnpm add --global dot-json && \
-    mkdir -p /goblet/runner/repos && \
-    mkdir -p /goblet/runner/configs
+    mkdir -p /goblet/runner/repos
 
 RUN rm -rf /goblet/app/repos/browser && \
     rm -rf /goblet/app/repos/exam && \
     rm -rf /goblet/app/repos/screencast && \
-    rm -rf /goblet/app/repos/testUtils
+    rm -rf /goblet/app/repos/testUtils && \
+    cp -R package.json gobletRoot.js /goblet/runner/.
 
-RUN cp -R tsconfig.json package.json gobletRoot.js /goblet/runner/. && \
-    cp -R configs/aliases.js /goblet/runner/configs/aliases.js && \
-    cp -R configs/paths.config.js /goblet/runner/configs/paths.config.js && \
-    cp -R configs/aliases.config.js /goblet/runner/configs/aliases.config.js
+COPY repos/backend/tsconfig.docker.json /goblet/runner/tsconfig.json
 
-RUN CI=1 pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline
-
-WORKDIR /goblet/app
-COPY repos/latent/src repos/latent/src
-COPY repos/goblet/src repos/goblet/src
-COPY repos/logger/src repos/logger/src
-COPY repos/git/src repos/git/src
-COPY repos/repo/src repos/repo/src
-COPY repos/conductor/src repos/conductor/src
-COPY repos/environment/src repos/environment/src
-COPY repos/workflows/src repos/workflows/src
-COPY repos/shared/src repos/shared/src
-COPY repos/backend/src repos/backend/src
+RUN CI=1 pnpm install --fix-lockfile --prefer-offline
 
 WORKDIR /goblet/app/repos/backend
 RUN mkdir -p /goblet/app/repos/exam/src/types && \
     echo "export {}" > /goblet/app/repos/exam/src/types/index.ts && \
+    echo "{}" > /goblet/app/repos/exam/tsconfig.json && \
     mkdir -p /goblet/app/repos/screencast/src/types && \
     echo "export {}" > /goblet/app/repos/screencast/src/types/index.ts && \
+    echo "{}" > /goblet/app/repos/screencast/tsconfig.json && \
     pnpm build
-RUN cp -R dist/goblet.default.config.js /goblet/runner/configs/goblet.default.config.js
-RUN pnpm --filter=@gobletqa/backend --prod --no-optional deploy pruned
 
-WORKDIR /goblet/app/repos
-RUN cp -R backend/pruned /goblet/runner/repos/backend
+WORKDIR /goblet/app
 
-# This makes the image a little smaller, but may not be worth it
-# Because then we lose source-mapping for compiled files
-# RUN find . -name "*.js.map" -type f -delete
+RUN pnpm --filter=@gobletqa/backend --prod deploy /goblet/runner/repos/backend
+# Seems there's a bug in pnpm, and latent doesn't get copied over
+# Even tried adding latent as a dep to backend, and still doesnt show up
+# For now explicitly copy it.
+RUN cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/backend/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist
 # ---- End Stage ---- #
 
 
@@ -98,9 +89,16 @@ ENV GB_BE_PORT=$GB_BE_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     GB_DT_SERVER_PORT=$GB_DT_SERVER_PORT \
     GB_DT_PROXY_PORT=$GB_DT_PROXY_PORT \
-    GB_DT_REMOTE_DEBUG_PORT=$GB_DT_REMOTE_DEBUG_PORT
+    GB_DT_REMOTE_DEBUG_PORT=$GB_DT_REMOTE_DEBUG_PORT \
+    NODE_ENV=production
 
 COPY --from=goblet-pruner /goblet/runner /goblet/app
+
+# This is not great, but we need @keg-hub/jsutils in the root directory
+# Because the gobletRoot.js file calls it
+# But, it's not installed because its a dev dependency
+# I didn't want to add it just to make one method call, in one file
+RUN ln -s /goblet/app/repos/backend/node_modules /goblet/app/node_modules
 
 WORKDIR /goblet/app/repos/backend
 

@@ -1,4 +1,4 @@
-import { EBrowserType, EBrowserName } from '@GBB/types'
+import { EBrowserType, EBrowserName } from '@gobletqa/shared/enums'
 
 import { Logger } from '@GBB/utils/logger'
 import { wait } from '@keg-hub/jsutils/wait'
