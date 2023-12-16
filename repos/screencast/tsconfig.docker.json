@@ -1,0 +1,50 @@
+{
+  "parserOptions": {
+    "extraFileExtensions": ["json"]
+  },
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "noEmit": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "declarationMap": false,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
+      "@gobletqa/root": ["./*"],
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
+    }
+  },
+  "exclude": [
+    "tasks/goblet.ts",
+    "node_modules",
+    "bundle",
+    ".git",
+    ".husky",
+    ".firebase",
+    "goblet",
+    "certs",
+    "repos/**/dist",
+    "repos/**/build",
+    "repos/**/node_modules",
+    "**/.tsup",
+    "docs",
+    "logs",
+    "scripts",
+    "temp"
+  ]
+}

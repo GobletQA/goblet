@@ -4,7 +4,6 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 # ---- Setup Stage ---- #
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-WORKDIR /goblet/app
 ARG GB_SC_PORT=19011
 ARG GB_NO_VNC_PORT=26369
 ARG GB_VNC_SERVER_PORT=26370
@@ -26,7 +25,10 @@ RUN mkdir -p /etc/supervisor && \
     net-tools \
     supervisor \
     tigervnc-standalone-server && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /goblet/app/repos/backend && \
+    rm -rf /goblet/app/repos/conductor
+
 # ---- End Stage ---- #
 
 
@@ -47,38 +49,21 @@ RUN rm -rf tasks/definitions/index.ts && \
 # ---- Prune Stage ---- #
 FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
-
-RUN pnpm add --global dot-json && \
-    mkdir -p /goblet/runner
-
-RUN rm -rf /goblet/app/repos/backend && \
-    rm -rf /goblet/app/repos/conductor
-
-RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
-WORKDIR /goblet/app
-COPY repos/latent/src repos/latent/src
-COPY repos/goblet/src repos/goblet/src
-COPY repos/logger/src repos/logger/src
-COPY repos/git/src repos/git/src
-COPY repos/repo/src repos/repo/src
-COPY repos/environment/src repos/environment/src
-COPY repos/workflows/src repos/workflows/src
-COPY repos/browser/src repos/browser/src
-COPY repos/shared/src repos/shared/src
-COPY repos/exam/src repos/exam/src
-COPY repos/testUtils/src repos/testUtils/src
-COPY repos/screencast/src repos/screencast/src
+COPY repos/screencast/tsconfig.docker.json /goblet/runner/tsconfig.json
+COPY repos/screencast/scripts /goblet/runner/scripts
+COPY repos/screencast/configs /goblet/runner/configs
+COPY repos/screencast/package.json /goblet/runner/package.json
 
 WORKDIR /goblet/app/repos/screencast
-RUN pnpm build
+RUN pnpm --filter=@gobletqa/screencast --prod deploy /goblet/runner/repos/screencast
 # ---- End Stage ---- #
 
 
-# ---- Runner Stage ---- #
+# # ---- Runner Stage ---- #
 FROM goblet-setup as goblet-runner
 WORKDIR /goblet/app
 
-COPY --from=goblet-pruner /goblet/app/. .
+COPY --from=goblet-pruner /goblet/runner/. .
 COPY --from=goblet-tasks /goblet/app/. .
 
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \

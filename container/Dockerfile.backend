@@ -35,25 +35,18 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -
 # ---- End Stage ---- #
 
-# ---- Config Stage ---- #
-FROM $IMAGE_FROM as goblet-config
-# ---- End Stage ---- #
-
 # ---- Prune Stage ---- #
-FROM goblet-config as goblet-pruner
+FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
 
-RUN pnpm add --global dot-json && \
-    mkdir -p /goblet/runner/repos
-
-RUN rm -rf /goblet/app/repos/browser && \
+RUN mkdir -p /goblet/runner/repo && \
+    rm -rf /goblet/app/repos/browser && \
     rm -rf /goblet/app/repos/exam && \
     rm -rf /goblet/app/repos/screencast && \
     rm -rf /goblet/app/repos/testUtils && \
     cp -R package.json gobletRoot.js /goblet/runner/.
 
 COPY repos/backend/tsconfig.docker.json /goblet/runner/tsconfig.json
-
 RUN CI=1 pnpm install --fix-lockfile --prefer-offline
 
 WORKDIR /goblet/app/repos/backend
