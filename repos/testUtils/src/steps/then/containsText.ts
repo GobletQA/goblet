@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getLocatorContent } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Checks that element, matching `selector`, value (input & textarea elements) or textContent, contains `data`

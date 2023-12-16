@@ -7,7 +7,7 @@ import {
   getLocator,
   getILocator,
 } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes, ExpressionElements } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes, ExpressionElements } from '@gobletqa/environment/constants'
 
 const iframeExp = {
   example: `iframe#sub-page`,

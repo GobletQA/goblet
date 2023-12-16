@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Expects the element matching `selector` and verifies selected options === `data`

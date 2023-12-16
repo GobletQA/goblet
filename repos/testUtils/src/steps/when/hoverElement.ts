@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Sets the input text of selector to data

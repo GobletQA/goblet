@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { clearInput, getWorldLocator } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 export const clearTextWithSaved = async (
   ctx:TStepCtx

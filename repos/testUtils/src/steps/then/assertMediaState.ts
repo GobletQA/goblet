@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { mediaIsPlaying, mediaIsFinished } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 
 enum EMediaPlayerState {

@@ -7,7 +7,7 @@ import {
   ExpressionKinds,
   ExpressionTypes,
   ExpressionCustomInputs,
-} from '@GTU/Constants'
+} from '@gobletqa/environment/constants'
 
 export const saveClipboardToWorld = async (
   worldPath:string,

@@ -5,7 +5,7 @@ import { getLocator } from '@GTU/Playwright'
 import {
   ExpressionKinds,
   ExpressionTypes,
-} from '@GTU/Constants'
+} from '@gobletqa/environment/constants'
 
 export const selectElementText = async (
   selector:string,

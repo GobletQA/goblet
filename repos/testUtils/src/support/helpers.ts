@@ -3,7 +3,6 @@ import type {
   TStepCtx,
   TLocator,
   TFillInput,
-  TGetIframe,
   TGBWorldCfg,
   TSaveWorldLocator,
 } from '@GTU/Types'
@@ -21,7 +20,8 @@ import {
   SavedLocatorWorldPath,
   AutoSavedDataWorldPath,
   AutoSavedLocatorWorldPath
-} from '@GTU/Constants'
+} from '@gobletqa/environment/constants'
+
 
 
 const checkTypes = {

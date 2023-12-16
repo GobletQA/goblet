@@ -19,6 +19,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm build:code && pnpm build:cfg && pnpm build:fix",
+    "build:tsup": "tsup --config ./configs/tsup.config.ts",
     "build:code": "node -r esbuild-register configs/build.config.ts",
     "build:cfg": "node -r esbuild-register configs/exam.cfg.build.ts",
     "build:fix": "node -r esbuild-register scripts/fixPaths.ts",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/node": "20.9.3",
-    "esbuild-plugin-path-alias": "1.0.7"
+    "esbuild-plugin-path-alias": "1.0.7",
+    "tsup": "8.0.1"
   }
 }

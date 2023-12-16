@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { Then } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
-import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionElements, ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 type TCheckStates = [`checked`, `unchecked`] & {
   checked?: `checked`,

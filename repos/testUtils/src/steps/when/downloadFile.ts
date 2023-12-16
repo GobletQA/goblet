@@ -6,7 +6,7 @@ import { When } from '@GTU/Parkin'
 import { pathExists, mkDir } from '@GTU/Utils/fileSys'
 import { getPathFromBase } from '@gobletqa/goblet'
 import { getLocator, getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 import { getLocatorTimeout } from '@GTU/Support/helpers'
 
 export type TPromiseTimeout<T=any> = {

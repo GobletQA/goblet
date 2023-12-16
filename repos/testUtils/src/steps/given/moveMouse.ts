@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 const randomInt = (min:number, max:number) => Math.floor(Math.random() * (max - min + 1) + min)
 

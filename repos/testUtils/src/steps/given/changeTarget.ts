@@ -6,7 +6,7 @@ import {
   ExpressionKinds,
   ExpressionTypes,
   ExpressionElements,
-} from '@GTU/Constants'
+} from '@gobletqa/environment/constants'
 
 const targetOpts = [
   `_self`,

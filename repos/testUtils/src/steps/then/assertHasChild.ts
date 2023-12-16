@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { Then } from '@GTU/Parkin'
 import { getLocatorTimeout } from '@GTU/Support'
 import { getLocator, getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Checks that the parent element contains the child element

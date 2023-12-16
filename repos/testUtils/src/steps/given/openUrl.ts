@@ -4,7 +4,7 @@ import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 import { get } from '@keg-hub/jsutils/get'
 import { isStr } from '@keg-hub/jsutils/isStr'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Parses the url, replacing any dynamic variables

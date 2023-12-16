@@ -5,7 +5,7 @@ import { When } from '@GTU/Parkin'
 import { mkDir } from '@GTU/Utils/fileSys'
 import { getLocator } from '@GTU/Playwright'
 import { getPathFromBase } from '@gobletqa/goblet'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 const noUploadsDir = () => {
   throw new Error([

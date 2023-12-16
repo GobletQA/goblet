@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
-import { SavedLocatorWorldPath } from '@GTU/Constants'
+import { SavedLocatorWorldPath } from '@gobletqa/environment/constants'
 import { saveWorldLocator } from '@GTU/Support/helpers'
 
 const saveElToWorld = async (

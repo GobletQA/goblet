@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { Given } from '@GTU/Parkin'
 import { getContext } from '@GTU/Playwright/browserContext'
 import { setContextCookie, DefaultCookieFile } from '@gobletqa/browser'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Checks that the page title is `title`

@@ -4,7 +4,7 @@ import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
 import { saveWorldLocator } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Sets the input text of selector to data

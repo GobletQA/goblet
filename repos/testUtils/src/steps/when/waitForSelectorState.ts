@@ -4,7 +4,7 @@ import { When } from '@GTU/Parkin'
 import { isNum } from '@keg-hub/jsutils'
 import { getLocator } from '@GTU/Playwright'
 import { getLocatorTimeout } from '@GTU/Support'
-import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 const states = [`attached`, `detached`, `visible`, `hidden`]
 

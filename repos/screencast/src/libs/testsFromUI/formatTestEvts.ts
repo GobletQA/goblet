@@ -15,7 +15,7 @@
 // } from '@GTU/Types'
 
 // import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-// import { TestsToSocketEvtMap, TestRunFileRootEvtRef } from '@GTU/Constants'
+// import { TestsToSocketEvtMap, TestRunFileRootEvtRef } from '@gobletqa/environment/constants'
 // import {
 //   getText,
 //   getUuid,

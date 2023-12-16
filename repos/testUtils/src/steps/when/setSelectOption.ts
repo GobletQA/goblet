@@ -6,7 +6,7 @@ import {
   ExpressionKinds,
   ExpressionTypes,
   ExpressionElements
-} from '@GTU/Constants'
+} from '@gobletqa/environment/constants'
 
 /**
  * Expects the element matching `selector` and selects the option(s) with the label === `data`

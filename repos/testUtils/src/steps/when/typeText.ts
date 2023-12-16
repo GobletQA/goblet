@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getILocator, getLocator } from '@GTU/Playwright'
 import { typeInput, getWorldLocator } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes, ExpressionElements } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes, ExpressionElements } from '@gobletqa/environment/constants'
 
 
 export const typeWithSaved = async (

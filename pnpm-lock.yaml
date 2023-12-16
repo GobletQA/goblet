@@ -705,9 +705,6 @@ importers:
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
-      '@ltipton/esdev':
-        specifier: 0.2.1
-        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
       esbuild:
         specifier: 0.19.7
         version: 0.19.7
@@ -742,6 +739,9 @@ importers:
         specifier: 4.7.2
         version: 4.7.2
     devDependencies:
+      '@ltipton/esdev':
+        specifier: 0.2.1
+        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
       '@types/express':
         specifier: 4.17.18
         version: 4.17.18
@@ -870,6 +870,9 @@ importers:
       esbuild-plugin-path-alias:
         specifier: 1.0.7
         version: 1.0.7(esbuild@0.19.7)
+      tsup:
+        specifier: 8.0.1
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
 
   repos/vite:
     dependencies:
@@ -3361,7 +3364,7 @@ packages:
       esbuild-register: 3.5.0(esbuild@0.19.7)
     optionalDependencies:
       nodemon: 3.0.1
-    dev: false
+    dev: true
 
   /@ltipton/parkin@6.5.1:
     resolution: {integrity: sha512-nq9ax1ft2qOaf//LvGb7IyNptcruKlft5YrQ85VyUNCgS572j+hWmbRW8zrQCvSz/HeXaInQZZ+8TtcUif3dKg==}
@@ -4605,7 +4608,6 @@ packages:
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /abort-controller@3.0.0:
@@ -6044,7 +6046,6 @@ packages:
     dependencies:
       ms: 2.1.3
       supports-color: 5.5.0
-    dev: false
     optional: true
 
   /debug@4.3.4(supports-color@9.3.1):
@@ -7802,7 +7803,6 @@ packages:
   /ignore-by-default@1.0.1:
     resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /ignore@5.2.4:
@@ -9632,7 +9632,6 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     requiresBuild: true
-    dev: false
 
   /mute-stream@0.0.7:
     resolution: {integrity: sha512-r65nCZhrbXXb6dXOACihYApHw2Q6pV0M3V0PSxd74N0+D8nzAdEAITq2oAjA1jVnKI+tGvEBUpqiMh0+rW6zDQ==}
@@ -9737,7 +9736,6 @@ packages:
       supports-color: 5.5.0
       touch: 3.1.0
       undefsafe: 2.0.5
-    dev: false
     optional: true
 
   /nopt@1.0.10:
@@ -9746,7 +9744,6 @@ packages:
     requiresBuild: true
     dependencies:
       abbrev: 1.1.1
-    dev: false
     optional: true
 
   /normalize-package-data@2.5.0:
@@ -10378,7 +10375,6 @@ packages:
   /pstree.remy@1.1.8:
     resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /pump@3.0.0:
@@ -11136,7 +11132,6 @@ packages:
     requiresBuild: true
     dependencies:
       semver: 7.5.4
-    dev: false
     optional: true
 
   /sisteransi@1.0.5:
@@ -11818,7 +11813,6 @@ packages:
     requiresBuild: true
     dependencies:
       nopt: 1.0.10
-    dev: false
     optional: true
 
   /tough-cookie@2.5.0:
@@ -12148,7 +12142,6 @@ packages:
   /undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /underscore@1.13.6:

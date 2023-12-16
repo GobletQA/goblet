@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionCustomInputs, ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
+import { ExpressionCustomInputs, ExpressionKinds, ExpressionTypes } from '@gobletqa/environment/constants'
 
 /**
  * Click the element matching `selector`
@@ -14,7 +14,7 @@ export const execCodeInBrowser = async (ctx:TStepCtx) => {
   /**
   * Passed the code to the page context, then executes it with eval
   */
-  await page.evaluate((code) => code && eval(code), code)
+  await page.evaluate((code) => code && window.eval(code), code)
 }
 
 const meta = {
