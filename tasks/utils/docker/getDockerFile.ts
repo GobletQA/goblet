@@ -1,6 +1,6 @@
 import path from 'path'
 import { containerDir } from '../../paths'
-import { getContext } from '..//helpers/contexts'
+import { getContext } from '../helpers/contexts'
 
 /**
  * Gets the Dockerfile to use based on the passed in docFileCtx

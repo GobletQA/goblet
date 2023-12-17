@@ -28,6 +28,7 @@ node_modules/
 logs/
 **/.git
 **/.DS_Store
+docs/
 temp/
 .temp/
 .firebase/
@@ -76,6 +77,6 @@ release-please-config.json
 tsconfig.eslint.json
 **/tsconfig.eslint.json
 repos/**/tsconfig.eslint.json
-
+repos/devtools/public
 
 !.npmrc

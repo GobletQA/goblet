@@ -1,30 +1,38 @@
 ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
-ARG IMAGE_FROM=$GB_IMAGE_FROM
+ARG GB_BASE_IMAGE_FROM=$GB_IMAGE_FROM
 
+ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.0-focal
+ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
-# # ---- Setup Stage  ---- #
-FROM $IMAGE_FROM as goblet-setup
-WORKDIR /goblet/app
-RUN rm -rf .*ignore && \
-    rm -rf tasks && \
-    rm -rf configs/app.pm2.config.js && \
-    rm -rf configs/commit-types.json && \
-    rm -rf configs/commitlint.config.js && \
-    rm -rf configs/eslintrc.config.js && \
-    rm -rf configs/lint-staged.config.js && \
-    rm -rf configs/pm2.config.js && \
-    rm -rf configs/prettier.config.js && \
-    rm -rf /goblet/app/repos/backend && \
-    rm -rf /goblet/app/repos/conductor && \
-    rm -rf /goblet/app/repos/devtools  && \
-    rm -rf /goblet/app/repos/joker && \
-    rm -rf /goblet/app/repos/screencast && \
-    rm -rf /goblet/app/repos/workflows
+# ---- Image Stage ---- #
+FROM $IMAGE_FROM as goblet-image
+ARG DEBUG_FILE=/goblet/logs/pwlogs.log
+ARG GB_PNPM_VERSION=8.7.4
+ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
+ENV PWDEBUG=0
+ENV PNPM_VERSION=$GB_PNPM_VERSION
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
+# 1. Enable all sources
+# 2. Preinstall any dependecies for settting up the image
+RUN npm uninstall -g yarn && \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    jq \
+    gpg \
+    wget \
+    curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - && \
+    mkdir -p $(dirname "${DEBUG_FILE}") && \
+    mkdir -p /goblet/app/temp && \
+    mkdir -p /goblet/app/.tmp
 # ---- End Stage ---- #
 
 
-# ---- Setup Tasks  ---- #
-FROM $IMAGE_FROM as goblet-tasks
+# # ---- Clean Stage  ---- #
+FROM $GB_BASE_IMAGE_FROM as goblet-clean
 WORKDIR /goblet/app
 COPY tasks tasks
 RUN rm -rf tasks/definitions/index.ts && \
@@ -32,40 +40,49 @@ RUN rm -rf tasks/definitions/index.ts && \
     rm -rf tasks/definitions/deploy && \
     rm -rf tasks/definitions/docker && \
     rm -rf tasks/definitions/devspace && \
-    mv tasks/definitions/sc-entry.ts tasks/definitions/index.ts
-# ---- End Stage ---- #
-
-
-# ---- Setup Tasks  ---- #
-FROM goblet-setup as goblet-deploy
-WORKDIR /goblet/app
-
-RUN mkdir -p /goblet/runner && \
-    cp -r configs /goblet/runner/configs && \
-    cp gobletRoot.js /goblet/runner/gobletRoot.js && \
+    mv tasks/definitions/sc-entry.ts tasks/definitions/index.ts && \
     mkdir -p /goblet/runner/logs && \
     mkdir -p /goblet/runner/.tmp && \
     mkdir -p /goblet/runner/temp && \
-    rm -rf /goblet/runner/pnpm-lock.yaml
-
-RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify
-COPY container/tsconfig.docker.json /goblet/app/tsconfig.json
+    rm -rf .*ignore && \
+    rm -rf firebase.json && \
+    rm -rf configs/node_modules && \
+    rm -rf configs/app.pm2.config.js && \
+    rm -rf configs/commit-types.json && \
+    rm -rf configs/commitlint.config.js && \
+    rm -rf configs/eslintrc.config.js && \
+    rm -rf configs/lint-staged.config.js && \
+    rm -rf configs/pm2.config.js && \
+    rm -rf configs/prettier.config.js && \
+    rm -rf /goblet/app/repos && \
+    rm -rf /goblet/app/node_modules
 # ---- End Stage ---- #
 
 
-# ---- Run Stage ---- #
-FROM goblet-setup as goblet-runner
+# ---- Deploy Tasks  ---- #
+FROM $GB_BASE_IMAGE_FROM as goblet-deploy
 WORKDIR /goblet/app
 
-COPY --from=goblet-tasks /goblet/app/tasks/ tasks/.
-COPY --from=goblet-deploy /goblet/runner/ .
+RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
+RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
+RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify
+COPY container/tsconfig.docker.json /goblet/runner/tsconfig.json
+# ---- End Stage ---- #
 
-RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules && \
-    ln -s /ms-playwright /root/.cache/ms-playwright
+
+# # ---- Run Stage ---- #
+FROM goblet-image as goblet-runner
+WORKDIR /goblet/app
+
+COPY --from=goblet-clean /goblet/app/ .
+COPY --from=goblet-deploy /goblet/runner/ .
+COPY --from=goblet-deploy /ms-playwright /ms-playwright
+
+RUN rm -rf /goblet/app/node_modules && \
+    ln -s /goblet/app/repos/testify/node_modules /goblet/app/node_modules && \
+    ln -s /goblet/app/repos/testify/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/repos/testify/node_modules /goblet/node_modules
 
 WORKDIR /goblet/app/repos/exam
-# Enable this, once it's actually being used
-# RUN pnpm build:cli
 ENV GOBLET_RUN_FROM_CI=1
-# ---- End Stage ---- #
+

@@ -47,7 +47,8 @@ RUN mkdir -p /goblet/runner/repo && \
     cp -R package.json gobletRoot.js /goblet/runner/.
 
 COPY container/tsconfig.docker.json /goblet/runner/tsconfig.json
-RUN CI=1 pnpm install --fix-lockfile --prefer-offline
+RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
+RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
 
 WORKDIR /goblet/app/repos/backend
 RUN mkdir -p /goblet/app/repos/exam/src/types && \
@@ -55,8 +56,7 @@ RUN mkdir -p /goblet/app/repos/exam/src/types && \
     echo "{}" > /goblet/app/repos/exam/tsconfig.json && \
     mkdir -p /goblet/app/repos/screencast/src/types && \
     echo "export {}" > /goblet/app/repos/screencast/src/types/index.ts && \
-    echo "{}" > /goblet/app/repos/screencast/tsconfig.json && \
-    pnpm build
+    echo "{}" > /goblet/app/repos/screencast/tsconfig.json
 
 WORKDIR /goblet/app
 
