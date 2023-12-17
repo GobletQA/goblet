@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios'
 import type {
   TGraphApiResp,
   TBaseGraphApi,
@@ -7,13 +8,13 @@ import type {
   TRepoGraphRepos,
 } from '@GWF/types'
 
+import axios from 'axios'
 import { ApiCache } from './apiCache'
 import { get } from '@keg-hub/jsutils/get'
 import { ApiLogger } from '@GWF/utils/logger'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
-import axios, { AxiosRequestConfig } from 'axios'
 import { hashObj } from '@keg-hub/jsutils/hashObj'
 import { buildHeaders } from '../utils/buildHeaders'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'

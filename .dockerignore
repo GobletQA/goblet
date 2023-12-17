@@ -21,7 +21,6 @@ reports/
 .github
 .husky
 
-# macOS
 .DS_Store
 .vscode/
 tmp/
@@ -77,3 +76,6 @@ release-please-config.json
 tsconfig.eslint.json
 **/tsconfig.eslint.json
 repos/**/tsconfig.eslint.json
+
+
+!.npmrc
