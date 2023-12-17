@@ -1,3 +1,5 @@
+// TODO: remove this whole file
+
 import type { Socket } from 'socket.io'
 import { aliases } from '@gobletqa/configs/aliases.config'
 import type { SocketManager } from '../manager/manager'

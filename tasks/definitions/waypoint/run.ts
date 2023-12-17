@@ -9,7 +9,7 @@ import { runTestCmd } from '../../utils/helpers/runTestCmd'
 import { getTestConfig } from '../../utils/test/getTestConfig'
 import { filterTaskEnvs } from '../../utils/envs/filterTaskEnvs'
 import { buildWaypointEnvs } from '../../utils/envs/buildWaypointEnvs'
-import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import { buildTestArgs } from '@gobletqa/testify/utils/buildTestArgs'
 
 const { testTypes } = constants
 

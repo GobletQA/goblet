@@ -30,7 +30,7 @@ export default defineConfig(async () => {
     outDir: outdir,
     entry: entries,
     format: [`cjs`],
-    name: `test-utils/steps`,
+    name: `testify/steps`,
     esbuildOptions:(options, context) => {
       options && (
         options.external = [

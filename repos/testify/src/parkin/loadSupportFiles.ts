@@ -21,13 +21,13 @@ const getGlobFiles = (
 
 /**
  * Finds all step definition files in client's step directory and
- * also in the config testUtilsDir repo
+ * also in the config testifyDir repo
  * @param {Object} config - Global Goblet config
  *
  * @return {Array<string>} file paths
  */
 export const getStepDefinitions = (config:TGobletConfig) => {
-  const { testUtilsDir } = InternalPaths
+  const { testifyDir } = InternalPaths
   const { repoRoot, workDir, stepsDir, supportDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
 
@@ -35,9 +35,9 @@ export const getStepDefinitions = (config:TGobletConfig) => {
   // Load these postEnvironment setup
   // Load getParkinTestInit preEnvironment or during environment setup 
   return uniqArr([
-    `${testUtilsDir}/src/support/hooks.ts`,
+    `${testifyDir}/src/support/hooks.ts`,
     // Load all default goblet step definitions
-    ...getGlobFiles(path.join(testUtilsDir, `src/steps`)),
+    ...getGlobFiles(path.join(testifyDir, `src/steps`)),
     // Load all client supporting files, i.e. custom hooks
     ...getGlobFiles(path.join(baseDir, supportDir)),
     // Load all client custom step definitions
@@ -50,8 +50,8 @@ export const getStepDefinitions = (config:TGobletConfig) => {
  * Loaded in the preEnvironment step, to ensure Parkin exists in the global scope
  */
 export const getParkinTestInit = (config:TGobletConfig) => {
-  const { testUtilsDir } = InternalPaths
+  const { testifyDir } = InternalPaths
   // MUST BE LOADED FIRST - Add the parkin environment setup before all other setup files
   // This ensures we can get access to the Parkin instance on the global object
-  return [`${testUtilsDir}/src/parkin/parkinTestInit.ts`]
+  return [`${testifyDir}/src/parkin/parkinTestInit.ts`]
 }

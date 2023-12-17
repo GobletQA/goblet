@@ -10,7 +10,7 @@ const subRepos = [
   `repos/latent`,
   `repos/monaco`,
   `repos/race`,
-  `repos/testUtils`,
+  `repos/testify`,
   `repos/vite`,
   `repos/workflows`,
 ]

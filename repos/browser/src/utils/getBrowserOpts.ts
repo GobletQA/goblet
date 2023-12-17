@@ -84,10 +84,10 @@ const getDefOpts = () => {
   }
 
   // TODO: eventually this will be overwritten by the mounted repo 
-  // If we have a path to the testUtils dir
+  // If we have a path to the testify dir
   // Then add the fake webcam data
-  if(InternalPaths?.testUtilsDir){
-    const webcamLoc = path.join(InternalPaths.testUtilsDir, `media/webcam.y4m`)
+  if(InternalPaths?.testifyDir){
+    const webcamLoc = path.join(InternalPaths.testifyDir, `media/webcam.y4m`)
     opts.shared.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
   }
 

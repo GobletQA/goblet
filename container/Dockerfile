@@ -44,7 +44,7 @@ COPY repos/workflows/package.json repos/workflows/
 COPY repos/backend/package.json repos/backend/
 COPY repos/browser/package.json repos/browser/
 COPY repos/screencast/package.json repos/screencast/
-COPY repos/testUtils/package.json repos/testUtils/
+COPY repos/testify/package.json repos/testify/
 COPY repos/exam/package.json repos/exam/
 COPY repos/shared/package.json repos/shared/
 COPY repos/environment/package.json repos/environment/
@@ -61,7 +61,7 @@ COPY repos/workflows repos/workflows/
 COPY repos/browser repos/browser/
 COPY repos/backend repos/backend/
 COPY repos/screencast repos/screencast/
-COPY repos/testUtils repos/testUtils/
+COPY repos/testify repos/testify/
 COPY repos/exam repos/exam/
 COPY repos/shared repos/shared/
 COPY repos/environment repos/environment/

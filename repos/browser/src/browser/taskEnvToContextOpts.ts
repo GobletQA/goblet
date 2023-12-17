@@ -37,7 +37,7 @@ export const getScreenDims = () => {
 
 /**
  * Check if video recording is active
- * This is a duplicate of `artifactSaveOption` from `gobletqa/test-utils/src/utils/artifactSaveOption`
+ * This is a duplicate of `artifactSaveOption` from `gobletqa/testify/src/utils/artifactSaveOption`
  * But we don't have access to that method here
  * It's only a few lines of code, but I would prefer to not duplicate it
  */

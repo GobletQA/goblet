@@ -11,11 +11,11 @@
     "tasks/tasks.ts",
     "src/vnc.ts",
     "../shared",
-    "../testUtils",
+    "../testify",
     "../workflows",
     "src/bs.ts",
     "../shared",
-    "../testUtils",
+    "../testify",
     "../workflows"
   ]
 }

@@ -1,7 +1,7 @@
 
 import path from 'path'
 import { ETestType } from '../types'
-import { testUtilsDir } from '../paths'
+import { testifyDir } from '../paths'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
 import { FullBrowserNames } from '@gobletqa/browser'
 
@@ -31,10 +31,10 @@ export const Browsers = {
 }
 
 export const TestConfigMap = {
-  [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.feature.config.ts`),
+  [ETestType.feature]: path.join(testifyDir, `src/exam/exam.feature.config.ts`),
 
-  [ETestType.unit]: path.join(testUtilsDir, `src/exam/exam.unit.config.js`),
-  [ETestType.waypoint]: path.join(testUtilsDir, `src/exam/exam.waypoint.config.js`),
+  [ETestType.unit]: path.join(testifyDir, `src/exam/exam.unit.config.js`),
+  [ETestType.waypoint]: path.join(testifyDir, `src/exam/exam.waypoint.config.js`),
 }
 
 export const TestTypes = {

@@ -24,7 +24,9 @@ RUN npm uninstall -g yarn && \
     curl -fsSL https://get.pnpm.io/install.sh | bash - && \
     touch $GB_GIT_GLOBAL_IGNORE && \
     echo "goblet/**/**secrets**.env" >> $GB_GIT_GLOBAL_IGNORE && \
-    echo "goblet/**/**values**.env" >> $GB_GIT_GLOBAL_IGNORE
+    echo "goblet/**/**values**.env" >> $GB_GIT_GLOBAL_IGNORE && \
+    mkdir -p /goblet/app/temp && \
+    mkdir -p /goblet/app/.tmp
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
@@ -83,14 +85,14 @@ COPY repos/latent/package.json repos/latent/
 COPY repos/goblet/package.json repos/goblet/
 COPY repos/git/package.json repos/git/
 COPY repos/repo/package.json repos/repo/
-COPY repos/workflows/package.json repos/workflows/
-COPY repos/browser/package.json repos/browser/
-COPY repos/testUtils/package.json repos/testUtils/
 COPY repos/exam/package.json repos/exam/
-COPY repos/environment/package.json repos/environment/
-COPY repos/shared/package.json repos/shared/
+COPY repos/workflows/package.json repos/workflows/
 COPY repos/backend/package.json repos/backend/
 COPY repos/screencast/package.json repos/screencast/
+COPY repos/shared/package.json repos/shared/
+COPY repos/browser/package.json repos/browser/
+COPY repos/testify/package.json repos/testify/
+COPY repos/environment/package.json repos/environment/
 
 RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
 
@@ -103,7 +105,7 @@ COPY repos/git repos/git/
 COPY repos/repo repos/repo/
 COPY repos/workflows repos/workflows/
 COPY repos/browser repos/browser/
-COPY repos/testUtils repos/testUtils/
+COPY repos/testify repos/testify/
 COPY repos/exam repos/exam/
 COPY repos/environment repos/environment/
 COPY repos/shared repos/shared/
@@ -144,7 +146,7 @@ RUN pnpm add --global jqn && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/shared && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
-    cd /goblet/app/repos/testUtils && \
+    cd /goblet/app/repos/testify && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/workflows && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
@@ -155,18 +157,19 @@ RUN pnpm add --global jqn && \
     CI=1 pnpm add typescript -w -D --prod --prefer-offline && \
     pnpm remove --global jqn
 
-COPY --from=goblet-dist /goblet/app/repos/browser/dist repos/browser/dist
 COPY --from=goblet-dist /goblet/app/repos/conductor/dist repos/conductor/dist
-COPY --from=goblet-dist /goblet/app/repos/environment/dist repos/environment/dist
-COPY --from=goblet-dist /goblet/app/repos/exam/dist repos/exam/dist
-COPY --from=goblet-dist /goblet/app/repos/git/dist repos/git/dist
-COPY --from=goblet-dist /goblet/app/repos/goblet/dist repos/goblet/dist
-COPY --from=goblet-dist /goblet/app/repos/latent/dist repos/latent/dist
 COPY --from=goblet-dist /goblet/app/repos/logger/dist repos/logger/dist
+COPY --from=goblet-dist /goblet/app/repos/latent/dist repos/latent/dist
+COPY --from=goblet-dist /goblet/app/repos/goblet/dist repos/goblet/dist
+COPY --from=goblet-dist /goblet/app/repos/git/dist repos/git/dist
 COPY --from=goblet-dist /goblet/app/repos/repo/dist repos/repo/dist
+COPY --from=goblet-dist /goblet/app/repos/exam/dist repos/exam/dist
 COPY --from=goblet-dist /goblet/app/repos/workflows/dist repos/workflows/dist
 COPY --from=goblet-dist /goblet/app/repos/backend/dist repos/backend/dist
-COPY --from=goblet-dist /goblet/app/repos/shared/dist repos/shared/dist
 COPY --from=goblet-dist /goblet/app/repos/screencast/dist repos/screencast/dist
+COPY --from=goblet-dist /goblet/app/repos/shared/dist repos/shared/dist
+COPY --from=goblet-dist /goblet/app/repos/browser/dist repos/browser/dist
+COPY --from=goblet-dist /goblet/app/repos/testify/dist repos/testify/dist
+COPY --from=goblet-dist /goblet/app/repos/environment/dist repos/environment/dist
 
 # ---- End Stage ---- #

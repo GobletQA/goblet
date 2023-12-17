@@ -1,6 +1,6 @@
 const { addEnv } = require('./addEnv')
 const { setNodePath } = require('./setNodePath')
-const { buildPWEnvs } = require('@gobletqa/test-utils/utils/buildPWEnvs')
+const { buildPWEnvs } = require('@gobletqa/testify/utils/buildPWEnvs')
 
 /**
  * Unit specific ENVs to add to the current process

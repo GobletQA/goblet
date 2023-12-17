@@ -1,6 +1,6 @@
 import type { ETestType } from './tests.types'
 import type { EBrowserName, EBrowserType } from './browser.types'
-export type { TStepCtx } from '../../../testUtils/src/types/goblet.types'
+export type { TStepCtx } from '../../../testify/src/types/goblet.types'
 
 export type TGobletTestArtifactOption = `never` | `always` | `on-fail` | true | false | 1 | 0
 

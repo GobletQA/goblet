@@ -17,7 +17,7 @@ import {
   KillTestRunUIProcEvt,
 } from '@gobletqa/environment/constants'
 
-const testConfig = path.join(InternalPaths.testUtilsDir, `src/exam/exam.feature.config.ts`)
+const testConfig = path.join(InternalPaths.testifyDir, `src/exam/exam.feature.config.ts`)
 
 const setupUIRun = async (args:TSocketEvtCBProps) => {
   const {

@@ -27,7 +27,7 @@ export default defineConfig(async () => {
     outDir: outdir,
     entry: entries,
     format: [`cjs`],
-    name: `test-utils`,
+    name: `testify`,
     esbuildOptions:(options, context) => {
       options.external = [
         ...(Object.keys(packcfg.dependencies || {})),

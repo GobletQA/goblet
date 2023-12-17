@@ -13,7 +13,7 @@ const subRepos = [
   `repo`,
   `screencast`,
   `shared`,
-  `testUtils`,
+  `testify`,
   `workflows`,
 ]
 

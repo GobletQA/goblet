@@ -67,7 +67,7 @@ const getGobletDefs = async (
 
   const definitionFiles = await glob(GlobJSFiles, {
     ...GlobOnlyFiles,
-    cwd: path.join(InternalPaths.testUtilsDir, `src/steps`)
+    cwd: path.join(InternalPaths.testifyDir, `src/steps`)
   })
 
   const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin)

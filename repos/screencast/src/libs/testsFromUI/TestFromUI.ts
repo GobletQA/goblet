@@ -1,7 +1,7 @@
 /**
-GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --no-cache --root /goblet/repos/lancetipton --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --colors false
+GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --no-cache --root /goblet/repos/lancetipton --config /goblet/app/repos/testify/src/exam/exam.feature.config.ts --colors false
 
-GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testUtils/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton --tags @whitelist
+GB_LOGGER_FORCE_DISABLE_SAFE=1 GOBLET_RUN_FROM_UI=1 DISPLAY=0.0 GOBLET_TEST_TYPE=bdd GOBLET_BROWSER=chromium GOBLET_CONFIG_BASE=/goblet/repos/lancetipton node -r esbuild-register ./repos/exam/src/bin/exam.ts --colors false --no-cache --config /goblet/app/repos/testify/src/exam/exam.feature.config.ts --root /goblet/repos/lancetipton --tags @whitelist
 
 */
 import type { TExTestEventMeta } from "@gobletqa/exam"
@@ -30,9 +30,9 @@ import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { aliases } from '@gobletqa/configs/aliases.config'
 import { ETestType, EBrowserType } from '@gobletqa/shared/enums'
-import { buildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
+import { buildBddEnvs } from '@gobletqa/testify/utils/buildBddEnvs'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
-import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import { buildTestArgs } from '@gobletqa/testify/utils/buildTestArgs'
 import { TestsToSocketEvtMap, InternalPaths } from '@gobletqa/environment/constants'
 
 import {

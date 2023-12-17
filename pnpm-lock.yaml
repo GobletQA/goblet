@@ -693,9 +693,9 @@ importers:
       '@gobletqa/shared':
         specifier: workspace:*
         version: link:../shared
-      '@gobletqa/test-utils':
+      '@gobletqa/testify':
         specifier: workspace:*
-        version: link:../testUtils
+        version: link:../testify
       '@gobletqa/workflows':
         specifier: workspace:*
         version: link:../workflows
@@ -816,7 +816,7 @@ importers:
         specifier: 8.0.1
         version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
 
-  repos/testUtils:
+  repos/testify:
     dependencies:
       '@gobletqa/browser':
         specifier: workspace:*
@@ -7391,6 +7391,7 @@ packages:
 
   /glob@7.1.4:
     resolution: {integrity: sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==}
+    requiresBuild: true
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -7398,6 +7399,8 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: false
+    optional: true
 
   /glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
@@ -7408,7 +7411,6 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
-    dev: true
 
   /glob@8.0.3:
     resolution: {integrity: sha512-ull455NHSHI/Y1FqGaaYFaLGkNMMJbavMrEGFXG/PGrg6y7sutWHUHrz6gy6WEBH6akM1M414dWKCNs+IhKdiQ==}
@@ -8305,7 +8307,7 @@ packages:
       chalk: 4.1.2
       ci-info: 3.8.0
       deepmerge: 4.3.1
-      glob: 7.1.4
+      glob: 7.1.6
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
       jest-environment-node: 29.7.0
@@ -8346,7 +8348,7 @@ packages:
       chalk: 4.1.2
       ci-info: 3.8.0
       deepmerge: 4.3.1
-      glob: 7.1.4
+      glob: 7.1.6
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
       jest-environment-node: 29.7.0
@@ -8583,7 +8585,7 @@ packages:
       chalk: 4.1.2
       cjs-module-lexer: 1.2.2
       collect-v8-coverage: 1.0.1
-      glob: 7.1.4
+      glob: 7.1.6
       graceful-fs: 4.2.11
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
@@ -10859,7 +10861,7 @@ packages:
     hasBin: true
     requiresBuild: true
     dependencies:
-      glob: 7.1.4
+      glob: 7.1.6
     dev: false
     optional: true
 
@@ -11685,7 +11687,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@istanbuljs/schema': 0.1.3
-      glob: 7.1.4
+      glob: 7.1.6
       minimatch: 3.1.2
     dev: true
 

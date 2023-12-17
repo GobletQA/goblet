@@ -3,8 +3,8 @@ import type { TBrowserConf, TBrowserContextOpts } from './pw.types'
 
 export type TInternalPaths = {
   gobletRoot: string
+  testifyDir: string
   pwMetaDataDir: string
-  testUtilsDir: string
   screencastDir: string
   defaultStepsDir: string
   tracesTempDir: string

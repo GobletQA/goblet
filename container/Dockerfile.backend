@@ -43,10 +43,10 @@ RUN mkdir -p /goblet/runner/repo && \
     rm -rf /goblet/app/repos/browser && \
     rm -rf /goblet/app/repos/exam && \
     rm -rf /goblet/app/repos/screencast && \
-    rm -rf /goblet/app/repos/testUtils && \
+    rm -rf /goblet/app/repos/testify && \
     cp -R package.json gobletRoot.js /goblet/runner/.
 
-COPY repos/backend/tsconfig.docker.json /goblet/runner/tsconfig.json
+COPY container/tsconfig.docker.json /goblet/runner/tsconfig.json
 RUN CI=1 pnpm install --fix-lockfile --prefer-offline
 
 WORKDIR /goblet/app/repos/backend

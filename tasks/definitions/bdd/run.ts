@@ -1,5 +1,5 @@
 import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
-import type { TBuildTestArgs, TBuildBddEnvs } from '@gobletqa/shared/types/testUtils.types'
+import type { TBuildTestArgs, TBuildBddEnvs } from '@GSH/types/testify.types'
 
 import { appRoot } from '../../paths'
 import { ETestType } from '../../types'
@@ -9,8 +9,8 @@ import { getDebugEnv } from '../../utils/envs/getDebugEnv'
 import { runTestCmd } from '../../utils/helpers/runTestCmd'
 import { getTestConfig } from '../../utils/test/getTestConfig'
 import { filterTaskEnvs } from '../../utils/envs/filterTaskEnvs'
-import { buildBddEnvs } from '@gobletqa/test-utils/utils/buildBddEnvs'
-import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import { buildBddEnvs } from '@gobletqa/testify/utils/buildBddEnvs'
+import { buildTestArgs } from '@gobletqa/testify/utils/buildTestArgs'
 
 const logPair = (name:string, item:string) => {
   Logger.log(

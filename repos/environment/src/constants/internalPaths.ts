@@ -12,12 +12,12 @@ import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 export const InternalPaths = deepFreeze({
   gobletRoot: GOBLET_ROOT,
   pwMetaDataDir: GOBLET_PW_METADATA_DIR,
-  testUtilsDir: SUB_REPOS.TEST_UTILS_PATH,
+  testifyDir: SUB_REPOS.TESTIFY_PATH,
   screencastDir: SUB_REPOS.SCREENCAST_PATH,
 
   // TODO: move default step defs to their own repo
   // then update this based on the environment and repo location
-  defaultStepsDir: `${SUB_REPOS.TEST_UTILS_PATH}/src/steps`,
+  defaultStepsDir: `${SUB_REPOS.TESTIFY_PATH}/src/steps`,
 
   // Temp directories for saving test artifacts
   // These paths should not be saved with the repo

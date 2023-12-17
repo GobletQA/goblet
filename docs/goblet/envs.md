@@ -24,12 +24,12 @@
     * This value is always set after **one** or **more** tests are run by `Exam`
     * Value is reset for the environment right before test execution
     * If no tests have been run, the value will be `undefined`
-  **Repos** - `exam`, `test-utils`
+  **Repos** - `exam`, `testify`
 
 
 * `GB_REPO_NO_SECRETS`
   * **Description** - Disables loading secrets when not enabled for a repo
-  * **Repos** - `exam`, `test-utils`, `workflows`
+  * **Repos** - `exam`, `testify`, `workflows`
 
 * `GB_VNC_VIEW_HEIGHT`
   * **Default** - 1430
@@ -47,7 +47,7 @@
 * `GOBLET_RUN_FROM_UI`
   * **Description** - Defines how the `browser` repo should manage playwright browsers
     * Automatically set when tests are run from the browser UI
-  * **Repos** - `browser`, `shared`, `test-utils`
+  * **Repos** - `browser`, `shared`, `testify`
 
 * `GB_EXAM_UI_CONFIG_STR`
   * **Description** - Stringified version of an exam config object
@@ -55,7 +55,7 @@
     * exam config passed from UI gets stringified and set as a this ENV
     * Then is converted back into an Object when building `exam.config` in the child process
     * Because of this, non-stringifiable items can not be included. I.E. `functions`
-  * **Repos** - `test-utils`
+  * **Repos** - `testify`
 
 
 ## CI Only
@@ -63,7 +63,7 @@
 * `GOBLET_RUN_FROM_CI`
   * **Description** - Defines how the `browser` repo should manage playwright browsers
     * Automatically set when tests are run from the browser UI
-  * **Repos** - `browser`, `shared`, `test-utils`
+  * **Repos** - `browser`, `shared`, `testify`
 
 
 
@@ -91,7 +91,7 @@
   * **Repos** - `logger`
 
 
-### Test-Utils
+### Testify
 
 * `GOBLET_TOKEN`
   * **Description** - Repo specific token for encrypting and decrypting secrets

@@ -53,7 +53,7 @@
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
-    "@gobletqa/test-utils": "workspace:*",
+    "@gobletqa/testify": "workspace:*",
     "@gobletqa/workflows": "workspace:*",
     "@keg-hub/jsutils": "9.10.0",
     "@keg-hub/parse-config": ">=2.1.0",
