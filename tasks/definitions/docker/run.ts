@@ -66,7 +66,7 @@ const runImg = async (args) => {
 }
 
 export const run = {
-  name: 'run',
+  name: `run`,
   action: runImg,
   alias: [`rn`, `rnu`],
   options: {
