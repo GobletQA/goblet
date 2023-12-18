@@ -67,6 +67,7 @@ env:
   GB_ACT_DEPLOYMENT: goblet-action
   GB_ACT_IMAGE: 'ghcr.io/gobletqa/goblet-action'
   GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
+  GB_ACT_MOUNT_PATH: /github/app
 
   GOBLET_MOUNT_ROOT: /goblet/repos
 
