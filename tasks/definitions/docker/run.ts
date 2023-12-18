@@ -117,6 +117,12 @@ export const run = {
       example: `--volumes /local/1/path:/remote/1/path,/local/2/path:/remote/2/path`,
       description: `Volumes to mount to the running container separated by a comma`,
     },
+    vnm: {
+      type: `bool`,
+      default: false,
+      alias: [`volume-node-modules`, `vol-node-modules`, `v-nm`, `vol-nm`],
+      description: `Include node_module paths in custom defined volumes`
+    },
     mount: {
       alias: [`mt`],
       type: `boolean`,

@@ -1,5 +1,6 @@
 import type { TTaskParams, TEnvObject } from '../../types'
 
+import path from 'node:path'
 import { loadEnvs } from '../envs/loadEnvs'
 import { ensureArr, flatUnion } from '@keg-hub/jsutils'
 import { resolveLocalPath } from '../helpers/resolveLocalPath'
@@ -32,7 +33,29 @@ const checkLocalPath = (vol:string, docFileCtx:string, envs:TEnvObject) => {
     ? resolveDockerPath(rest.join(`:`), docFileCtx, envs)
     : resolveDockerPath(local, docFileCtx, envs)
 
-  return `${source}:${remote}`
+  return { full: `${source}:${remote}`, remote, source }
+}
+
+
+const buildVolumesArr = (params:TTaskParams, vol:string, docFileCtx:string, envs:TEnvObject) => {
+  const { vnm } = params
+  const args = [`-v`]
+  let remote:string
+
+  if(!vol.includes(`:`)){
+    remote = resolveDockerPath(vol, docFileCtx, envs)
+    args.push(`${vol}:${remote}`)
+    
+  }
+  else {
+    const { full, ...rest } = checkLocalPath(vol, docFileCtx, envs)
+    remote = rest.remote
+    args.push(full)
+  }
+
+  if(!vnm) args.push(`-v`, path.join(remote, `/node_modules`))
+
+  return args
 }
 
 /**
@@ -47,9 +70,7 @@ export const addRunVolumes = (params:TTaskParams, docFileCtx:string) => {
   return vols.reduce((acc, vol) => {
     if(!vol) return acc
 
-    !vol.includes(`:`)
-      ? acc.push(`-v`, `${vol}:${resolveDockerPath(vol, docFileCtx, envs)}`)
-      : acc.push(`-v`, checkLocalPath(vol, docFileCtx, envs))
+    acc.push(...buildVolumesArr(params, vol, docFileCtx, envs))
 
     return acc
   }, [])
