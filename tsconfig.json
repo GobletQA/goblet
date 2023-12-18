@@ -24,8 +24,8 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
 
-      "@GBE/Configs": ["repos/backend/configs"],
-      "@GBE/Configs/*": ["repos/backend/configs/*"],
+      "@GBE/configs": ["repos/backend/configs"],
+      "@GBE/configs/*": ["repos/backend/configs/*"],
       "@GBE/Templates": ["repos/backend/templates"],
       "@GBE/Templates/*": ["repos/backend/templates/*"],
       "@GBE": ["repos/backend/src"],
@@ -43,8 +43,8 @@
       "@GBB": ["repos/browser/src"],
       "@GBB/*": ["repos/browser/src/*"],
 
-      "@GCD/Configs": ["repos/conductor/configs"],
-      "@GCD/Configs/*": ["repos/conductor/configs/*"],
+      "@GCD/configs": ["repos/conductor/configs"],
+      "@GCD/configs/*": ["repos/conductor/configs/*"],
       "@GCD": ["repos/conductor/src"],
       "@GCD/*": ["repos/conductor/src/*"],
 
@@ -115,10 +115,10 @@
       "@GSH": ["repos/shared/src"],
       "@GSH/*": ["repos/shared/src/*"],
 
-      "@GSC/Configs": ["repos/screencast/configs"],
-      "@GSC/Configs/*": ["repos/screencast/configs/*"],
-      "@GSC/Scripts": ["repos/screencast/scripts"],
-      "@GSC/Scripts/*": ["repos/screencast/scripts/*"],
+      "@GSC/configs": ["repos/screencast/configs"],
+      "@GSC/configs/*": ["repos/screencast/configs/*"],
+      "@GSC/scripts": ["repos/screencast/scripts"],
+      "@GSC/scripts/*": ["repos/screencast/scripts/*"],
       "@GSC/Templates": ["repos/screencast/templates"],
       "@GSC/Templates/*": ["repos/screencast/templates/*"],
       "@GSC/libs": ["repos/screencast/src/libs"],

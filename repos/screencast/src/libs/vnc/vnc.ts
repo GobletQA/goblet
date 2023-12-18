@@ -9,7 +9,7 @@ import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { findProc, killProc } from '@gobletqa/shared/utils'
 import { InternalPaths } from '@gobletqa/environment/constants'
-import { screencastConfig } from '@GSC/Configs/screencast.config'
+import { screencastConfig } from '@GSC/configs/screencast.config'
 
 
 /**

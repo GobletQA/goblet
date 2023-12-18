@@ -44,7 +44,7 @@ export class Process {
     },
     debug: false,
     root: aliases.GobletRoot,
-    script: path.join(aliases[`@GSC/Scripts`], `socket.cmd.sh`),
+    script: path.join(aliases[`@GSC/scripts`], `socket.cmd.sh`),
   }
 
   commands:TCmdsConfig

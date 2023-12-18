@@ -3,7 +3,7 @@ import type { TConductorOpts, TConductorConfig } from '@gobletqa/shared/types'
 import { exists } from '@keg-hub/jsutils/exists'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { isEmptyColl } from '@keg-hub/jsutils/isEmptyColl'
-import { conductorConfig } from '@GCD/Configs/conductor.config'
+import { conductorConfig } from '@GCD/configs/conductor.config'
 
 
 type TPartialConf = Record<any, any>

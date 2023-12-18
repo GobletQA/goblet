@@ -2,7 +2,7 @@ import type { Socket } from 'net'
 import type { Conductor } from '../conductor'
 import type { HttpProxyMiddleware } from '@GCD/types'
 import type { Request } from 'http-proxy-middleware/dist/types.d'
-import { conductorHeaders } from '@GCD/Configs/conductor.headers.config'
+import { conductorHeaders } from '@GCD/configs/conductor.headers.config'
 
 
 const {

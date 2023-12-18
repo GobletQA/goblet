@@ -18,7 +18,7 @@ import {
   setupConductor,
 } from '@GBE/middleware'
 import { BEAuthBypassRoutes } from '@GBE/constants'
-import { backendConfig } from '@GBE/Configs/backend.config'
+import { backendConfig } from '@GBE/configs/backend.config'
 
 
 /**

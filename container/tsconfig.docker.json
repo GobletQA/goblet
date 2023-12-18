@@ -23,14 +23,21 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@GBB": ["repos/browser/src"],
-      "@GBB/*": ["repos/browser/src/*"],
-      "@GSC": ["repos/screencast/src"],
-      "@GSC/*": ["repos/screencast/src/*"],
-      "@GWF": ["repos/workflows/src"],
-      "@GWF/*": ["repos/workflows/src/*"],
+
+      "@GBB": ["repos/browser"],
+      "@GBB/*": ["repos/browser/*"],
+      "@GWF": ["repos/workflows"],
+      "@GWF/*": ["repos/workflows/*"],
+
+      "@GSC/scripts": ["repos/screencast/scripts"],
+      "@GSC/scripts/*": ["repos/screencast/scripts/*"],
+
+      "@gobletqa/testify": ["repos/testify/dist"],
+      "@gobletqa/testify/*": ["repos/testify/dist/*"],
+
       "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
       "@gobletqa/root": ["./*"],
+
       "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
       "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
     }

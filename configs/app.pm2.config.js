@@ -11,9 +11,9 @@ const logDir = path.join(aliases.GobletRoot, `logs`)
 /** Ensure the logs directory exists */
 !fs.existsSync(logDir) && fs.mkdirSync(logDir)
 
-const beConfdir = aliases[`@GBE/Configs`]
-const scConfdir = aliases[`@GSC/Configs`]
-const feConfdir = aliases[`@GFE/Configs`]
+const beConfdir = aliases[`@GBE/configs`]
+const scConfdir = aliases[`@GSC/configs`]
+const feConfdir = aliases[`@GFE/configs`]
 
 const bePM2Conf = require(path.join(beConfdir, 'be.pm2.config.js'))
 const fePM2Conf = require(path.join(feConfdir, 'fe.pm2.config.js'))

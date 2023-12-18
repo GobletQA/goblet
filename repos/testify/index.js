@@ -1,1 +1,3 @@
-module.exports = require('./src')
+#!/usr/bin/env node
+require('./resolveRoot')
+module.exports = require('./dist')

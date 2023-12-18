@@ -108,7 +108,7 @@ export const screencastConfig:TGScreencastConfig = {
       root: aliases.GobletRoot,
       debug: Boolean(GB_LOG_LEVEL == 'debug'),
       // TODO: REMOVE THIS
-      script: path.join(aliases[`@GSC/Scripts`], 'socket.cmd.sh'),
+      script: path.join(aliases[`@GSC/scripts`], 'socket.cmd.sh'),
     },
   }
 }
