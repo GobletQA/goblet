@@ -24,6 +24,7 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
 
+      "@GEnvironment": ["@gobletqa/shared/environment"],
 
       "@GWF": ["repos/workflows"],
       "@GWF/*": ["repos/workflows/*"],

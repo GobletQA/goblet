@@ -154,8 +154,6 @@
       "@GWF/*": ["repos/workflows/src/*"],
 
       "@GEnvironment": ["repos/shared/src/environment/environment"],
-      "@GEnvironment/values": ["repos/shared/src/environment/values"],
-      "@GEnvironment/secrets": ["repos/shared/src/environment/secrets"],
 
       "@gobletqa/backend": ["repos/backend/src"],
       "@gobletqa/backend/*": ["repos/backend/src/*"],

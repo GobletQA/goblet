@@ -19,11 +19,12 @@
   },
   "scripts": {
     "build": "exit 0",
-    "build:tsup": "pnpm build:api && pnpm build:utils && pnpm build:enum && pnpm build:fs",
+    "build:tsup": "pnpm build:api && pnpm build:utils && pnpm build:enum && pnpm build:fs && pnpm build:env",
     "build:api": "tsup --config ./configs/tsup.api.config.ts",
     "build:fe": "tsup --config ./configs/tsup.fe.config.ts",
     "build:fs": "tsup --config ./configs/tsup.fs.config.ts",
     "build:enum": "tsup --config ./configs/tsup.enums.config.ts",
+    "build:env": "tsup --config ./configs/tsup.env.config.ts",
     "build:utils": "tsup --config ./configs/tsup.utils.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
