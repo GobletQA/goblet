@@ -2,7 +2,7 @@ import os from 'os'
 import path from 'path'
 import { promises } from 'fs'
 import { TBrowserContext } from '@GBB/types'
-import { DefaultCookieFile, DefaultStorageFile } from '@GBB/constants'
+import { DefaultCookieFile, DefaultStorageFile } from '@gobletqa/environment/constants'
 
 const tempDir = os.tmpdir()
 

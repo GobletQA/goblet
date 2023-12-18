@@ -24,10 +24,11 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
 
-      "@GBB": ["repos/browser"],
-      "@GBB/*": ["repos/browser/*"],
+
       "@GWF": ["repos/workflows"],
       "@GWF/*": ["repos/workflows/*"],
+      "@GBB/scripts": ["repos/browser/scripts"],
+      "@GBB/scripts/*": ["repos/browser/scripts/*"],
 
       "@GSC/scripts": ["repos/screencast/scripts"],
       "@GSC/scripts/*": ["repos/screencast/scripts/*"],

@@ -1,4 +1,5 @@
 const config = {
+  $ref: 'GobletQA/testify-mock',
   recorder: {
     locator: "-- 🍷 GOBLET"
   },

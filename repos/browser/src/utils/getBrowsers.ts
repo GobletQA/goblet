@@ -5,7 +5,7 @@ import { isStr } from '@keg-hub/jsutils/isStr'
 import { EBrowserType } from '@gobletqa/shared/enums'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { eitherArr } from '@keg-hub/jsutils/eitherArr'
-import { BrowserNames, BrowserMap } from '@GBB/constants'
+import { BrowserNames, BrowserMap } from '@gobletqa/environment/constants'
 
 
 /**

@@ -8,12 +8,11 @@ import {
   EPlayerTestType
 } from '@GEX/types'
 import { ExamEvents } from '@GEX/events/Events'
-import { EResultAction } from '@ltipton/parkin'
 import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { TestsToSocketEvtMap } from '@GEX/constants'
 import {
-  BuiltExamFinished,
   NoTestsFoundPass,
+  BuiltExamFinished,
   BuiltTestResultFailed,
 } from "@GEX/constants"
 

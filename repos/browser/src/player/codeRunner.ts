@@ -6,7 +6,7 @@ import { Parkin } from '@ltipton/parkin'
 import { Logger } from '@gobletqa/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ParkinTest } from '@ltipton/parkin/test'
-import { TestsToSocketEvtMap } from '@GBB/constants'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import {
   setupParkin,
   setupGlobals,

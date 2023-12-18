@@ -42,7 +42,6 @@ const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
 
 
 const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
-
   const config = getGobletConfig(cfgArgs)
   const world = getClientWorld(config, false)
   const examConfig = (config?.testConfig || emptyObj) as Partial<TExamConfig>

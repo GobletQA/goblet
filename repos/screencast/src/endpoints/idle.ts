@@ -3,8 +3,8 @@ import type { TAppOvReq, TApp } from '@gobletqa/shared/types'
 import type { SocketManager } from '@GSC/libs/websocket/manager'
 
 import { toNum } from '@keg-hub/jsutils'
-import { WSIdleStatus } from '@GSC/constants'
 import { apiRes, AppRouter } from '@gobletqa/shared/api'
+import { WSIdleStatus } from '@gobletqa/environment/constants'
 
 type TIdleSCParams = {
   counter?:string

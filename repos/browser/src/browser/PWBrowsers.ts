@@ -18,7 +18,6 @@ import type {
 import playwright from 'playwright'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { toBool } from '@keg-hub/jsutils/toBool'
-import { CreateBrowserRetry } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { buildStatus } from '@GBB/utils/buildStatus'
 import { socketActive } from '@GBB/utils/checkVncEnv'
@@ -29,6 +28,7 @@ import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
+import { CreateBrowserRetry } from '@gobletqa/environment/constants'
 import {
   EmptyBrowser,
   checkInternalPWContext

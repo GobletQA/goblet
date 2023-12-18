@@ -3,8 +3,8 @@ import type { TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
 import { withRepo } from '@GSC/utils/withRepo'
-import { WSPwBrowserRestarted } from '@GSC/constants'
 import { restartBrowserCtx } from '@GSC/utils/restartBrowserCtx'
+import { WSPwBrowserRestarted } from '@gobletqa/environment/constants'
   
 
 export const browserRestart = (app:Express) => withRepo<TSocketEvtCBProps>(async (props) => {

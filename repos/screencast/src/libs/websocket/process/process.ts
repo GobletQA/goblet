@@ -25,7 +25,7 @@ import {
   WSCmdEnd,
   WSCmdFail,
   WSCmdRunning,
-} from '@GSC/constants/websocket'
+} from '@gobletqa/environment/constants'
 
 /**
  * Class for managing child process run from a socket connection

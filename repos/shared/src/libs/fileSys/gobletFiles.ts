@@ -13,7 +13,7 @@ import { getPathFromConfig, getRepoGobletDir } from '@gobletqa/goblet'
 import {
   AllowedWorldExtensions,
   DefinitionOverrideFolder
-} from '@GSH/constants'
+} from '@gobletqa/environment/constants'
 
 import { get } from '@keg-hub/jsutils/get'
 import { limbo } from '@keg-hub/jsutils/limbo'

@@ -2,6 +2,7 @@ import type { TExamCliOpts } from "@GEX/types/bin.types"
 import type { EExTestMode, TExamConfig } from '@GEX/types/exam.types'
 
 import { fullLoc } from './helpers'
+import { Logger } from "@GEX/utils/logger"
 import { LoaderErr } from "@GEX/utils/error"
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
@@ -16,9 +17,10 @@ import { buildExamCfg } from "@GEX/utils/buildExamCfg"
 import {mergeCfgArrays} from "@GEX/utils/mergeCfgArrays"
 
 const getCfgObj = async (opts:TExamCliOpts) => {
-  const configLog = fullLoc(opts.config, opts.rootDir)
+  const configLoc = fullLoc(opts.config, opts.rootDir)
+
   try {
-    const mod = require(configLog)
+    const mod = require(configLoc)
     const found = isFunc(mod)
       ? await mod(opts)
       : isObj(mod.default)
@@ -30,8 +32,10 @@ const getCfgObj = async (opts:TExamCliOpts) => {
     return found || {}
   }
   catch(err){
+    Logger.error(`\n${Logger.colors.red(`[Exam Error]`)} ${err.message}\n`)
+
     throw new LoaderErr(
-      `Error loading Exam config at location; ${configLog}`,
+      `Error loading Exam config at location: ${configLoc}`,
       err,
       true
     )

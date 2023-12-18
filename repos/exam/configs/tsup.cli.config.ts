@@ -7,7 +7,7 @@ import { promises as fs } from 'node:fs'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
 const binDir = path.join(rootDir, `src/bin`)
-const cliOutdir = path.join(rootDir, `dist/cli`)
+const cliOutdir = path.join(rootDir, `.bin`)
 const cliIn = path.join(rootDir, `src/bin/index.ts`)
 
 const workerEntry = path.join(binDir, `worker.ts`)

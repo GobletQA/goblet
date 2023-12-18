@@ -10,10 +10,10 @@ import { isArr } from '@keg-hub/jsutils/isArr'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { exists } from '@keg-hub/jsutils/exists'
-import { ArtifactSaveOpts } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
-import { InternalPaths } from '@gobletqa/environment/constants'
+import { ArtifactSaveOpts, InternalPaths } from '@gobletqa/environment/constants'
+
 
 
 /**

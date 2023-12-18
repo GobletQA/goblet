@@ -1,6 +1,6 @@
 export * from '@GBB/automate'
 export * from '@GBB/actions'
-export * from '@GBB/constants'
+export * from '@gobletqa/environment/constants'
 export * from '@GBB/server'
 export * from '@GBB/browser'
 export * from '@GBB/player'

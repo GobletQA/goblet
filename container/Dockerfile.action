@@ -4,9 +4,22 @@ ARG GB_BASE_IMAGE_FROM=$GB_IMAGE_FROM
 ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.0-focal
 ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
+
+# ---- Build Stage  ---- #
+# Only include this stage when debugging
+FROM $GB_BASE_IMAGE_FROM as goblet-debug
+WORKDIR /goblet/app
+COPY .npmrc pnpm-*.yaml ./
+RUN pnpm fetch --no-optional --ignore-scripts
+COPY . .
+RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
+RUN pnpm build:tsup
+# ---- End Stage ---- #
+
+
 # ---- Image Stage ---- #
 FROM $GB_ACT_IMAGE_FROM as goblet-image
-ARG DEBUG_FILE=/goblet/logs/pwlogs.log
+ARG DEBUG_FILE=/github/logs/pwlogs.log
 ARG GB_PNPM_VERSION=8.7.4
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
 ENV PWDEBUG=0
@@ -25,9 +38,10 @@ RUN npm uninstall -g yarn && \
     curl && \
     rm -rf /var/lib/apt/lists/* && \
     curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - && \
-    mkdir -p $(dirname "${DEBUG_FILE}") && \
-    mkdir -p /goblet/app/temp && \
-    mkdir -p /goblet/app/.tmp
+    mkdir -p /goblet && \
+    mkdir -p /github/app/temp && \
+    mkdir -p /github/app/.tmp && \
+    mkdir -p $(dirname "${DEBUG_FILE}")
 # ---- End Stage ---- #
 
 
@@ -46,6 +60,7 @@ RUN rm -rf tasks/definitions/index.ts && \
     mkdir -p /goblet/runner/temp && \
     rm -rf .*ignore && \
     rm -rf firebase.json && \
+    rm -rf tsconfig.json && \
     rm -rf configs/node_modules && \
     rm -rf configs/app.pm2.config.js && \
     rm -rf configs/commit-types.json && \
@@ -56,6 +71,7 @@ RUN rm -rf tasks/definitions/index.ts && \
     rm -rf configs/prettier.config.js && \
     rm -rf /goblet/app/repos && \
     rm -rf /goblet/app/node_modules
+COPY container/tsconfig.docker.json tsconfig.json
 # ---- End Stage ---- #
 
 
@@ -63,10 +79,14 @@ RUN rm -rf tasks/definitions/index.ts && \
 FROM $GB_BASE_IMAGE_FROM as goblet-deploy
 WORKDIR /goblet/app
 
-RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
-RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
+COPY --from=goblet-debug /goblet/app/ .
+# RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
+# RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
 RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify
-COPY container/tsconfig.docker.json /goblet/runner/tsconfig.json
+
+RUN mkdir -p /goblet/runner/repos/browser && \
+    cp -R /goblet/app/repos/browser/scripts /goblet/runner/repos/browser/scripts && \
+    cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/testify/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist
 # ---- End Stage ---- #
 
 
@@ -77,7 +97,7 @@ WORKDIR /github/app
 COPY --from=goblet-clean /goblet/app/ .
 COPY --from=goblet-deploy /goblet/runner/ .
 
-RUN ln -s /github /goblet && \
+RUN ln -s /github/app /goblet/app && \
     ln -s /github/app/repos/testify/node_modules /github/app/node_modules && \
     ln -s /github/app/repos/testify/node_modules $HOME/.node_modules && \
     ln -s /github/app/repos/testify/node_modules /github/node_modules

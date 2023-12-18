@@ -19,8 +19,8 @@
   "private": true,
   "scripts": {
     "build": "pnpm build:tsup",
-    "build:tsup": "pnpm build:tu",
-    "build:tu": "tsup --config ./configs/tsup.config.ts",
+    "build:tsup": "pnpm build:tf",
+    "build:tf": "tsup --config ./configs/tsup.config.ts",
     "build:steps": "tsup --config ./configs/tsup.steps.config.ts",
     "build:exam": "node -r esbuild-register configs/exam.cfg.build.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
@@ -31,7 +31,7 @@
     "format": "pnpm lint && pnpm pretty",
     "test:html": "node  -r esbuild-register src/exam/reporters/html/__tests__/generateHtml.ts",
     "ex:dev": "GOBLET_CONFIG_BASE=$(pwd)/src/exam/__tests__ EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register ../exam/src/bin/exam.ts --config ../exam.config.ts --root $(pwd)/src/exam/__tests__",
-    "exam": "exam --config ../exam.config.ts --root $(pwd)/src/exam/__tests__",
+    "exam": "NODE_OPTIONS=\"-r esbuild-register --enable-source-maps\" exam --root $(pwd)/src/exam/__tests__ --config ../../../dist/exam/exam.config.js",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
   },
@@ -51,6 +51,7 @@
     "esbuild-register": "3.5.0",
     "expect": "29.7.0",
     "glob": "10.3.10",
+    "module-alias": "2.2.3",
     "playwright": "1.40.1"
   },
   "devDependencies": {

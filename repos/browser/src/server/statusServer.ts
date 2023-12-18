@@ -1,7 +1,7 @@
 import type { EBrowserName, TBrowserProcs } from'@gobletqa/shared/types'
 
 import { findProc } from './proc'
-import { BrowserNames } from '@GBB/constants'
+import { BrowserNames } from '@gobletqa/environment/constants'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { exists } from '@keg-hub/jsutils/exists'
 

@@ -5,7 +5,10 @@ const { get } = require('@keg-hub/jsutils/get')
 const { SUB_REPOS } = require('./paths.config')
 const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
 
-const isProd = process.env.NODE_ENV === `production`
+const nogMissing = process.env.NODE_ENV === `production`
+  || process.env.GOBLET_RUN_FROM_CI
+  || process.env.GOBLET_RUN_FROM_UI
+
 const ignoreRepos = [
   `EXAMPLE_PATH`,
   `REPOS_PATH`,
@@ -54,7 +57,7 @@ const addRepoAliases = (roots) => {
 
     // If no data is returned, then try to load paths from tsconfig.json
     // Add true as last argument to see any errors when loading the file
-    const tsConfResp = requireFile(location, `tsconfig.json`, !isProd)
+    const tsConfResp = requireFile(location, `tsconfig.json`, !nogMissing)
 
     if(!tsConfResp && !isProd){
       console.log(`[Alias Warning] Could not find tsconfig.json at path ${location}`)

@@ -1,10 +1,10 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
-import { ExpressionKinds } from '@GSC/constants'
 import { withRepo } from '@GSC/utils/withRepo'
 import { GBrowser, Automate } from '@gobletqa/browser'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
+import { ExpressionKinds } from '@gobletqa/environment/constants'
 
 
 export const browserAutomate = (app:Express) => withRepo<TSocketEvtCBProps>(async ({

@@ -12,9 +12,9 @@ import type {
 import { get } from '@keg-hub/jsutils/get'
 import { exists } from '@keg-hub/jsutils/exists'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { WS_CMD_FAIL } from '@GSC/constants/websocket'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { isEmptyColl } from '@keg-hub/jsutils/isEmptyColl'
+import { WSCmdFail } from '@gobletqa/environment/constants'
 
 
 const CWD_REGEX = /^(\-\-)?(location|loc|workdir|cwd)\s/
@@ -146,7 +146,7 @@ export const onInvalidCmd = (
 
   // Update manager, and emit a command failed event
   manager.isRunning = false
-  manager.emitAll(WS_CMD_FAIL, {
+  manager.emitAll(WSCmdFail, {
     name,
     error: true,
     isRunning: manager.isRunning,

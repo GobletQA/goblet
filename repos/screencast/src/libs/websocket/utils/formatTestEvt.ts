@@ -1,4 +1,4 @@
-import type { TPlayerTestEventMeta } from '@gobletqa/browser'
+import type { TPlayerTestEventMeta } from '@gobletqa/shared'
 import type {
   TExEventData,
   EResultAction,
@@ -7,11 +7,11 @@ import type {
 } from '@GSC/types'
 
 
-import { TestsToSocketEvtMap } from '@GSC/constants'
 import { filterErrMessage } from '@gobletqa/exam'
 import {emptyArr} from '@keg-hub/jsutils/emptyArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
 import { PWEventErrorLogFilter } from '@gobletqa/browser'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 
 
 const getEventParent = (evtData:TPlayerTestEvent) => {

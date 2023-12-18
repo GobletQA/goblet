@@ -1,8 +1,8 @@
 import { gobletLoader } from '../../loaders/loader'
 import { configFromFolder } from '../../loaders/configFromFolder'
 
-jest.mock(`..//loader`)
-jest.mock(`@GSH/constants`)
+jest.mock(`../loader`)
+jest.mock(`@gobletqa/environment/constants`)
 
 describe(`configFromFolder`, () => {
   beforeEach(() => {

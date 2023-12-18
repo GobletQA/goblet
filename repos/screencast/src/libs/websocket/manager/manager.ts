@@ -5,14 +5,53 @@ import type {
 } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
-import * as WSConstants from '@GSC/constants/websocket'
 import {
   WSInit,
+  WSPwLog,
+  WSSetId,
+  WSRunCmd,
+  WSCmdEnd,
+  WSCmdOut,
+  WSCmdErr,
+  WSConnect,
   WSAddPeer,
+  WSCmdFail,
+  WSSetCmds,
   TagPrefix,
+  WSPwConsole,
+  WSAuthToken,
+  WSIdleStatus,
+  WSCmdRunning,
+  WSPwUrlChange,
+  WS_UPDATE_STORE,
   WSNotAuthorized,
   WSPeerDisconnect,
-} from '@GSC/constants'
+  WSPwBrowserRestarted,
+} from '@gobletqa/environment/constants'
+
+const WSConstants = [
+  WSInit,
+  WSPwLog,
+  WSSetId,
+  WSConnect,
+  WSAddPeer,
+  WSRunCmd,
+  WSCmdEnd,
+  WSCmdOut,
+  WSCmdErr,
+  WSCmdFail,
+  WSSetCmds,
+  WSPwConsole,
+  WSAuthToken,
+  WSIdleStatus,
+  WSCmdRunning,
+  WSPwUrlChange,
+  WS_UPDATE_STORE,
+  WSNotAuthorized,
+  WSPeerDisconnect,
+  WSPwBrowserRestarted,
+]
+
 
 import { get } from '@keg-hub/jsutils/get'
 import { uuid } from '@keg-hub/jsutils/uuid'

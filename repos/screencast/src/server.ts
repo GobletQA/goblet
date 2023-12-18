@@ -18,9 +18,9 @@ import {
 } from '@GSC/middleware'
 import { onExit } from '@GSC/utils/onExit'
 import { initSocket } from '@GSC/libs/websocket'
-import { SCAuthBypassRoutes } from '@GSC/constants'
 import { setupRepo } from '@GSC/middleware/setupRepo'
 import { screencastConfig } from '@GSC/configs/screencast.config'
+import { SCAuthBypassRoutes } from '@gobletqa/environment/constants'
 
 
 /**

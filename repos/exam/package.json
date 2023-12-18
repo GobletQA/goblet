@@ -8,9 +8,10 @@
   "keywords": [],
   "private": true,
   "bin": {
-    "exam": ".bin/exam.js"
+    "exam": ".bin/index.js"
   },
   "files": [
+    ".bin",
     "dist",
     "test.js",
     "index.js",

@@ -23,8 +23,8 @@ import { EBrowserEvent } from '@gobletqa/shared/enums'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
-import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
 import { checkInternalPWContext } from '@GBB/utils/checkInternalPWContext'
+import { GobletQAUrl, CreateBrowserRetry } from '@gobletqa/environment/constants'
 
 /**
  * Checks for existing contexts, and reuses one if found
