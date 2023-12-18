@@ -5,16 +5,16 @@ ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.0-focal
 ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
 
-# ---- Build Stage  ---- #
-# Only include this stage when debugging
-FROM $GB_BASE_IMAGE_FROM as goblet-debug
-WORKDIR /goblet/app
-COPY .npmrc pnpm-*.yaml ./
-RUN pnpm fetch --no-optional --ignore-scripts
-COPY . .
-RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
-RUN pnpm build:tsup
-# ---- End Stage ---- #
+# # ---- Build Stage  ---- #
+# # Only include this stage when debugging
+# FROM $GB_BASE_IMAGE_FROM as goblet-debug
+# WORKDIR /goblet/app
+# COPY .npmrc pnpm-*.yaml ./
+# RUN pnpm fetch --no-optional --ignore-scripts
+# COPY . .
+# RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
+# RUN pnpm build:tsup
+# # ---- End Stage ---- #
 
 
 # ---- Image Stage ---- #
@@ -79,9 +79,9 @@ COPY container/tsconfig.docker.json tsconfig.json
 FROM $GB_BASE_IMAGE_FROM as goblet-deploy
 WORKDIR /goblet/app
 
-COPY --from=goblet-debug /goblet/app/ .
-# RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
-# RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
+# COPY --from=goblet-debug /goblet/app/ .
+RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
+RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
 RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify
 
 RUN mkdir -p /goblet/runner/repos/browser && \
