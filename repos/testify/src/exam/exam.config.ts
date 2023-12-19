@@ -21,6 +21,7 @@ import { ENVS } from '@gobletqa/environment'
 import { getClientWorld } from '@gobletqa/repo'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { checkDistDir } from '@GTU/Utils/checkDistDir'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { getExamTimeouts } from '@GTU/Utils/getExamTimeouts'
@@ -35,10 +36,13 @@ import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFi
 // Default to 20 seconds test timeout
 // Default to 1hr global suite timeout
 const defTimeouts = {testTimeout: 20000, suiteTimeout: 60000 * 60}
-const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
-const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
-const RunnerLoc = path.resolve(__dirname, './feature/Runner.ts')
-const EnvironmentLoc = path.resolve(__dirname, './feature/Environment.ts')
+
+
+const {ext, dirname} = checkDistDir(__dirname, `./exam`)
+const OnStartupLoc = path.resolve(dirname, `./onStartup.${ext}`)
+const OnShutdownLoc = path.resolve(dirname, `./onShutdown.${ext}`)
+const RunnerLoc = path.resolve(dirname, `./feature/Runner.${ext}`)
+const EnvironmentLoc = path.resolve(dirname, `./feature/Environment.${ext}`)
 
 
 const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
@@ -52,16 +56,20 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts()
   // Any options passed from the task should override options in the world config
-  const browserConf = {...world?.$browser, ...browserOpts} as TBrowserConf
-  const contextOpts = getContextOpts({ config, world })
+  const browserConf = {
+    ...world?.$browser,
+    ...browserOpts
+  } as TBrowserConf
 
-  const gobletOpts = buildTestGobletOpts(config, browserConf)
+  const contextOpts = getContextOpts({ config, world })
+  const gobletOpts = buildTestGobletOpts(config, browserConf, world?.$testOptions)
+
   const rootDir = examConfig?.rootDir || config.paths.repoRoot
 
   return {
     // debug: true,
-    // esbuild: {},
     // verbose: true,
+    // esbuild: {},
     // testIgnore: [],
     // loaderIgnore:[],
     // transformIgnore: [],

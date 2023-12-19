@@ -24,6 +24,8 @@ import { getPage, getContext } from '@GTU/Playwright/browserContext'
  * Add wrap method to ensure no arguments are passed to initialize and cleanup
  */
 BeforeAll(async () => {
+  if(get<boolean>(global, `__goblet.options.browserDisabled`, false)) return
+
   const { context, page } = await initialize()
   if(!context || !page) return
 
@@ -36,6 +38,8 @@ BeforeAll(async () => {
 })
 
 AfterAll(async () => {
+  if(get<boolean>(global, `__goblet.options.browserDisabled`, false)) return
+
   const context = await getContext()
   if(!context) return
 

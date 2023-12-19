@@ -1,3 +1,5 @@
+import {  TBuildTestGobletOptsParams } from './testify.types'
+
 /**
  * Most of the types in this file should be exported from parkin instead
  * They were added before parkin had types, but now that it does they should be updated
@@ -11,6 +13,7 @@ import type {
   TWorldConfig,
   EResultAction,
 } from '@ltipton/parkin'
+
 
 export { EResultAction }
 export type TParse = Parkin["parse"]
@@ -98,4 +101,5 @@ export type TParkinRun = (
 export type TWorldJokerCfg = {}
 export type TGBWorldCfg = TWorldConfig & {
   joker?:TWorldJokerCfg
+  $testOptions?:TBuildTestGobletOptsParams
 }

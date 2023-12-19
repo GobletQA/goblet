@@ -1,7 +1,6 @@
 // TODO: remove this whole file
 
 import type { Socket } from 'socket.io'
-import { aliases } from '@gobletqa/configs/aliases.config'
 import type { SocketManager } from '../manager/manager'
 import type {
   TCmdMessage,
@@ -17,6 +16,7 @@ import { exec } from './exec'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { shouldFilterMessage, validateCmd, addConfig } from './helpers'
 import {
   WSRunCmd,

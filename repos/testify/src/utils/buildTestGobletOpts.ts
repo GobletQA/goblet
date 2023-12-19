@@ -3,12 +3,15 @@ import type {
   TBrowserConf,
   TGobletConfig,
   TGobletTestOpts,
+  TBuildTestGobletOptsParams,
 } from '@gobletqa/shared/types'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { toBool } from '@keg-hub/jsutils/toBool'
+import { exists } from '@keg-hub/jsutils/exists'
 import { getPathFromBase } from '@gobletqa/goblet'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
   CanRecordVideo,
   BrowserArtifactTypes,
@@ -19,12 +22,15 @@ import {
   artifactSaveOption,
 } from './artifactSaveOption'
 
+
+
+
 /**
  * Builds the repo paths to artifacts generated at test run
  */
 const buildArtifactsPaths = (
   config:TGobletConfig,
-  options
+  options:TGobletTestOpts
 ) => {
   const { artifactsDir } = config.paths
   BrowserArtifactTypes.map((type:string) => {
@@ -42,6 +48,19 @@ const buildArtifactsPaths = (
   })
 }
 
+const mergeTestOptionsObjs = (
+  options:TGobletTestOpts,
+  opts?:TBuildTestGobletOptsParams
+) => {
+  return Object.entries(opts).reduce((acc, [key, value]) => {
+    !exists(acc[key])
+      && exists(value)
+      && (acc[key] = value)
+
+    return acc
+  }, options) as TGobletTestOpts
+}
+
 /**
  * Global options for goblet passed to the Jest config global object
  * All values must be serializable
@@ -53,6 +72,7 @@ const buildArtifactsPaths = (
 export const buildTestGobletOpts = (
   config:TGobletConfig,
   browserOpts:TBrowserConf,
+  opts:TBuildTestGobletOptsParams=emptyObj
 ) => {
 
     // TODO: add cli options for these
@@ -79,6 +99,8 @@ export const buildTestGobletOpts = (
 
   if(ENVS.GOBLET_CUSTOM_REPORTS_DIR) options.reportsDir = ENVS.GOBLET_CUSTOM_REPORTS_DIR
 
+  if(ENVS.GOBLET_BROWSER_DISABLED) options.browserDisabled = true
+
   if(artifactSaveActive(ENVS.GOBLET_TEST_TRACING))
     options.tracing = {
       sources: toBool(ENVS.GOBLET_TEST_TRACING_SOURCES),
@@ -86,8 +108,9 @@ export const buildTestGobletOpts = (
       screenshots: toBool(ENVS.GOBLET_TEST_TRACING_SCREENSHOTS),
     }
 
-  buildArtifactsPaths(config, options)
+  const merged = mergeTestOptionsObjs(options, opts)
+  buildArtifactsPaths(config, merged)
 
-  return options
+  return merged
 }
 

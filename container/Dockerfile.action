@@ -79,12 +79,13 @@ COPY container/tsconfig.docker.json tsconfig.json
 FROM $GB_BASE_IMAGE_FROM as goblet-deploy
 WORKDIR /goblet/app
 
+# # Only include this stage when debugging
 # COPY --from=goblet-debug /goblet/app/ .
-RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline
-RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod
-RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify
 
-RUN mkdir -p /goblet/runner/repos/browser && \
+RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline && \
+    CI=1 pnpm install --fix-lockfile --prefer-offline --prod && \
+    pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify && \
+    mkdir -p /goblet/runner/repos/browser && \
     cp -R /goblet/app/repos/browser/scripts /goblet/runner/repos/browser/scripts && \
     cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/testify/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist
 # ---- End Stage ---- #

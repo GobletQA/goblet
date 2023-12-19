@@ -12,6 +12,7 @@ const browser = (general:TGenEnv, scEnvs:ReturnType<typeof screencast>) => {
     GB_WS_BROWSER,
     GOBLET_DEV_TOOLS,
     GOBLET_BROWSER_DEVICES,
+    GOBLET_BROWSER_DISABLED,
     GOBLET_BROWSER = `chromium`,
     GOBLET_BROWSER_SLOW_MO = `50`,
     GOBLET_BROWSER_TIMEOUT = `15000`, // 15 seconds
@@ -28,19 +29,20 @@ const browser = (general:TGenEnv, scEnvs:ReturnType<typeof screencast>) => {
 
   return {
     GOBLET_BROWSER,
+    GOBLET_CONTEXT_TZ,
+    GOBLET_CONTEXT_GEO,
     GOBLET_BROWSER_DEVICES,
+    GOBLET_CONTEXT_PERMISSIONS,
     GB_WS_BROWSER: asBool(GB_WS_BROWSER),
     GOBLET_HEADLESS: asBool(GOBLET_HEADLESS),
     GOBLET_DEV_TOOLS: asBool(GOBLET_DEV_TOOLS),
     GOBLET_BROWSER_SLOW_MO: asNum(GOBLET_BROWSER_SLOW_MO),
     GOBLET_BROWSER_TIMEOUT: asNum(GOBLET_BROWSER_TIMEOUT),
-    GOBLET_CONTEXT_TZ,
-    GOBLET_CONTEXT_GEO,
-    GOBLET_CONTEXT_PERMISSIONS,
     GOBLET_CONTEXT_TOUCH: asBool(GOBLET_CONTEXT_TOUCH),
     GOBLET_CONTEXT_MOBILE: asBool(GOBLET_CONTEXT_MOBILE),
     GOBLET_CONTEXT_WIDTH: asNum(GOBLET_CONTEXT_WIDTH, { exists: true, default: undefined }),
     GOBLET_CONTEXT_HEIGHT: asNum(GOBLET_CONTEXT_HEIGHT, { exists: true, default: undefined }),
+    GOBLET_BROWSER_DISABLED: asBool(GOBLET_BROWSER_DISABLED, { exists: true, default: false }),
     GOBLET_CONTEXT_DOWNLOADS: asBool(GOBLET_CONTEXT_DOWNLOADS, { exists: true, default: true }),
     GOBLET_FULL_SCREEN_VIDEO: asBool(GOBLET_FULL_SCREEN_VIDEO, { exists: true, default: true }),
   }

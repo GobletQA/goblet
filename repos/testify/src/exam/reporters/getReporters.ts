@@ -4,19 +4,21 @@ import type { TExamReporters, TExamConfig, TExReporterCfg } from '@gobletqa/exam
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { isArr } from '@keg-hub/jsutils/isArr'
+import { checkDistDir } from '@GTU/Utils/checkDistDir'
 import { parseJSON } from '@keg-hub/jsutils/parseJSON'
 import { artifactSaveOption } from '@GTU/Utils/artifactSaveOption'
 
-const CliReporterLoc = path.resolve(__dirname, './cli/CliReporter.ts')
-const JsonReporterLoc = path.resolve(__dirname, './json/JsonReporter.ts')
-const HtmlReporterLoc = path.resolve(__dirname, './html/HtmlReporter.ts')
+const {ext, dirname} = checkDistDir(__dirname, `./exam/reporters`)
+const CliReporterLoc = path.resolve(dirname, `./cli/CliReporter.${ext}`)
+const JsonReporterLoc = path.resolve(dirname, `./json/JsonReporter.${ext}`)
+const HtmlReporterLoc = path.resolve(dirname, `./html/HtmlReporter.${ext}`)
 
 /**
  * This reporter is always included
  * It handles dispatching events to registered listeners
  * Which is how test traces, and videos are handled 
  */
-const EventReporterLoc = path.resolve(__dirname, './event/EventReporter.ts')
+const EventReporterLoc = path.resolve(dirname, `./event/EventReporter.${ext}`)
 
 type TEnvOpts = Record<string, TExReporterCfg|undefined>
 

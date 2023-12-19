@@ -10,11 +10,11 @@ import { isNum } from '@keg-hub/jsutils/isNum'
 import { isBool } from '@keg-hub/jsutils/isBool'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { toBool } from '@keg-hub/jsutils/toBool'
-import { ExamCfgModeTypes } from "@GEX/constants"
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { buildExamCfg } from "@GEX/utils/buildExamCfg"
 import {mergeCfgArrays} from "@GEX/utils/mergeCfgArrays"
+import { ExamCfgModeTypes } from '@gobletqa/environment/constants'
 
 const getCfgObj = async (opts:TExamCliOpts) => {
   const configLoc = fullLoc(opts.config, opts.rootDir)

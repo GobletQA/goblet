@@ -4,6 +4,9 @@ const world = {
   $alias: {},
   $context: {},
   $browser: {},
+  $testOptions: {
+    browserDisabled: true
+  }
 }
 
 export default world

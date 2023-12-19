@@ -3,10 +3,10 @@ import type { TExamConfig } from '@GEX/types'
 
 import {ExamError} from '@GEX/utils/error'
 import { WorkerPool } from '@GEX/workerPool'
-import {ExamCfgModeType} from '@GEX/constants'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { flatArr } from '@keg-hub/jsutils/flatArr'
 import {printExamTestMode} from '@GEX/debug/verbose'
+import {ExamCfgModeType} from '@gobletqa/environment/constants'
 
 /**
  * If there are

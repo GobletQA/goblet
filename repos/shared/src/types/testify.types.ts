@@ -22,12 +22,15 @@ export type TGobletTestOpts = {
   snapshotsDir?:string
   reuseContext?:boolean
   testType?:string|false
+  browserDisabled?:boolean
   tracing?:TGobletTestTracingOpts
   saveVideo?:TGobletTestArtifactOption
   saveTrace?:TGobletTestArtifactOption
   saveReport?:TGobletTestArtifactOption
   saveScreenshot?:TGobletTestArtifactOption
 }
+
+export type TBuildTestGobletOptsParams = Partial<TGobletTestOpts> & {}
 
 export type TBuildTestArgs = {
   base?:string
