@@ -15,8 +15,8 @@ import { wait } from '@keg-hub/jsutils/wait'
 import { pathExists } from '@GTU/Utils/fileSys'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
-import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 import {
   getGeneratedName,

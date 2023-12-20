@@ -1,14 +1,16 @@
+import type { EBrowserType } from '@gobletqa/shared/enums'
 import type {
   TGBWorldCfg,
   TBrowserConf,
   TGobletConfig,
   TBrowserLaunchOpts
 } from '@gobletqa/shared/types'
-
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
+import { getBrowserType } from './getBrowserType'
 import { vncActive } from '@GBB/utils/checkVncEnv'
+import { EBrowserName } from '@gobletqa/shared/enums'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
@@ -21,8 +23,9 @@ import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
  * Default browser options
  * @type {Object}
  */
-const getDefOpts = () => {
-  const opts = {
+const opts = {
+  [EBrowserName.chromium]: {
+    type: EBrowserName.chromium,
     shared: {
       args: [
         `--allow-insecure-localhost`,
@@ -81,18 +84,46 @@ const getDefOpts = () => {
       headless: true,
       ignoreDefaultArgs: [],
     } as Partial<TBrowserConf>,
+  },
+  [EBrowserName.webkit]: {
+    type: EBrowserName.webkit,
+    host: {} as Partial<TBrowserConf>,
+    vnc: {} as Partial<TBrowserConf>,
+    shared: {} as Partial<TBrowserConf>,
+    ci: {
+      headless: true
+    } as Partial<TBrowserConf>,
+  },
+  [EBrowserName.firefox]: {
+    type: EBrowserName.firefox,
+    shared: {
+      launchOptions: {
+        firefoxUserPrefs: {
+          [`permissions.default.camera`]: 1,
+          [`permissions.default.microphone`]: 1,
+        },
+      },
+    } as Partial<TBrowserConf>,
+    vnc: {} as Partial<TBrowserConf>,
+    host: {} as Partial<TBrowserConf>,
+    ci: {
+      headless: true
+    } as Partial<TBrowserConf>,
   }
+}
+const getDefOpts = (type:EBrowserType|EBrowserName) => {
+  const browserType = getBrowserType(type)
+  const defOpts = opts[browserType] ?? opts[EBrowserName.chromium]
 
   // TODO: eventually this will be overwritten by the mounted repo 
   // If we have a path to the testify dir
   // Then add the fake webcam data
-  if(InternalPaths?.testifyDir){
+  if(defOpts.type === EBrowserName.chromium && InternalPaths?.testifyDir){
     const webcamLoc = path.join(InternalPaths.testifyDir, `media/webcam.y4m`)
-    opts.shared.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
+    defOpts.shared.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
   }
 
-
-  return opts
+  return defOpts
 }
 
 
@@ -143,14 +174,14 @@ export const getBrowserOpts = (
     page,
     args=emptyArr,
     ignoreDefaultArgs=emptyArr,
-    // type / url is not used, just pulled out of the config object
     type,
+    // url is not used, just pulled out of the config object
     url,
     forwardLogs,
     ...argumentOpts
   } = browserConf
 
-  const options = getDefOpts()
+  const options = getDefOpts(type)
 
   const {
     args:configModeArgs,

@@ -123,7 +123,12 @@ export class PWBrowsers {
 
     const opts = deepMerge(
       getBrowserOpts(browserConf, config, world),
-      getContextOpts({config, contextOpts: browserConf.context, world})
+      getContextOpts({
+        type,
+        world,
+        config,
+        contextOpts: browserConf.context,
+      })
     )
     logEnvMsg(`Browser-PersistentContext options`, `verbose`, opts)
     

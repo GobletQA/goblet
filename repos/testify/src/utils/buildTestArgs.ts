@@ -55,14 +55,13 @@ export const buildTestArgs = (
     testMatch=context,
   } = params
 
-  // node ./repos/exam/.bin/exam.js --config ../../app/repos/testify/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
+  // node node_modules/@gobletqa/exam/.bin/index.js --config /goblet/app/repos/testify/dist/exam/exam.config.js --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
 
   const cmdArgs = [
     `node`,
      `-r`,
      `esbuild-register`,
-    //  `./repos/exam/.bin/exam.js`,
-    `./repos/exam/src/bin/exam.ts`,
+    `node_modules/@gobletqa/exam/.bin/index.js`,
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))

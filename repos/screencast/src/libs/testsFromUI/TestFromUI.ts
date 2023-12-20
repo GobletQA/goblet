@@ -31,8 +31,8 @@ import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { aliases } from '@gobletqa/configs/aliases.config'
 import { ETestType, EBrowserType } from '@gobletqa/shared/enums'
 import { buildBddEnvs } from '@gobletqa/testify/utils/buildBddEnvs'
-import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 import { buildTestArgs } from '@gobletqa/testify/utils/buildTestArgs'
+import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
 import { TestsToSocketEvtMap, InternalPaths } from '@gobletqa/environment/constants'
 
 import {

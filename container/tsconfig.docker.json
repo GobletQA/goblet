@@ -24,8 +24,6 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
 
-      "@GTU": ["repos/testify/dist"],
-      "@GTU/*": ["repos/testify/dist/*"],
       "@GTU/Exam": ["repos/testify/dist/exam"],
       "@GTU/Exam/*": ["repos/testify/dist/exam/*"],
       "@GTU/Utils": ["repos/testify/dist/utils"],
@@ -41,6 +39,9 @@
       "@GTU/Playwright": ["repos/testify/dist/playwright"],
       "@GTU/Playwright/*": ["repos/testify/dist/playwright/*"],
       "@GTU/PlaywrightEnv": ["repos/testify/dist/playwright/playwrightTestEnv"],
+      "@GTU/Constants": ["repos/testify/node_modules/@gobletqa/environment/constants"],
+      "@GTU": ["repos/testify/dist"],
+      "@GTU/*": ["repos/testify/dist/*"],
       "@GEnvironment": ["repos/testify/node_modules/@gobletqa/shared/environment"],
 
       "@GWF": ["repos/workflows"],

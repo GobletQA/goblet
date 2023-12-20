@@ -10,8 +10,8 @@ import { Logger } from "@gobletqa/logger"
 import { get } from '@keg-hub/jsutils/get'
 import { set } from '@keg-hub/jsutils/set'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import { evtReporter } from '@GTU/Exam/reporters/event/EventReporter'
 import {
   getGeneratedName,

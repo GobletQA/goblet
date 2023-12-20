@@ -19,10 +19,10 @@ import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
-import { EBrowserEvent } from '@gobletqa/shared/enums'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
+import { EBrowserName, EBrowserEvent } from '@gobletqa/shared/enums'
 import { checkInternalPWContext } from '@GBB/utils/checkInternalPWContext'
 import { GobletQAUrl, CreateBrowserRetry } from '@gobletqa/environment/constants'
 
@@ -160,6 +160,7 @@ export class Browser {
         config,
         overrides: overrides.context,
         contextOpts: browserConf.context,
+        type: browser.browserType().name() as EBrowserName,
       })
       
       logEnvMsg(`Context Options`, `verbose`, options)

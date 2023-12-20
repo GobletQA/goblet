@@ -7,6 +7,8 @@
   TEXInterReporterContext,
 } from "@gobletqa/exam"
 
+import { getRelativeLoc } from '@GTU/Utils/fileSys'
+import {  TestsResultStatus, TestsToSocketEvtMap } from "@gobletqa/environment/constants"
 import {
   Logger,
   FileTag,
@@ -14,12 +16,9 @@ import {
   spaceMap,
   spaceFromId,
   RootSuiteTag,
-  TestsToSocketEvtMap,
   filterErrMessage,
-  TestsResultStatus,
 } from "@gobletqa/exam"
 
-import { getRelativeLoc } from '@GTU/Utils/fileSys'
 
 
 const logFile = (location:string, rootDir?:string) => {

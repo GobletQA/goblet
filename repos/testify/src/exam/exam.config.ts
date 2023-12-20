@@ -61,7 +61,11 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
     ...browserOpts
   } as TBrowserConf
 
-  const contextOpts = getContextOpts({ config, world })
+  const contextOpts = getContextOpts({
+    world,
+    config,
+    type: browserConf.type,
+  })
   const gobletOpts = buildTestGobletOpts(config, browserConf, world?.$testOptions)
 
   const rootDir = examConfig?.rootDir || config.paths.repoRoot

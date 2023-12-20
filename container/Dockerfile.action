@@ -14,7 +14,24 @@ ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 # COPY . .
 # RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
 # RUN pnpm build:tsup
-# # ---- End Stage ---- #
+# RUN pnpm build:docker
+# RUN mkdir -p /goblet/out/repos/browser && \
+#     cp -R repos/browser/dist /goblet/out/repos/browser/dist && \
+#     mkdir -p /goblet/out/repos/environment && \
+#     cp -R repos/environment/dist /goblet/out/repos/environment/dist && \
+#     mkdir -p /goblet/out/repos/exam && \
+#     cp -R repos/exam/dist /goblet/out/repos/exam/dist && \
+#     mkdir -p /goblet/out/repos/goblet && \
+#     cp -R repos/goblet/dist /goblet/out/repos/goblet/dist && \
+#     mkdir -p /goblet/out/repos/latent && \
+#     cp -R repos/latent/dist /goblet/out/repos/latent/dist && \
+#     mkdir -p /goblet/out/repos/logger && \
+#     cp -R repos/logger/dist /goblet/out/repos/logger/dist && \
+#     mkdir -p /goblet/out/repos/repo && \
+#     cp -R repos/repo/dist /goblet/out/repos/repo/dist && \
+#     mkdir -p /goblet/out/repos/shared && \
+#     cp -R repos/shared/dist /goblet/out/repos/shared/dist
+# # # ---- End Stage ---- #
 
 
 # ---- Image Stage ---- #
@@ -80,12 +97,13 @@ FROM $GB_BASE_IMAGE_FROM as goblet-deploy
 WORKDIR /goblet/app
 
 # # Only include this stage when debugging
-# COPY --from=goblet-debug /goblet/app/ .
-
+# COPY --from=goblet-debug /goblet/out/ .
 RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline && \
-    CI=1 pnpm install --fix-lockfile --prefer-offline --prod && \
-    pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify && \
+    CI=1 pnpm install --fix-lockfile --prefer-offline --prod
+
+RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify && \
     mkdir -p /goblet/runner/repos/browser && \
+    mkdir -p /goblet/runner/repos/shared/dist && \
     cp -R /goblet/app/repos/browser/scripts /goblet/runner/repos/browser/scripts && \
     cp -R /goblet/app/repos/shared/dist/types.ts /goblet/runner/repos/shared/dist/types.ts && \
     cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/testify/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist && \

@@ -27,9 +27,16 @@ export const buildBrowserConf = (args:TBuildBrowserCfg):TBrowserConf => {
     browserConf=emptyObj as TBrowserConf,
   } = args
 
+  const type = getBrowserType(browserConf?.type as EBrowserType)
+
   return deepMerge(browserConf, {
-    type: getBrowserType(browserConf?.type as EBrowserType),
+    type,
     ws: toBool(browserConf?.ws || browserServer || socketActive()),
-    context: getContextOpts({ config, contextOpts: browserConf?.context, world }),
+    context: getContextOpts({
+      type,
+      world,
+      config,
+      contextOpts: browserConf?.context,
+    }),
   }, world?.$browser)
 }
