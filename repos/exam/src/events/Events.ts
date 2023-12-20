@@ -1,7 +1,7 @@
 import type { TExamEvts, TExamEvt } from '@GEX/types'
 
-import { TestsToSocketEvtMap } from '@GEX/constants'
 import {emptyObj} from '@keg-hub/jsutils/emptyObj'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 
 export const onExDynEvent = (mainEvt:Partial<TExamEvt>) => {
   return (evt:Partial<TExamEvt>) => {

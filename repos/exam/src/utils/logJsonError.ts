@@ -6,9 +6,10 @@ import {
 
 import { ENVS } from '@gobletqa/environment'
 import { ExamErrTag } from "@GEX/constants/tags"
-import { CliLogger, stripColors } from './logger'
-import { TestsToSocketEvtMap } from '@GEX/constants'
 import { buildFailedTestResult } from './buildResult'
+import { CliLogger, stripColors } from '@gobletqa/logger'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
+
 
 export type TLogJsonError = Error & {
   cause?:string

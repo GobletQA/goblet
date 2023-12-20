@@ -1,5 +1,10 @@
-import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
-import type { TBuildTestArgs, TBuildBddEnvs } from '@GSH/types/testify.types'
+import type {
+  TTask,
+  TTaskParams,
+  TBuildBddEnvs,
+  TBuildTestArgs,
+  TTaskActionArgs,
+} from '../../types'
 
 import { appRoot } from '../../paths'
 import { ETestType } from '../../types'

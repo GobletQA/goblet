@@ -19,18 +19,20 @@
   },
   "scripts": {
     "build": "exit 0",
-    "build:tsup": "pnpm build:api && pnpm build:utils && pnpm build:enum && pnpm build:fs && pnpm build:env",
+    "build:tsup": "pnpm build:api && pnpm build:utils && pnpm build:enum && pnpm build:fs && pnpm build:env && pnpm build:types",
     "build:api": "tsup --config ./configs/tsup.api.config.ts",
     "build:fe": "tsup --config ./configs/tsup.fe.config.ts",
     "build:fs": "tsup --config ./configs/tsup.fs.config.ts",
     "build:enum": "tsup --config ./configs/tsup.enums.config.ts",
     "build:env": "tsup --config ./configs/tsup.env.config.ts",
+    "build:types": "tsup --config ./configs/tsup.types.config.ts && pnpm types:fix",
     "build:utils": "tsup --config ./configs/tsup.utils.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
+    "types:fix": "node -r esbuild-register scripts/fixTypes.ts",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
@@ -56,6 +58,7 @@
     "@types/express": "4.17.18",
     "@types/node": "20.9.3",
     "esbuild": "0.19.7",
+    "esbuild-register": "3.5.0",
     "socket.io": "4.7.2",
     "tsup": "8.0.1"
   }

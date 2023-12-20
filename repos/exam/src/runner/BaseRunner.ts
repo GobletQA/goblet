@@ -8,7 +8,6 @@ import type {
 import { ExamRunner } from './ExamRunner'
 import { set } from '@keg-hub/jsutils/set'
 import { get } from '@keg-hub/jsutils/get'
-import { RootSuiteId } from '@GEX/constants'
 import { ExamEvents } from '@GEX/events/Events'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'

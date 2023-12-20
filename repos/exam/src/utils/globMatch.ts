@@ -3,9 +3,10 @@ import type { GlobOptions } from 'glob'
 import { glob } from 'glob'
 import micromatch from 'micromatch'
 import { naturalSort } from './naturalSort'
-import { GlobMatchKeys } from "@GEX/constants"
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { GlobMatchKeys } from '@gobletqa/environment/constants'
+
 
 import { GlobFilesCfg } from "@GEX/constants/defaults"
 import {TExamConfig} from '@GEX/types'

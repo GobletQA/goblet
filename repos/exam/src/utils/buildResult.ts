@@ -4,17 +4,15 @@ import type {
   TExEventData,
 } from "@GEX/types"
 
-import {
-  EPlayerTestType
-} from '@GEX/types'
+import { EPlayerTestType } from '@GEX/types'
 import { ExamEvents } from '@GEX/events/Events'
 import { emptyObj } from "@keg-hub/jsutils/emptyObj"
-import { TestsToSocketEvtMap } from '@GEX/constants'
 import {
   NoTestsFoundPass,
   BuiltExamFinished,
+  TestsToSocketEvtMap,
   BuiltTestResultFailed,
-} from "@GEX/constants"
+} from '@gobletqa/environment/constants'
 
 type TBuildResult = Partial<TExEventData> & {
   id:string

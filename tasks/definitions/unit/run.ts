@@ -1,5 +1,4 @@
-import type { TTask, TTaskActionArgs } from '../../types'
-import type { TBuildTestArgs } from '@gobletqa/shared/types'
+import type { TTask, TTaskActionArgs, TBuildTestArgs } from '../../types'
 
 import { ETestType } from '../../types'
 import constants from '../../constants'

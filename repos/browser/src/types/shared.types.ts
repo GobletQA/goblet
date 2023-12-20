@@ -37,6 +37,7 @@ export type {
   TActionCallback,
   TStartRecording,
   TStartTraceOpts,
+  TConsoleCallback,
   TBrowserMetaData,
   TBrowserEventArgs,
   TBrowserLaunchOpts,
@@ -56,3 +57,15 @@ export type {
   TPWOnRecordEvent,
   TPWOnRecordCleanup
 } from '@gobletqa/shared/types/pwRecorder.types'
+
+export type {
+  TPlayerOpts,
+  TPlayerEvent,
+  TPlayerConfig,
+  TPlayerEventCB,
+  TPlayerCleanupCB,
+  TPlayerEventData,
+  TPlayerStartConfig,
+} from '@gobletqa/shared/types/pwPlayer.types'
+
+export type { Repo } from '@gobletqa/shared/types/repo.types'
