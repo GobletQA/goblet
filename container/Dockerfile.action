@@ -87,7 +87,16 @@ RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline && 
     pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify && \
     mkdir -p /goblet/runner/repos/browser && \
     cp -R /goblet/app/repos/browser/scripts /goblet/runner/repos/browser/scripts && \
-    cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/testify/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist
+    cp -R /goblet/app/repos/shared/dist/types.ts /goblet/runner/repos/shared/dist/types.ts && \
+    cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/testify/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist && \
+    cd /goblet/runner/repos/testify/node_modules/@gobletqa && \
+    rm -rf browser/src && \
+    rm -rf environment/src && \
+    rm -rf exam/src && \
+    rm -rf goblet/src && \
+    rm -rf logger/src && \
+    rm -rf repo/src && \
+    rm -rf shared/src
 # ---- End Stage ---- #
 
 

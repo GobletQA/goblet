@@ -1,7 +1,7 @@
 
 import path from 'path'
-import { ETestType } from '../types'
 import { testifyDir } from '../paths'
+import { ETestType } from '@gobletqa/shared/enums'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
 import { FullBrowserNames } from '@gobletqa/browser'
 

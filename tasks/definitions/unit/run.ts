@@ -1,7 +1,7 @@
 import type { TTask, TTaskActionArgs, TBuildTestArgs } from '../../types'
 
-import { ETestType } from '../../types'
 import constants from '../../constants'
+import { ETestType } from '@gobletqa/shared/enums'
 import { sharedOptions } from '@keg-hub/cli-utils'
 import { runTestCmd } from '../../utils/helpers/runTestCmd'
 import { getTestConfig } from '../../utils/test/getTestConfig'

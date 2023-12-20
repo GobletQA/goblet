@@ -1,9 +1,8 @@
+import type { ETestType } from '@gobletqa/shared/enums'
 import type {
-  ETestType,
   TTaskParams,
   TGobletConfig,
 } from '../../types'
-
 
 export type TRunExam = {
   config:string

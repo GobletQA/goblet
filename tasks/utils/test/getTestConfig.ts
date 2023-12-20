@@ -1,4 +1,5 @@
-import type { TTaskParams, ETestType } from '../../types'
+import type { TTaskParams } from '../../types'
+import type { ETestType } from '@gobletqa/shared/enums'
 
 import path from 'path'
 import { exists } from '@keg-hub/jsutils'

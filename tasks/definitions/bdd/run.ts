@@ -7,8 +7,8 @@ import type {
 } from '../../types'
 
 import { appRoot } from '../../paths'
-import { ETestType } from '../../types'
 import { isArr } from '@keg-hub/jsutils/isArr'
+import { ETestType } from '@gobletqa/shared/enums'
 import { sharedOptions, Logger } from '@keg-hub/cli-utils'
 import { getDebugEnv } from '../../utils/envs/getDebugEnv'
 import { runTestCmd } from '../../utils/helpers/runTestCmd'

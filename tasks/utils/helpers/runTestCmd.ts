@@ -1,9 +1,9 @@
 import type { SpawnOptionsWithoutStdio } from 'child_process'
 import type { TTaskParams } from '../../types'
 
-import { EBrowserType } from '../../types'
 import { runCmd } from '@keg-hub/cli-utils'
 import { runCommands } from '../helpers/runCommands'
+import { EBrowserType } from '@gobletqa/shared/enums'
 import { handleTestExit } from '../helpers/handleTestExit'
 
 
