@@ -10,13 +10,13 @@ GB_SC_IDLE_INTERVAL=${GB_SC_IDLE_INTERVAL:-20}
 GB_SC_IDLE_THRESHOLD=${GB_SC_IDLE_THRESHOLD:-4}
 GB_SC_IDLE_WAIT_TO_START=${GB_SC_IDLE_WAIT_TO_START:-180}
 GB_SC_IDLE_CONNECTION_THRESHOLD=${GB_SC_IDLE_CONNECTION_THRESHOLD:-1}
-
 GB_APP_TEMP_PATH=${GB_APP_TEMP_PATH:-"temp"}
 GB_APP_MOUNT_PATH=${GB_APP_MOUNT_PATH:-"/goblet/app"}
 GB_SC_RESET_CONNECTION_FILE=${GB_SC_RESET_CONNECTION_FILE:-"reset-connection-check"}
 GB_RESET_CONNECTION_PATH="$GB_APP_MOUNT_PATH/$GB_APP_TEMP_PATH/$GB_SC_RESET_CONNECTION_FILE"
 
 [[ "$NODE_ENV" == "local" ]] && SupCfgLoc=supervisord.local.conf || SupCfgLoc=supervisord.conf
+[[ "$GB_LOCAL_DEV_MODE" == "false" ]] && SupCfgLoc=supervisord.conf
 
 # Prints an error message to the terminal in the color white
 gb_log(){

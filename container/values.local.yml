@@ -11,7 +11,7 @@ env:
   GB_BE_DEVSPACE_CONFIG: container/devspace.yaml
 
   # --- Run the conductor in local dev mode --- #
-  GB_LOCAL_DEV_MODE: true
+  GB_LOCAL_DEV_MODE: false
   
   # Use a websocket for connecting to the browser
   GB_WS_BROWSER: true

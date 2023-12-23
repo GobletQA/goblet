@@ -1,7 +1,7 @@
 import type { Response, Request } from 'express'
 
+import { getFeatures } from '@gobletqa/repo'
 import { apiRes, AppRouter } from '@gobletqa/shared/api'
-import { getFeatures } from '@gobletqa/repo/getFeatures'
 import { fileModelArrayToObj } from '@gobletqa/shared/fs'
 
 export const loadBddFiles = async (req:Request, res:Response) => {

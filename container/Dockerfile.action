@@ -31,7 +31,7 @@ ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 #     cp -R repos/repo/dist /goblet/out/repos/repo/dist && \
 #     mkdir -p /goblet/out/repos/shared && \
 #     cp -R repos/shared/dist /goblet/out/repos/shared/dist
-# # # ---- End Stage ---- #
+# # ---- End Stage ---- #
 
 
 # ---- Image Stage ---- #
@@ -62,7 +62,7 @@ RUN npm uninstall -g yarn && \
 # ---- End Stage ---- #
 
 
-# # ---- Clean Stage  ---- #
+# ---- Clean Stage  ---- #
 FROM $GB_BASE_IMAGE_FROM as goblet-clean
 WORKDIR /goblet/app
 COPY tasks tasks
@@ -132,4 +132,5 @@ RUN ln -s /github/app /goblet/app && \
 
 WORKDIR /github/app/repos/testify
 ENV GOBLET_RUN_FROM_CI=1
+ENV GB_IGNORE_MISSING_ALIAS=1
 

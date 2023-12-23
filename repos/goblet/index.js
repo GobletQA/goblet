@@ -1,1 +1,2 @@
-module.exports = require('./dist')
+const goblet = require('./dist')
+module.exports = {...goblet}

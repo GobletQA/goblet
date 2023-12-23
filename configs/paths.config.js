@@ -19,7 +19,7 @@ const reposDir = path.join(GobletRoot, 'repos')
  */
 const getDirectories = (source, existing) => {
   return readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
+    .filter(dirent => dirent.isDirectory() || dirent.isSymbolicLink())
     .map(dirent => dirent.name)
     .reduce(
       (values, name) => {

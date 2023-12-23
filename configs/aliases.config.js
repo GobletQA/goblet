@@ -5,7 +5,8 @@ const { get } = require('@keg-hub/jsutils/get')
 const { SUB_REPOS } = require('./paths.config')
 const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
 
-const nogMissing = process.env.NODE_ENV === `production`
+const nogMissing = process.env.GB_IGNORE_MISSING_ALIAS
+  || process.env.NODE_ENV === `production`
   || process.env.GOBLET_RUN_FROM_CI
   || process.env.GOBLET_RUN_FROM_UI
 

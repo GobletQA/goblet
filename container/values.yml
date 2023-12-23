@@ -215,6 +215,8 @@ env:
   GB_SC_DEV_IMAGE_TAG: main
   GB_SC_DEPLOYMENT: goblet-screencast
   GB_SC_IMAGE: 'ghcr.io/gobletqa/goblet-screencast'
+  GB_SC_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
+
   # Screencast API port
   GB_SC_PORT: 19011
   # URL where the screencast is being displayed
