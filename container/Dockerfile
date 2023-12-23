@@ -32,6 +32,7 @@ RUN mkdir -p /etc/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/lib/apt/lists.d/*
 
+COPY .npmrc pnpm-*.yaml package.json ./
 COPY repos/devtools/package.json repos/devtools/
 COPY configs/package.json configs/
 COPY repos/conductor/package.json repos/conductor/
@@ -48,24 +49,10 @@ COPY repos/testify/package.json repos/testify/
 COPY repos/exam/package.json repos/exam/
 COPY repos/shared/package.json repos/shared/
 COPY repos/environment/package.json repos/environment/
+RUN pnpm fetch --no-optional --ignore-scripts
+COPY . .
 RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
-
-COPY repos/devtools repos/devtools/
-COPY repos/conductor repos/conductor/
-COPY repos/logger repos/logger/
-COPY repos/latent repos/latent/
-COPY repos/goblet repos/goblet/
-COPY repos/git repos/git/
-COPY repos/repo repos/repo/
-COPY repos/workflows repos/workflows/
-COPY repos/browser repos/browser/
-COPY repos/backend repos/backend/
-COPY repos/screencast repos/screencast/
-COPY repos/testify repos/testify/
-COPY repos/exam repos/exam/
-COPY repos/shared repos/shared/
-COPY repos/environment repos/environment/
-
+COPY configs ./configs
 RUN pnpm build:tsup && \
     rm -rf tasks && \
     rm -rf configs && \
@@ -81,9 +68,8 @@ WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 COPY --from=goblet-run-files /goblet/app/ .
 
-RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules && \
-    ln -s /ms-playwright /root/.cache/ms-playwright && \
+RUN ln -s /goblet/app/repos/screencast/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/repos/screencast/node_modules /goblet/node_modules && \
     chmod a+x /goblet/app/container/initialize.sh
 
 CMD [ "container/initialize.sh" ]

@@ -7,15 +7,6 @@
   "include": [
     "src",
     "configs",
-    "scripts",
-    "tasks/tasks.ts",
-    "src/vnc.ts",
-    "../shared",
-    "../testify",
-    "../workflows",
-    "src/bs.ts",
-    "../shared",
-    "../testify",
-    "../workflows"
+    "scripts"
   ]
 }

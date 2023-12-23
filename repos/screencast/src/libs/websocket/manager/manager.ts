@@ -85,7 +85,7 @@ const logError = (err:Error = noOpObj as Error, method:string, data?:Record<any,
 
 /**
  * Class for managing socket.io sockets
- * Keeps track of connected sockets and currently running command process
+ * Keeps track of connected sockets
  * Handles broadcasting / emitting events
  * @class
  */

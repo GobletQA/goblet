@@ -1,12 +1,9 @@
-import type { TCmdGroups, TGScreencastConfig } from '@GSC/types'
+import type { TGScreencastConfig } from '@GSC/types'
 
 import '../resolveRoot'
-import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { toBool } from '@keg-hub/jsutils/toBool'
-import { socketCmds } from './socketCmds.config'
-import { aliases } from '@gobletqa/configs/aliases.config'
 import { loadEnvs, generateOrigins } from '@gobletqa/shared/api'
 
 const nodeEnv = process.env.NODE_ENV || `local`
@@ -103,13 +100,6 @@ export const screencastConfig:TGScreencastConfig = {
     port: GB_SC_PORT,
     host: GB_SC_HOST,
     path: GB_SC_WS_PATH,
-    groups: socketCmds.groups as TCmdGroups,
-    process: {
-      root: aliases.GobletRoot,
-      debug: Boolean(GB_LOG_LEVEL == 'debug'),
-      // TODO: REMOVE THIS
-      script: path.join(aliases[`@GSC/scripts`], 'socket.cmd.sh'),
-    },
   }
 }
 

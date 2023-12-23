@@ -18,8 +18,12 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:docker",
-    "build:docker": "tsup --config ./configs/tsup.config.ts",
+    "build": "pnpm build:docker && pnpm build:all",
+    "build:docker": "tsup --config ./configs/tsup.sc.config.ts",
+    "build:all": "pnpm build:sock && pnpm build:vnc && pnpm build:bs",
+    "build:sock": "tsup --config ./configs/tsup.sock.config.ts",
+    "build:vnc": "tsup --config ./configs/tsup.vnc.config.ts",
+    "build:bs": "tsup --config ./configs/tsup.bs.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -33,17 +37,11 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "start": "pnpm sc:start",
     "serve": "/bin/bash scripts/initialize.sh",
-    "bs": "node --enable-source-maps -r esbuild-register dist/bs.js",
-    "bs:build": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
-    "bs:start": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
     "sc:start": "DEBUG=\"http-proxy-middleware*\" tsup-node --config ./configs/tsup.config.ts --watch --onSuccess 'node --enable-source-maps -r esbuild-register dist/index.js'",
     "sc:kill": "node --enable-source-maps -r esbuild-register scripts/ts/killServer.ts",
+    "bs": "node --enable-source-maps -r esbuild-register dist/bs.js",
     "sock": "node --enable-source-maps -r esbuild-register dist/sock.js",
-    "sock:build": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
-    "sock:start": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
-    "vnc": "node --enable-source-maps -r esbuild-register dist/vnc.js",
-    "vnc:build": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts",
-    "vnc:start": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts"
+    "vnc": "node --enable-source-maps -r esbuild-register dist/vnc.js"
   },
   "dependencies": {
     "@gobletqa/browser": "workspace:*",

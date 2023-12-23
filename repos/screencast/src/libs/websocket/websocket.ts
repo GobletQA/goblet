@@ -25,7 +25,6 @@ export type TInitSocket = (
   app:Express,
   server:Server,
   config:TSocketConfig,
-  cmdType?:string
 ) => Promise<any>
 
 /**
@@ -35,7 +34,6 @@ export const initSocket:TInitSocket = (
   app:Express,
   server:Server,
   config:TSocketConfig = defConfig,
-  cmdType?:string
 ) => {
   return socketInit(
     server,
@@ -61,7 +59,6 @@ export const initSocket:TInitSocket = (
         testsRunAbort: testsRunAbort(app),
 
       },
-    },
-    cmdType
+    }
   )
 }

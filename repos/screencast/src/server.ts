@@ -62,7 +62,7 @@ const initApi = async () => {
 
   const socketConf = app?.locals?.config?.socket
   const server = secureServer || insecureServer
-  const socket = await initSocket(app, server, socketConf, 'tests')
+  const socket = await initSocket(app, server, socketConf)
 
   onExit(socket.Manager)
   app.locals.SocketManager = socket.Manager
