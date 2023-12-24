@@ -2,22 +2,7 @@ import type { TGitOpts, TSaveMetaData, TRepoWatchCb } from '@gobletqa/git'
 
 import { Logger } from '@gobletqa/logger'
 import { git, RepoWatcher } from '@gobletqa/git'
-
-/**
- * Helper to debounce calls to the passed in callback
- */
-const debounce = (cb:Function, delay:number) => {
-  let timeoutId: NodeJS.Timeout
-  let immediate:(...args:any[]) => void
-  
-  const call = (...args: any[]) => {
-    clearTimeout(timeoutId)
-    immediate = () => cb(...args)
-    timeoutId = setTimeout(immediate, delay)
-  }
-
-  return { call, immediate, timeoutId }
-}
+import { throttleLast } from '@keg-hub/jsutils/throttleLast'
 
 /**
  * Helper to call git.commit and git.push to save repo changes to a git remote
@@ -45,25 +30,10 @@ const saveFromShell = async (opts:TGitOpts, metaData:TSaveMetaData, retry:number
   return Logger.error(`Failed to save repo changes\n`)
 }
 
-/**
- * Helper to generate callbacks for debouncing repo commits and pushes
- */
-const repoSaveDebounce = (opts:TGitOpts) => {
-  const debouncedSave = debounce(saveFromShell, 4000)
-
-  return {
-    save: async (metaData:TSaveMetaData) => debouncedSave.call(opts, metaData),
-    flush: () => {
-      Logger.log(`Flushing debounced repo changes immediately`)
-
-      debouncedSave?.timeoutId
-        && clearTimeout(debouncedSave.timeoutId)
-
-      ;debouncedSave?.immediate?.()
-    }
-  }
-}
-
+const onFileChange:TRepoWatchCb = throttleLast(async (event, path, repoWatcher) => saveFromShell(
+  repoWatcher.options,
+  { message: `test(goblet): ${path} - ${event} auto-commit`}
+), 4000)
 
 /**
  * Helper to create an instance of the RepoWatcher based on the passed in git options
@@ -71,21 +41,8 @@ const repoSaveDebounce = (opts:TGitOpts) => {
  */
 export const createRepoWatcher = (
   opts:TGitOpts,
-  callback?:TRepoWatchCb,
   autoStart:boolean=true
-) => {
-
-  const { save, flush } = repoSaveDebounce(opts)
-
-  return RepoWatcher.create(opts, {
-    autoStart,
-    onStop: flush,
-    onEvent: async (event, path, repoWatcher) => {
-      callback && await callback?.(event, path, repoWatcher)
-      await save({ message: `test(goblet): ${path} - ${event} auto-commit`})
-    }
-  })
-}
+) => RepoWatcher.create(opts, {autoStart, onEvent: onFileChange })
 
 /**
  * Workflow for cloning a git repo from a git provider

@@ -104,6 +104,7 @@ RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline && 
 RUN pnpm --filter=@gobletqa/testify --prod deploy /goblet/runner/repos/testify && \
     mkdir -p /goblet/runner/repos/browser && \
     mkdir -p /goblet/runner/repos/shared/dist && \
+    cp -R /goblet/app/repos/testify/media /goblet/runner/repos/testify/media && \
     cp -R /goblet/app/repos/browser/scripts /goblet/runner/repos/browser/scripts && \
     cp -R /goblet/app/repos/shared/dist/types.ts /goblet/runner/repos/shared/dist/types.ts && \
     cp -R /goblet/app/repos/latent/dist /goblet/runner/repos/testify/node_modules/.pnpm/file+repos+latent/node_modules/@gobletqa/latent/dist && \

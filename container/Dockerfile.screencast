@@ -87,7 +87,9 @@ RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline && 
 
 RUN pnpm --filter=@gobletqa/screencast --prod deploy /goblet/runner/repos/screencast && \
     mkdir -p /goblet/runner/repos/browser && \
+    mkdir -p /goblet/runner/repos/testify && \
     cp -R /goblet/app/repos/browser/scripts /goblet/runner/repos/browser/scripts && \
+    cp -R /goblet/app/repos/testify/media /goblet/runner/repos/testify/media && \
     cd /goblet/runner/repos/screencast/node_modules/@gobletqa && \
     rm -rf browser/src && \
     rm -rf environment/src && \

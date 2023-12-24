@@ -40,6 +40,8 @@ goblet_screencast(){
   else
     # Start supervisord in local environment
     exec supervisord -n -c configs/supervisord.local.conf >> /proc/1/fd/1 &
+    # Wait 5 seconds, to allow the browser to be started, and create the metadata
+    sleep 5
   fi
 
   pnpm sc:start >> /proc/1/fd/1 &

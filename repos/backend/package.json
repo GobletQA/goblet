@@ -20,7 +20,7 @@
   "scripts": {
     "build": "pnpm build:docker",
     "build:docker": "tsup --config ./configs/tsup.config.ts",
-    "start": "DEBUG=\"http-proxy-middleware*\" tsup-node --config ./configs/tsup.config.ts --watch --onSuccess 'node --enable-source-maps -r esbuild-register dist/index.js'",
+    "start": "DEBUG=\"http-proxy-middleware*\" tsup-node --config ./configs/tsup.config.ts --watch src --watch configs --watch ../conductor/src  --watch ../shared/src --onSuccess 'node --enable-source-maps -r esbuild-register dist/index.js'",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",

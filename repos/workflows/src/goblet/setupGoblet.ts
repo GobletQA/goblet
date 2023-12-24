@@ -17,7 +17,7 @@ import { repoSecrets, createRepoWatcher } from '@gobletqa/repo'
 
 const emptyLoaderResp = emptyObj as TGobletCfgLoaderResp
 
-const setupWatcher = async (gitOpts:TGitOpts,) => {
+const setupWatcher = async (gitOpts:TGitOpts) => {
   Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
   const watcher = RepoWatcher.getWatcher(gitOpts.local)
 
