@@ -101,17 +101,29 @@ firebaseApp &&
       : browserLocalPersistence
   )
 
+
+const getFBIdToken = async (forceRefresh = true, recall=0):Promise<string|undefined> => {
+  return new Promise(async (res, rej) => {
+    const token = await firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
+
+    return token || recall >= 5
+      ? res(token)
+      : setTimeout(async () => {
+          const resp = await getFBIdToken(forceRefresh, recall + 1)
+          res(resp)
+        }, 200)
+  })
+}
+
 /**
  * Helper to get the current users token ID
  * @param {boolean} forceRefresh - Force invalidate the token, and generate a new one
  *
  * @return {string} - Current users token
  */
-export const getUserToken = async (forceRefresh = true) => {
-  return (
-    (await firebaseApp)
-      && firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
-  )
+export const getUserToken = async (forceRefresh=true, recall=0) => {
+  await firebaseApp
+  return await getFBIdToken(forceRefresh, recall)
 }
 
 /**
@@ -122,21 +134,8 @@ export const autoRefreshUserToken =<T extends Record<string, any>>(
   cb:(params:T, refresh?:boolean) => Promise<any>,
   params:T
 ) => {
-
-  /**
-  * If this works, then can remove interval below
-  * Should be called after the user have validated
-  */
-  // @ts-ignore
-  //firebaseAuth?.currentUser?._startProactiveRefresh()
-
   // Force refresh the user's auth token every 30min
-  return setInterval(async () => {
-    await cb?.(params, true)
-    // TODO: also need to callback end and re-validate then token
-    // So we can get a new JWT
-  }, 60000 * 30)
-
+  return setInterval(async () => await cb?.(params, true), 60000 * 30)
 }
 
 

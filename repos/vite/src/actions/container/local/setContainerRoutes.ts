@@ -1,4 +1,4 @@
-import type { TRouteMeta, TProxyRoute, TContainerMeta } from '@types'
+import type { TRouteMeta, TProxyRoute, TRouteMetaRoutes, TContainerMeta } from '@types'
 
 import { containerDispatch } from '@store'
 import { noOpObj, toStr } from '@keg-hub/jsutils'
@@ -23,13 +23,17 @@ const throwRoutesError = (status:TRouteMeta, type:string, error?:string) => {
 }
 
 export const setContainerRoutes = async (status:TRouteMeta) => {
-  const { error, routes=noOpObj, meta=noOpObj as TContainerMeta } = status
+  const {
+    error,
+    meta=noOpObj as TContainerMeta,
+    routes=noOpObj as TRouteMetaRoutes,
+  } = status
 
   if(error) return throwRoutesError(status, ``, error)
   if(!routes) return throwRoutesError(status, `session container routes`)
 
   const { api, screencast } = Object.entries(routes)
-    .reduce((acc, [port, data]) => {
+    .reduce((acc, [port, data]:[string, TProxyRoute]) => {
       toStr(port) === toStr(ScreencastPort)
         ? (acc.api = data)
         : (acc.screencast = data)

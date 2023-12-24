@@ -31,7 +31,9 @@ export type {
 } from '@gobletqa/shared/types/definitions.types'
 export type {
   TRouteMeta,
-  TProxyRoute
+  TProxyRoute,
+  TContainerMeta,
+  TRouteMetaRoutes,
 } from '@gobletqa/shared/types/routes.types'
 export type {
   TPlayerResEvent,
@@ -48,7 +50,3 @@ export type {
   TTestRunEvtStats,
   TTestRunEvtStatus,
 } from '@gobletqa/shared/types/tests.types'
-
-
-
-

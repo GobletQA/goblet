@@ -1,21 +1,24 @@
 import type { TFormattedUser, TRouteMeta, TUserState, TValidateResp } from '@types'
 
 import { HttpMethods } from '@constants'
-import { getUserToken } from './providers'
 import { GitUser } from '@services/gitUser'
 import { apiRequest } from '@utils/api/apiRequest'
 import { Exception } from '@services/sharedService'
 import { localStorage } from '@services/localStorage'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { validateResp } from '@utils/api/validateResp'
-
+import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+import {
+  getUserToken,
+  autoRefreshUserToken,
+} from './providers'
 
 export type TAddClaimsRep = {
   jwt?:string
   refresh?:string
 }
 
-export type TValidateUserReq = TFormattedUser & {
+export type TValidateUserReq = (GitUser | TFormattedUser) & {
   pat?:string,
   refresh?:boolean
 }
@@ -23,44 +26,68 @@ export type TValidateUserReq = TFormattedUser & {
 export class AuthApi {
 
   authPath = `/auth`
-  refreshTimer?:NodeJS.Timeout
+  refreshInterval?:NodeJS.Timeout
 
-  clearRefreshTimer = () => {
-    if(!this.refreshTimer) return
-
-    console.log(`Clear refresh timer...`)
-    clearTimeout(this.refreshTimer)
-
-    this.refreshTimer = undefined
+/**
+ * Sets up a timer to auto-refresh the users auth token
+ * This ensures they are not auto logged out every hour
+ */
+  #setRefreshInterval =<T extends Record<string, any>>(
+    cb:(params:T, refresh?:boolean) => Promise<any>,
+    params:T
+  ) => {
+    // Clear the existing interval if it exists
+    this.clearRefreshTimer()
+    // Refresh the user's auth token every 30min
+    this.refreshInterval = setInterval(async () => await cb?.(params, true), 60000 * 30)
   }
 
-  // refresh = async (params:Partial<GitUser>) => {
-  //   const idToken = await getUserToken(true)
-  //   if(!idToken) return await signOutAuthUser()
 
-  //   const resp = await apiRequest<TValidateResp>({
-  //     url: `${this.authPath}/refresh`,
-  //     method: HttpMethods.POST,
-  //     params: {...params, idToken },
-  //   })
+  clearRefreshTimer = () => {
+    if(this.refreshInterval) clearTimeout(this.refreshInterval)
+    this.refreshInterval = undefined
+  }
 
-  //   const {
-  //     jwt,
-  //     user,
-  //   } = await validateResp(resp)
+  /**
+   * Makes call to refresh the users Auth JWT
+   */
+  refresh = async (params:Partial<GitUser>) => {
+    try {
+      console.log(`Refreshing User Token...`)
+      this.clearRefreshTimer()
 
-  //   await localStorage.setJwt(jwt)
-  //   await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
+      const idToken = await getUserToken(true)
+      if(!idToken) return await signOutAuthUser()
 
-  //   if(!this.refreshTimer)
-  //     this.refreshTimer = autoRefreshUserToken(this.refresh.bind(this), params)
+      const resp = await apiRequest<TValidateResp>({
+        url: `${this.authPath}/refresh`,
+        method: HttpMethods.POST,
+        params: {...params, idToken },
+      })
 
+      const {
+        jwt,
+        user,
+      } = await validateResp(resp)
 
-  //   return params
-  // }
+      await localStorage.setJwt(jwt)
+      await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
+
+      this.#setRefreshInterval(this.refresh.bind(this), params)
+
+      return params
+
+    }
+    catch(err:any){
+      console.error(`[Auth Token Error] Failed to refresh user token.`)
+      console.log(err.message)
+    }
+
+  }
 
   validate = async (params:TValidateUserReq, __intervalRefresh?:boolean) => {
     const idToken = await getUserToken(__intervalRefresh)
+
     // TODO: Look into encrypting the user data to ensure it's not passed on via plain-text
     // While this is a common pattern, would be better to avoid it
     const resp = await apiRequest<TValidateResp>({
@@ -77,15 +104,14 @@ export class AuthApi {
 
     // Force token refresh, so the custom claims will be up to date
     params?.pat && await getUserToken(true)
-
     await localStorage.setJwt(jwt)
+
 
     // Remove user token when saving to local storage
     await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
     new GitUser(user as TUserState)
 
-    // if(!this.refreshTimer)
-    //   this.refreshTimer = autoRefreshUserToken(this.validate.bind(this), params)
+    this.#setRefreshInterval(this.refresh.bind(this), params)
 
     return status
   }

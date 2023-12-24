@@ -21,6 +21,7 @@ export const refresh = async (req:JWTRequest, res:Response) => {
 
   const config = req.app.locals.config.server
 
+  // **NOTE** The firebase token has all ready been refreshed via the frontend, so not needed here
   const updated = validateRefreshToken(config.jwt, {
     ...req.auth,
     id,
@@ -28,8 +29,6 @@ export const refresh = async (req:JWTRequest, res:Response) => {
     username,
     provider,
   }, refresh)
-
-  // TODO: Need to also refresh the firebase token via the firebase service
 
   return updated
     ? apiRes(res, updated, 200)

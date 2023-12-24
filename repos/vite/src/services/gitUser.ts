@@ -54,7 +54,10 @@ export class GitUser {
   provider?: string
 
   constructor(data:TUserState) {
-    if (__CURRENT_USER) return __CURRENT_USER
+    return __CURRENT_USER ? __CURRENT_USER : this.#setup(data)
+  }
+
+  #setup = (data:TUserState) => {
 
     // Ensure is a valid git user before storing the metadata
     if(!data.username || !data.id || !data.provider){
@@ -72,4 +75,5 @@ export class GitUser {
 
     return __CURRENT_USER
   }
+
 }
