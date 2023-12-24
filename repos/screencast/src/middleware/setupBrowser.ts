@@ -9,12 +9,12 @@ import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
  */
 export const setupBrowser = async (app:Express) => {
   try {
-    if(ENVS.NODE_ENV !== `production` && ENVS.GB_WS_BROWSER){
-      // TODO: update to use a browser server with websocket
-      // Should fix issues with memory-leak due to constant browser restarting
-    }
 
     const browserConf = joinBrowserConf({}, app)
+
+    if(ENVS.NODE_ENV !== `production` && ENVS.GB_WS_BROWSER)
+      browserConf.ws = true
+
     await GBrowser.start({ browserConf, config: app.locals.config })
   }
   catch(err){

@@ -6,6 +6,7 @@ env:
   GB_KUBE_NAMESPACE: gb-production
   GB_HOST_DOMAIN: dev.gobletqa.app
   NODE_ENV: production
+  GB_WS_BROWSER: false
   GB_LOCAL_DEV_MODE: false
   DEVSPACE_INJECT_LOCAL: false
   GB_LOG_LEVEL: silly

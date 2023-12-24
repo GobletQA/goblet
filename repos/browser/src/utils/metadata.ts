@@ -18,7 +18,6 @@ import { vncActive } from '@GBB/utils/checkVncEnv'
 import { validate } from '@keg-hub/jsutils/validate'
 import { InternalPaths } from '@gobletqa/environment/constants'
 
-
 const {
   mkdir,
   readFile,
@@ -40,25 +39,14 @@ type TMetaLogger = {
 }
 
 export type TBrowserMeta = {
-  config?:TGobletConfig
   logger:TMetaLogger
 }
 
 export class BrowserMeta {
-  config?:TGobletConfig
   logger:TMetaLogger
 
   constructor(opts?:TBrowserMeta){
-    if(opts?.config) this.config = opts.config
     this.logger = (opts?.logger || console) as TMetaLogger
-  }
-
-  #getConfig = (config?:TGobletConfig) => {
-    config = config || this.config
-    if(!config?.paths)
-      throw new Error(`Can not get metadata paths, BrowserMeta requires a goblet config!`)
-
-    return config
   }
 
   /**
@@ -67,13 +55,10 @@ export class BrowserMeta {
   * Else if Vnc is running, then use the os temp directory
   *
   */
-  getMetaDataPaths = (config?:TGobletConfig) => {
-    config = this.#getConfig(config)
-
+  getMetaDataPaths = () => {
     const { gobletRoot, pwMetaDataDir } = InternalPaths
 
-    const metadataDir =
-      exists(pwMetaDataDir) && existsSync(pwMetaDataDir)
+    const metadataDir = exists(pwMetaDataDir) && existsSync(pwMetaDataDir)
         ? pwMetaDataDir
         : vncActive()
           ? path.resolve(os.tmpdir(), 'goblet')
@@ -88,8 +73,8 @@ export class BrowserMeta {
   * Loads the metadata json file from the metadataPath value
   * @return {string?} contents of the browser-meta.json file or null
   */
-  tryReadMeta = async (config?:TGobletConfig) => {
-    const { metadataPath } = this.getMetaDataPaths(config)
+  tryReadMeta = async () => {
+    const { metadataPath } = this.getMetaDataPaths()
     const [err, content] = await limbo(readFile(metadataPath, 'utf8'))
 
     return err ? null : content.toString()
@@ -100,9 +85,8 @@ export class BrowserMeta {
   */
   create = async (
     content:TBrowserMetaData = noOpObj as TBrowserMetaData,
-    config?:TGobletConfig
   ) => {
-    const { metadataPath, metadataDir } = this.getMetaDataPaths(config)
+    const { metadataPath, metadataDir } = this.getMetaDataPaths()
 
     const exists = await pathExists(metadataPath)
     !exists && (await mkdir(metadataDir, { recursive: true }))
@@ -122,10 +106,9 @@ export class BrowserMeta {
   */
   read = async (
     type:EBrowserName,
-    config?:TGobletConfig
   ):Promise<TBrowserMetaDataContext> => {
     try {
-      const data = await this.tryReadMeta(config)
+      const data = await this.tryReadMeta()
       const parsed = data ? JSON.parse(data) : {}
 
       return (isObj(parsed) && parsed?.[type] ? parsed[type] : {}) as TBrowserMetaDataContext
@@ -139,9 +122,9 @@ export class BrowserMeta {
   /**
   * Reads all browser metadata from file
   */
-  readAll = async (config?:TGobletConfig) => {
+  readAll = async () => {
     try {
-      const data = await this.tryReadMeta(config)
+      const data = await this.tryReadMeta()
       return data ? JSON.parse(data) : {}
     }
     catch (err) {
@@ -158,9 +141,8 @@ export class BrowserMeta {
     type:EBrowserName,
     endpoint:string,
     browserConf:TBrowserConf,
-    config?:TGobletConfig
   ) => {
-    const { metadataPath } = this.getMetaDataPaths(config)
+    const { metadataPath } = this.getMetaDataPaths()
     const [valid] = validate({ type, endpoint }, { $default: isStr }, {})
     if (!valid)
       throw new Error([
@@ -170,7 +152,7 @@ export class BrowserMeta {
       ].join(`\n`))
 
 
-    const content = await this.readAll(config)
+    const content = await this.readAll()
 
     const nextMetadata:TBrowserMetaData = {
       ...content,
@@ -191,7 +173,7 @@ export class BrowserMeta {
     ))
 
     err && (err as any).code === 'ENOENT'
-      ? await this.create(nextMetadata, config)
+      ? await this.create(nextMetadata)
       : err && this.logger.error(`[PW-META ERROR]: ${err.stack}`)
 
     return nextMetadata
@@ -200,16 +182,16 @@ export class BrowserMeta {
   /**
   * Removes the metadata to file
   */
-  remove = async (config?:TGobletConfig) => {
-    const { metadataPath } = this.getMetaDataPaths(config)
+  remove = async () => {
+    const { metadataPath } = this.getMetaDataPaths()
     return await limbo(removeFile(metadataPath, { force: true, recursive: true }))
   }
 
   /**
   * Gets the location to where the browser metadata file is saved
   */
-  location = (config?:TGobletConfig) => {
-    const { metadataPath } = this.getMetaDataPaths(config)
+  location = () => {
+    const { metadataPath } = this.getMetaDataPaths()
     return metadataPath
   }
 }
