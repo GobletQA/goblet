@@ -4,7 +4,6 @@ import type {
 } from '@GGT/types'
 
 import { Logger } from '@gobletqa/logger'
-import pRec from 'pending-promise-recycler'
 import chokidar, { FSWatcher } from 'chokidar'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 
