@@ -127,20 +127,6 @@ export const getUserToken = async (forceRefresh=true, recall=0) => {
 }
 
 /**
- * Sets up a timer to auto-refresh the users auth token
- * This ensures they are not auto logged out every hour
- */
-export const autoRefreshUserToken =<T extends Record<string, any>>(
-  cb:(params:T, refresh?:boolean) => Promise<any>,
-  params:T
-) => {
-  // Force refresh the user's auth token every 30min
-  return setInterval(async () => await cb?.(params, true), 60000 * 30)
-}
-
-
-
-/**
  * Gets provider metadata for firebase modules
  *
  * @return {Object} - Contains all initialized firebase modules

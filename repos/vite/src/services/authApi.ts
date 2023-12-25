@@ -1,6 +1,9 @@
 import type { TFormattedUser, TRouteMeta, TUserState, TValidateResp } from '@types'
 
+import * as ComLink from 'comlink'
+import { AppWorker } from '@workers'
 import { HttpMethods } from '@constants'
+import { getUserToken } from './providers'
 import { GitUser } from '@services/gitUser'
 import { apiRequest } from '@utils/api/apiRequest'
 import { Exception } from '@services/sharedService'
@@ -8,10 +11,6 @@ import { localStorage } from '@services/localStorage'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { validateResp } from '@utils/api/validateResp'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
-import {
-  getUserToken,
-  autoRefreshUserToken,
-} from './providers'
 
 export type TAddClaimsRep = {
   jwt?:string
@@ -32,20 +31,15 @@ export class AuthApi {
  * Sets up a timer to auto-refresh the users auth token
  * This ensures they are not auto logged out every hour
  */
-  #setRefreshInterval =<T extends Record<string, any>>(
-    cb:(params:T, refresh?:boolean) => Promise<any>,
+  #setRefreshInterval = <T extends Record<string, any>>(
     params:T
-  ) => {
-    // Clear the existing interval if it exists
-    this.clearRefreshTimer()
-    // Refresh the user's auth token every 30min
-    this.refreshInterval = setInterval(async () => await cb?.(params, true), 60000 * 30)
-  }
+  ) => AppWorker.refreshTimer(ComLink.proxy(this.refresh.bind(this)), params)
 
-
+  /**
+   * Remove the refresh timer within the worker
+   */
   clearRefreshTimer = () => {
-    if(this.refreshInterval) clearTimeout(this.refreshInterval)
-    this.refreshInterval = undefined
+    AppWorker.clearRefreshTimer()
   }
 
   /**
@@ -73,7 +67,7 @@ export class AuthApi {
       await localStorage.setJwt(jwt)
       await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
 
-      this.#setRefreshInterval(this.refresh.bind(this), params)
+      this.#setRefreshInterval(params)
 
       return params
 
@@ -111,7 +105,7 @@ export class AuthApi {
     await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
     new GitUser(user as TUserState)
 
-    this.#setRefreshInterval(this.refresh.bind(this), params)
+    this.#setRefreshInterval(params)
 
     return status
   }

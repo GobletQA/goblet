@@ -51,6 +51,8 @@
       "@types/*": [ "src/types/*" ],
       "@utils": [ "src/utils" ],
       "@utils/*": [ "src/utils/*" ],
+      "@workers": [ "src/workers" ],
+      "@workers/*": [ "src/workers/*" ],
       "@gobletqa/monaco": [ "../monaco/src" ],
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/race": [ "../race/src" ],
