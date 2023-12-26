@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "winston": "3.11.0"
   },
   "devDependencies": {

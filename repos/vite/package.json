@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "VITE_CJS_IGNORE_WARNING=true GOBLET_ENV=production NODE_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
+    "build": "GOBLET_ENV=production NODE_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist",
     "clean:full": "pnpm clean; pnpm install",
@@ -13,14 +13,14 @@
     "prod": "GOBLET_ENV=production NODE_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "cache": "GOBLET_ENV=local NODE_ENV=local vite --force --clearScreen false -c configs/vite.config.ts",
     "serve": "GOBLET_ENV=production NODE_ENV=production serve -p 19006 dist",
-    "start": "VITE_CJS_IGNORE_WARNING=true GOBLET_ENV=local NODE_ENV=local vite --clearScreen false -c configs/vite.config.ts"
+    "start": "VITE_CJS_TRACE=true GOBLET_ENV=local NODE_ENV=local vite --clearScreen false -c configs/vite.config.ts"
   },
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
     "@gobletqa/shared": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "@monaco-editor/react": "4.6.0",
     "@mui/icons-material": "5.14.18",
     "@mui/material": "5.14.18",
@@ -28,7 +28,6 @@
     "@redux-devtools/extension": "3.2.6",
     "@reduxjs/toolkit": "1.9.7",
     "allotment": "1.19.3",
-    "appwrite": "13.0.1",
     "axios": "1.6.2",
     "comlink": "4.4.1",
     "firebase": "10.6.0",

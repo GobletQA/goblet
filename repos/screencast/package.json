@@ -54,7 +54,7 @@
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/testify": "workspace:*",
     "@gobletqa/workflows": "workspace:*",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "esbuild": "0.19.7",
     "esbuild-plugin-path-alias": "1.0.7",

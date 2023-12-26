@@ -1,11 +1,9 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
-  dims,
   gutter,
   colors,
   getColor,
-  IconButton
 } from '@gobletqa/components'
 
 

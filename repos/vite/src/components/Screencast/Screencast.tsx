@@ -7,6 +7,7 @@ import {useShowBrowser} from '@hooks/screencast/useShowBrowser'
 export type TScreencastProps = {
   sx?: CSSProperties
   sSx?: CSSProperties
+  onDragEnd?:() => void
   browserIsActive?:boolean
 }
 

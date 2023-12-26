@@ -45,7 +45,7 @@
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/workflows": "workspace:*",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "@kubernetes/client-node": "0.20.0",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",

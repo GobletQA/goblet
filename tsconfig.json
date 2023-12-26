@@ -210,10 +210,7 @@
       "@gobletqa/workflows/*": ["repos/workflows/src/*"],
 
       "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
-      "@gobletqa/root": ["./*"],
-
-      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
-      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
+      "@gobletqa/root": ["./*"]
     }
   },
   "exclude": [

@@ -81,7 +81,6 @@ export class AuthApi {
 
   validate = async (params:TValidateUserReq, __intervalRefresh?:boolean) => {
     const idToken = await getUserToken(__intervalRefresh)
-
     // TODO: Look into encrypting the user data to ensure it's not passed on via plain-text
     // While this is a common pattern, would be better to avoid it
     const resp = await apiRequest<TValidateResp>({

@@ -20,8 +20,8 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
@@ -127,8 +127,8 @@ importers:
         specifier: workspace:*
         version: link:../workflows
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@kubernetes/client-node':
         specifier: 0.20.0
         version: 0.20.0
@@ -192,8 +192,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
@@ -223,8 +223,8 @@ importers:
         specifier: 11.11.0
         version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.38)(react@18.2.0)
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@mui/icons-material':
         specifier: 5.14.18
         version: 5.14.18(@mui/material@5.14.18)(@types/react@18.2.38)(react@18.2.0)
@@ -290,8 +290,8 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
@@ -340,8 +340,8 @@ importers:
         specifier: workspace:*
         version: link:../../configs
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
     devDependencies:
       tsup:
         specifier: 8.0.1
@@ -362,8 +362,8 @@ importers:
         specifier: 10.0.1
         version: 10.0.1
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
@@ -414,14 +414,11 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
-      pending-promise-recycler:
-        specifier: 0.2.3
-        version: 0.2.3
     devDependencies:
       '@types/node':
         specifier: 20.9.3
@@ -442,8 +439,8 @@ importers:
         specifier: workspace:*
         version: link:../logger
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       glob:
         specifier: 10.3.10
         version: 10.3.10
@@ -464,8 +461,8 @@ importers:
         specifier: workspace:*
         version: link:../environment
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
@@ -495,8 +492,8 @@ importers:
         specifier: workspace:*
         version: link:../environment
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       winston:
         specifier: 3.11.0
         version: 3.11.0
@@ -517,8 +514,8 @@ importers:
         specifier: workspace:*
         version: link:../components
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
@@ -587,8 +584,8 @@ importers:
         specifier: workspace:*
         version: link:../components
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
@@ -654,8 +651,8 @@ importers:
         specifier: workspace:*
         version: link:../logger
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
@@ -697,8 +694,8 @@ importers:
         specifier: workspace:*
         version: link:../workflows
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
@@ -761,8 +758,8 @@ importers:
         specifier: workspace:*
         version: link:../logger
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@keg-hub/parse-config':
         specifier: '>=2.1.0'
         version: 2.1.0
@@ -840,8 +837,8 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@ltipton/parkin':
         specifier: 6.5.1
         version: 6.5.1
@@ -889,8 +886,8 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       '@monaco-editor/react':
         specifier: 4.6.0
         version: 4.6.0(monaco-editor@0.45.0)(react-dom@18.2.0)(react@18.2.0)
@@ -912,9 +909,6 @@ importers:
       allotment:
         specifier: 1.19.3
         version: 1.19.3(react-dom@18.2.0)(react@18.2.0)
-      appwrite:
-        specifier: 13.0.1
-        version: 13.0.1
       axios:
         specifier: 1.6.2
         version: 1.6.2
@@ -1019,8 +1013,8 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       '@keg-hub/jsutils':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 10.0.0
+        version: 10.0.0
       axios:
         specifier: 1.6.2
         version: 1.6.2
@@ -3278,7 +3272,7 @@ packages:
   /@keg-hub/args-parse@10.0.1:
     resolution: {integrity: sha512-FDmJSvU9WNdq0hJ58Tw6dtTeRly5WlCbYuEsKPJgtQGnSdOlhwUSz0xZGf/B8O+eDbBio9W9zlVgfM0s63VLkA==}
     dependencies:
-      '@keg-hub/jsutils': 9.10.0
+      '@keg-hub/jsutils': 10.0.0
       app-root-path: 3.0.0
 
   /@keg-hub/cli-utils@0.9.0:
@@ -3286,7 +3280,7 @@ packages:
     engines: {node: '>= 16.0.0'}
     dependencies:
       '@keg-hub/args-parse': 10.0.1
-      '@keg-hub/jsutils': 9.10.0
+      '@keg-hub/jsutils': 10.0.0
       '@keg-hub/spawn-cmd': 0.3.2
       app-root-path: 3.0.0
       fs-extra: 9.0.1
@@ -3296,6 +3290,9 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@keg-hub/jsutils@10.0.0:
+    resolution: {integrity: sha512-UD8XM6Go6HMYhBYnSc8OvInoVcvoIg+38ZIPcnY8IhdXWZcrRRWiwTKQ8s4dp1OnUEYd465Jl7vy+6pH687zKQ==}
+
   /@keg-hub/jsutils@9.10.0:
     resolution: {integrity: sha512-HJmQDk91aDq1mtMNDhAqg+mJT1vyGZDANZuEVFbfVhXYpzUG+Ar1rbWn59tCHb+ZiRAYx3qDAqBrFqjKMLFtSg==}
 
@@ -3303,7 +3300,7 @@ packages:
     resolution: {integrity: sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==}
     dependencies:
       '@keg-hub/cli-utils': 0.9.0
-      '@keg-hub/jsutils': 9.10.0
+      '@keg-hub/jsutils': 10.0.0
       '@keg-hub/spawn-cmd': 0.3.2
       js-yaml: 3.14.1
       write-yaml-file: 4.2.0
@@ -3314,7 +3311,7 @@ packages:
   /@keg-hub/spawn-cmd@0.3.2:
     resolution: {integrity: sha512-j3NgwuE6NYT01FApe+XpthsYh1pOy9zf95kre0Re5nVQboEWjIgk84qAg30ypi75gucll8wWUuVraHNCYT5FeA==}
     dependencies:
-      '@keg-hub/jsutils': 9.10.0
+      '@keg-hub/jsutils': 10.0.0
       app-root-path: 3.0.0
       cli-progress: 3.9.1
       cli-spinners: 2.6.1
@@ -4812,15 +4809,6 @@ packages:
     resolution: {integrity: sha512-qMcx+Gy2UZynHjOHOIXPNvpf+9cjvk3cWrBBK7zg4gH9+clobJRb9NGzcT7mQTcV/6Gm/1WelUtqxVXnNlrwcw==}
     engines: {node: '>= 6.0.0'}
 
-  /appwrite@13.0.1:
-    resolution: {integrity: sha512-kdOLB5Qbr2beQW72diA/dx8L16LywHcQV1H6oqgGtf64Mo6LsvyIM1hEVxWmFLwAXMaOtsqb7Mcs4+oQHo+WmQ==}
-    dependencies:
-      cross-fetch: 3.1.5
-      isomorphic-form-data: 2.0.0
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /arch@2.2.0:
     resolution: {integrity: sha512-Of/R0wqp83cgHozfIYLbBMnej79U/SVGOOyuB3VVFv1NRM/PSFMK12x9KVtiYzJqmnU5WR2qp0Z5rHb7sWGnFQ==}
 
@@ -5908,14 +5896,6 @@ packages:
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     requiresBuild: true
-
-  /cross-fetch@3.1.5:
-    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
-    dependencies:
-      node-fetch: 2.6.7
-    transitivePeerDependencies:
-      - encoding
-    dev: false
 
   /cross-spawn@6.0.5:
     resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
@@ -8099,12 +8079,6 @@ packages:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
     dev: true
-
-  /isomorphic-form-data@2.0.0:
-    resolution: {integrity: sha512-TYgVnXWeESVmQSg4GLVbalmQ+B4NPi/H4eWxqALKj63KsUrcu301YDjBqaOw3h+cbak7Na4Xyps3BiptHtxTfg==}
-    dependencies:
-      form-data: 2.5.1
-    dev: false
 
   /isomorphic-ws@5.0.0(ws@8.13.0):
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}

@@ -38,7 +38,7 @@
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
     "@gobletqa/shared": "workspace:*",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "@ltipton/parkin": "6.5.1",
     "expect": "29.7.0",
     "pending-promise-recycler": "0.2.3",

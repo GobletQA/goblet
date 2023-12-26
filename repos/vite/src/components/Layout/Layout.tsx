@@ -90,7 +90,10 @@ export const Layout = (props:TLayout) => {
               <ActionBar actions={BrowserActions} />
             </RTSection>
 
-            <Screencast browserIsActive={showBrowser} />
+            <Screencast
+              onDragEnd={onDragEnd}
+              browserIsActive={showBrowser}
+            />
           </RContainer>
         </Allotment.Pane>
 

@@ -41,7 +41,7 @@
     "@gobletqa/repo": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "axios": "1.6.2"
   },
   "devDependencies": {

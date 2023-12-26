@@ -102,19 +102,6 @@ firebaseApp &&
   )
 
 
-const getFBIdToken = async (forceRefresh = true, recall=0):Promise<string|undefined> => {
-  return new Promise(async (res, rej) => {
-    const token = await firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
-
-    return token || recall >= 5
-      ? res(token)
-      : setTimeout(async () => {
-          const resp = await getFBIdToken(forceRefresh, recall + 1)
-          res(resp)
-        }, 200)
-  })
-}
-
 /**
  * Helper to get the current users token ID
  * @param {boolean} forceRefresh - Force invalidate the token, and generate a new one
@@ -122,8 +109,8 @@ const getFBIdToken = async (forceRefresh = true, recall=0):Promise<string|undefi
  * @return {string} - Current users token
  */
 export const getUserToken = async (forceRefresh=true, recall=0) => {
-  await firebaseApp
-  return await getFBIdToken(forceRefresh, recall)
+  await firebaseAuth.authStateReady()
+  return await firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
 }
 
 /**

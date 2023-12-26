@@ -68,9 +68,7 @@
       "@gobletqa/workflows/types/*": ["../workflows/src/types/*"],
       "@gobletqa/environment/constants/frontend": ["../environment/src/constants/frontend"],
       "@gobletqa/environment/constants/websocket": ["../environment/src/constants/websocket"],
-      "GobletRoot": ["../../"],
-      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
-      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
+      "GobletRoot": ["../../"]
     }
   },
   "include": ["src"],

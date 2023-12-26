@@ -1,4 +1,3 @@
-import { onAuthStateChanged } from "firebase/auth"
 import { signOutAuthUser } from './signOutAuthUser'
 import { getProviderMetadata } from '@services/providers'
 
@@ -22,4 +21,5 @@ export const authStateChange = async (rawUser:any) => {
   await signOutAuthUser()
 }
 
-onAuthStateChanged(auth, authStateChange)
+auth.onIdTokenChanged(authStateChange)
+auth.onAuthStateChanged(authStateChange)
