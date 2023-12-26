@@ -49,7 +49,7 @@ export const DebuggerSlider = (props:TDebuggerSlider) => {
         debugHost={debugHost}
         onGetDebuggerUrl={onGetDebuggerUrl}
       />
-      <DebuggerBody>
+      <DebuggerBody className='gb-debugger-body-container' >
         {debugError
           ? (<DebuggerError error={debugError} />) 
           : (<Debugger debugUrl={debugUrl} debugHost={debugHost} />)

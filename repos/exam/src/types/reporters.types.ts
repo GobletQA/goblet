@@ -1,4 +1,3 @@
-
 import type { IConstructable } from './helpers.types'
 
 export type TExReporterCfg = {

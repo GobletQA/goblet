@@ -388,9 +388,6 @@ importers:
       p-map-series:
         specifier: 3.0.0
         version: 3.0.0
-      p-pipe:
-        specifier: 4.0.0
-        version: 4.0.0
     devDependencies:
       '@types/node':
         specifier: 20.9.3
@@ -9977,11 +9974,6 @@ packages:
       aggregate-error: 3.1.0
     dev: false
     optional: true
-
-  /p-pipe@4.0.0:
-    resolution: {integrity: sha512-HkPfFklpZQPUKBFXzKFB6ihLriIHxnmuQdK9WmLDwe4hf2PdhhfWT/FJa+pc3bA1ywvKXtedxIRmd4Y7BTXE4w==}
-    engines: {node: '>=12'}
-    dev: false
 
   /p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
