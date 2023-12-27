@@ -1,10 +1,11 @@
 import type { TBuiltRepo } from '@types'
 
-import { useState, useEffect, useCallback } from 'react'
 import { useRepos, useUser } from '@store'
-import { noOpObj } from '@keg-hub/jsutils'
+import { ife } from '@keg-hub/jsutils/ife'
 import { useBuildRepos } from './useBuildRepos'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { getRepos } from '@actions/repo/api/getRepos'
+import { useState, useEffect, useCallback } from 'react'
 
 export type THConnectData = {
   branch?:string
@@ -49,7 +50,7 @@ export const useConnectData = ({
     setLoading(false)
   }, [])
 
-  // On initial load of the component, load the users repos
+  // On initial load of the component, set initial repo and branches
   useEffect(() => {
     if(initRepo && !repo) setRepo(initRepo)
     if(initBranch && !branch) setBranch(initBranch)
@@ -59,15 +60,15 @@ export const useConnectData = ({
   useEffect(() => {
     if(!loading) return
 
-    ;(!hasRepos)
-      ? (async () => await getRepos((errorMsg:string) => {
+    !hasRepos
+      ? ife(async () => await getRepos((errorMsg:string) => {
           setLoading(false)
           setReposError(errorMsg)
-        }))()
-      : (() => {
+        }))
+      : ife(() => {
           setLoading(false)
           setReposError(undefined)
-        })()
+        })
 
   }, [repos])
 

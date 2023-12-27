@@ -21,6 +21,13 @@ export const resizeBrowser = async (
 
   const inRFB = rfb as TInRFB
   const size = calcPageSize(inRFB)
+  
+  if(size.width <= 0 || size.height <= 0){
+    console.warn(`[Warning] Can not resize the browser. An invalid width or height was requested.`)
+    console.log(`[Requested Size] Height: ${size.height} x Width: ${size.width}`)
+    console.log(inRFB)
+    return
+  }
 
   /**
   * This is a hack to force the screen to the correct size

@@ -19,6 +19,7 @@ export type {
 } from '@gobletqa/shared/types/pwAutomate.types'
 export type {
   TDefGroup,
+  TDefGroups,
   TDefGroupList,
   TDefLookupMap,
   TDefTypeGroup,

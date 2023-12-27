@@ -5,12 +5,14 @@ import { BrowserButton } from './BrowserButton'
 import {
   colors,
   gutter,
+  KebabIcon,
   CachedIcon,
   RestartIcon,
   DangerousIcon,
   ArrowBackIcon,
   ArrowForwardIcon
 } from '@gobletqa/components'
+
 import {
   BrowserInput,
   BrowserNavActions,
@@ -30,6 +32,10 @@ const styles = {
     height: `18px`,
   },
   reconnect: {
+    marginLeft: gutter.margin.qpx,
+    marginRight: gutter.margin.hpx
+  },
+  settings: {
     marginLeft: gutter.margin.qpx,
     marginRight: gutter.margin.hpx
   },
@@ -59,6 +65,7 @@ export const BrowserNav = (props:TBrowserNav) => {
     onGoForward,
     onReloadPage,
     backButtonActive,
+    onBrowserSettings,
     forwardButtonActive
   } = useBrowserNav(props)
 
@@ -119,6 +126,15 @@ export const BrowserNav = (props:TBrowserNav) => {
             className='goblet-browser-reconnect-action'
           >
             <RestartIcon sx={styles.icon} />
+          </BrowserButton>
+
+          <BrowserButton
+            sx={styles.settings}
+            tooltip='Browser Settings'
+            onClick={onBrowserSettings}
+            className='goblet-browser-settings-action'
+          >
+            <KebabIcon sx={styles.icon} />
           </BrowserButton>
         </BrowserNavActions>
 

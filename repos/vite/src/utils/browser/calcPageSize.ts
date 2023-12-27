@@ -6,8 +6,9 @@ export const calcPageSize = (
 ) => {
 
   const parentEl = rfb?._target?.parentElement
+
   if(!parentEl){
-    console.warn(`NoVNC RFB._target is missing, try reloading the page.`)
+    console.warn(`[Warning] NoVNC RFB._target is missing, try reloading the page.`)
 
     return {
       width: ScreencastWidth,

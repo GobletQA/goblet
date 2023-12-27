@@ -50,7 +50,9 @@
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ],
       "@gobletqa/environment/constants/frontend": ["../environment/src/constants/frontend"],
-      "GobletRoot": ["../../"]
+      "GobletRoot": ["../../"],
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/esm"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/esm/*"]
     }
   },
   "include": ["src", "../components/src/hooks/useEvent.ts"],

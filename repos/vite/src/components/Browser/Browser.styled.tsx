@@ -54,9 +54,8 @@ export const BrowserInput = styled('input')(({ theme }) => `
 
 export const BrowserContainer = styled(Box)(({ theme }) => `
   width: 100%;
-  height: calc( 100% - ${dims.browser.actions.hpx} );
-  max-height: calc( 100% - ${dims.browser.actions.hpx} );
-  
+  height: 100%;
+  max-height: 100%;
   flex-grow: 1;
   flex-shrink: 1;
   display: block;

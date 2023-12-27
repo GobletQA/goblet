@@ -8,7 +8,6 @@ import { TModalState } from '@reducers/modal'
 import { TSettingsState } from '@reducers/settings'
 import { TTestRunsState } from '@reducers/testRuns'
 import { TContainerState } from '@reducers/container'
-import { TScreencastState } from '@reducers/screencast'
 import { TDefinitionsState } from '@reducers/definitions'
 import { TUserState, TUser, TUserEmptyState } from '@reducers/user'
 
@@ -22,7 +21,6 @@ export type {
   TReposState,
   TPageState,
   TSettingsState,
-  TScreencastState,
   TUser,
   TUserState,
   TTestRunsState,
@@ -40,7 +38,6 @@ export type TCombinedState = {
   repo: TRepoState
   repos: TReposState
   settings: TSettingsState
-  screencast: TScreencastState
   user: TUserState
 }
 export type TState = CombinedState<TCombinedState>
