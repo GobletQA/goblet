@@ -19,15 +19,9 @@ export const stopBrowser = async (options = noOpObj) => {
 
   if(!success || error)
     addToast({
-      type: 'error',
+      type: `error`,
       message: error || `Failed to stop the browser, please try again later`
     })
-
-  // TODO: Update setBrowserStatus to handle browser status of stopped
-  // data && setBrowserStatus(data)
-  
-  console.log(`---------- data ----------`)
-  console.log(data)
 
   return data
 }

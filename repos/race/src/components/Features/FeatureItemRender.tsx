@@ -81,7 +81,9 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
     active,
     editingName,
     featureGroup,
-    onActiveFeature
+    onEditFeature,
+    onActiveFeature,
+    onDeleteFeature,
   ])
 
   return (

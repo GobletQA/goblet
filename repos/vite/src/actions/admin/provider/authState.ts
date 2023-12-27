@@ -1,3 +1,8 @@
+/**
+ * **IMPORTANT** - This is not currently being used
+ * Seems to cause an infinite loop when loaded. Need to investigate
+ */
+
 import { signOutAuthUser } from './signOutAuthUser'
 import { getProviderMetadata } from '@services/providers'
 
@@ -17,8 +22,9 @@ export const authStateChange = async (rawUser:any) => {
   if (rawUser) return
 
   console.warn(`[Auth State Change] Auth User no longer exists.`)
-
-  await signOutAuthUser()
+  console.log(`------- FIGURE OUT WHAT DO TO HERE -------`)
+  console.log(`------- LOGOUT CAUSES INFINITE-LOOP -------`)
+  // await signOutAuthUser()
 }
 
 auth.onIdTokenChanged(authStateChange)

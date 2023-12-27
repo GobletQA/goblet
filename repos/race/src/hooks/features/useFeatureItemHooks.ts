@@ -52,7 +52,10 @@ export const useFeatureItemHooks = (props:THFeatureItemHooks) => {
     selection?.removeAllRanges()
     selection?.addRange(range)
 
-  }, [editingName, feature])
+  }, [
+    feature,
+    editingName,
+  ])
 
   const [nameConflict, setNameConflict] = useState(false)
 

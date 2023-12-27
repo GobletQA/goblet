@@ -9,8 +9,7 @@ import type {
   TDecorationUpdate,
 } from '@GBM/types'
 
-import { useRef, useEffect } from 'react'
-import { useInline } from '@gobletqa/components'
+import { useRef, useEffect, useCallback } from 'react'
 import { upsertDecos } from '@GBM/utils/decorations/upsertDecos'
 
 export type THDecoration = {
@@ -27,7 +26,7 @@ export const useDecorations = (props:THDecoration) => {
   const decorationsRef = useRef<TDecorationFiles>({})
   const collectionRef = useRef<TCollectionFiles>({})
 
-  const addDecoration = useInline<TDecorationAdd>((location, decoration, meta) => {
+  const addDecoration = useCallback<TDecorationAdd>((location, decoration, meta) => {
     const updates = upsertDecos({
       meta,
       location,
@@ -39,22 +38,22 @@ export const useDecorations = (props:THDecoration) => {
 
     collectionRef.current = updates.collection
     decorationsRef.current = updates.decorations
-  })
+  }, [])
 
-  const removeDecoration = useInline<TDecorationCB>(() => {
+  const removeDecoration = useCallback<TDecorationCB>(() => {
     console.warn(`Remove decoration method not implemented`)
-  })
+  }, [])
 
-  const clearDecorations = useInline<TDecorationCB>((location:string) => {
+  const clearDecorations = useCallback<TDecorationCB>((location:string) => {
     if(!location) return console.warn(`Can not clear decorations, missing file location`, location)
     if(!collectionRef.current[location]) return
 
-    collectionRef.current[location]?.clear()
+    collectionRef.current[location]?.clear?.()
     delete collectionRef.current[location]
     delete decorationsRef.current[location]
-  })
+  }, [])
 
-  const updateDecorations = useInline<TDecorationUpdate>((location, decorations, meta) => {
+  const updateDecorations = useCallback<TDecorationUpdate>((location, decorations, meta) => {
     const updates = upsertDecos({
       meta,
       location,
@@ -66,7 +65,7 @@ export const useDecorations = (props:THDecoration) => {
 
     collectionRef.current = updates.collection
     decorationsRef.current = updates.decorations
-  })
+  }, [])
 
   useEffect(() => {
     const location = curPath
@@ -81,6 +80,14 @@ export const useDecorations = (props:THDecoration) => {
     const decorations = decorationsRef.current[location]
     decorations
       && (collectionRef.current[location] = editor.createDecorationsCollection(Object.values(decorations)))
+    
+    return () => {
+      if(!collectionRef.current[location]) return
+
+      collectionRef.current[location]?.clear?.()
+      delete collectionRef.current[location]
+    }
+
   }, [curPath])
 
   return {

@@ -1,5 +1,4 @@
 export * from './actionBrowser'
-export * from './getSCStatus'
 export * from './stopBrowser'
 export * from './debuggerUrl'
 export * from './startBrowser'

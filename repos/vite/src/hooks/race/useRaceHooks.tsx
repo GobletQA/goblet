@@ -9,10 +9,10 @@ import type {
 
 import { useRepo } from '@store'
 import {exists} from '@keg-hub/jsutils'
-import { useMemo, useRef } from 'react'
-import { EmptyFeatureUUID } from '@gobletqa/race'
-import { useEffectOnce, useInline } from '@gobletqa/components'
 
+import { EmptyFeatureUUID } from '@gobletqa/race'
+import { useMemo, useRef, useCallback } from 'react'
+import { useEffectOnce } from '@gobletqa/components'
 import { useRaceSettings } from '@hooks/race/useRaceSettings'
 import { useRaceStepDefs } from '@hooks/race/useRaceStepDefs'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
@@ -54,7 +54,7 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
 
   const onPathChange = useOnPathChange()
 
-  const onFeatureRename = useInline(async (
+  const onFeatureRename = useCallback(async (
     feature:TRaceFeature|TRaceFeatureGroup,
     oldLoc:string,
     content?:string
@@ -70,17 +70,17 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
       feature?.parent?.location,
       exists(content) ? content : undefined
     )
-  })
+  }, [onRenameFile])
 
-  const onFeatureActive = useInline(async (feature:TRaceFeature) => {
+  const onFeatureActive = useCallback(async (feature:TRaceFeature) => {
     const storage = feature?.parent?.uuid !== EmptyFeatureUUID
 
     feature?.parent?.uuid
       ? onPathChange(feature.parent.uuid, { storage })
       : onPathChange(``, { sidebar: false })
-  })
+  }, [onPathChange])
 
-  const onFeatureClose = useInline(async (feature:TRaceFeature) => {
+  const onFeatureClose = useCallback(async (feature:TRaceFeature) => {
     const { location } = await getActiveFeature()
     const activeFeat = files[location]
 
@@ -89,9 +89,9 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
 
     ;(activeFeat?.uuid === EmptyFeatureUUID || activeFeat?.uuid === feature?.parent?.uuid)
       && onPathChange(``, { oldLoc: location })
-  })
+  }, [files, onPathChange])
 
-  const onFeatureChange = useInline((feature:TRaceFeature) => {
+  const onFeatureChange = useCallback((feature:TRaceFeature) => {
     if(!feature?.parent?.uuid)
       return console.warn(`Failed to save feature, feature is missing the parent file path`)
     
@@ -107,9 +107,9 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
       feature.content,
       { ast:[featureAst] }
     )
-  })
+  }, [files, onSaveFile])
 
-  const onFeatureCreate = useInline(async (feature:TRaceFeature|TRaceFeatureGroup) => {
+  const onFeatureCreate = useCallback(async (feature:TRaceFeature|TRaceFeatureGroup) => {
     if(!feature?.parent?.location)
       return console.warn(`Failed to create feature, feature is missing the parent file path`)
 
@@ -122,9 +122,9 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
     const { parent, path, content, ...featureAst } = feature
 
     await onAddFile({ content, location: parent.uuid })
-  })
+  }, [files, onAddFile])
 
-  const onFeatureDelete = useInline(async (feature:TRaceFeature|TRaceFeatureGroup) => {
+  const onFeatureDelete = useCallback(async (feature:TRaceFeature|TRaceFeatureGroup) => {
     if(!feature?.parent?.location)
       return console.warn(`Failed to delete feature, missing feature file location`)
 
@@ -140,7 +140,7 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
 
     // Assume only 1 feature per file
     await onDeleteFeature(loc)
-  })
+  }, [files, onDeleteFeature])
 
   const onWorldChange = useOnWorldChange({
     repo,

@@ -8,8 +8,7 @@ import type {
   TSetFeatureGroups,
 } from '@GBR/types'
 
-import { EPatchType } from '@GBR/types'
-import { useInline } from '@gobletqa/components'
+import { useCallback } from 'react'
 import { featureFromLoc } from '@GBR/utils/features/featureFromLoc'
 import { removeFromGroup } from '@GBR/utils/features/removeFromGroup'
 import {
@@ -46,7 +45,7 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     setTabsAndGroups
   } = props
 
-  return useInline<(loc:string)=>void>((loc) => {
+  return useCallback<(loc:string)=>void>((loc) => {
     const remove = featureFromLoc({ features: featureGroups, loc }) as TRaceFeature
 
     if(!remove || (`items` in remove))
@@ -70,7 +69,6 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     }
 
     const removed = removeFromGroup({
-      // tabs:openedTabs,
       uuid: remove?.uuid,
       path: remove?.path,
       featureGroups: { items: featureGroups } as TRaceFeatureGroup,
@@ -80,6 +78,14 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
 
     // Finally call the onFeatureDelete callback
     onFeatureDelete?.(remove)
-  })
+  }, [
+    feature,
+    openedTabs,
+    setFeature,
+    featureGroups,
+    setOpenedTabs,
+    onFeatureDelete,
+    setTabsAndGroups,
+  ])
 
 }

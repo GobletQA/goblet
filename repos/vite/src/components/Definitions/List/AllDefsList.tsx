@@ -94,6 +94,10 @@ export const AllDefsList = (props:TAllDefsList) => {
     else if(definitions?.all?.items !== searchDefs?.all?.items)
       setSearchDefs(definitions as TAllDefGroup)
 
+    // return () => {
+    //   setSearchDefs(undefined as any)
+    // }
+
   }, [definitions])
 
   return (

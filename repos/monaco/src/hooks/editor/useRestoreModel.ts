@@ -120,9 +120,9 @@ const modelRestore = (
   props:TUseRestoreModel
 ) => {
   const {
-    openedPathRef,
     filesRef,
     editorRef,
+    openedPathRef,
     lintWorkerRef,
   } = props
   
@@ -143,7 +143,9 @@ const modelRestore = (
 export const useRestoreModel = (props:TUseRestoreModel) => {
   const {
     editorRef,
+    decoration,
     openedPathRef,
+    setOpenedFiles,
     editorStatesRef,
     contentListenerRef,
   } = props
@@ -162,5 +164,8 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
       ? modelRestore(loc, model, props)
       : false
 
-  }, [])
+  }, [
+    decoration,
+    setOpenedFiles,
+  ])
 }

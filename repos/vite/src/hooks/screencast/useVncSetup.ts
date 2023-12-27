@@ -13,7 +13,6 @@ import RFB from '@novnc/novnc/core/rfb'
 import { EE } from '@services/sharedService'
 import { VNCConnectedEvt } from '@constants'
 import { useRFBConfig } from './useRFBConfig'
-import {useInline} from '@gobletqa/components'
 
 export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
   const {
@@ -41,7 +40,7 @@ export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
     setLoading(false)
   }, [onConnect])
 
-  const _onDisconnect = useInline((rfbObj?:RFB) => {
+  const _onDisconnect = useCallback((rfbObj?:RFB) => {
 
     setLoading(true)
     connected.current = false
@@ -50,7 +49,7 @@ export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
     status === EAppStatus.Active
       && connectRef?.current?.()
 
-  })
+  }, [status])
 
   const _onCredentialsRequired = useCallback(() => {
     if (onCredentialsRequired) {

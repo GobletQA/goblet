@@ -1,9 +1,10 @@
 import type { ReactNode, ChangeEventHandler, FocusEvent, CSSProperties } from "react"
 
+
 import { PatSubmit } from './PatSubmit'
 import Grid from '@mui/material/Unstable_Grid2'
 import {useCallback, useRef, useState} from "react"
-import { useInline, Input, RedText } from "@gobletqa/components"
+import { Input, RedText } from "@gobletqa/components"
 import { addProviderPat } from "@actions/admin/provider/addProviderPat"
 
 
@@ -63,7 +64,7 @@ const usePatInput = (props:TPatForm) => {
     patError && setPatError(``)
   }, [patError, pat])
 
-  const onSavePat = useInline(async () => {
+  const onSavePat = useCallback(async () => {
 
     if(!pat?.trim?.()){
       setPatError(`A pat is required!`)
@@ -88,9 +89,9 @@ const usePatInput = (props:TPatForm) => {
       setLoading(false)
     }
 
-  })
+  }, [pat, patError, loading, onSave])
   
-  const onChangePat = useInline<ChangeEventHandler<HTMLInputElement>>((evt) => {
+  const onChangePat = useCallback<ChangeEventHandler<HTMLInputElement>>((evt) => {
     const value = evt.target.value as string
 
     if(!value.length)
@@ -103,16 +104,16 @@ const usePatInput = (props:TPatForm) => {
       && setPat(value)
 
     onChange?.(value)
-  })
+  }, [pat, helper, onChange])
   
-  const onInputBlur = useInline((evt:FocusEvent<HTMLInputElement>) => {
+  const onInputBlur = useCallback((evt:FocusEvent<HTMLInputElement>) => {
     const value = evt.target.value as string
 
     pat?.trim?.() !== value?.trim?.()
       && setPat(value)
 
     onChange?.(value)
-  })
+  }, [pat, onChange])
   
   return {
     pat,

@@ -4,13 +4,18 @@ import type { TRaceMenuItemClickCtx, TMenuContextRef } from '@GBR/types'
 
 import { useSubMenu } from './useSubMenu'
 import { useInline } from '@gobletqa/components'
-import { useMemo, useState, useRef } from 'react'
 import { useMenuContext } from '@GBR/hooks/editor/useMenuContext'
 import {
   useWorld,
   useEditor,
   useStepDefs,
 } from '@GBR/contexts'
+import {
+  useRef,
+  useMemo,
+  useState,
+  useCallback,
+} from 'react'
 
 export type TMenuContentItem = Omit<TMenuItem, `onClick`> & {
   onClick: (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => void
@@ -44,21 +49,21 @@ export const useMenuItems = (props:THMenuItems) => {
   
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)
-  const onOpen = useInline((evt: MouseEvent<HTMLElement>) => {
+  const onOpen = useCallback((evt: MouseEvent<HTMLElement>) => {
     evt?.stopPropagation?.()
     evt?.preventDefault?.()
 
     setOpen(true)
     anchorRef.current = evt.currentTarget
-  })
+  }, [])
 
-  const onClose = useInline<TOnMenuClose>((event) => {
+  const onClose = useCallback<TOnMenuClose>((event) => {
     event?.stopPropagation?.()
     event?.preventDefault?.()
 
     setOpen(false)
     anchorRef.current = undefined
-  })
+  }, [])
 
   const contextItems = useMenuContext(context, active)
 

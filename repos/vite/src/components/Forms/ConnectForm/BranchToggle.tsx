@@ -1,6 +1,6 @@
 import type { TOnToggle } from '@gobletqa/components'
 
-import { useInline } from '@gobletqa/components'
+import { useCallback } from 'react'
 import { Toggle } from '@gobletqa/components/components/Form/Inputs'
 
 export type TBranchToggle = {
@@ -20,11 +20,11 @@ export const BranchToggle = (props:TBranchToggle) => {
     setBranchFrom
   } = props
 
-  const onChange = useInline<TOnToggle>((evt, value) => {
+  const onChange = useCallback<TOnToggle>((evt, value) => {
     !branchFrom
       ? value === `create` && setBranchFrom?.(true)
       : value === `existing` && setBranchFrom?.(false)
-  })
+  }, [branchFrom, setBranchFrom])
 
   const value = branchFrom ? toggleOpts[1] : toggleOpts[0]
 

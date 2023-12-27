@@ -8,22 +8,19 @@ import type {
 import { useCallback } from 'react'
 
 
-const useDisconnectCB = (
-  props:TBrowserProps,
-  ext:TBrowserExt
-) => {
+const useDisconnectCB = (ext:TBrowserExt) => {
 
   const {
-  rfb,
-  logger,
-  timeouts,
-  connected,
-  _onDisconnect,
-  eventListeners,
-} = ext
+    rfb,
+    logger,
+    timeouts,
+    connected,
+    _onDisconnect,
+    eventListeners,
+  } = ext
 
   return useCallback(() => {
-    const rfbObj = rfb?.current || undefined
+    const rfbObj = rfb?.current
 
     try {
 
@@ -97,7 +94,7 @@ export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
     rfb?.current?.clipboardPasteFrom(text)
   }, [rfb?.current])
 
-  const disconnect = useDisconnectCB(props, ext)
+  const disconnect = useDisconnectCB(ext)
   disconnectRef.current = disconnect
 
   return {

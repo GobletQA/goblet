@@ -5,11 +5,11 @@ import type {
 } from '@ltipton/parkin'
 
 
+import { useCallback } from 'react'
 import { ife } from '@keg-hub/jsutils'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { ParkinInitEvt, UpdateWorldEvt } from '@GBR/constants/events'
 import {
-  useInline,
   useOnEvent,
   onEmitEvent,
   MemoChildren,
@@ -60,23 +60,20 @@ export const WorldProvider = (props:TWorldProvider) => {
   const initWorld = useInitParkin(props)
   const [world, setWorld] = useState<TWorldConfig>(initWorld)
   
-  const updateWorld = useInline<TOnWorldChange>(async ({ world:updated, replace}) => {
-    const world = await ParkinWorker.setWorld(updated, replace)
-    onWorldChange?.({ world, replace })
-    setWorld(world)
-  })
-  
-  const resetParkin = useInline(() => ParkinWorker.reset())
+  const updateWorld = useCallback<TOnWorldChange>(async ({ world:updated, replace}) => {
+    const wld = await ParkinWorker.setWorld(updated, replace)
+    onWorldChange?.({ world: wld, replace })
+    setWorld(wld)
+  }, [world, onWorldChange])
 
   useOnEvent<TOnWorldUpdate>(UpdateWorldEvt, updateWorld)
 
   const parkinCtx:TParkinCtx = useMemo(() => ({
     world,
     updateWorld,
-    resetParkin,
+    resetParkin: ParkinWorker.reset,
   }), [
     world,
-    resetParkin,
     updateWorld,
   ])
 

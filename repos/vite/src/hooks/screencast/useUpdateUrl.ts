@@ -1,10 +1,10 @@
 import type { RefObject } from 'react'
 import type { TBrowserNavEvt } from '@types'
 
-import { useRef } from 'react'
 import { BrowserNavEvt } from '@constants'
+import { useCallback, useRef } from 'react'
+import { useOnEvent } from '@gobletqa/components'
 import { pageService } from '@services/pageService'
-import { useInline, useOnEvent } from '@gobletqa/components'
 
 export type TUpdateUrl = (
   newUrl: string | undefined,
@@ -30,12 +30,13 @@ export const useUpdateUrl = (props:THUpdateUrl) => {
   const backAmountRef = useRef<number>(backAmount)
   
 
-  const updateUrl = useInline(async(
+  const updateUrl = useCallback(async(
     newUrl:string|undefined,
   ) => {
 
     const url = urlRef.current
     if(!newUrl) return
+
     const normalized = pageService.normalize(newUrl)
     if(!normalized || newUrl === url || normalized === url) return
 
@@ -50,7 +51,7 @@ export const useUpdateUrl = (props:THUpdateUrl) => {
 
     urlRef.current = normalized
 
-  })
+  }, [backAmount, setBackAmount])
 
   useOnEvent<TBrowserNavEvt>(BrowserNavEvt, data => updateUrl(data?.url))
 

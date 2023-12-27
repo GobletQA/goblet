@@ -35,6 +35,7 @@ export type TUseEditorFileCallbacks = {
   setOpenedFiles:(content:SetStateAction<TEditorOpenFiles>) => void
 }
 
+let pathChangeTimeout: NodeJS.Timeout|undefined
 export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   const {
     curPath,
@@ -144,15 +145,21 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
 
   const editFileName = useCallback(
     (path: string, name: string) => {
+
+      if(pathChangeTimeout){
+        clearTimeout(pathChangeTimeout)
+        pathChangeTimeout = undefined
+      }
+      
       const content = filesRef.current[path] || ''
       deleteFile(path, true)
       const newPath = path.split('/').slice(0, -1).concat(name).join('/')
       addFile(newPath, content, true)
 
       onRenameFile?.(path, newPath)
-      setTimeout(() => pathChange(newPath), 50)
+      pathChangeTimeout = setTimeout(() => pathChange(newPath), 50)
     },
-    [deleteFile, addFile, onRenameFile]
+    [deleteFile, addFile, onRenameFile, pathChange]
   )
 
   return {

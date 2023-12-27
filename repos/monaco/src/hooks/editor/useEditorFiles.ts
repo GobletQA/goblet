@@ -21,6 +21,7 @@ export type THEditorFiles = {
   filesRef: MutableRefObject<TFilelist>
 }
 
+let pathChangeTimeout: NodeJS.Timeout|undefined
 
 /**
  * Hook that runs on load of the editor component
@@ -54,12 +55,19 @@ export const useEditorFiles = (props:THEditorFiles) => {
      * If found, then set that file as active
      * Instead of the first found file with a model
      */
-    openedFiles?.length
-      && setTimeout(() => {
+    if(openedFiles?.length){
+
+      if(pathChangeTimeout){
+        clearTimeout(pathChangeTimeout)
+        pathChangeTimeout = undefined
+      }
+      
+      pathChangeTimeout = setTimeout(() => {
         // Find the first opened file with a model and set it as active
         const found = openedFiles.find(file => getModelFromPath(file.path))
         found && pathChange(found.path, { storage: false })
-    }, 0)
+      }, 0)
+    }
 
     if(!editorRef.current) return
 

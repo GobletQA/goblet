@@ -1,6 +1,7 @@
 import type { TOnToggle } from '@gobletqa/components'
 
-import { useInline } from '@gobletqa/components'
+
+import { useCallback } from 'react'
 import { Toggle } from '@gobletqa/components/components/Form/Inputs'
 
 export type TRepoToggle = {
@@ -20,11 +21,11 @@ export const RepoToggle = (props:TRepoToggle) => {
   onCreateRepo
   } = props
 
-  const onChange = useInline<TOnToggle>((evt, value) => {
+  const onChange = useCallback<TOnToggle>((evt, value) => {
     !createRepo
       ? value === `create` && onCreateRepo?.(evt, true)
       : value === `existing` && onCreateRepo?.(evt, false)
-  })
+  }, [createRepo, onCreateRepo])
 
   const value = createRepo ? toggleOpts[1] : toggleOpts[0]
 

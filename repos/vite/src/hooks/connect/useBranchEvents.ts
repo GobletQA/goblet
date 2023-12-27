@@ -5,7 +5,7 @@ import type {
 import type { Dispatch, SetStateAction } from 'react'
 import type { TOnAutoChange } from '@gobletqa/components'
 
-import { useInline } from '@gobletqa/components'
+import { useCallback } from 'react'
 import { formatName } from '@utils/repo/formatName'
 import { CreateNewBranch, CreateBranchSelect } from '@constants'
 
@@ -26,21 +26,26 @@ export const useBranchEvents = (props:THBranchEvts) => {
     branch,
     setBranch,
     newBranch,
+    branchFrom,
     setNewBranch,
     onInputError,
     setBranchFrom
   } = props
 
-  const onChangeNewBranch = useInline<TRepoValueCB>((value) => {
+  const onChangeNewBranch = useCallback<TRepoValueCB>((value) => {
     const formatted = formatName(value)
     if(repo?.branches?.includes(formatted))
       return onInputError?.(`newBranch`, `Branch name already exists. Name must be unique.`)
 
     formatted !== newBranch
       && setNewBranch(formatted)
-  })
+  }, [
+    repo,
+    newBranch,
+    setNewBranch,
+  ])
 
-  const onChangeBranch = useInline<TOnAutoChange>((evt, value, reason) => {
+  const onChangeBranch = useCallback<TOnAutoChange>((evt, value, reason) => {
     const isCreateBranch = value === CreateNewBranch
     const isCreateBranchSelect = reason === CreateBranchSelect
 
@@ -52,7 +57,11 @@ export const useBranchEvents = (props:THBranchEvts) => {
 
     branch !== value && setBranch(value as string)
 
-  })
+  }, [
+    branch,
+    branchFrom,
+    setBranchFrom
+  ])
 
   return {
     onChangeBranch,

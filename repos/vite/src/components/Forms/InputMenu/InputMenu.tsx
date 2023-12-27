@@ -2,14 +2,13 @@ import type { ChangeEvent, MouseEvent, ComponentProps, ComponentType } from 'rea
 import type { TMenuItem } from '@gobletqa/components'
 
 import { MenuItems } from './MenuItems'
-import {useRef, useState, useMemo } from 'react'
+import {emptyArr} from '@keg-hub/jsutils'
+import {useRef, useState, useMemo, useCallback } from 'react'
 import {
   Menu,
-  useInline,
   IconButton,
   GobletIcon,
 } from '@gobletqa/components'
-import {emptyArr} from '@keg-hub/jsutils'
 
 export type TInputMenuItemClick = (evt:ChangeEvent, ctx:TInputMenuCtx) => void
 export type TMenuContextSetInputProps = (props:Partial<ComponentProps<any>>) => void
@@ -64,21 +63,21 @@ const useMenuItems = (props:TInputMenu) => {
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)
 
-  const onOpen = useInline((evt: MouseEvent<HTMLElement>) => {
+  const onOpen = useCallback((evt: MouseEvent<HTMLElement>) => {
     evt?.stopPropagation?.()
     evt?.preventDefault?.()
 
     setOpen(true)
     anchorRef.current = evt.currentTarget
-  })
+  }, [])
 
-  const onClose = useInline<TOnMenuClose>((event) => {
+  const onClose = useCallback<TOnMenuClose>((event) => {
     event?.stopPropagation?.()
     event?.preventDefault?.()
 
     setOpen(false)
     anchorRef.current = undefined
-  })
+  }, [])
 
   const items = useMemo(() => {
     return menuItems.concat(MenuItems).map((item) => {

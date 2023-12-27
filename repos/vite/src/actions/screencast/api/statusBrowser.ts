@@ -1,7 +1,6 @@
 import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
 import { screencastApi } from '@services/screencastApi'
-import { setBrowserStatus } from '../local/setBrowserStatus'
 import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
 /**
@@ -23,12 +22,11 @@ export const statusBrowser = async (options = noOpObj) => {
     ...options,
   })
 
-  !success || error
-    ? addToast({
-        type: 'error',
-        message: error || `Failed to get the browser status, please try again later`
-      })
-    : data && setBrowserStatus(data)
+  if(!success || error)
+    addToast({
+      type: `error`,
+      message: error || `Failed to get the browser status, please try again later`
+    })
 
   return data
 }

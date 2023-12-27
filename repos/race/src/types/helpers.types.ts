@@ -14,6 +14,7 @@ import type {
 } from './features.types'
 
 
+export type TAnyCB = (...args:any[]) => any
 export type TGetOpenedTabs = () => TTabItem[]
 
 export type TTabsAndGroupsProps = {

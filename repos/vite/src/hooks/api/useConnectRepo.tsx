@@ -1,6 +1,7 @@
 import { TConnectRepo, TCreateRepoOpts, TBuiltRepo } from '@types'
 
-import { useInline } from '@hooks/useInline'
+
+import { useCallback } from 'react'
 import { connectRepo } from '@actions/repo/api/connect'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { createRepo as createNewRepo } from '@actions/repo/api/create'
@@ -30,7 +31,7 @@ export const useConnectRepo = (props:THConnectRepo) => {
     setFormError,
   } = props
 
-  return useInline<TConnectCB>(async (params) => {
+  return useCallback<TConnectCB>(async (params) => {
     if(loading) return
 
     setLoading?.(true)
@@ -54,5 +55,10 @@ export const useConnectRepo = (props:THConnectRepo) => {
       ? setFormError?.(`Failed to mount repo. Please try again later.`)
       : toggleModal(false)
 
-  })
+  }, [
+    loading,
+    onConnect,
+    setLoading,
+    setFormError,
+  ])
 }

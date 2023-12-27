@@ -12,12 +12,11 @@ import type {
   TEditorOpenFiles,
 } from '../../types'
 
-import { useState } from 'react'
-import { emptyObj } from '@keg-hub/jsutils'
-import { useInline } from '@gobletqa/components'
+import { useState, useCallback } from 'react'
 import { useDecorations } from './useDecorations'
 import { useOpenOrFocus } from './useOpenOrFocus'
 import { useRestoreModel } from './useRestoreModel'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 
 export type TUseFileCallbacks = {
@@ -96,7 +95,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   })
 
 
-  const pathChange = useInline<TPathChange>((loc, opts=emptyObj) => {
+  const pathChange = useCallback<TPathChange>((loc, opts=emptyObj) => {
     const model = restoreModel(loc)
     if(model)
       opts?.openLoc !== false
@@ -108,7 +107,12 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
     const content = getContentFromPath(loc) || filesRef.current[loc]
     onPathChangeRef.current?.(loc, content, opts)
-  })
+  }, [
+    setCurPath,
+    openedFiles,
+    restoreModel,
+    openOrFocusPath
+  ])
 
   return {
     decoration,

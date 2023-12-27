@@ -1,8 +1,8 @@
 import type { FocusEvent, ComponentProps, ChangeEvent } from 'react'
 
-import { useState, useMemo } from 'react'
+import { useEnsureRef } from '@gobletqa/components'
+import { useState, useMemo, useCallback } from 'react'
 import { InputMenu } from '@components/Forms/InputMenu'
-import { useInline, useEnsureRef } from '@gobletqa/components'
 
 import {
   UrlInputComp,
@@ -40,12 +40,12 @@ const useUrlFromBrowser = (props:TUrlInput) => {
 
   const inputRef = useEnsureRef(props.inputRef)
 
-  const onUrlChange = useInline((evt:FocusEvent<HTMLInputElement>) => {
+  const onUrlChange = useCallback((evt:FocusEvent<HTMLInputElement>) => {
     error && setError(``)
-    const value = evt.target.value as string
-    setUrl(value)
-    onBlur?.(evt, value)
-  })
+    const val = evt.target.value as string
+    setUrl(val)
+    onBlur?.(evt, val)
+  }, [error, onBlur])
 
   const decorProps = useMemo(() => {
     return {

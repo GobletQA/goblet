@@ -1,10 +1,11 @@
-import type { TTestRuns, TTestRun } from '@types'
+import type { TTestRuns } from '@types'
 
+import { useCallback } from 'react'
 import { ETestRunsSection } from '@types'
 import { PastTestRunList } from './PastTestRunList'
 import { TestRunSectionScroll } from '../TestRuns.styled'
 import { TestRunsMsg } from '../TestRunHelpers/TestRunsMsg'
-import { PlayCircleOutlineIcon, useInline } from '@gobletqa/components'
+import { PlayCircleOutlineIcon } from '@gobletqa/components'
 import {
   TestRunsButton,
   TestRunsButtonContainer
@@ -22,10 +23,10 @@ export const PastTestRuns = (props:TPastTestRuns) => {
   const { runs, setRunId, onChangeSection } = props
   const testRuns = Object.values(runs)
 
-  const onClick = useInline((id:string) => {
+  const onClick = useCallback((id:string) => {
     setRunId(id)
     onChangeSection(ETestRunsSection.reporter)
-  })
+  }, [setRunId, onChangeSection])
 
   return (
     <TestRunSectionScroll>

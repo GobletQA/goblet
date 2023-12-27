@@ -1,11 +1,11 @@
 import type { ComponentProps, MouseEventHandler } from 'react'
 
 import { useRepo } from '@store'
+import { useCallback } from 'react'
 import {noOp} from '@keg-hub/jsutils'
 import { Alert } from '@actions/modals/alert'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import {
-  useInline,
   IconButton,
   CloudOffIcon,
 } from '@gobletqa/components'
@@ -35,7 +35,7 @@ const UnmountBtn = (props:TUnmountBtn) => {
   
   const repo = useRepo()
   
-  const onClickAlert = useInline((e:any) => {
+  const onClickAlert = useCallback((e:any) => {
     e?.preventDefault?.()
     e?.stopPropagation?.()
 
@@ -62,7 +62,7 @@ const UnmountBtn = (props:TUnmountBtn) => {
         </ModalContainer>
       ),
     })
-  })
+  }, [repo])
 
   return (
       <IconButton
