@@ -11,7 +11,7 @@ import type {
 } from '@GBR/types'
 
 import {throttleLast} from '@keg-hub/jsutils'
-import { useOnEvent } from '@gobletqa/components'
+import { useOnEvent, useEffectOnce } from '@gobletqa/components'
 import { useEditor } from '@GBR/contexts/EditorContext'
 import { RaceOnFeatureEvt } from '@GBR/constants/events'
 import { useSettings } from '@GBR/contexts/SettingsContext'
@@ -142,14 +142,15 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   useEffect(() => {
     feature?.uuid !== cache.feature
       && setCache({ feature: feature?.uuid, cache: {} })
-      
+
     return () => {
       decosRef.current = {}
       parentRef.current = undefined
     }
-      
+
   }, [feature, cache])
 
+      
   return {
     add: addDecoration,
     clear: clearDecorations,

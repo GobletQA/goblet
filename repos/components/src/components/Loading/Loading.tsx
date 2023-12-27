@@ -2,22 +2,27 @@ import type { CSSProperties, ReactNode, ComponentProps } from 'react'
 
 import Box from '@mui/material/Box'
 import { gutter } from '@GBC/theme'
+import { cls } from '@keg-hub/jsutils/cls'
 import { Text } from '@GBC/components/Text'
-import { ensureArr } from '@keg-hub/jsutils'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TLoading = ComponentProps<typeof CircularProgress> & {
+  className?:string
   message?:ReactNode
   hideSpinner?:boolean
-  messageSx?: CSSProperties|CSSProperties[]
-  containerSx?:CSSProperties|CSSProperties[]
+  sx?: CSSProperties | CSSProperties[]
+  messageSx?: CSSProperties | CSSProperties[]
+  containerSx?: CSSProperties | CSSProperties[]
   pos?: `before` | `after`
 }
 
 export const Loading = (props:TLoading) => {
   const {
+    sx,
     message,
     messageSx,
+    className,
     hideSpinner,
     containerSx,
     pos=`after`,
@@ -37,8 +42,8 @@ export const Loading = (props:TLoading) => {
     <Box 
       width='100%'
       textAlign='center'
-      className="loading-container"
-      sx={containerSx}
+      sx={sx ?? containerSx as CSSProperties}
+      className={cls(`loading-container`, className)}
     >
       {message && pos !== `after` && (
         <Text variant="h6" sx={styleArr} >

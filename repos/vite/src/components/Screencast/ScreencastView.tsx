@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react'
 
+import {useMemo } from 'react'
+import { useApp } from '@store'
 import { Browser } from '@components/Browser'
 import { useColor } from '@hooks/theme/useColor'
 import { DebuggerSlider } from '@components/Debugger'
@@ -13,7 +15,8 @@ export type TScreencastViewProps = {
 }
 
 export const ScreencastView = (props:TScreencastViewProps) => {
-  
+  const { inspector } = useApp()
+
   const {
     onDragEnd
   } = props
@@ -29,7 +32,13 @@ export const ScreencastView = (props:TScreencastViewProps) => {
     screencastUrl,
   } = useScreencastHooks()
 
-  const background = useColor(`colors.white`, `colors.black15`)
+  const background = useColor(`colors.gray01`, `colors.black19`)
+
+  const sizes = useMemo(() => {
+    return inspector
+      ? {browser: `70%`, inspector: `30%`}
+      : {browser: `100%`, inspector: `0%`}
+  }, [inspector])
 
   return (
     <Allotment
@@ -37,8 +46,8 @@ export const ScreencastView = (props:TScreencastViewProps) => {
       onDragEnd={onDragEnd}
     >
       <Allotment.Pane
-        preferredSize={`70%`}
-        priority={LayoutPriority.Low}
+        preferredSize={sizes.browser}
+        priority={LayoutPriority.High}
       >
         <Browser
           ref={vncRef}
@@ -54,12 +63,17 @@ export const ScreencastView = (props:TScreencastViewProps) => {
           onDisconnect={onDisconnect}
         />
       </Allotment.Pane>
+    {inspector && (
       <Allotment.Pane
-        preferredSize={`30%`}
         priority={LayoutPriority.Low}
+        preferredSize={sizes.inspector}
       >
-        <DebuggerSlider />
+        <DebuggerSlider
+          onOpen={onDragEnd}
+          onClose={onDragEnd}
+        />
       </Allotment.Pane>
+    )}
     </Allotment>
   )
 }

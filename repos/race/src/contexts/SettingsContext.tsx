@@ -3,6 +3,7 @@ import type {
   TOnSettingCB,
   TRaceSettings,
   TSettingUpdate,
+  TAskForSettings,
   TSettingPayload,
 } from '../types'
 
@@ -60,7 +61,7 @@ export const SettingsProvider = (props:TSettingsProvider) => {
 
   // Helper to allow external code ask the context for the settings
   // Allows external actions to interface with the settings
-  useOnEvent<TSettingsCtx>(AskForSettingsEvt, ({ cb }) => cb?.(settingsCtx))
+  useOnEvent<TAskForSettings>(AskForSettingsEvt, ({ cb }) => cb?.(settingsCtx))
 
   return (
     <SettingsContext.Provider value={settingsCtx}>

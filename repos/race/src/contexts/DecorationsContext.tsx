@@ -9,6 +9,7 @@ import { useRaceDecoHooks } from '@GBR/hooks/decorations/useRaceDecoHooks'
 import {
   useMemo,
   useState,
+  useEffect,
   useContext,
   createContext,
 } from 'react'
@@ -45,6 +46,12 @@ export const DecorationsProvider = (props:TRaceDecoProvider) => {
     update,
     decorations
   ])
+
+  useEffect(() => {
+    decoRef
+      && decorationsCtx
+      && (decoRef.current = decorationsCtx)
+  }, [decorationsCtx])
 
   return (
     <DecorationsContext.Provider value={decorationsCtx}>
