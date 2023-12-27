@@ -1,6 +1,5 @@
 export * from './useAudit'
 export * from './useExpanded'
-export * from './useRaceEditor'
 export * from './useContainerHooks'
 export * from './useSectionActions'
 export * from './useGetEditorContext'

@@ -1,5 +1,10 @@
-import type { TFeatureAst } from '@ltipton/parkin'
-import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd, TRaceDecoUpdate, TRaceDecoMeta } from '@gobletqa/race'
+import type {
+  TRaceDeco,
+  TEditorRef,
+  TFeatureAst,
+  TRaceDecoRef,
+  TRaceDecoMeta
+} from '@gobletqa/race'
 import type {
   TFileTree,
   TFileModel,

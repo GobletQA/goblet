@@ -1,6 +1,11 @@
-import type { TStepDef, TStepDefs } from '@ltipton/parkin'
+import type {
+  TStepDef,
+  TStepDefs,
+  TFeatureAst,
+} from '@ltipton/parkin'
 
 export {
   TStepDef,
-  TStepDefs
+  TStepDefs,
+  TFeatureAst
 }

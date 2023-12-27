@@ -3,8 +3,8 @@ import type { TAskForEditor, TAnswerEditor, TEditorRef } from '@GBR/types'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 
 import { useEffect } from 'react'
-import { useOnEvent, useEventEmit } from '@gobletqa/components'
-import { AskForEditorEvt, RaceEmitEditorEvt } from '@GBR/constants'
+import { AskForEditorEvt } from '@GBR/constants'
+import { useOnEvent } from '@gobletqa/components'
 
 export type THEditorContext = {
   editorRef:TEditorRef
@@ -17,8 +17,6 @@ export const useGetEditorContext = (props:THEditorContext) => {
     editorCtx,
   } = props
 
-  // Helper to emit the editor context to any registered listeners
-  const onEmitEditor = useEventEmit<TAnswerEditor>(RaceEmitEditorEvt, { editor: editorCtx })
 
   // Helper to allow external code ask the context for the current editor
   // Allows external actions to interface with the editor
@@ -29,7 +27,6 @@ export const useGetEditorContext = (props:THEditorContext) => {
       && editorCtx
       && (editorRef.current = editorCtx)
 
-    onEmitEditor()
   }, [editorCtx])
   
 }

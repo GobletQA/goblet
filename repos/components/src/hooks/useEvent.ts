@@ -1,6 +1,5 @@
 import type { TEventCB } from '@gobletqa/shared/libs/eventEmitter'
 
-import { exists } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { useInline } from '@GBC/hooks/components/useInline'
 import { useEffectOnce } from '@GBC/hooks/components/useEffectOnce'
@@ -28,14 +27,3 @@ export const onEmitEvent = <P=Record<any, any>>(
   ...args:any[]
 ) => EE.emit<P>(event, params, ...args)
 
-export const useEventEmit = <P=Record<any, any>>(
-  event:string,
-  params?:P
-) => {
-
-  return useInline((...args:any[]) => onEmitEvent<P>(
-    event,
-    exists(params) ? params : args.shift(),
-    ...args
-  ))
-}

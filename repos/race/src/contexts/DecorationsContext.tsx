@@ -6,7 +6,6 @@ import type {
 
 import { MemoChildren } from '@gobletqa/components'
 import { useRaceDecoHooks } from '@GBR/hooks/decorations/useRaceDecoHooks'
-import { useGetDecoContext } from '@GBR/hooks/decorations/useGetDecoContext'
 import {
   useMemo,
   useState,
@@ -46,8 +45,6 @@ export const DecorationsProvider = (props:TRaceDecoProvider) => {
     update,
     decorations
   ])
-
-  useGetDecoContext({ decoRef, decorationsCtx })
 
   return (
     <DecorationsContext.Provider value={decorationsCtx}>

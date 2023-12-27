@@ -12,7 +12,6 @@ import { useMemo, useCallback } from 'react'
 import { EE } from '@services/sharedService'
 import { set } from '@keg-hub/jsutils/set'
 import { exists } from '@keg-hub/jsutils/exists'
-import { useEventEmit } from '@gobletqa/components'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { confirmModal } from '@actions/modals/modals'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
@@ -38,6 +37,16 @@ import {
   useOnDeleteFile,
   useOnPathChange,
 } from '../files'
+
+
+const onBeforeAddFile = (props:TSideNavToggleProps) => EE.emit<TSideNavToggleProps>(
+  ToggleSideNavEvt,
+  {
+    open: true,
+    name: ESideNav.Files,
+    ...props
+  }
+)
 
 
 const emptyFileTree = emptyObj as TFileTree
@@ -87,10 +96,6 @@ export const useMonacoHooks = (
   const onDeleteFile = useOnDeleteFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
   const onRenameFile = useOnRenameFile(files, rootPrefix)
-  const onBeforeAddFile = useEventEmit<TSideNavToggleProps>(
-    ToggleSideNavEvt,
-    { open: true, name: ESideNav.Files }
-  )
 
   const config = useMonacoConfig()
   const { theme, ...options } = useSettingValues<TMonacoSettingValues>(`monaco`)

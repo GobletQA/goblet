@@ -2,6 +2,7 @@
 export { EProvider } from '@gobletqa/shared/types/provider.types'
 export { EContainerState } from '@gobletqa/shared/types/helpers.types'
 
+export type { TAnyCB } from '@gobletqa/shared/types/helpers.types'
 export type { TFileTree } from '@gobletqa/shared/types/files.types'
 export type { TExamUIRun } from '@gobletqa/shared/types/exam.types'
 export type { TStartPlaying } from '@gobletqa/shared/types/pw.types'
