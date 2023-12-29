@@ -22,10 +22,8 @@ export const authStateChange = async (rawUser:any) => {
   if (rawUser) return
 
   console.warn(`[Auth State Change] Auth User no longer exists.`)
-  console.log(`------- FIGURE OUT WHAT DO TO HERE -------`)
-  console.log(`------- LOGOUT CAUSES INFINITE-LOOP -------`)
-  // await signOutAuthUser()
+  auth.currentUser && await signOutAuthUser()
 }
 
-auth.onIdTokenChanged(authStateChange)
+// auth.onIdTokenChanged(authStateChange)
 auth.onAuthStateChanged(authStateChange)

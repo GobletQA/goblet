@@ -38,7 +38,7 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "start": "pnpm sc:start",
     "serve": "/bin/bash scripts/initialize.sh",
-    "sc:start": "DEBUG=\"http-proxy-middleware*\" tsup-node --config ./configs/tsup.sc.config.ts --watch src  --watch configs --watch ../browser/src --watch ../repo/src --watch ../testify/src --watch ../workflows/src --watch ../shared/src --watch ../latent/src --watch ../goblet/src --onSuccess 'node --enable-source-maps -r esbuild-register dist/index.js'",
+    "sc:start": "DEBUG=\"http-proxy-middleware*\" tsup-node --config ./configs/tsup.sc.config.ts --watch src  --watch configs --watch ../browser/src --watch ../repo/src --watch ../testify/src --watch ../workflows/src --watch ../shared/src --watch ../latent/src --watch ../goblet/src --watch ../git/src --onSuccess 'node --enable-source-maps -r esbuild-register dist/index.js'",
     "sc:kill": "node --enable-source-maps -r esbuild-register scripts/ts/killServer.ts",
     "bs": "node --enable-source-maps -r esbuild-register dist/bs.js",
     "sock": "node --enable-source-maps -r esbuild-register dist/sock.js",

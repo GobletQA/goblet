@@ -13,7 +13,6 @@ const throwError = (msg:string|Error) => {
 
 export const validateWatchArgs = (opts:TGitWatchOpts=emptyObj) => {
   const {
-    name,
     token,
     local,
     remote,
@@ -22,12 +21,11 @@ export const validateWatchArgs = (opts:TGitWatchOpts=emptyObj) => {
     provider,
   } = opts
 
-  if(name) return throwError(`Can not watch goblet repo, missing repo name.`)
-  if(token) return throwError(`Can not watch goblet repo, missing git token.`)
-  if(branch) return throwError(`Can not watch goblet repo, missing git branch.`)
-  if(local) return throwError(`Can not watch goblet repo, missing repo location.`)
-  if(username) return throwError(`Can not watch goblet repo, missing git username.`)
-  if(provider) return throwError(`Can not watch goblet repo, missing git provider.`)
-  if(remote) return throwError(`Can not watch goblet repo, missing repo remote url.`)
+  if(!token) return throwError(`Can not watch goblet repo, missing git token.`)
+  if(!branch) return throwError(`Can not watch goblet repo, missing git branch.`)
+  if(!local) return throwError(`Can not watch goblet repo, missing repo location.`)
+  if(!username) return throwError(`Can not watch goblet repo, missing git username.`)
+  if(!provider) return throwError(`Can not watch goblet repo, missing git provider.`)
+  if(!remote) return throwError(`Can not watch goblet repo, missing repo remote url.`)
 
 }
