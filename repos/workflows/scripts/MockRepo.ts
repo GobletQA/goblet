@@ -12,6 +12,5 @@ const noOp = () => {}
 export const repoSecrets = noOp
 export const ensureMounted = noOp
 export const resetCachedWorld = noOp
-export const createRepoWatcher = noOp
 export class Repo {}
 

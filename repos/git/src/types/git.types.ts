@@ -1,6 +1,8 @@
 import type { RepoWatcher } from '../repoWatcher'
 import type { EProvider } from './shared.types'
 
+export type TGitWatchOpts = Partial<TGitOpts>
+
 export type TGitData = {
   name: string
   local:string

@@ -12,7 +12,6 @@ import type {
 import fs from 'fs'
 import { git } from './gitCmd'
 import { Logger } from '@gobletqa/logger'
-import { RepoWatcher } from '../repoWatcher'
 import { fileSys } from '@keg-hub/cli-utils'
 import { throwErr } from '@GGT/utils/throwErr'
 import { limbo } from '@keg-hub/jsutils/limbo'
@@ -100,8 +99,6 @@ git.add = async (
 git.remove = async (args:TGitMeta) => {
   const repoPath = getRepoPath(args)
 
-  // Stop and remove the repo watcher before removing the folder from the FS
-  await RepoWatcher.remove(repoPath)
   Logger.log(`Removing repo at path ${repoPath}`)
 
   // Clear any cache before remove the directory

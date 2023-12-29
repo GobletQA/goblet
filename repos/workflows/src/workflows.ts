@@ -7,18 +7,18 @@ import type {
 } from '@GWF/types'
 
 
-import { resetGobletConfig } from '@gobletqa/goblet'
-import { resetInjectedLogs } from '@gobletqa/logger'
-
 /**
  * Todo: look into dynamically loading this, so it's only loaded on screencast repo, not backend repo
  */
 import { removeCachedDefs } from '@gobletqa/shared/fs'
 
+import { tri } from '@keg-hub/jsutils/tri'
+import { Logger } from '@GWF/utils/logger'
 import { wfcache, WfCache } from './wfCache'
+import { resetGobletConfig } from '@gobletqa/goblet'
+import { resetInjectedLogs } from '@gobletqa/logger'
 import { Repo, resetCachedWorld } from '@gobletqa/repo'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
-
 import {
   createGoblet,
   statusGoblet,
@@ -172,18 +172,19 @@ export class Workflows {
    * Disconnects a previously connected repo
    */
   disconnect = async ({ username }:Record<`username`, string>) => {
+    
+    Logger.warn(`Disconnecting repo for user ${username}...`)
+    
     // Clear the existing loaded goblet config
-    resetGobletConfig()
-    resetCachedWorld(username)
-    resetInjectedLogs()
-    removeCachedDefs?.()
-    this.cache.remove(username)
+    tri(resetGobletConfig)
+    tri(resetCachedWorld, username)
+    tri(resetInjectedLogs)
+    tri(removeCachedDefs)
+    tri(() => this.cache.remove(username))
 
-    return await disconnectGoblet({
-      user: {
-        gitUser: username,
-      },
-    })
+    Logger.log(`Disconnected repo for user ${username}`)
+
+    return tri(async () => await disconnectGoblet({user: {gitUser: username}}))
   }
 
 }

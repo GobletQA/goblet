@@ -20,7 +20,9 @@
   },
   "scripts": {
     "build": "pnpm build:tsup",
-    "build:tsup": "pnpm tsup-node --config ./configs/tsup.config.ts",
+    "build:tsup": "pnpm build:git && pnpm build:wt",
+    "build:git": "pnpm tsup-node --config ./configs/tsup.git.config.ts",
+    "build:wt": "pnpm tsup-node --config ./configs/tsup.watch.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",

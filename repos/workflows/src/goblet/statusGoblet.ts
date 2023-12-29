@@ -11,13 +11,14 @@ import type {
 import path from 'path'
 import {failResp} from './response'
 import { Logger } from '@gobletqa/logger'
+import { repoSecrets } from '@gobletqa/repo'
 import { fileSys } from '@keg-hub/cli-utils'
 import { ENVS } from '@gobletqa/environment'
 import { gobletLoader } from '@gobletqa/goblet'
+import { getRepoName, git } from '@gobletqa/git'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
-import { getRepoName, git, RepoWatcher } from '@gobletqa/git'
-import { repoSecrets, createRepoWatcher } from '@gobletqa/repo'
+import { autoWatch, hasWatcher } from '@gobletqa/git/auto'
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts
@@ -123,10 +124,10 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
   const { username, branch, remote, local } = opts
 
   const unknownStatus:TWFResp = {
-    mode: 'vnc',
+    mode: `vnc`,
     setup: false,
     mounted: false,
-    status: 'unknown',
+    status: `unknown`,
     message: `Repo status is unknown`
   }
 
@@ -158,10 +159,10 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
   // if(secretsFail) return secretsFail
 
   Logger.log(`Checking for repo watcher at path ${opts.local}...`)
-  const watcher = RepoWatcher.getWatcher(opts.local)
+  const watcher = hasWatcher(opts.local)
   watcher
     ? Logger.log(`Found existing watcher at path ${opts.local}`)
-    : createRepoWatcher(opts)
+    : await autoWatch(opts)
 
   return !gobletConfig
     ? unknownStatus

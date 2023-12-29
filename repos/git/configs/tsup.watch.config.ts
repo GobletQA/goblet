@@ -3,21 +3,29 @@ import { defineConfig } from 'tsup'
 import packcfg from '../package.json'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
-
 const dirname = path.dirname(fileURLToPath(import.meta.url))
+
 const rootDir = path.join(dirname, `..`)
 const outdir = path.join(rootDir, `dist`)
-const entry = path.join(rootDir, `src/index.ts`)
+const outauto = path.join(rootDir, `dist/auto.js`)
+const outwatch = path.join(rootDir, `dist/watch.js`)
+
+const auto = path.join(rootDir, `src/auto.ts`)
+const watch = path.join(rootDir, `src/watch.ts`)
 
 export default defineConfig(async () => {
-  await fs.rm(outdir, { recursive: true, force: true })
-  
+
+  await fs.rm(outwatch, { recursive: true, force: true })
+  await fs.rm(`${outwatch}.map`, { recursive: true, force: true })
+
+  await fs.rm(outauto, { recursive: true, force: true })
+  await fs.rm(`${outauto}.map`, { recursive: true, force: true })
+
   return {
-    name: `git`,
-    clean: true,
+    name: `auto`,
     sourcemap: true,
     splitting: false,
-    entry: [entry],
+    entry: [watch, auto],
     outDir: outdir,
     format: [`cjs`],
     esbuildOptions:(options, context) => {
@@ -30,7 +38,7 @@ export default defineConfig(async () => {
       )
     },
     async onSuccess() {
-      console.log(`Module "@gobletqa/git" built successfully`)
+      console.log(`Module "@gobletqa/git/auto" built successfully`)
     },
   }
 })

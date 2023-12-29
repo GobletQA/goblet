@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "declaration": false,
     "declarationMap": false,
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext"
   },
   "typeRoots": ["src/globals.d.ts" ],
   "include": [
@@ -12,12 +12,6 @@
     "scripts",
     "configs",
     "../../configs"
-  ],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules",
-    "../../node_modules"
   ]
 }
 
