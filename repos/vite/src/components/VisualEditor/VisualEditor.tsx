@@ -8,8 +8,8 @@ import { Divider } from '@components/Divider/Divider'
 import { RaceActions } from '../EditorActions/Actions'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
-import { useContextMenu } from '@hooks/race/useContextMenu'
 import { PrePanels } from '@components/Panels/PrePanels'
+import { useContextMenu } from '@hooks/race/useContextMenu'
 import {
   BlockIcon,
   SidebarOpenWidth,
@@ -50,34 +50,32 @@ export const VisualEditor = (props:TVisualEditor) => {
 
   return connected
     ? (
-        <>
-          <RaceEditor
-            {...props}
-            {...raceActions}
-            world={world}
-            decoRef={decoRef}
-            Divider={Divider}
-            settings={settings}
-            features={features}
-            actions={RaceActions}
-            editorRef={editorRef}
-            PrePanels={PrePanels}
-            rootPrefix={rootPrefix}
-            menuContext={menuContext}
-            definitions={definitions}
-            openedFeatures={lastOpened}
-            onWorldChange={onWorldChange}
-            sidebarStatus={sidebarLocked}
-            onFeatureClose={onFeatureClose}
-            sidebarWidth={SidebarOpenWidth}
-            onSettingChange={onSettingChange}
-            onFeatureRename={onFeatureRename}
-            onFeatureDelete={onFeatureDelete}
-            onFeatureCreate={onFeatureCreate}
-            onFeatureChange={onFeatureChange}
-            onFeatureActive={onFeatureActive}
-          />
-        </>
+        <RaceEditor
+          {...props}
+          {...raceActions}
+          world={world}
+          decoRef={decoRef}
+          Divider={Divider}
+          settings={settings}
+          features={features}
+          actions={RaceActions}
+          editorRef={editorRef}
+          PrePanels={PrePanels}
+          rootPrefix={rootPrefix}
+          menuContext={menuContext}
+          definitions={definitions}
+          openedFeatures={lastOpened}
+          onWorldChange={onWorldChange}
+          sidebarStatus={sidebarLocked}
+          onFeatureClose={onFeatureClose}
+          sidebarWidth={SidebarOpenWidth}
+          onSettingChange={onSettingChange}
+          onFeatureRename={onFeatureRename}
+          onFeatureDelete={onFeatureDelete}
+          onFeatureCreate={onFeatureCreate}
+          onFeatureChange={onFeatureChange}
+          onFeatureActive={onFeatureActive}
+        />
       )
     : (
         <NotConnected

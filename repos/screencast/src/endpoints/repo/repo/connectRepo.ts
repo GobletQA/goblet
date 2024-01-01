@@ -24,20 +24,38 @@ export const connectRepo = async (
 ) => {
   let content:TRepoContent
   const workflows = new Workflows()
+  let repo:any
+  let status:any
 
   try {
 
     const body = req.body as TConnectBody
     const { token, username } = req.auth
-    const { repo, status } = await workflows.fromWorkflow({
+    const resp = await workflows.fromWorkflow({
       token,
       username,
       ...body,
     })
+    repo = resp.repo
+    status = resp.status
+
 
     content = await loadRepoContent(repo, status)
   }
   catch(err){
+
+    console.log(`------- ERROR CONNECTING REPO -------`)
+    console.log(`------- error -------`)
+    console.log(err)
+    console.log(``)
+    console.log(`------- repo -------`)
+    console.log(repo)
+    console.log(``)
+    console.log(`------- status -------`)
+    console.log(status)
+    console.log(``)
+    console.log(`------- ERROR CONNECTING REPO -------`)
+
     // If the repo mounting fails for some reason
     // Call disconnect incase it throws after the repo was mounted
     await workflows.disconnect({ username: req.auth.username })
