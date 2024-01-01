@@ -11,13 +11,12 @@ import type {
 } from '@GBR/types'
 
 import {throttleLast} from '@keg-hub/jsutils'
-import { useOnEvent, useEffectOnce } from '@gobletqa/components'
+import { useOnEvent } from '@gobletqa/components'
 import { useEditor } from '@GBR/contexts/EditorContext'
 import { RaceOnFeatureEvt } from '@GBR/constants/events'
 import { useSettings } from '@GBR/contexts/SettingsContext'
 import { upsertDecos } from '@gobletqa/race/utils/decorations/upsertDecos'
 import { checkActiveParent } from '@gobletqa/race/utils/decorations/checkActiveParent'
-
 import {
   useRef,
   useMemo,
@@ -142,15 +141,8 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   useEffect(() => {
     feature?.uuid !== cache.feature
       && setCache({ feature: feature?.uuid, cache: {} })
-
-    return () => {
-      decosRef.current = {}
-      parentRef.current = undefined
-    }
-
   }, [feature, cache])
 
-      
   return {
     add: addDecoration,
     clear: clearDecorations,

@@ -33,7 +33,11 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
 
   const { repo } = await loadRepoFromSocket({
     user,
-    repo: data?.repo,
+    repo: {
+      ...data?.repo,
+      username: data?.repo?.username ?? user.username,
+      repoName: data?.repo?.name ?? path.basename(data?.repo?.remote || ``)
+    },
   })
 
   const gobletToken = repo.latent.repoToken({
