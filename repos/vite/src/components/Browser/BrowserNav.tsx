@@ -5,9 +5,10 @@ import { BrowserButton } from './BrowserButton'
 import {
   colors,
   gutter,
-  KebabIcon,
   CachedIcon,
+  IconButton,
   RestartIcon,
+  TerminalIcon,
   DangerousIcon,
   ArrowBackIcon,
   ArrowForwardIcon
@@ -35,9 +36,10 @@ const styles = {
     marginLeft: gutter.margin.qpx,
     marginRight: gutter.margin.hpx
   },
-  settings: {
-    marginLeft: gutter.margin.qpx,
-    marginRight: gutter.margin.hpx
+  inspector: {
+    marginLeft: `0px`,
+    padding: gutter.margin.qpx,
+    marginRight: gutter.margin.hpx,
   },
   alert: {
     color: colors.red10,
@@ -128,14 +130,13 @@ export const BrowserNav = (props:TBrowserNav) => {
             <RestartIcon sx={styles.icon} />
           </BrowserButton>
 
-          <BrowserButton
-            sx={styles.settings}
-            tooltip='Browser Settings'
+          <IconButton
+            sx={styles.inspector}
             onClick={onBrowserSettings}
+            tooltip='Open browser inspector'
             className='goblet-browser-settings-action'
-          >
-            <KebabIcon sx={styles.icon} />
-          </BrowserButton>
+            Icon={(props:any) => <TerminalIcon {...props} sx={styles.icon} />}
+          />
         </BrowserNavActions>
 
       </BrowserNavComp>

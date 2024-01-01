@@ -27,7 +27,7 @@ export const DebuggerHeaderContainer = styled(Box)(({ theme }) => `
   width: 62px;
   height: 25px;
   position: absolute;
-  background-color: ${colors.black07};
+  background-color: ${colors.devtools.header};
 `)
 
 export const DebuggerHeaderActionContainer = styled(Box)(({ theme }) => `

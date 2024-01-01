@@ -263,6 +263,10 @@ export const alerts = {
   }
  }
 
+const devtools = {
+  header: `#3C3C3C`,
+}
+
 export const colors = {
   ...red,
   ...gray,
@@ -276,4 +280,5 @@ export const colors = {
   ...fadeDark,
   ...gobletColors,
   ...editor,
+  devtools
 }
