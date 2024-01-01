@@ -1,5 +1,5 @@
 import type { TGitMeta } from '@gobletqa/git'
-import type { TRepoOpts, TRepoMountStatus } from '@gobletqa/repo'
+import type { Repo, TRepoOpts, TRepoMountStatus } from '@gobletqa/repo'
 import type { TRecorderOpts } from '@gobletqa/goblet'
 
 import type { TCreateRepo } from './repo.types'
@@ -41,4 +41,9 @@ export type TWFGobletConfig = {
   fileTypes: TGFileTypes
   paths: Record<string, string>
   screencast: TGScreencastConfig
+}
+
+export type TWFStatusResp = {
+  repo?:Repo
+  status?:Omit<TWFResp, `repo`>|TRepoMountStatus
 }

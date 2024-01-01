@@ -2,7 +2,7 @@ import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
-import { Workflows } from '@gobletqa/workflows'
+import { workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
 import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
@@ -23,7 +23,6 @@ export const connectRepo = async (
   res:Response
 ) => {
   let content:TRepoContent
-  const workflows = new Workflows()
   let repo:any
   let status:any
 

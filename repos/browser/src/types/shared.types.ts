@@ -65,6 +65,7 @@ export type {
   TPlayerEventCB,
   TPlayerCleanupCB,
   TPlayerEventData,
+  TPlayerTestEvent,
   TPlayerStartConfig,
 } from '@gobletqa/shared/types/pwPlayer.types'
 

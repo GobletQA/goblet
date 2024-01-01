@@ -1,8 +1,8 @@
 import type { Response } from 'express'
-import type { TGitOpts } from '@gobletqa/workflows'
+import type { TGitOpts } from '@gobletqa/git'
 import type { Request as JWTRequest } from 'express-jwt'
 
-import { Workflows } from '@gobletqa/workflows'
+import { workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
 import { setBrowserDefaults } from '@gobletqa/browser'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
@@ -18,7 +18,6 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
   const { token, username, provider } = req.auth
   const { config } = req.app.locals
 
-  const workflows = new Workflows()
   const { repo, status } = await workflows.status(config, {
     token,
     provider,

@@ -15,6 +15,7 @@ import { Parkin } from '@ltipton/parkin'
 import { LatentRepo } from './latentRepo'
 import { ENVS } from '@gobletqa/environment'
 import { getFileTypes } from '@gobletqa/goblet'
+import { getDefinitions } from './getDefinitions'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getClientWorld, resetCachedWorld } from './getClientWorld'
 
@@ -172,5 +173,7 @@ export class Repo {
     refreshEnv && this.setEnvironment(environment, false)
     return this.world
   }
+
+  ensureParkinDefs = async (cache:boolean=true) => await getDefinitions(this)
 }
 
