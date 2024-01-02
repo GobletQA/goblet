@@ -158,14 +158,16 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     // Dispatch an event anytime the feature is updated
     onEmitEvent<TOnFeatureEvt>(RaceOnFeatureEvt, { feature: feat })
-
     _setFeature(feat)
+
+    return feat
   })
 
   const updateFeature = useInline(async ({
     options=emptyObj as TUpdateFeatureOpts,
     feature:changed,
   }:TUpdateFeature) => {
+
     if(!changed || !isValidUpdate(changed)) return
 
     const updated = options.reindex !== false
@@ -199,7 +201,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     options?.expand
       && updateExpanded(options?.expand)
 
-    setFeature(updated, options)
+    return setFeature(updated, options)
   })
 
   return {
