@@ -133,3 +133,14 @@
     * This file is created by the frontend calling the screencast API endpoint `/screencast/reset/idle`
       * This call is made when the user selects continue when the `IdleCheck` modal is displayed
 
+
+### Config
+
+* `GB_IGNORE_MISSING_ALIAS`
+  * **Default** - `undefined`
+  * **Description** - Ignore errors for folder in `repos/*` that do not contain a tsconfig.json
+    * Aliases are loaded from the paths property of a repos `tsconfig.json`
+    * In development, it's helpful to display an error when the file is missing
+    * In production, all code is bundled, and the alias are not used in the same way
+    * So the error is not needed
+
