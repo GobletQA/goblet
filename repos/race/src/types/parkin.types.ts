@@ -1,8 +1,15 @@
 import type {
   TStepDef,
   TStepDefs,
-  EAstObject,
+  TRuleAst,
+  TAstType,
+  TBlockAst,
+  TParentAst,
   TFeatureAst,
+  TScenarioAst,
+  TBackgroundAst,
+  TStepParentAst,
+  TBlockParentAst,
 } from '@ltipton/parkin'
 
 export {
@@ -12,5 +19,13 @@ export {
 export {
   TStepDef,
   TStepDefs,
-  TFeatureAst
+  TAstType,
+  TRuleAst,
+  TBlockAst,
+  TParentAst,
+  TFeatureAst,
+  TScenarioAst,
+  TStepParentAst,
+  TBackgroundAst,
+  TBlockParentAst,
 }

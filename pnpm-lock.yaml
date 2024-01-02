@@ -195,8 +195,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
       expect:
         specifier: 29.7.0
         version: 29.7.0
@@ -368,8 +368,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
       esbuild:
         specifier: 0.19.7
         version: 0.19.7
@@ -517,8 +517,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@mui/lab':
         specifier: 5.0.0-alpha.153
         version: 5.0.0-alpha.153(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.18)(@types/react@18.2.38)(react-dom@18.2.0)(react@18.2.0)
@@ -590,8 +590,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@mui/lab':
         specifier: 5.0.0-alpha.153
         version: 5.0.0-alpha.153(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.18)(@types/react@18.2.38)(react-dom@18.2.0)(react@18.2.0)
@@ -663,8 +663,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
     devDependencies:
       tsup:
         specifier: 8.0.1
@@ -770,8 +770,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
       express:
         specifier: 4.18.2
         version: 4.18.2
@@ -846,8 +846,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@ltipton/parkin':
-        specifier: 6.5.1
-        version: 6.5.1
+        specifier: 6.6.1
+        version: 6.6.1
       esbuild:
         specifier: 0.19.7
         version: 0.19.7
@@ -3324,10 +3324,12 @@ packages:
       nodemon: 3.0.1
     dev: true
 
-  /@ltipton/parkin@6.5.1:
-    resolution: {integrity: sha512-nq9ax1ft2qOaf//LvGb7IyNptcruKlft5YrQ85VyUNCgS572j+hWmbRW8zrQCvSz/HeXaInQZZ+8TtcUif3dKg==}
+  /@ltipton/parkin@6.6.1:
+    resolution: {integrity: sha512-cSigHEfp0l94ijNAChVEtGy8uj0pVeJ0DB2Hik0RAi0vHDA+ixZPZsDTYB6ygSiICtH0tDmm0ZY5QOmawmep0Q==}
     engines: {node: '>= 16.0.0'}
     optionalDependencies:
+      '@keg-hub/args-parse': 10.0.1
+      '@keg-hub/cli-utils': 0.9.0
       esbuild: 0.19.7
       esbuild-register: 3.5.0(esbuild@0.19.7)
     transitivePeerDependencies:

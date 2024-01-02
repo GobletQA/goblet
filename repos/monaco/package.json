@@ -28,7 +28,7 @@
     "@emotion/styled": "11.11.0",
     "@gobletqa/components": "workspace:*",
     "@keg-hub/jsutils": "10.0.0",
-    "@ltipton/parkin": "6.5.1",
+    "@ltipton/parkin": "6.6.1",
     "@mui/lab": "5.0.0-alpha.153",
     "@mui/material": "5.14.18",
     "idb-keyval": "6.2.1",

@@ -60,6 +60,8 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Helper to allow external code ask the context for the current file
   // Similar to AskForFeature, but used outside of race editor
   useOnEvent(GetActiveFileEvent, ({ cb }) => cb?.({
+    ast:[feature],
+    editor: `visual`,
     content: curValueRef.current,
     location: curPathRef.current
   }))

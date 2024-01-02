@@ -108,6 +108,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
    * Used for accessing the active file outside of editor
    */
   useOnEvent(GetActiveFileEvent, ({ cb }) => cb?.({
+    edit:`code`,
     location: curPath,
     content: filesRef.current[curPath],
   }))
