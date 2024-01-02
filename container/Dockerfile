@@ -21,8 +21,11 @@ RUN pnpm fetch --no-optional --ignore-scripts
 COPY . .
 RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force && \
     pnpm build:tsup && \
+    ln -s /ms-playwright /root/.cache/ms-playwright && \
     ln -s /goblet/app/repos/screencast/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/repos/screencast/node_modules /goblet/node_modules && \
+    mkdir -p /goblet/app/node_modules/@gobletqa && \
+    ln -s /goblet/app/repos/exam /goblet/app/node_modules/@gobletqa/exam && \
     chmod a+x /goblet/app/container/initialize.sh
 
 CMD [ "container/initialize.sh" ]

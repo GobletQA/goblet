@@ -113,7 +113,8 @@ WORKDIR /goblet/app
 COPY --from=goblet-clean /goblet/app/ .
 COPY --from=goblet-screencast /goblet/runner .
 
-RUN ln -s /goblet/app/repos/screencast/node_modules /goblet/app/node_modules && \
+RUN ln -s /ms-playwright /root/.cache/ms-playwright && \
+    ln -s /goblet/app/repos/screencast/node_modules /goblet/app/node_modules && \
     ln -s /goblet/app/repos/screencast/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/repos/screencast/node_modules /goblet/node_modules && \
     ln -s /goblet/app/repos/screencast/node_modules/@gobletqa/testify /goblet/app/repos/testify
