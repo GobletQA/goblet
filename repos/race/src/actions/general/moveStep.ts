@@ -71,6 +71,10 @@ const getParent = (feature:TRaceFeature, data:TDndItemData) => {
   
 }
 
+/**
+ * Called when moving a step in between **different** parents
+ * Is **NOT** called when moving a step within the **same** parent
+ */
 export const moveStep = async (props:TMoveStep) => {
   const {
     pos,

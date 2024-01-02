@@ -54,6 +54,10 @@ const fromFeature = (
   return updated
 }
 
+/**
+ * Called when moving a step within the **same** scenario parent
+ * Is **NOT** called when moving a step between two **different** parents
+ */
 export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
   const {
     pos,
