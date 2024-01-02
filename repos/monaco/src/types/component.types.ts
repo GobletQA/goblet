@@ -11,8 +11,8 @@ export type TModal = Modal
 export type TEditorAction = TEAction<TCodeEditor, TCodeEditorRef>
 
 export interface IMultiRefType {
-  getAllValue: () => TFilelist
-  getValue: (path: string) => string | null
+  getEditorFiles: () => TFilelist
+  getFileContent: (path: string) => string | null
   getSupportThemes: () => Array<string>
   setTheme: (name: string, theme?:TEditorTheme) => void
 }

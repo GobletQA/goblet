@@ -2,6 +2,7 @@ import type Monaco from 'monaco-editor'
 import type { languages } from 'monaco-editor'
 
 type TextEdit = languages.TextEdit
+type TTextRange = TextEdit[`range`]
 
 export type {
   editor,
@@ -12,5 +13,6 @@ export type {
 
 export type {
   Monaco,
-  TextEdit
+  TextEdit,
+  TTextRange
 }

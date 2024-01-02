@@ -1,10 +1,10 @@
-import { EAstObject } from '@ltipton/parkin'
 import type {
   TRaceStep,
   TStepMenuAction,
   TCustomMenuOnClick,
 } from '@gobletqa/race'
 
+import { EAstObject } from '@gobletqa/race'
 import { getFileModel } from '@utils/files/getFileModel'
 import {startBrowserPlay} from '@actions/runner/startBrowserPlay'
 import { filterAstFromId } from '@utils/features/filterAstFromId'

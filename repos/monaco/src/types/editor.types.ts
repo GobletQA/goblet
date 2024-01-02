@@ -78,10 +78,10 @@ export type TEditorThemes = {
 export type TEditorRefHandle = {
   closeFile:TEditorCB
   decoration: TDecorationFns
-  getAllValue:() => TFilelist
+  getEditorFiles:() => TFilelist
   getSupportThemes:() => string[],
   resizeSidebar:(width:number) => void
-  getValue:(path:string) => string | null,
+  getFileContent:(path:string) => string | null,
   openFile: (loc:string, content?:string|null, opts?:TPathChangeOpts) => void,
   setTheme:(name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }

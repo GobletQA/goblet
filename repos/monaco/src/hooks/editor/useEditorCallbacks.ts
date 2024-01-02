@@ -1,4 +1,3 @@
-import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { IDisposable } from 'monaco-editor'
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
@@ -29,7 +28,6 @@ export type TUseFileCallbacks = {
   curValueRef: MutableRefObject<string>
   editorNodeRef: RefObject<HTMLDivElement>
   typesWorkerRef: MutableRefObject<TTypes>
-  lintWorkerRef: MutableRefObject<TLinter>
   optionsRef: MutableRefObject<TEditorOpts>
   openedPathRef: MutableRefObject<string | null>
   editorStatesRef:MutableRefObject<Map<any, any>>
@@ -51,7 +49,6 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     openedPaths,
     openedPathRef,
     onLoadFileRef,
-    lintWorkerRef,
     typesWorkerRef,
     editorNodeRef,
     onPathChangeRef,
@@ -77,7 +74,6 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     curValueRef,
     openedPathRef,
     onLoadFileRef,
-    lintWorkerRef,
     typesWorkerRef,
     setOpenedFiles,
     onFileChangeRef,

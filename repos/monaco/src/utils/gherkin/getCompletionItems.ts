@@ -3,22 +3,24 @@ import type { TIndex } from '@GBM/types'
 import { EAstObject } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
 
+export type TCompletionRange = {
+  start: {
+    line:number
+    character:number
+  },
+  end: {
+    line:number
+    character:number
+  }
+}
+
 export type TCompletionItem = {
   kind:number
   label:string
   insertTextFormat:number
   textEdit: {
     newText:string
-    range: {
-      start: {
-        line:number
-        character:number
-      },
-      end: {
-        line:number
-        character:number
-      }
-    }
+    range:TCompletionRange
   }
 }
 

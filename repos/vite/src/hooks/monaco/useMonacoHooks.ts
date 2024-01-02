@@ -102,8 +102,8 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useOpenMonacoFile({ editorRef, rootPrefix, })
-  useDecorations({ editorRef, repo, rootPrefix })
+  useOpenMonacoFile({editorRef, rootPrefix})
+  useDecorations({editorRef, repo, rootPrefix})
 
   return {
     config,
