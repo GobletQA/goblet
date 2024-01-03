@@ -71,6 +71,7 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
   const rootDir = examConfig?.rootDir || config.paths.repoRoot
 
   return {
+    // bail: 5,
     // debug: true,
     // verbose: true,
     // esbuild: {},
@@ -80,7 +81,6 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
     // exitOnFail: false,
     // skipAfterFailed: true,
     rootDir,
-    bail: 5,
     workers: 1,
     testRetry: 1,
     suiteRetry: 0,

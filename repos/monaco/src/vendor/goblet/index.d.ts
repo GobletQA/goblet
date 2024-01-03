@@ -1,6 +1,8 @@
 // TODO: update this to be generated from the existing types
 // Then it can be added to both the mounted repo, and within monaco
 
+declare function expect(...args:any[]):any
+
 declare module '@GEnvironment' {
   export var values = Record<string, string>
   export var secrets = Record<string, string>

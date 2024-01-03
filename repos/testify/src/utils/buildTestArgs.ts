@@ -84,7 +84,7 @@ export const buildTestArgs = (
     && cmdArgs.push(addParam(`bail`, testBail))
 
   exists(suiteTimeout)
-    && cmdArgs.push(addParam(`timeout`, suiteTimeout))
+    && cmdArgs.push(addParam(`suiteTimeout`, suiteTimeout))
 
   exists(testTimeout)
     && cmdArgs.push(addParam(`timeout`, testTimeout))
