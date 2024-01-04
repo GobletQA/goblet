@@ -1,6 +1,6 @@
 import type { TBuildTestArgs } from '@GTU/Types'
 
-
+import { Logger } from '@keg-hub/cli-utils'
 import { ETestType } from '@gobletqa/shared/enums'
 import { exists, uniqArr } from '@keg-hub/jsutils'
 import { addParam, addFlag } from '@gobletqa/shared/utils'
@@ -61,7 +61,7 @@ export const buildTestArgs = (
     `node`,
      `-r`,
      `esbuild-register`,
-    `node_modules/@gobletqa/exam/.bin/index.js`,
+    `node_modules/@gobletqa/exam/.bin/index.js`
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))
@@ -103,6 +103,9 @@ export const buildTestArgs = (
 
 
   const cleaned = uniqArr<string>(cmdArgs.filter(arg => arg), undefined)
+
+  testVerbose
+    && Logger.log(Logger.colors.magenta(`Exam Test Cmd:\n`), `  ${Logger.colors.gray(cleaned.join(` `))}\n`)
 
   return cleaned
 }

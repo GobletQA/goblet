@@ -1,8 +1,8 @@
 import { TPipelineArgs } from '@GEX/types'
 
 import path from 'path'
-import pMapSeries from 'p-map-series'
 import {isArr} from '@keg-hub/jsutils/isArr'
+import { promiseSeries } from '@GEX/utils/promiseSeries'
 
 type TPartialState = {
   require:NodeRequire
@@ -58,12 +58,12 @@ export const loadFilesTask = async <T extends Record<string|number, any>>(
 
   if(isArr(files)){
     const looper = loadFileArr(args)
-    return await pMapSeries(files.filter(Boolean), looper) as unknown as T
+    return await promiseSeries(files.filter(Boolean), looper) as unknown as T
   }
   else {
     const responses:T = {} as T
     const looper = loadFilesObj(args, responses)
-    const resp = await pMapSeries(Object.entries(files), looper)
+    const resp = await promiseSeries(Object.entries(files), looper)
 
     return responses as T
   }

@@ -53,14 +53,14 @@ const initErrCloseAll = async () => {
  * Shutdown the page and context if not configured to be reused per test
  * Browser is not shutdown in this method so it can be reused in other tests
  */
-const cleanupPageAndContext = async () => {
+export const cleanupPageAndContext = async (force?:boolean) => {
 
   const {
     reusePage,
     reuseContext,
-  } = get<TGobletTestOpts>(global, `__goblet.options`, emptyObj)
+  } = global?.__goblet?.options ?? emptyObj
 
-  if(!reusePage){
+  if(!reusePage || force){
     await limbo(closePage(undefined, 3))
     delete global.page
   }
@@ -69,7 +69,7 @@ const cleanupPageAndContext = async () => {
    * Don't call closeContext method because it throws an error when the context can't be found
    * Instead we manually close the context and remove it from the global scope
    */
-  if(!reuseContext){
+  if(!reuseContext || force){
     global.context && await limbo(global?.context?.close?.())
     global.context = undefined
     delete global.context
@@ -119,7 +119,7 @@ export const initialize = async () => {
 export const cleanup = async (initErr?:boolean) => {
 
   if (!global.browser){
-    await cleanupPageAndContext()
+    await cleanupPageAndContext(true)
     return false
   }
 
@@ -127,7 +127,7 @@ export const cleanup = async (initErr?:boolean) => {
 
     initErr
       ? await initErrCloseAll()
-      : await cleanupPageAndContext()
+      : await cleanupPageAndContext(true)
 
     return true
   }

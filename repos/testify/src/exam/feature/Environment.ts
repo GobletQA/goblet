@@ -10,11 +10,17 @@ import type { FeatureRunner } from './Runner'
  * This is needed so that expect is added to the global context
  * Which allows it to be referenced directly in step definitions
  */
+// TODO this works but should be better
+// @ts-ignore
+// import path from 'node:path'
+// import { expect } from 'playwright/lib/common/expectBundle.js'
+// const { expect } = require(path.join(require.resolve('playwright').split('/').slice(0, -1).join('/').trim(), '/lib/common/expectBundle.js'))
+
 import expect from 'expect'
+
 import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { Parkin, TParkinRunOpts } from '@ltipton/parkin'
-
 
 type TFeatureEnvironment = TExEnvironmentCfg<{ parkin?: Record<string, any> }>
 

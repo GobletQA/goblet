@@ -7,8 +7,6 @@ import type {
 
 import path from 'path'
 import { Logger } from "@gobletqa/logger"
-import { get } from '@keg-hub/jsutils/get'
-import { set } from '@keg-hub/jsutils/set'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
@@ -28,7 +26,7 @@ export class TraceRecorder {
   
   constructor(context?:TBrowserContext){
     this.context = context || global.context
-    this.disabled = Boolean(!get(global, `__goblet.options.tracing`))
+    this.disabled = Boolean(!global?.__goblet?.options?.tracing)
     this.register()
   }
 
@@ -62,16 +60,30 @@ export class TraceRecorder {
    * @returns <boolean|void>
    */
   start = async (context:TBrowserContext=this.context || global.context) => {
-    if(context && !this.context) this.context = context
-    if(this.disabled || !this.context) return
+    try {
+      if(context && !this.context) this.context = context
+      if(this.disabled || !this.context) return
 
-    const traceOpts = get(global, `__goblet.options.tracing`, emptyObj)
-    await this.context.tracing.start(traceOpts)
+      const tracingStarted = this.context?.__contextGoblet?.tracingStarted
 
-    await this.context.tracing.startChunk()
-    set(this.context, [`__contextGoblet`, `tracing`], true)
+      if(!tracingStarted){
+        await this.context.tracing.start(global?.__goblet?.options?.tracing ?? emptyObj)
+        this.context.__contextGoblet ||= {}
+        this.context.__contextGoblet.tracingStarted = true
+      }
 
-    return true
+      await this.context.tracing.startChunk()
+      this.context.__contextGoblet ||= {}
+      this.context.__contextGoblet.tracing = true
+
+      return true
+    }
+    catch(err){
+      Logger.error(`Tracing failed to start`)
+      Logger.log(err)
+
+      return false
+    }
   }
 
   /**
@@ -100,14 +112,10 @@ export class TraceRecorder {
       saveTrace,
       // Path to the mounted repo where traces should be saved
       tracesDir:repoTracesDir,
-    } = get<TGobletTestOpts>(
-      global,
-      `__goblet.options`,
-      emptyObj as TGobletTestOpts
-    )
+    } = (global?.__goblet?.options ?? emptyObj) as TGobletTestOpts
 
     if(!shouldSaveArtifact(saveTrace, status)){
-      set(context, [`__contextGoblet`, `tracing`], false)
+      context.__contextGoblet.tracing = false
       return
     }
 
@@ -119,7 +127,7 @@ export class TraceRecorder {
     } = getGeneratedName({ location, timestamp })
 
     if(!testLoc){
-      set(context, [`__contextGoblet`, `tracing`], false)
+      context.__contextGoblet.tracing = false
       return false
     }
 
@@ -132,12 +140,11 @@ export class TraceRecorder {
     await context.tracing.stopChunk({ path: traceLoc })
 
     const saveDir = await ensureRepoArtifactDir(repoTracesDir, dir)
-    set(context, [`__contextGoblet`, `tracing`], false)
+    context.__contextGoblet.tracing = false
 
     const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, traceLoc)
     Logger.log(Logger.colors.gray(` - Trace Report saved for failed test`))
-    
-    
+
     return savedLoc
   }
 
@@ -148,7 +155,7 @@ export class TraceRecorder {
     catch(err){}
     this.evtHandlers = []
 
-    context && set(context, [`__contextGoblet`, `tracing`], false)
+    context && (context.__contextGoblet.tracing = false)
     this.context = undefined
   }
 

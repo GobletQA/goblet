@@ -19,7 +19,6 @@ import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import {
   ExamRunner,
   ExamEvents,
-  RootSuiteId,
   EExErrorType,
   EPlayerTestType,
 } from '@gobletqa/exam'

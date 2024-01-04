@@ -54,7 +54,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
   suiteTimeout?:number
   exitOnFailed:boolean=false
   skipAfterFailed:boolean=true
-  
+
   environment:E
   canceled?:boolean
   isRunning?:boolean

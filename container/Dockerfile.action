@@ -5,35 +5,6 @@ ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.0-focal
 ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
 
-# # ---- Build Stage  ---- #
-# # Only include this stage when debugging
-# FROM $GB_BASE_IMAGE_FROM as goblet-debug
-# WORKDIR /goblet/app
-# COPY .npmrc pnpm-*.yaml ./
-# RUN pnpm fetch --no-optional --ignore-scripts
-# COPY . .
-# RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
-# RUN pnpm build:tsup
-# RUN pnpm build:docker
-# RUN mkdir -p /goblet/out/repos/browser && \
-#     cp -R repos/browser/dist /goblet/out/repos/browser/dist && \
-#     mkdir -p /goblet/out/repos/environment && \
-#     cp -R repos/environment/dist /goblet/out/repos/environment/dist && \
-#     mkdir -p /goblet/out/repos/exam && \
-#     cp -R repos/exam/dist /goblet/out/repos/exam/dist && \
-#     mkdir -p /goblet/out/repos/goblet && \
-#     cp -R repos/goblet/dist /goblet/out/repos/goblet/dist && \
-#     mkdir -p /goblet/out/repos/latent && \
-#     cp -R repos/latent/dist /goblet/out/repos/latent/dist && \
-#     mkdir -p /goblet/out/repos/logger && \
-#     cp -R repos/logger/dist /goblet/out/repos/logger/dist && \
-#     mkdir -p /goblet/out/repos/repo && \
-#     cp -R repos/repo/dist /goblet/out/repos/repo/dist && \
-#     mkdir -p /goblet/out/repos/shared && \
-#     cp -R repos/shared/dist /goblet/out/repos/shared/dist
-# # ---- End Stage ---- #
-
-
 # ---- Clean Stage  ---- #
 FROM $GB_BASE_IMAGE_FROM as goblet-clean
 WORKDIR /goblet/app
@@ -96,8 +67,6 @@ RUN npm uninstall -g yarn && \
 FROM $GB_BASE_IMAGE_FROM as goblet-deploy
 WORKDIR /goblet/app
 
-# # Only include this stage when debugging
-# COPY --from=goblet-debug /goblet/out/ .
 RUN CI=1 pnpm install --lockfile-only --fix-lockfile --prod --prefer-offline && \
     CI=1 pnpm install --fix-lockfile --prefer-offline --prod
 
@@ -135,5 +104,6 @@ RUN mkdir -p /root/.cache && \
 
 WORKDIR /github/app/repos/testify
 ENV GOBLET_RUN_FROM_CI=1
+ENV GOBLET_TESTS_ACTION=1
 ENV GB_IGNORE_MISSING_ALIAS=1
 

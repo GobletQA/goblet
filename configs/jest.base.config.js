@@ -1,3 +1,4 @@
+const path  = require('path')
 const { jestAliases } = require('./aliases.config')
 
 module.exports = {
@@ -38,5 +39,8 @@ module.exports = {
     '!**/*.test.{js,jsx,ts,tsx}',
   ],
   coveragePathIgnorePatterns: ['/node_modules/'],
-  moduleNameMapper: jestAliases
+  moduleNameMapper: {
+    ...jestAliases,
+    [`^@keg-hub/jsutils/(.*)`]: path.join(__dirname, `..`, `node_modules/@keg-hub/jsutils/build/esm/$1`),
+  }
 }

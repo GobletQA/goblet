@@ -2,6 +2,7 @@ import type { TTask, TTaskActionArgs } from '../../types'
 import type { TDockerBuildParams } from '../../utils/docker/getDockerBuildParams'
 
 import { appRoot } from '../../paths'
+import {isStr} from '@keg-hub/jsutils'
 import { Logger, error } from '@keg-hub/cli-utils'
 import { docker } from '../../utils/docker/docker'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
@@ -15,7 +16,6 @@ import { resolveImgFrom } from '../../utils/docker/resolveImgFrom'
 import { getDockerLabels } from '../../utils/docker/getDockerLabels'
 import { getDockerBuildParams } from '../../utils/docker/getDockerBuildParams'
 import { getContextValue, getLongContext } from '../../utils/helpers/contexts'
-import {isStr} from '@keg-hub/jsutils'
 
 /**
  * Runs a docker build command and returns the output

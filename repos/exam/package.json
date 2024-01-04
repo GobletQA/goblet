@@ -63,8 +63,7 @@
     "expect": "29.7.0",
     "glob": "10.3.10",
     "micromatch": "4.0.5",
-    "module-alias": "2.2.3",
-    "p-map-series": "3.0.0"
+    "module-alias": "2.2.3"
   },
   "devDependencies": {
     "@types/node": "20.9.3",

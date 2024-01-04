@@ -388,9 +388,6 @@ importers:
       module-alias:
         specifier: 2.2.3
         version: 2.2.3
-      p-map-series:
-        specifier: 3.0.0
-        version: 3.0.0
     devDependencies:
       '@types/node':
         specifier: 20.9.3
@@ -9942,11 +9939,6 @@ packages:
       p-limit: 3.1.0
     dev: false
     optional: true
-
-  /p-map-series@3.0.0:
-    resolution: {integrity: sha512-/oSZlzK3Chrlrx+LFkiuMzWi2k2aEfIP8V5LandUN3/XRhUlxM1R0Th/xM6SKgjTXnIbZR9GkexTLiar2nKUeg==}
-    engines: {node: '>=12'}
-    dev: false
 
   /p-map@4.0.0:
     resolution: {integrity: sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==}

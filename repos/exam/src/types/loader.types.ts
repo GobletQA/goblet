@@ -43,6 +43,12 @@ export type TLoaderCfg = {
   extensions?:string[]
 
   /**
+   * Boolean to turn on/off matching file extensions
+   * Defaults to `false`
+   */
+  matchExtensions?:boolean
+
+  /**
    * Glob paths of files the loader will ignore
    */
   loaderIgnore?:string[]

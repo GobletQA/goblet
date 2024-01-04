@@ -7,12 +7,10 @@
  * we can resolve circular dependency
  */
 
-import {set} from '@keg-hub/jsutils/set'
-import {get} from '@keg-hub/jsutils/get'
 import { VideoRecorder } from '@GTU/Playwright/video'
 import { AfterAll, BeforeAll } from '@GTU/Parkin'
 import { TraceRecorder } from '@GTU/Playwright/tracer'
-import { initialize, cleanup } from '@GTU/PlaywrightEnv'
+import { initialize, cleanupPageAndContext } from '@GTU/PlaywrightEnv'
 import { getPage, getContext } from '@GTU/Playwright/browserContext'
 
 
@@ -24,34 +22,38 @@ import { getPage, getContext } from '@GTU/Playwright/browserContext'
  * Add wrap method to ensure no arguments are passed to initialize and cleanup
  */
 BeforeAll(async () => {
-  if(get<boolean>(global, `__goblet.options.browserDisabled`, false)) return
+  if(global?.__goblet?.options?.browserDisabled ?? false) return
 
   const { context, page } = await initialize()
   if(!context || !page) return
 
-  const tracer = new TraceRecorder()
-  set(context, [`__contextGoblet`, `tracer`], tracer)
-  await tracer.start(context)
-  
-  const video = new VideoRecorder(page)
-  set(page, [`__pageGoblet`, `video`], video)
+  context.__contextGoblet ||= {}
+  context.__contextGoblet.tracer = new TraceRecorder()
+
+  await context.__contextGoblet.tracer.start(context)
+
+  page.__pageGoblet ||= {}
+  page.__pageGoblet.video = new VideoRecorder(page)
+
 })
 
 AfterAll(async () => {
-  if(get<boolean>(global, `__goblet.options.browserDisabled`, false)) return
+  if(global?.__goblet?.options?.browserDisabled ?? false) return
 
   const context = await getContext()
   if(!context) return
 
-  const tracer = get(context, [`__contextGoblet`, `tracer`])
+  const tracer = context?.__contextGoblet?.tracer
   if(tracer) tracer.clean(context)
 
   const page = await getPage()
   if(!page) return
 
-  const video = get(page, [`__pageGoblet`, `video`])
+  const video = page?.__pageGoblet?.video
 
-  await cleanup()
+  // Don't pass force because we don't want to force close the context
+  // In the event reusePage || reuseContext is `true`
+  await cleanupPageAndContext()
   if(!video) return
 
   // The video is not available until after the page closes

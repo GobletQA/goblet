@@ -10,12 +10,12 @@ import { appRoot } from '../../paths'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { ETestType } from '@gobletqa/shared/enums'
 import { sharedOptions, Logger } from '@keg-hub/cli-utils'
-import { getDebugEnv } from '../../utils/envs/getDebugEnv'
 import { runTestCmd } from '../../utils/helpers/runTestCmd'
 import { getTestConfig } from '../../utils/test/getTestConfig'
 import { filterTaskEnvs } from '../../utils/envs/filterTaskEnvs'
 import { buildBddEnvs } from '@gobletqa/testify/utils/buildBddEnvs'
 import { buildTestArgs } from '@gobletqa/testify/utils/buildTestArgs'
+import { getBrowserDebugEnv } from '../../utils/envs/getBrowserDebugEnv'
 
 const logPair = (name:string, item:string) => {
   Logger.log(
@@ -59,9 +59,10 @@ const runBdd = async (args:TTaskActionArgs) => {
     params,
     cmdArgs: buildTestArgs(params as TBuildTestArgs, testConfig, ETestType.bdd),
     envsHelper: (browser) => {
-      const debugVal = getDebugEnv(params)
+      const debugVal = getBrowserDebugEnv(params)
       const props = {...params, cwd: appRoot} as TBuildBddEnvs
       if(debugVal) props.debugBrowser = debugVal
+      else props.debugBrowser = undefined
 
       return buildBddEnvs(props, browser, ETestType.feature, false,)
     }
@@ -128,10 +129,13 @@ export const run:TTask = {
       `video`,
       `storageState`,
       `timezone`,
+      `debugBrowser`,
       `suiteTimeout`,
       `artifactsDebug`,
       `exitOnFailed`,
       `skipAfterFailed`,
+      `reuseContext`,
+      `reusePage`,
     ]
   ),
 }

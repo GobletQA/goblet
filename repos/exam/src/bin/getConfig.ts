@@ -117,8 +117,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     extensions: bExtensions,
     testTimeout: bTestTimeout,
     suiteTimeout: bSuiteTimeout,
-    
-    
     ...baseRest
   } = base
 

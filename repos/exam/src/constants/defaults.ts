@@ -104,6 +104,12 @@ const LoaderCfg = {
     `.tsx`,
   ],
 
+  /**
+   * Boolean to turn on/off matching file extensions
+   * Defaults to `true`
+   */
+  matchExtensions: true,
+
   aliases: {},
   cache: true,
   loaderIgnore: emptyArr,

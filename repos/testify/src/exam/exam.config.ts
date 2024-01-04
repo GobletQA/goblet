@@ -44,7 +44,6 @@ const OnShutdownLoc = path.resolve(dirname, `./onShutdown.${ext}`)
 const RunnerLoc = path.resolve(dirname, `./feature/Runner.${ext}`)
 const EnvironmentLoc = path.resolve(dirname, `./feature/Environment.${ext}`)
 
-
 const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
   const config = getGobletConfig(cfgArgs)
   const world = getClientWorld(config, false)
@@ -68,9 +67,9 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
   })
   const gobletOpts = buildTestGobletOpts(config, browserConf, world?.$testOptions)
 
-  const rootDir = examConfig?.rootDir || config.paths.repoRoot
+  const rootDir = examConfig?.rootDir || config?.paths?.repoRoot
 
-  return {
+  const examCfg:TExamConfig = {
     // bail: 5,
     // debug: true,
     // verbose: true,
@@ -154,6 +153,10 @@ const ExamConfig = (cfgArgs:TExamCfgArgs=emptyObj):TExamConfig => {
     ]
   }
 
+  ENVS.GOBLET_TEST_DEBUG &&
+    process.stdout.write(`\n[Goblet] Exam Config:\n${JSON.stringify(examCfg, null, 2)}\n`)
+
+  return examCfg
 }
 
 export default ExamConfig

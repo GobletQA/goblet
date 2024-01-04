@@ -9,7 +9,6 @@ import type {
 
 import os from 'os'
 import path from 'path'
-import { get } from '@keg-hub/jsutils/get'
 import { exists } from '@keg-hub/jsutils/exists'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
@@ -18,42 +17,58 @@ import {
   addPageCloseEvts,
 } from '@gobletqa/browser'
 
+
+/**
+ * Helper to merge the args together needed for getting the playwright browser
+ */
+const mergeBrowserArgs = (repo?:TGobletConfig) => {
+  const gobletOpts = global?.__goblet ?? emptyObj
+  const config = repo || gobletOpts?.config
+
+  /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
+  const type = process.env.GOBLET_BROWSER
+    || gobletOpts?.browser?.type
+    || `chromium`
+
+
+  // Parkin holds an instance of the world object
+  // So we use that to get access to the world
+  const parkin = global.getParkinInstance()
+  const contextOpts = (gobletOpts?.context?.options ?? emptyObj) as TBrowserContextOpts
+
+  return {
+    config,
+    browserConf: {
+      type,
+      ...gobletOpts?.browser,
+      context: {
+        ...contextOpts,
+        extraHTTPHeaders: {
+          ...contextOpts?.extraHTTPHeaders,
+          ...parkin?.world?.$context?.extraHTTPHeaders,
+        }
+      }
+    }
+  }
+}
+
 /**
  * Sets up the global browser for the test environment
  *
  * @returns {Object} - Playwright Browser object
  */
 export const setupBrowser = async (repo?:TGobletConfig) => {
-  
-  /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
-  const { GOBLET_BROWSER=`chromium` } = process.env
-  const type = GOBLET_BROWSER || global?.__goblet?.browser?.type
-  
-  // Parkin holds an instance of the world object
-  // So we use that to get access to the world
-  const parkin = global.getParkinInstance()
-  const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
-  const { browser, context } = await GBrowser.get({
-    config: repo || global?.__goblet?.config,
-    browserConf: {
-      type,
-      ...get(global, `__goblet.browser`, emptyObj),
-      context: {
-        ...gCtx,
-        extraHTTPHeaders: {
-          ...gCtx?.extraHTTPHeaders,
-          ...parkin?.world?.$context?.extraHTTPHeaders,
-        }
-      }
-    }
-  })
+
+  const args = mergeBrowserArgs(repo)
+  const browserType = args.browserConf.type
+
+  const { browser, context } = await GBrowser.get(args)
 
   if (!browser)
-    throw new Error(`Failed to create ${GOBLET_BROWSER} browser`)
+    throw new Error(`Failed to create ${browserType} browser`)
 
   if(!context)
-    throw new Error(`Failed to create ${GOBLET_BROWSER} browser context`)
-
+    throw new Error(`Failed to create ${browserType} browser context`)
 
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext

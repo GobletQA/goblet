@@ -1,6 +1,6 @@
 import type { TExamConfig } from '@GEX/types'
 
-import { Errors } from '@GEX/constants'
+import {Errors} from '@GEX/constants'
 import {isStr} from '@keg-hub/jsutils/isStr'
 import {emptyArr} from '@keg-hub/jsutils/emptyArr'
 import {ensureArr} from '@keg-hub/jsutils/ensureArr'
@@ -33,7 +33,10 @@ export const loadFiles = async (exam:TExamConfig & { file?:string }) => {
     ]
   })
 
-  return locations?.length || passWithNoTests
-    ? locations
-    : Errors.NoTests(testMatch)
+  !locations?.length
+    && passWithNoTests
+    && Errors.NoTests(testMatch)
+
+
+  return locations
 }

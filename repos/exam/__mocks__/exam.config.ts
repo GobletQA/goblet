@@ -82,6 +82,12 @@ export const ExamConfig:TExamConfig = {
   onCleanup: () => {},
 
   /**
+   * Boolean to turn on/off matching file extensions
+   * Defaults to `true`
+   */
+  matchExtensions: true,
+
+  /**
    * Default extensions loaded by the Exam Loader class
    */
   extensions: [
@@ -213,7 +219,7 @@ export const ExamConfig:TExamConfig = {
   /**
    * If a test fails, stop all running tests and exit
    */
-  exitAfterFailed: false,
+  exitOnFailed: false,
 
   colors: true,
   silent: false,
