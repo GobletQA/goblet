@@ -1,12 +1,12 @@
 import type {
   TFrameMeta,
   TBrowserPage,
-  TPWComponents,
-  TBrowserContext,
   TAutomateOpts,
+  TPWComponents,
   TAutomateEvent,
   TAutomateConfig,
   TAutomateParent,
+  TBrowserContext,
   TOnAutomateEvent,
   TUserAutomateOpts,
   TBrowserEventArgs,
@@ -20,11 +20,11 @@ import { ENVS } from '@gobletqa/environment'
 import { noOp } from '@keg-hub/jsutils/noOp'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { isArr } from '@keg-hub/jsutils/isArr'
-import { PWAutomateEvent } from '@GBB/constants'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { addPWInitScripts } from '@GBB/utils/addPWInitScripts'
 import { exposePWFunction } from '@GBB/utils/exposePWFunction'
+import { PWAutomateEvent } from '@gobletqa/environment/constants'
 
 type TAutomateEvtGroup = Array<TOnAutomateEvent|[TOnAutomateEvent, Record<any, any>]>
 

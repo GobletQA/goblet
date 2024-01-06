@@ -2,10 +2,11 @@ import type { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@go
 
 import { EBrowserState } from '@types'
 import { EE } from '@services/sharedService'
-import { EditorPathChangeEvt } from '@constants'
 import { DangerousIcon } from '@gobletqa/components'
 import { useCallback, useMemo, useState } from 'react'
 import { getFileModel } from '@utils/files/getFileModel'
+import { EditorPathChangeEvt } from '@constants'
+import { getActiveFileMeta } from '@utils/files/getActiveFileMeta'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
@@ -49,18 +50,30 @@ export const usePlayAction = (props:TBrowserActionProps) => {
   const noActiveFile = !Boolean(location)
 
   const onClick = useCallback(async (...args:any[]) => {
-    if(!location)
+    const activeFile = await getActiveFileMeta()
+    if(!activeFile?.location)
       return console.warn(`Can not run tests, a file must be active in the editor.`)
 
-    const fileModel = getFileModel(location)
+    const {
+      ast,
+      content,
+      location,
+    } = activeFile
 
-    if(!fileModel)
-      return console.warn(`Can not run tests, File model could not be found.`, location)
-    
+    let model = activeFile?.model || getFileModel(location)
+    if(!model) return console.warn(`Can not run tests, file model could not be loaded for ${location}.`)
+
+    /**
+     * Ensure we have the most up-to-date Content and AST from the editor
+     * It could be that the file was changed, but not saved
+     * Which means the model content may not be up-to-date with what's displayed in the editor
+     */
+    if(ast) model = {...model, ast}
+    if(content) model = {...model, content}
+
     clearEditorDecorations(location)
-
-    startBrowserPlay(fileModel)
-  }, [location])
+    startBrowserPlay(model)
+  }, [])
 
   const actProps = useMemo<TBaseActionAction>(() => {
     return browserState ===  EBrowserState.idle

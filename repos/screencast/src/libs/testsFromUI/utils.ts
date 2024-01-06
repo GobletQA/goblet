@@ -42,6 +42,11 @@ export const getDefOpts = ():TExamUIChildProcOpts => ({
      */
     GOBLET_TEST_HTML_REPORTER_OPTS: JSON.stringify({
       /**
+       * Logs screenshots so then can be picked up in the child_process logs
+       */
+      // logScreenshots: true,
+
+      /**
        * For saving the HTML report
        */
       saveReport: ArtifactSaveOpts.always,

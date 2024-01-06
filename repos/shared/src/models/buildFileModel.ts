@@ -1,40 +1,9 @@
 import type { Repo, TFileModel } from '@GSH/types'
 
-import fs from 'fs'
 import path from 'path'
-import mime from 'mime'
-import { fileModel } from '@GSH/models'
-import { limboify } from '@keg-hub/jsutils/limboify'
+import { getMime } from '@GSH/models/getMime'
+import { fileModel } from '@GSH/models/fileModel'
 import { resolveFileType } from '@GSH/models/resolveFileType'
-
-/**
- * getType seemed to stop working, the owner of the package is doing odd things
- * So we normalize the getType and lookup methods incase one can't be found
- */
-const getMime = (location:string) => {
-  const ext = path.extname(location).replace(`.`, ``)
-  // @ts-ignore
-  return mime?.types?.[ext] || mime?._types?.[ext] || `text/plain`
-}
-
-/**
- * **IMPORTANT** - exported only for tests, not for other methods to use
- * Gets the meta data for a file or folder based on the passed in filePath
- * @function
- * @param {string} fromPath - Path to get the content from
- *
- * @returns {Promise|Object} - Meta data of the passed in path
- */
-export const __getLastModified = async (filePath:string) => {
-  const [__, metaData] = await limboify(
-    fs.stat,
-    filePath
-  )
-
-  // Return the mtimeMs (POSIX Epoch in milliseconds)
-  // Either from the files stats, or current time
-  return metaData ? metaData.mtimeMs : Date.now()
-}
 
 
 /**
@@ -73,7 +42,6 @@ export const buildFileModel = async (
     location: finalLoc,
     mime: getMime(location),
     ext: path.extname(location).replace('.', ''),
-    lastModified: await __getLastModified(location),
     relative: location.replace(repo.paths.repoRoot, ''),
   })
 }

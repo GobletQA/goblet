@@ -6,11 +6,14 @@ import {
   colors,
   gutter,
   CachedIcon,
+  IconButton,
   RestartIcon,
+  TerminalIcon,
   DangerousIcon,
   ArrowBackIcon,
   ArrowForwardIcon
 } from '@gobletqa/components'
+
 import {
   BrowserInput,
   BrowserNavActions,
@@ -32,6 +35,11 @@ const styles = {
   reconnect: {
     marginLeft: gutter.margin.qpx,
     marginRight: gutter.margin.hpx
+  },
+  inspector: {
+    marginLeft: `0px`,
+    padding: gutter.margin.qpx,
+    marginRight: gutter.margin.hpx,
   },
   alert: {
     color: colors.red10,
@@ -59,6 +67,7 @@ export const BrowserNav = (props:TBrowserNav) => {
     onGoForward,
     onReloadPage,
     backButtonActive,
+    onBrowserSettings,
     forwardButtonActive
   } = useBrowserNav(props)
 
@@ -120,6 +129,14 @@ export const BrowserNav = (props:TBrowserNav) => {
           >
             <RestartIcon sx={styles.icon} />
           </BrowserButton>
+
+          <IconButton
+            sx={styles.inspector}
+            onClick={onBrowserSettings}
+            tooltip='Open browser inspector'
+            className='goblet-browser-settings-action'
+            Icon={(props:any) => <TerminalIcon {...props} sx={styles.icon} />}
+          />
         </BrowserNavActions>
 
       </BrowserNavComp>

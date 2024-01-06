@@ -1,6 +1,7 @@
 import 'esbuild-register'
 import path from 'path'
 import { defineConfig } from 'vite'
+import million from 'million/compiler'
 import react from '@vitejs/plugin-react-swc'
 import { comlink } from 'vite-plugin-comlink'
 import { loadConfig } from './frontend.config'
@@ -12,9 +13,9 @@ const monacoEditor = monacoEditorPlugin.default
 const rootDir = path.join(__dirname, '..')
 const gobletRoot = path.join(rootDir, `../..`)
 
+// @ts-ignore
 export default defineConfig(async () => {
-
-  const { aliases, environment, envs, port } = loadConfig()
+  const { aliases, environment, envs, port } = await loadConfig()
 
   return {
     root: rootDir,
@@ -48,6 +49,7 @@ export default defineConfig(async () => {
       },
     },
     plugins: [
+      million.vite({ auto: true }),
       react(),
       comlink(),
       monacoEditor({
@@ -70,9 +72,7 @@ export default defineConfig(async () => {
       }),
     ],
     worker: {
-      plugins: [
-        comlink()
-      ]
+      plugins: () => [comlink()]
     }
   }
 

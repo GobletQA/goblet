@@ -1,0 +1,1 @@
+console.log(`A typescript test file`)

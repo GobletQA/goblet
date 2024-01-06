@@ -11,13 +11,19 @@ import type {
 } from '@GBR/types'
 
 import {throttleLast} from '@keg-hub/jsutils'
-import { useRef, useEffect, useState, useMemo } from 'react'
+import { useOnEvent } from '@gobletqa/components'
 import { useEditor } from '@GBR/contexts/EditorContext'
 import { RaceOnFeatureEvt } from '@GBR/constants/events'
 import { useSettings } from '@GBR/contexts/SettingsContext'
-import { useInline, useOnEvent } from '@gobletqa/components'
 import { upsertDecos } from '@gobletqa/race/utils/decorations/upsertDecos'
 import { checkActiveParent } from '@gobletqa/race/utils/decorations/checkActiveParent'
+import {
+  useRef,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback
+} from 'react'
 
 export type THDecoration = {
   decorations:TRaceDecorations
@@ -63,7 +69,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     feature: feature?.uuid,
   })
 
-  const addDecoration = useInline<TRaceDecoAdd>((location, deco, meta) => {
+  const addDecoration = useCallback<TRaceDecoAdd>((location, deco, meta) => {
     const updates = upsertDecos({
       cache,
       feature,
@@ -83,9 +89,14 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     decosRef.current = updates.decorations
     updateDecos(decosRef.current)
 
-  })
+  }, [
+    cache,
+    feature,
+    updateDecos,
+    decorations,
+  ])
 
-  const clearDecorations = useInline<TRaceDecoClear>((location:string) => {
+  const clearDecorations = useCallback<TRaceDecoClear>((location:string) => {
     if(!decorations[location]) return
 
     const decos = {...decorations}
@@ -94,7 +105,12 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     decosRef.current = decos
     updateDecos(decosRef.current)
     setCache({ feature: feature?.uuid, cache: {} })
-  })
+  }, [
+    cache,
+    feature,
+    updateDecos,
+    decorations,
+  ])
 
   // Listen for any changes to the feature and clear out decorations
   useOnEvent<TOnFeatureEvt>(RaceOnFeatureEvt, ({ feature }) => {
@@ -103,7 +119,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
       && clearDecorations(feature?.path)
   })
 
-  const updateDecorations = useInline<TRaceDecoUpdate>((location, decos, meta) => {
+  const updateDecorations = useCallback<TRaceDecoUpdate>((location, decos, meta) => {
     const updates = upsertDecos({
       cache,
       feature,
@@ -116,7 +132,11 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     updates.cache !== cache && setCache(updates.cache)
     decosRef.current = updates.decorations
     updateDecos(decosRef.current)
-  })
+  }, [
+    cache,
+    feature,
+    updateDecos,
+  ])
 
   useEffect(() => {
     feature?.uuid !== cache.feature

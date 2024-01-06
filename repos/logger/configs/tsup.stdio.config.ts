@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'tsup'
+import packcfg from '../package.json'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
 
@@ -14,13 +15,19 @@ export default defineConfig(async () => {
   return {
     clean: true,
     sourcemap: true,
+    format: [`cjs`],
     splitting: false,
     entry: [stdioIn],
     outDir: stdioOutdir,
-    experimentalDts: true,
-    format: [`cjs`, `esm`],
+    name: `logger/stdio`,
+    esbuildOptions:(options, context) => {
+      options.external = [
+        ...(options?.external ?? []),
+        ...(Object.keys(packcfg.dependencies) ?? []),
+        ...(Object.keys(packcfg.devDependencies) ?? []),
+      ]
+    },
     async onSuccess() {
-      await fs.rm(path.join(stdioOutdir, `Users`), { recursive: true, force: true })
       console.log(`Module "@gobletqa/logger/stdio" built successfully`)
     },
   }

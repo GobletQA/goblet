@@ -1,6 +1,9 @@
 import type { TExRunResult, TPipelineInit } from '@GEX/types'
 
-import pPipe from 'p-pipe'
+import {pipelineHoc} from './pipelineHoc'
+import {Errors} from '@GEX/constants/errors'
+import { promisePipe } from '@GEX/utils/promisePipe'
+import {formatArgsTask} from './tasks/formatArgsTask'
 import {
   aliasStep,
   runnerStep,
@@ -15,15 +18,12 @@ import {
   postEnvironmentStep
 } from './steps'
 
-import {pipelineHoc} from './pipelineHoc'
-import {Errors} from '@GEX/constants/errors'
-import {formatArgsTask} from './tasks/formatArgsTask'
 
 export const RunPipeline = async (args:TPipelineInit) => {
   try {
     const pipeArgs = formatArgsTask(args)
 
-    const pipeline = pPipe(
+    const pipeline = promisePipe(
       pipelineHoc(setupPipeStep, pipeArgs),
       pipelineHoc(aliasStep),
       pipelineHoc(esbuildStep),

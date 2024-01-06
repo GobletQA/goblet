@@ -1,10 +1,9 @@
 import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { resError } from '@gobletqa/shared/api/express/resError'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
+import { authService } from '@GBE/services/firebase'
+import { apiRes, resError, AppRouter } from '@gobletqa/shared/api'
 import { validateRefreshToken } from '@GBE/utils/validateRefreshToken'
-import {authService} from '@GBE/services/firebase'
 
 /**
  * Validates the required authentication information exists
@@ -22,6 +21,7 @@ export const refresh = async (req:JWTRequest, res:Response) => {
 
   const config = req.app.locals.config.server
 
+  // **NOTE** The firebase token has all ready been refreshed via the frontend, so not needed here
   const updated = validateRefreshToken(config.jwt, {
     ...req.auth,
     id,
@@ -29,8 +29,6 @@ export const refresh = async (req:JWTRequest, res:Response) => {
     username,
     provider,
   }, refresh)
-
-  // TODO: Need to also refresh the firebase token via the firebase service
 
   return updated
     ? apiRes(res, updated, 200)

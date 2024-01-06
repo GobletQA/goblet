@@ -7,7 +7,7 @@ import { Exception } from '@services/sharedService'
  * Validate the response from the Backend API
  * Ensure we have all the correct Provider user metadata
  */
-export const validateResp = async (resp:TResponse<TValidateResp>) => {
+export const validateResp = async (resp:TResponse<TValidateResp>, refreshValidate?:boolean) => {
   const {
     data,
     error,
@@ -21,7 +21,7 @@ export const validateResp = async (resp:TResponse<TValidateResp>) => {
       statusCode
     )
 
-  if (!data || data?.error || !data?.username || !data?.id || !data?.provider || !data?.jwt){
+  else if (!data || data?.error || !data?.username || (!data?.id && !data.userId) || !data?.provider || !data?.jwt){
     error && console.error(error)
     data?.error && console.error(data?.error)
     throw new Exception(`[Auth State Error] Could not validate user. Please try agin later.`, 401)

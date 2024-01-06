@@ -6,7 +6,7 @@ import { ENVS } from '@gobletqa/environment'
 import { buildRefFromRemote } from './getRepoRef'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { addConfigFileTypes } from './addConfigFileTypes'
-import { getDefaultGobletConfig } from '../getDefaultGobletConfig'
+import defConfig from '@gobletqa/configs/goblet.default.config'
 import { GobletConfigFileNames, GobletConfigRef } from '@gobletqa/environment/constants'
 
 export type TGobletRefOpts = {
@@ -72,7 +72,7 @@ export const replaceGobletConfigRef = async (gitData:TGitData, cfgLoc?:string) =
 }
 
 export const ensureGobletCfg = (cfg: TGobletConfig, opts:TGobletRefOpts):TGobletCfgLoaderResp => {
-  const config = addConfigFileTypes(deepMerge<TGobletConfig>(getDefaultGobletConfig(), cfg))
+  const config = addConfigFileTypes(deepMerge<TGobletConfig>(defConfig, cfg))
 
   const { repoRoot, location } = opts
 

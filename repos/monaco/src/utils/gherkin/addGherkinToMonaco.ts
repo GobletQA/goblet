@@ -2,6 +2,7 @@ import type {
   TIndex,
   TMonaco,
   TTextEdit,
+  TTextRange,
   NLanguages,
 } from '@GBM/types'
 
@@ -125,13 +126,15 @@ const addAutoComplete = (
       return {
         suggestions: [
           ...autoCompleteShortcuts(monaco),
-          ...completionItems.map((completionItem) => ({
-            label: completionItem.label,
-            insertText: completionItem?.textEdit?.newText,
-            kind: monaco.languages.CompletionItemKind.Text,
-            range: convertRange((completionItem?.textEdit as TTextEdit)?.range),
-            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          })),
+          ...completionItems.map((completionItem) => {
+            return {
+              label: completionItem.label,
+              insertText: completionItem?.textEdit?.newText,
+              kind: monaco.languages.CompletionItemKind.Text,
+              range: convertRange(completionItem?.textEdit?.range),
+              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            }
+          }),
         ]
       } as NLanguages.ProviderResult<NLanguages.CompletionList>
     },

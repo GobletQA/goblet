@@ -1,8 +1,14 @@
-import type { TGitOpts, TWFArgs } from '@GGT/types'
+import type { TGitMeta, TGitOpts } from '@gobletqa/git'
+
+type TWFArgs = TGitMeta & {
+  token: string|boolean
+  repoTemplate?: string
+}
+
 
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
-import { mountRepo } from '@gobletqa/repo/mountRepo'
+import { mountRepo } from '@GRP/mountRepo'
 
 export const ensureMounted = async (
   args:TWFArgs,

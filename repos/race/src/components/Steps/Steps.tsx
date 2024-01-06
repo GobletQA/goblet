@@ -7,6 +7,7 @@ import type {
   TRaceStepParent
 } from '@GBR/types'
 
+import { useCallback } from 'react'
 import { DndStep } from './DndStep'
 import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
@@ -44,10 +45,10 @@ export const Steps = (props:TSteps) => {
 
   const data = useDropData(props)
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
-  const onDropStep = useInline<TOnDrop<TDndItemData>>((
+  const onDropStep = useCallback<TOnDrop<TDndItemData>>((
     oldIdx,
     newIdx,
-    pos:EDndPos,
+    pos,
     oldData,
     newData
   ) => {
@@ -65,7 +66,7 @@ export const Steps = (props:TSteps) => {
           newIdx,
           pos
         )
-  })
+  }, [parent.uuid])
 
   return (
     <Sections

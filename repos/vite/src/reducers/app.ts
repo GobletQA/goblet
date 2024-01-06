@@ -11,6 +11,7 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 export type TAppState = {
   editor:EEditorType
   status:EAppStatus
+  inspector?:boolean
   sidebarLocked: boolean
   multiFeatsErr: boolean
   testRunsView: boolean|undefined
@@ -24,10 +25,8 @@ updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,
-  // TODO: switch this back to false before deploy
-  // testRunsView: true,
+  inspector: false,
   testRunsView: false,
-
   sidebarLocked: false,
   multiFeatsErr: false,
   status:EAppStatus.Active,
@@ -39,6 +38,7 @@ const setStatus = createAction<EAppStatus>(`setStatus`)
 const setEditor = createAction<EEditorType>(`setEditor`)
 const toggleSidebarLocked = createAction<boolean>(`toggleSidebarLocked`)
 const toggleMultiFeatsErr = createAction<boolean>(`toggleMultiFeatsErr`)
+const toggleInspector = createAction<boolean|undefined>(`toggleInspector`)
 const toggleTestRunsView = createAction<boolean|undefined>(`toggleTestRunsView`)
 
 export const appActions = {
@@ -71,6 +71,11 @@ export const appActions = {
       ...state,
       status: action?.payload
     }
+  },
+  toggleInspector: (state:TAppState, action:TDspAction<boolean|undefined>) => {
+    const inspector = exists<boolean>(action?.payload) ? action?.payload : !state.inspector
+
+    return {...state, inspector}
   }
 }
 
@@ -81,6 +86,8 @@ export const appReducer = createReducer(
     builder.addCase(setApp, appActions.setApp)
     builder.addCase(setStatus, appActions.setStatus)
     builder.addCase(setEditor, appActions.setEditor)
+
+    builder.addCase(toggleInspector, appActions.toggleInspector)
     builder.addCase(toggleTestRunsView, appActions.toggleTestRunsView)
     builder.addCase(toggleSidebarLocked, appActions.toggleSidebarLocked)
     builder.addCase(toggleMultiFeatsErr, appActions.toggleMultiFeatsErr)

@@ -3,18 +3,18 @@ import type {
   TLoopLoad,
   TSearchFile,
   TRequiredFun,
+  TLoadedFunResp,
   TGobletConfig,
   TGobletLoader,
-  TLoadedFunResp,
   TGobletCfgLoaderResp
 } from '../types'
 
 import path from 'path'
 import { globSync } from 'glob'
 import { isStr } from '@keg-hub/jsutils/isStr'
-import { GobletConfigFileNames } from '../constants'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { ensureGobletCfg } from '../utils/ensureGobletCfg'
+import { GobletConfigFileNames } from '@gobletqa/environment/constants'
 
 import {
   resetRequire,

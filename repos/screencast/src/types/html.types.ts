@@ -1,5 +1,9 @@
-import type { parse, DefaultTreeAdapterMap } from 'parse5'
-import type { Options as THtmlMinifyOpts } from 'html-minifier'
+// import type { parse, DefaultTreeAdapterMap } from 'parse5'
+// type TDocument = ReturnType<typeof parse<DefaultTreeAdapterMap>> & {
+//   attrs?:any
+// }
+// export type TElement = TDocument|THtmlNode
+// import type { Options as THtmlMinifyOpts } from 'html-minifier'
 
 export type THtmlParseOpts = {
   textElements?:string[]
@@ -10,18 +14,15 @@ export type THtmlParseOpts = {
 
 export type TProcessHtmlOpts = {
   parse:THtmlParseOpts
-  minify:THtmlMinifyOpts
+  // minify:THtmlMinifyOpts
 }
 
-export type THtmlNodeAttrs = {
+type THtmlNodeAttrs = {
   name:string
   value:string
 }
 
-export type TDocument = ReturnType<typeof parse<DefaultTreeAdapterMap>> & {
-  attrs?:any
-}
-export type TElement = TDocument|THtmlNode
+export type TElement = THtmlNode
 
 export type THtmlNode = {
   nodeName:string
@@ -31,6 +32,6 @@ export type THtmlNode = {
 }
 
 
-export {
-  THtmlMinifyOpts
-}
+// export {
+//   THtmlMinifyOpts
+// }

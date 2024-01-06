@@ -1,6 +1,6 @@
-import { Request, RequestHandler, Response } from 'express'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import type { Request, RequestHandler, Response } from 'express'
+
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Loads reports from the passed in params

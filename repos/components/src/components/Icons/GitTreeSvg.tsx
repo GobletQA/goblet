@@ -26,6 +26,7 @@ export const GitTreeSvg = () => {
           <defs></defs>
           <g
             id="using_x5F_branches"
+            xmlns="http://www.w3.org/2000/svg"
             transform="matrix(0, -0.625605, 0.625605, 0, 241.32431, 457.742279)"
           >
             <path

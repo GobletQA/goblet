@@ -1,8 +1,8 @@
 import type { Socket } from 'net'
 import type { Conductor } from '../conductor'
+import type { HttpProxyMiddleware } from '@GCD/types'
 import type { Request } from 'http-proxy-middleware/dist/types.d'
-import { conductorHeaders } from '@GCD/Configs/conductor.headers.config'
-import type { HttpProxyMiddleware } from 'http-proxy-middleware/dist/http-proxy-middleware'
+import { conductorHeaders } from '@GCD/configs/conductor.headers.config'
 
 
 const {
@@ -17,11 +17,12 @@ type TProxies = {
   apiProxy?:HttpProxyMiddleware
   wsProxy?:HttpProxyMiddleware
   vncProxy?:HttpProxyMiddleware
+  debugProxy?:HttpProxyMiddleware
 }
 
 export const proxyUpgrade = (conductor:Conductor, proxies:TProxies) => {
 
-  const { vncProxy, wsProxy } = proxies
+  const { vncProxy, wsProxy, debugProxy } = proxies
 
   const onUpgrade = (req:Request, socket:Socket, head:any) => {
     if(!conductor.controller.devRouterActive){
@@ -36,10 +37,17 @@ export const proxyUpgrade = (conductor:Conductor, proxies:TProxies) => {
     }
 
     // @ts-ignore
-    req.url.includes(vncProxy?.middleware?.path)
-      ? vncProxy?.middleware?.upgrade(req, socket, head)
-      : wsProxy?.middleware?.upgrade(req, socket, head)
-    
+    if(req.url.includes(vncProxy?.middleware?.path))
+      vncProxy?.middleware?.upgrade(req, socket, head)
+
+    // @ts-ignore
+    else if(req.url.includes(wsProxy?.middleware?.path))
+      wsProxy?.middleware?.upgrade(req, socket, head)
+
+    // @ts-ignore
+    else if(req.url.includes(debugProxy?.middleware?.path))
+      debugProxy?.middleware?.upgrade(req, socket, head)
+
   }
 
   return {...proxies, onUpgrade}

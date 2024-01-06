@@ -57,6 +57,7 @@ const taskOptions = {
       description: `Run all tests sequentially`,
     },
     testBail: {
+      type: `number`,
       alias: [`bail`],
       example: `--testBail`,
       env: `GOBLET_TEST_BAIL`,
@@ -76,6 +77,7 @@ const taskOptions = {
     testDebug: {
       default: false,
       type: `boolean`,
+      alias: [`debug`],
       example: `--testDebug`,
       env: `GOBLET_TEST_DEBUG`,
       description: `Pass the --debug flag to the test command`,
@@ -133,13 +135,6 @@ const taskOptions = {
       env: `GOBLET_TEST_VERBOSE`,
       description: `Output verbose test results as the tests run`,
     },
-    testOpenHandles: {
-      default: false,
-      type: `boolean`,
-      example: `--testOpenHandles`,
-      env: `GOBLET_TEST_OPEN_HANDLES`,
-      description: `Detect handles left open when tests run. Forces tests to run in sync.`,
-    },
     testCI: {
       default: false,
       type: `boolean`,
@@ -153,7 +148,7 @@ const taskOptions = {
       alias: [`eof`, `exit`],
       example: `--exitOnFailed`,
       env: `GOBLET_EXIT_ON_FAILED`,
-      description: `Stop running test and exit the process is a test fails`,
+      description: `Stop running test and exit the process if a test fails`,
     },
     skipAfterFailed: {
       default: true,
@@ -190,7 +185,7 @@ const taskOptions = {
   },
   goblet: {
     context: {
-      alias: [`name`],
+      alias: [`name`, `testMatch`, `t`],
       description:
         `Path or name of the test file to run. If not passed, all tests are run.`,
       example: `--context <value>`,
@@ -296,11 +291,11 @@ const taskOptions = {
       allowed: [`launch`, `l`, `persistent`, `p`, `server`, `s`],
       description: `Sets the playwright browser launch type method used to launch the browser`,
     },
-    debug: {
+    debugBrowser: {
       default: false,
       env: `GOBLET_BROWSER_DEBUG`,
       description: `Runs with playwright debug mode activated`,
-      example: `keg goblet bdd test --debug`,
+      example: `keg goblet bdd test --debugBrowser pw:*`,
     },
     devtools: {
       type: `boolean`,

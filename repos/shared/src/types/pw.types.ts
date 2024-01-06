@@ -1,11 +1,14 @@
 
 import type { Repo } from './repo.types'
 import type { TFileModel } from './models.types'
-import type { Automate } from '@gobletqa/browser'
+import type { TraceRecorder } from './testify.types'
 import type { TSocketEvtCBProps } from './socket.types'
 import type { TAutomateEvent } from './pwAutomate.types'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { EBrowserName, EBrowserType } from './browser.types'
+
+import type { Player } from '../../../browser/src/player/player'
+import type { Automate } from '../../../browser/src/automate/automate'
 import type {
   Page,
   Locator,
@@ -17,8 +20,12 @@ import type {
   BrowserServer,
   BrowserContext,
   BrowserContextOptions,
-} from 'playwright'
+} from '../../../browser/src/types/playwright'
 
+export {
+  Player,
+  Automate,
+}
 
 /**
  * _guid is an internal playwright property
@@ -55,11 +62,12 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
   newPage: () => Promise<TBrowserPage>
   __GobletAutomateInstance?: Automate
   __contextGoblet?: {
-    tracer?:any
     cookie?:string
     tracing?:Boolean
     initFuncs?: string[]
     initScript?: string[]
+    tracer?:TraceRecorder
+    tracingStarted?:Boolean
     extraHTTPHeaders?:Record<string, string>
     options?:Partial<TBrowserContextOpts>
   }

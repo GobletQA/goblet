@@ -42,16 +42,10 @@
 
 * Add ability to restart session container from UI
 
-* Keeping the feature file open when switching editors
-
 
 * Fix `feature` references when running feature tests to use a constant
   * Should come from the fileTypes, and not be a hard coded string
 
-
-* Fix bug with race decorators
-  * Rules seem to fail when running
-    * Looks to be related to the decorators issues
 
 
 ## To Investigate
@@ -66,8 +60,6 @@
   * opens a file explorer
   * Need a way to stop that from happening
 
-
-* World not being passed to Test Runner after being auto-logged out
 
 On every page load
 * Walk the dom tree and add a dynamically generated selector
@@ -120,13 +112,6 @@ On every page load
 
 
 ### Main issues
-* Sometimes injected scripts are not injected
-  * Steps
-    * Open a test that fails
-    * Run the test
-    * Wait for it to fail or press cancel
-    * Try to use the select from browser
-      * Throws an error can't find injected script method
 * Need to add world editor to Race Editor
   * Allow alias to be multi-leveled
 * Need to add play from step / play step to monaco
@@ -150,7 +135,8 @@ On every page load
 Basically the select in browser issue caused an issue with your session container. When you logged out, it cause the session container to shutdown, but there's no update to the frontend about that. So when you  logged back in it would not allow you to mount until the container fully restarted.
 
 
-
+* On restart context, when browser page is reloaded, it is not the correct dimensions
+  * Add listener to reset the dimensions when the context is restarted
 
 
 Two Commands:

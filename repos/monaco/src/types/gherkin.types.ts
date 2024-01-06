@@ -1,7 +1,5 @@
 import type { EStepKey } from '@ltipton/parkin'
-import type { EDefinitionVariant } from './shared.types'
-import type { languages as Languages } from 'monaco-editor'
-import type { Range, TextEdit } from 'vscode-languageserver-types'
+import type { Range, TextEdit, Languages } from './monaco.types'
 
 interface Constructor<T> extends Function {
     new (...args: unknown[]): T
@@ -10,6 +8,10 @@ interface Constructor<T> extends Function {
 type Factory<T> = (...args: unknown[]) => T
 type TRegexps = RegExp[] | string[] | RegExp | string
 
+export enum EDefinitionVariant {
+  regex = 'regex',
+  expression = 'expression'
+}
 
 export class ParameterType<T> {
     name?:string

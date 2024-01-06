@@ -56,8 +56,8 @@ export * from './PasteBeforeIcon'
 export * from './FolderPlayOutlineIcon'
 export * from './SkipIcon'
 
-export * from './JokerIcon'
-export * from './JokerHatIcon'
+// export * from './JokerIcon'
+// export * from './JokerHatIcon'
 
 // export * from './AnimationPlayOutlineIcon'
 

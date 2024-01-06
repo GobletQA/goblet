@@ -1,19 +1,19 @@
+import type { TRemoveStep } from '@GBR/actions/operations/removeStepOperation'
 import {
   EOperations,
-  TRaceOpData,
   TSetOperations,
   TRaceOperations,
   TOnUpdateOperationEvt,
 } from '@GBR/types'
-import type { TRemoveStep } from '@GBR/actions/operations/removeStepOperation'
-import { removeStepOperation } from '@GBR/actions/operations/removeStepOperation'
 
 import { OnUpdateOperationEvent } from '@GBR/constants/events'
-import { useInline, MemoChildren, useOnEvent } from '@gobletqa/components'
+import { MemoChildren, useOnEvent } from '@gobletqa/components'
+import { removeStepOperation } from '@GBR/actions/operations/removeStepOperation'
 import {
   useMemo,
   useState,
   useContext,
+  useCallback,
   createContext,
 } from 'react'
 
@@ -33,16 +33,16 @@ export const OperationsProvider = (props:TOperationsProvider) => {
   const { children } = props
   const [operations, _setOperations] = useState<TRaceOperations>({})
 
-  const setOperations = useInline<TSetOperations>((update) => {
+  const setOperations = useCallback<TSetOperations>((update) => {
     const { type, data } = update
-    // TODO: add other cut operations here for  
+    // TODO: add other cut operations here
     if(data?.from === EOperations.cut){
       ;(`step` in data.item)
         && removeStepOperation({...data} as TRemoveStep)
     }
 
     type && _setOperations({...operations, [type]: data })
-  })
+  }, [operations])
 
   useOnEvent<TOnUpdateOperationEvt>(OnUpdateOperationEvent, setOperations)
 
@@ -50,7 +50,8 @@ export const OperationsProvider = (props:TOperationsProvider) => {
     operations,
     setOperations,
   }), [
-    operations
+    operations,
+    setOperations,
   ])
 
   return (

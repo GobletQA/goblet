@@ -67,6 +67,7 @@ import TuneIcon from '@mui/icons-material/Tune'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import PersonIcon from '@mui/icons-material/Person'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import TerminalIcon from '@mui/icons-material/Terminal'
 
 // Icon for playing from a specific point in a feature
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
@@ -157,4 +158,5 @@ export {
   SendIcon,
   WebAssetIcon,
   WebAssetOffIcon,
+  TerminalIcon,
 }

@@ -21,8 +21,8 @@ const useMousePosition = (props:TBrowserMouse) => {
       setStyle({ ...style, left: clientX + x, top: clientY + y })
     }
 
-    document.addEventListener(`mousemove`, updatePosition, false)
-    document.addEventListener(`mouseenter`, updatePosition, false)
+    document.addEventListener(`mousemove`, updatePosition)
+    document.addEventListener(`mouseenter`, updatePosition)
 
     return () => {
       document.removeEventListener(`mousemove`, updatePosition)

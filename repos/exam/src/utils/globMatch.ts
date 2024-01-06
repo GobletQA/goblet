@@ -3,9 +3,11 @@ import type { GlobOptions } from 'glob'
 import { glob } from 'glob'
 import micromatch from 'micromatch'
 import { naturalSort } from './naturalSort'
-import { GlobMatchKeys } from "@GEX/constants"
+
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { GlobMatchKeys } from '@gobletqa/environment/constants'
 
 import { GlobFilesCfg } from "@GEX/constants/defaults"
 import {TExamConfig} from '@GEX/types'
@@ -18,25 +20,36 @@ export const globMatchFiles = async (
 
   const globs = []
   const config = {...GlobFilesCfg, ...opts}
-  const exts = `{${(exam?.extensions || []).join(`,`)}}`
+  
+  
+  const exts = exam?.matchExtensions
+    ? exam?.extensions?.length > 1
+      ? `{${(exam?.extensions || []).join(`,`)}}`
+      : exam?.extensions.join(``)
+    : ``
 
-  ensureArr<string>(match).forEach(item => {
-    /**
-     * Helper to check if a match contains any glob keys
-     * If it does not, assume the they want to do a repo wide search
-     * TODO: will want to add a config option to enable / disable this behavior
-     */
-    if(GlobMatchKeys.find(key => item.includes(key)))
-      return globs.push(item)
+  flatUnion(ensureArr<string>(match).map(item => item.split(`,`)))
+    .forEach(item => {
+      /**
+      * Helper to check if a match contains any glob keys
+      * If it does not, assume the they want to do a repo wide search
+      * TODO: will want to add a config option to enable / disable this behavior
+      */
+      if(GlobMatchKeys.find(key => item.includes(key)))
+        return globs.push(item)
 
-    item = item.startsWith(`/`) ? item.replace(/^\//, ``) : item
+      item = item.startsWith(`/`) ? item.replace(/^\//, ``) : item
+      const hasSlash = item.includes(`/`)
 
-    globs.push(
-      `**/+(${item})*${exts}`,
-      `**/${item}/**${exts}`,
-      `**/*${item}*/**/*${exts}`,
-      `**/?(${item}|*${item}*|**${item}**)${exts}`,
-    )
+      globs.push(
+        `**/${item}/**${exts}`,
+        `**/*${item}*/**/*${exts}`,
+        ...(
+          hasSlash
+            ? [`**/${item}*${exts}`]
+            : [`**/+(${item})*${exts}`, `**/?(${item}|*${item}*|**${item}**)${exts}`]
+        )
+      )
   })
 
   const found = await globFiles(globs, config)

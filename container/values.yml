@@ -39,20 +39,24 @@ env:
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
   GB_NODE_VERSION: 20
-  GB_PNPM_VERSION: 8.7.4
+  GB_PNPM_VERSION: 8.12.1
   GB_GIT_GLOBAL_IGNORE: /goblet/.gitignore
   GB_KUBE_SCRT_DOC_AUTH: docker-auth
   GB_KUBE_SCRT_FB_SA: firebase-sa
 
 # ---- Playwright Specific ENVs ---- #
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.40.0
-
-  # Log file for all playwright logs
-  # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
-  PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
+  PLAYWRIGHT_BROWSERS_VERSION: 1.40.1
+  # Add playwright to the browser-in-browser inspector
+  PWDEBUG: console
   # Disables the playwright inspector when the page is paused
   PW_CODEGEN_NO_INSPECTOR: 1
+
+  # **IMPORTANT** - Enable these to enable playwright logging to file
+  # Log file for all playwright logs
+  # PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
+  # DEBUG: pw:*
+
 
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
@@ -62,7 +66,8 @@ env:
   GB_ACT_PORT: ''
   GB_ACT_DEPLOYMENT: goblet-action
   GB_ACT_IMAGE: 'ghcr.io/gobletqa/goblet-action'
-  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.0-focal'
+  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
+  GB_ACT_MOUNT_PATH: /github/app
 
   GOBLET_MOUNT_ROOT: /goblet/repos
 
@@ -104,7 +109,7 @@ env:
   GB_BS_DEPLOYMENT: goblet-base
   GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
   # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
-  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.0-focal'
+  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
   # GB_BS_IMAGE_FROM: ubuntu:focal
 
 
@@ -210,6 +215,8 @@ env:
   GB_SC_DEV_IMAGE_TAG: main
   GB_SC_DEPLOYMENT: goblet-screencast
   GB_SC_IMAGE: 'ghcr.io/gobletqa/goblet-screencast'
+  GB_SC_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.40.1-focal'
+
   # Screencast API port
   GB_SC_PORT: 19011
   # URL where the screencast is being displayed
@@ -337,5 +344,9 @@ env:
   GB_GIT_REMOTE_REF: goblet-ref
   GB_SECRETS_TAG_REF: goblet-do-not-delete
 
-  # --- CHROME Inspector debug port --- #
-  GB_REMOTE_DEBUG_PORT: 9020
+  # --- CHROME Inspector remote debugging --- #
+  GB_DT_SERVER_PORT: 8000
+  GB_DT_PROXY_PORT: 19019
+  GB_DT_REMOTE_DEBUG_PORT: 19020
+  GB_DT_REMOTE_BROWSER_ORIGINS: "*"
+  GB_BE_WS_DEBUG_PATH: /devtools/page

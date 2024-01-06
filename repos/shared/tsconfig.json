@@ -2,16 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "moduleResolution": "node",
-    "typeRoots": [
-      "./src/types",
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ]
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   },
   "include": [
     "src",
-    "configs",
     "../../configs"
   ]
 }

@@ -1,4 +1,4 @@
-import type { TStatusRoutes } from '@types'
+import type { TStatusRoutes, TRouteMeta } from '@types'
 
 import { loadFile } from './files/api/loadFile'
 import { emptyObj, isObj } from '@keg-hub/jsutils'
@@ -11,6 +11,7 @@ import { loadFromStorage } from './settings/loadFromStorage'
 
 export type TInitStatus = {
   fromIdle?:boolean
+  status?:TRouteMeta
   params?:Record<string, any>
 }
 
@@ -41,7 +42,7 @@ export const initApp = async () => {
   await loadFromStorage()
 
   // Load the local storage user if they exist
-  const activeUser = await loadUser()
+  const {user, status} = await loadUser()
 
-  return !activeUser ? signInModal() : initStatus()
+  return !user ? signInModal() : initStatus({ status })
 }

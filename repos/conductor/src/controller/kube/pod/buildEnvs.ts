@@ -1,5 +1,5 @@
 import type { V1EnvVar, V1EnvFromSource } from '@kubernetes/client-node'
-import type { TPodContainer, TEnvRefConfig, TEnvFrom } from '../../../types'
+import type { TPodContainer, TEnvRefConfig, TEnvFrom } from '@gobletqa/shared/types'
 
 import { addIfExists } from './helpers'
 import { isStr } from '@keg-hub/jsutils/isStr'
@@ -31,7 +31,7 @@ export const buildEnvsFrom = (
         configMap,
         prefix=``,
         configMapRef,
-      } = (fromObj || {} as TEnvFrom)
+      } = ((fromObj || {}) as TEnvFrom)
       const hidden = secretRef || secret
       const config = configMapRef || configMap
 

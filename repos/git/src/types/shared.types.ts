@@ -1,1 +1,1 @@
-export * from '../../../shared/src/types'
+export { EProvider } from '../../../shared/src/types/provider.types'

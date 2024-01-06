@@ -1,9 +1,16 @@
-import type { TGBWorldCfg, TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
-
+import type { EBrowserType } from '@gobletqa/shared/enums'
+import type {
+  TGBWorldCfg,
+  TBrowserConf,
+  TGobletConfig,
+  TBrowserLaunchOpts
+} from '@gobletqa/shared/types'
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
+import { getBrowserType } from './getBrowserType'
 import { vncActive } from '@GBB/utils/checkVncEnv'
+import { EBrowserName } from '@gobletqa/shared/enums'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
@@ -16,12 +23,14 @@ import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
  * Default browser options
  * @type {Object}
  */
-const getDefOpts = () => {
-  const opts = {
+const opts = {
+  [EBrowserName.chromium]: {
+    type: EBrowserName.chromium,
     shared: {
       args: [
         `--allow-insecure-localhost`,
         `--use-fake-ui-for-media-stream`,
+        `--allow-running-insecure-content`,
         `--use-fake-device-for-media-stream`,
         `--unsafely-treat-insecure-origin-as-secure`,
       ],
@@ -41,9 +50,15 @@ const getDefOpts = () => {
         `--disable-gpu`,
         `--start-maximized`,
         `--start-fullscreen`,
+
         // Hides the top-bar header. Should validate this this is what we want
         `--window-position=0,-75`,
-        `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
+
+        // Allow connecting to a remote browser instance
+        `--disable-web-security`,
+        `--remote-debugging-address=0.0.0.0`,
+        `--remote-debugging-port=${ENVS.GB_DT_REMOTE_DEBUG_PORT}`,
+        `--remote-allow-origins=${ENVS.GB_DT_REMOTE_BROWSER_ORIGINS}`,
 
 
         // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this
@@ -69,18 +84,46 @@ const getDefOpts = () => {
       headless: true,
       ignoreDefaultArgs: [],
     } as Partial<TBrowserConf>,
+  },
+  [EBrowserName.webkit]: {
+    type: EBrowserName.webkit,
+    host: {} as Partial<TBrowserConf>,
+    vnc: {} as Partial<TBrowserConf>,
+    shared: {} as Partial<TBrowserConf>,
+    ci: {
+      headless: true
+    } as Partial<TBrowserConf>,
+  },
+  [EBrowserName.firefox]: {
+    type: EBrowserName.firefox,
+    shared: {
+      launchOptions: {
+        firefoxUserPrefs: {
+          [`permissions.default.camera`]: 1,
+          [`permissions.default.microphone`]: 1,
+        },
+      },
+    } as Partial<TBrowserConf>,
+    vnc: {} as Partial<TBrowserConf>,
+    host: {} as Partial<TBrowserConf>,
+    ci: {
+      headless: true
+    } as Partial<TBrowserConf>,
   }
+}
+const getDefOpts = (type:EBrowserType|EBrowserName) => {
+  const browserType = getBrowserType(type)
+  const defOpts = opts[browserType] ?? opts[EBrowserName.chromium]
 
   // TODO: eventually this will be overwritten by the mounted repo 
-  // If we have a path to the testUtils dir
+  // If we have a path to the testify dir
   // Then add the fake webcam data
-  if(InternalPaths?.testUtilsDir){
-    const webcamLoc = path.join(InternalPaths.testUtilsDir, `media/webcam.y4m`)
-    opts.shared.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
+  if(defOpts.type === EBrowserName.chromium && InternalPaths?.testifyDir){
+    const webcamLoc = path.join(InternalPaths.testifyDir, `media/webcam.y4m`)
+    defOpts.shared.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
   }
 
-
-  return opts
+  return defOpts
 }
 
 
@@ -131,14 +174,14 @@ export const getBrowserOpts = (
     page,
     args=emptyArr,
     ignoreDefaultArgs=emptyArr,
-    // type / url is not used, just pulled out of the config object
     type,
+    // url is not used, just pulled out of the config object
     url,
     forwardLogs,
     ...argumentOpts
   } = browserConf
 
-  const options = getDefOpts()
+  const options = getDefOpts(type)
 
   const {
     args:configModeArgs,

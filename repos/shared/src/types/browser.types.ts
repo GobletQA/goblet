@@ -30,3 +30,14 @@ export type TBrowserLaunchParams = TGetBrowsers & TBrowserConf & {
   headless:boolean
   allowed:TBrowserType[]
 }
+
+export type TBrowserDebuggerCfg = {
+  id:string
+  url:string
+  title:string
+  faviconUrl:string
+  description:string
+  type:`page`|`browser`
+  devtoolsFrontendUrl:string
+  webSocketDebuggerUrl:string
+}

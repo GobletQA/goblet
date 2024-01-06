@@ -1,8 +1,8 @@
 import type { Response, NextFunction } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
+import { AppRouter } from '@gobletqa/shared/api'
 import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 /**

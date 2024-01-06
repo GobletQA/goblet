@@ -1,7 +1,7 @@
 import type { TProc } from '@GSC/types'
-import { findProc } from '@gobletqa/shared/libs/proc'
 import { iife } from '@keg-hub/jsutils/iife'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { findProc } from '@gobletqa/shared/utils'
 
 
 const parseOutput = (procName:string, stdout:string) => {

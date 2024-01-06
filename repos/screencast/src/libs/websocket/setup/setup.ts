@@ -1,15 +1,49 @@
 import type http from 'http'
 import type https from 'https'
-import type { TSocketEvtCBProps, TSocketConfig } from '@GSC/types'
+import type {
+  TSocketConfig,
+  TSocketConfigOpts,
+  TSocketEvtCBProps,
+} from '@GSC/types'
+
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 import { Server } from 'socket.io'
 import { Logger } from '@GSC/utils/logger'
 import { get } from '@keg-hub/jsutils/get'
-import { setupConfig } from './setupConfig'
 import { setupEvents } from './setupEvents'
 import { validateToken } from './validateToken'
 import { SocketManager } from '../manager/manager'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
+
+export type TSocketInit = {
+  io:Server
+  config:TSocketConfig
+  Manager:SocketManager
+}
+
+
+const buildConfig = async (serverConfig:TSocketConfig) =>{
+  const {
+    host,
+    port,
+    path: socketPath,
+    ...config
+  } = deepMerge<TSocketConfigOpts>(
+    Boolean(!serverConfig) && { process: {} },
+    serverConfig
+  )
+
+  return {
+    ...config,
+    socket: {
+      port,
+      host,
+      path: socketPath,
+    },
+  } as TSocketConfig
+}
+
 
 const setupManager = (
   io:Server
@@ -26,7 +60,7 @@ export const onConnect = (
   io:Server,
   Manager:SocketManager,
 ) => {
-  // Setup the socket listener, and add socket commands listener
+  // Setup the socket listener, and add socket listener
   io.on(`connection`, socket => {
     try {
       const { token } = socket.handshake.auth
@@ -59,19 +93,12 @@ export const onConnect = (
   })
 }
 
-export type TSocketInit = {
-  io:Server
-  config:TSocketConfig
-  Manager:SocketManager
-}
-
 export const socketInit = async (
   server:http.Server | https.Server,
   socketConfig:TSocketConfig,
-  cmdGroup:string
 ):Promise<TSocketInit> => {
 
-  const config = await setupConfig(socketConfig, cmdGroup)
+  const config = await buildConfig(socketConfig)
 
   // Create the socket server, and  attach to the express server
   const io = new Server({ path: config?.socket?.path })

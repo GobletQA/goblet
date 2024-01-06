@@ -1,7 +1,7 @@
 import type { TBrowserPage } from '@GBB/types'
 
 import { Logger } from './logger'
-import { EBrowserEvent } from '@GBB/types'
+import { EBrowserEvent } from '@gobletqa/shared/enums'
 import { BrowserEvents } from '@GBB/browser/browserEvents'
 
 type ListenerList = Record<EBrowserEvent, BrowserEvents>

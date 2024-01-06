@@ -1,4 +1,4 @@
-import { TGobletConfig } from './shared.types'
+import type { TGobletConfig } from './shared.types'
 
 
 export type TParamValue = any

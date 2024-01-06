@@ -1,4 +1,3 @@
-import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { IDisposable } from 'monaco-editor'
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
@@ -12,12 +11,11 @@ import type {
   TEditorOpenFiles,
 } from '../../types'
 
-import { useState } from 'react'
-import { emptyObj } from '@keg-hub/jsutils'
-import { useInline } from '@gobletqa/components'
+import { useState, useCallback } from 'react'
 import { useDecorations } from './useDecorations'
 import { useOpenOrFocus } from './useOpenOrFocus'
 import { useRestoreModel } from './useRestoreModel'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 
 export type TUseFileCallbacks = {
@@ -30,7 +28,6 @@ export type TUseFileCallbacks = {
   curValueRef: MutableRefObject<string>
   editorNodeRef: RefObject<HTMLDivElement>
   typesWorkerRef: MutableRefObject<TTypes>
-  lintWorkerRef: MutableRefObject<TLinter>
   optionsRef: MutableRefObject<TEditorOpts>
   openedPathRef: MutableRefObject<string | null>
   editorStatesRef:MutableRefObject<Map<any, any>>
@@ -52,7 +49,6 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     openedPaths,
     openedPathRef,
     onLoadFileRef,
-    lintWorkerRef,
     typesWorkerRef,
     editorNodeRef,
     onPathChangeRef,
@@ -78,7 +74,6 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     curValueRef,
     openedPathRef,
     onLoadFileRef,
-    lintWorkerRef,
     typesWorkerRef,
     setOpenedFiles,
     onFileChangeRef,
@@ -96,7 +91,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   })
 
 
-  const pathChange = useInline<TPathChange>((loc, opts=emptyObj) => {
+  const pathChange = useCallback<TPathChange>((loc, opts=emptyObj) => {
     const model = restoreModel(loc)
     if(model)
       opts?.openLoc !== false
@@ -108,7 +103,12 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
     const content = getContentFromPath(loc) || filesRef.current[loc]
     onPathChangeRef.current?.(loc, content, opts)
-  })
+  }, [
+    setCurPath,
+    openedFiles,
+    restoreModel,
+    openOrFocusPath
+  ])
 
   return {
     decoration,

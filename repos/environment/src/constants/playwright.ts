@@ -1,4 +1,4 @@
-import type { EBrowserName } from '../types'
+import type { EBrowserName } from '@gobletqa/shared/enums'
 import {deepFreeze} from '@keg-hub/jsutils/deepFreeze'
 
 export const ChildBrowserServerKey = `child-playwright-server`

@@ -1,4 +1,4 @@
-import { TImgConfig, TPullOpts } from '@gobletqa/conductor/types'
+import type { TImgConfig, TPullOpts } from '@gobletqa/shared/types'
 
 export const buildPullOpts = (image:TImgConfig, pullOpts?:TPullOpts) => {
   if(!image || !image.provider) return pullOpts

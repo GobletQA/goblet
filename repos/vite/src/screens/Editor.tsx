@@ -6,6 +6,7 @@ import { TestRuns }  from '@components/TestRuns'
 import { dims } from '@gobletqa/components/theme'
 import { CodeEditor } from '@components/CodeEditor'
 import { VisualEditor } from '@components/VisualEditor'
+import ErrorBoundary from '@components/ErrorBoundary/ErrorBoundary'
 import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
 const style = {
   maxHeight: `calc( 100% - ${dims.defs.header.hpx} )`
@@ -25,16 +26,22 @@ export type TEditorProps = {}
 export default function Editor(props:TEditorProps){
   const { testRunsView, editor, sidebarLocked } = useApp()
   const { Component, ...rest } = EditorComps[editor]
-  TestRuns
 
   return (
     <Layout>
-      <Component
-        portal={!sidebarLocked ? SubNavId : ``}
-        style={style}
-        {...rest}
-      />
-      {testRunsView ? (<TestRuns />) : (<DefinitionsSlider />)}
+
+      <ErrorBoundary>
+        <Component
+          portal={!sidebarLocked ? SubNavId : ``}
+          style={style}
+          {...rest}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        {testRunsView ? (<TestRuns />) : (<DefinitionsSlider />)}
+      </ErrorBoundary>
+
     </Layout>
   )
 }

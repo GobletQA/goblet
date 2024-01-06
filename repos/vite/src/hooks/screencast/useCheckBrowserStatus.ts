@@ -30,10 +30,15 @@ export const useCheckBrowserStatus = (
 
     console.log(`Browser status failed; trying again in 1 second...`)
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setStatusFailed(false)
       checkStatus()
     }, 1000)
+    
+    // TODO: investigate cleanup method here
+    return () => {
+      clearTimeout(timer)
+    }
     
   }, [
     statusFailed,

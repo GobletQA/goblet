@@ -1,7 +1,7 @@
 import type {
   TGCacheOpts,
   TGraphApiVars,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isStr } from '@keg-hub/jsutils/isStr'

@@ -7,7 +7,8 @@ import type {
 import path from 'path'
 import { gobletLoader } from './loader'
 import { getGobletCfg } from './configCache'
-import { GobletConfigFileLocations } from '../constants'
+import { GobletConfigFileLocations } from '@gobletqa/environment/constants'
+
 
 /**
  * @description - Loops through the possible folder locations

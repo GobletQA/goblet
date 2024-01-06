@@ -1,9 +1,8 @@
 import type { Response, Request } from 'express'
 
-import { getFeatures } from '@gobletqa/repo/getFeatures'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj'
+import { getFeatures } from '@gobletqa/repo'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
+import { fileModelArrayToObj } from '@gobletqa/shared/fs'
 
 export const loadBddFiles = async (req:Request, res:Response) => {
   const { definitions, features } = await getFeatures(res.locals.repo)

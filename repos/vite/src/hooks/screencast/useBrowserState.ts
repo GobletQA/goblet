@@ -1,4 +1,4 @@
-import type { TPlayerResEvent } from '@types'
+import type { TBrowserStateEvt, TPlayerResEvent } from '@types'
 
 import { useState } from 'react'
 import { EBrowserState } from '@types'
@@ -9,7 +9,7 @@ export const useBrowserState = () => {
 
   const [browserState, setBrowserState] = useState<EBrowserState>(EBrowserState.idle)
 
-  useOnEvent(BrowserStateEvt, (event:{browserState:EBrowserState}) => {
+  useOnEvent<TBrowserStateEvt>(BrowserStateEvt, (event) => {
     browserState !== event.browserState
       && setBrowserState(event.browserState)
   })

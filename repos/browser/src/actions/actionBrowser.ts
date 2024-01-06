@@ -1,7 +1,7 @@
 import type {
   TBrowserConf,
-  TPWComponent,
   TPWComponents,
+  TPWComponent,
   TBrowserAction,
   TActionCallback,
   TBrowserActionArgs,

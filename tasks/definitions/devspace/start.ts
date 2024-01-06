@@ -9,7 +9,7 @@ import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 import { getDeployments } from '../../utils/devspace/getDeployments'
 
 const setStartEnvs = (params:TTaskParams) => {
-  const { pull, build, dev } = params
+  const { pull, build, dev, skip } = params
 
   const envs:TEnvObject = {}
 
@@ -24,7 +24,8 @@ const setStartEnvs = (params:TTaskParams) => {
   addEnv(envs, `BUILD_LOCAL_IMAGE`, process.env.BUILD_LOCAL_IMAGE)
 
   // Force set the local dev mode to false when explicitly set
-  dev === false && (envs.GB_LOCAL_DEV_MODE = `false`)
+  ;(ensureArr(skip).includes(`skip`) || dev === false)
+    && (envs.GB_LOCAL_DEV_MODE = `false`)
 
   return envs
 

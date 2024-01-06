@@ -6,7 +6,7 @@ import { Parkin } from '@ltipton/parkin'
 import { Logger } from '@gobletqa/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ParkinTest } from '@ltipton/parkin/test'
-import { TestsToSocketEvtMap } from '@GBB/constants'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 import {
   setupParkin,
   setupGlobals,
@@ -164,8 +164,14 @@ export class CodeRunner {
   cancel = async () => {
     this.canceled = true
     this.PTE?.abort?.()
-    this?.PK?.runner?.steps?.clear()
-    this?.PK?.steps?.clear()
+
+    /**
+     * Don't clear steps because then com from the cached repo
+     * Which means they won't exist on the next run
+     * Because they are expected to be cached and loaded already
+     */
+    // this?.PK?.runner?.steps?.clear()
+    // this?.PK?.steps?.clear()
 
     await this.cleanup?.()
   }

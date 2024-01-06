@@ -231,6 +231,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     featureActions,
     scenarioActions,
     backgroundActions,
+    overrideFeatureUI,
   ])
 
   useGetEditorContext({ editorRef, editorCtx })

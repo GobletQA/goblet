@@ -2,12 +2,15 @@ import type { Conductor } from '../conductor'
 import type { V1Pod, V1ObjectMeta, KubernetesObject } from '@kubernetes/client-node'
 import type {
   TPort,
-  TRouteId,
   TPortsMap,
   TUserHash,
   TContainerMap,
   TContainerMeta,
 } from '@gobletqa/shared/types'
+import type { HttpProxyMiddleware } from 'http-proxy-middleware/dist/http-proxy-middleware'
+export {
+  HttpProxyMiddleware
+}
 
 export type TPod = V1Pod
 export type TPodManifest = V1Pod & {

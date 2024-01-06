@@ -1,6 +1,6 @@
-import type { EBrowserName, EBrowserType, TBrowserStatus } from '@GBB/types'
+import type { EBrowserName, EBrowserType, TBrowserStatus } from '@gobletqa/shared/types'
 
-import { browserStatus } from '@GBB/constants'
+import { browserStatus } from '@gobletqa/environment/constants'
 import { getBrowserType } from './getBrowserType'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
 

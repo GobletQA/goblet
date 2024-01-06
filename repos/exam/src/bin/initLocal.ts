@@ -1,6 +1,5 @@
 import type { TExamConfig } from '@GEX/types'
 
-
 import { loadFiles } from '@GEX/utils/loadFiles'
 import { nanoid } from '@keg-hub/jsutils/nanoid'
 import { timedRun } from '@keg-hub/jsutils/timedRun'

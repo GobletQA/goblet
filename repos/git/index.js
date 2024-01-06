@@ -1,2 +1,3 @@
-require('../../configs/aliases')
-module.exports = require('./dist')
+require('@gobletqa/configs/aliases')
+const git = require('./dist')
+module.exports = {...git}

@@ -17,7 +17,6 @@ import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 import { EFileType, ELoadFormat } from '@GLT/types'
 import {dataToString} from '@GLT/utils/dataToString'
 import {generateFileNames} from '@GLT/utils/generateFileNames'
-import { injectUnsafe, resetInjectedLogs } from '@gobletqa/logger'
 import { loadTemplate } from '@keg-hub/parse-config/src/utils/utils'
 
 export class LatentFile {
@@ -31,18 +30,13 @@ export class LatentFile {
     this.latent = latent
   }
 
-  /**
-   * @description - Helper to ensure the correct format for an empty or missing file
-   * @member {LatentFile}
-   */
-  #formatEmpty = (format:ELoadFormat) => format === ELoadFormat.object ? {} : ``
-
 
   /**
    * @description - Writes the passed in content to disk
    * @member {LatentFile}
    */
   #writeFile = (location:string, content:string) => writeFileSync(location, content)
+
 
   /**
    * @description - Normalizes the options by merging the instance data with the opts
@@ -83,22 +77,6 @@ export class LatentFile {
         : content
   }
 
-  /**
-   * @description - Injects the secret keys and values into the logger
-   * Ensures they are not logged to the console
-   * @member {LatentFile}
-   */
-  #injectLogs = (resp:Record<string, any>) => {
-    const keys = Object.keys(resp).filter(Boolean)
-    if(!keys?.length) return resp
-
-    injectUnsafe(keys)
-
-    const values = Object.values(resp).filter(Boolean)
-    values.length && injectUnsafe(values)
-
-    return resp
-  }
 
   /**
    * @description - Gets all file that exist based on the type and environment
@@ -119,6 +97,7 @@ export class LatentFile {
         return acc
       }, [] as string[])
   }
+
 
   /**
    * @description - Loads all files of type values or secrets for a specific environment
@@ -165,13 +144,9 @@ export class LatentFile {
 
     const content = this.#readFile({...options, token})
 
-    const resp = loadTemplate(templateOpts, content, env.parse)
-    
-    return options.type === EFileType.secrets
-      ? this.#injectLogs(resp)
-      : resp
-    
+    return loadTemplate(templateOpts, content, env.parse)
   }
+
 
   /**
    * @description - Saves a file with the passed in data
@@ -208,11 +183,6 @@ export class LatentFile {
     })
 
     const isSecrets = type === EFileType.secrets
-
-    if(isSecrets){
-      resetInjectedLogs()
-      this.#injectLogs(data)
-    }
 
     const safe = isSecrets
       ? this.latent.crypto.encrypt(content, token || this.latent.encoded, true)

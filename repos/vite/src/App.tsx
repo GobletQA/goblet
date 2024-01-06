@@ -2,7 +2,7 @@ import '@utils/components/globalOnCopy'
 import '@gobletqa/components/styles/editor.styles.css'
 
 import { globalStyles } from '@theme'
-import { RootScreen } from 'src/screens/Root'
+import { RootScreen } from '@screens/Root'
 import { useAppInit } from '@hooks/useAppInit'
 import { Modal } from '@components/Modals/Modal'
 import { ThemeProvider } from '@gobletqa/components'

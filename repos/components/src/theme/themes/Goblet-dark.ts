@@ -235,7 +235,7 @@ export const darkTheme = {
     [`editorGroupHeader.noTabsBackground`]: colors.black09,
 
     [`sideBar.border`]: colors.black09,
-    [`sideBar.background`]: colors.purple23,
+    [`sideBar.background`]: colors.purple22,
     [`sideBarSectionHeader.border`]: colors.purple23,
     [`sideBarSectionHeader.background`]: colors.purple23,
     [`sideBarSectionHeader.foreground`]: colors.purple02,

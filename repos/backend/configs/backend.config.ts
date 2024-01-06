@@ -3,12 +3,11 @@ import '../resolveRoot'
 import type { TBackendConfig } from '@GBE/types'
 import { ENVS } from '@gobletqa/environment'
 
+import { getKindHost } from '@gobletqa/conductor'
+import { getDindHost } from '@gobletqa/conductor'
 import { conductorConfig } from './conductor.config'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
-import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { getKindHost } from '@gobletqa/conductor/utils/getKindHost'
-import { getDindHost } from '@gobletqa/conductor/utils/getDindHost'
-import { generateOrigins } from '@gobletqa/shared/api/origin/generateOrigins'
+import { loadEnvs, generateOrigins } from '@gobletqa/shared/api'
 
 const nodeEnv = ENVS.NODE_ENV || `local`
 loadEnvs({
@@ -31,6 +30,12 @@ const buildBackendConf = () => {
         },
         wsProxy: {
           port: ENVS.GB_DD_WS_PROXY_PORT,
+        },
+        debugProxy: {
+          port: ENVS.GB_DT_REMOTE_DEBUG_PORT
+        },
+        devtoolsProxy: {
+          port: ENVS.GB_DT_PROXY_PORT
         }
       }
     : {
@@ -39,6 +44,12 @@ const buildBackendConf = () => {
         },
         wsProxy: {
           port: ENVS.GB_KD_WS_PROXY_PORT,
+        },
+        debugProxy: {
+          port: ENVS.GB_DT_REMOTE_DEBUG_PORT
+        },
+        devtoolsProxy: {
+          port: ENVS.GB_DT_PROXY_PORT
         }
       }
 }
@@ -75,6 +86,22 @@ export const backendConfig:TBackendConfig = deepMerge<TBackendConfig>({
   wsProxy: {
     host: controllerHost,
     path: ENVS.GB_BE_WS_PATH,
+    protocol: ENVS.GB_BE_WS_PROTOCOL,
+    headers: {
+      [ENVS.GB_CD_VALIDATION_HEADER]: ENVS.GB_CD_VALIDATION_KEY
+    }
+  },
+  debugProxy: {
+    host: controllerHost,
+    path: ENVS.GB_BE_WS_DEBUG_PATH,
+    protocol: ENVS.GB_BE_WS_PROTOCOL,
+    headers: {
+      [ENVS.GB_CD_VALIDATION_HEADER]: ENVS.GB_CD_VALIDATION_KEY
+    }
+  },
+  devtoolsProxy: {
+    host: controllerHost,
+    path: ENVS.GB_BE_WS_DEBUG_PATH,
     protocol: ENVS.GB_BE_WS_PROTOCOL,
     headers: {
       [ENVS.GB_CD_VALIDATION_HEADER]: ENVS.GB_CD_VALIDATION_KEY

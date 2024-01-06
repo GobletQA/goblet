@@ -1,6 +1,6 @@
+import type { TGitData } from '@gobletqa/git'
 import type { TRecorderOpts } from '@gobletqa/goblet'
 import type {
-  TGitData,
   TRepoOpts,
   TFileTypes,
   TRepoPaths,
@@ -8,7 +8,6 @@ import type {
   TGBWorldCfg,
   TGobletConfig,
   TGobletPWConfig,
-  TGScreencastConfig,
 } from '@GRP/types'
 
 
@@ -16,6 +15,7 @@ import { Parkin } from '@ltipton/parkin'
 import { LatentRepo } from './latentRepo'
 import { ENVS } from '@gobletqa/environment'
 import { getFileTypes } from '@gobletqa/goblet'
+import { getDefinitions } from './getDefinitions'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getClientWorld, resetCachedWorld } from './getClientWorld'
 
@@ -87,7 +87,6 @@ export class Repo {
   environment:string
   fileTypes:TFileTypes
   recorder: TRecorderOpts
-  screencast?:TGScreencastConfig
   playwright?:TGobletPWConfig={}
 
   constructor(config:TRepoOpts = emptyObj as TRepoOpts) {
@@ -174,5 +173,7 @@ export class Repo {
     refreshEnv && this.setEnvironment(environment, false)
     return this.world
   }
+
+  ensureParkinDefs = async (cache:boolean=true) => await getDefinitions(this)
 }
 

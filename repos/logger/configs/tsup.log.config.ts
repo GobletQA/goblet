@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'tsup'
+import packcfg from '../package.json'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
 
@@ -12,15 +13,21 @@ export default defineConfig(async () => {
   await fs.rm(logOutdir, { recursive: true, force: true })
   
   return {
+    name: `logger`,
     clean: true,
+    entry: [logIn],
     sourcemap: true,
     splitting: false,
-    entry: [logIn],
+    format: [`cjs`],
     outDir: logOutdir,
-    experimentalDts: true,
-    format: [`cjs`, `esm`],
+    esbuildOptions:(options, context) => {
+      options.external = [
+        ...(options?.external ?? []),
+        ...(Object.keys(packcfg.dependencies) ?? []),
+        ...(Object.keys(packcfg.devDependencies) ?? []),
+      ]
+    },
     async onSuccess() {
-      await fs.rm(path.join(logOutdir, `Users`), { recursive: true, force: true })
       console.log(`Module "@gobletqa/logger" built successfully`)
     },
   }

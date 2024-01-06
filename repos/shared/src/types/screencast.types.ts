@@ -31,10 +31,10 @@ export type TScreencastServer = {
 
 export type TVncConfig = {
   host: string
-  port: string
   display: string
-  width: string | number
-  height: string | number
+  port: string|number
+  width: string|number
+  height: string|number
 }
 
 export type TNoVncProxy = {

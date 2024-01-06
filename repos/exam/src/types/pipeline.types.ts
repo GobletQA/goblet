@@ -1,4 +1,3 @@
-import type { UnaryFunction } from 'p-pipe'
 import type{ ExamEnvironment } from '@GEX/environment'
 import type { ReportEventMapper } from '@GEX/reporter/ReportEventMapper'
 import type {
@@ -10,6 +9,20 @@ import type {
   TExecPassThroughOpts,
   TRunnerCls,
 } from '@GEX/types'
+
+export type TUnaryFunction<ValueType, ReturnType> = (
+	value: ValueType
+) => ReturnType | PromiseLike<ReturnType>;
+
+
+export type TPipeline<ValueType, ReturnType> = (
+	value?: ValueType
+) => Promise<ReturnType>
+
+export type TPromisePipe = (
+	...functions: Array<TUnaryFunction<any, unknown>>
+) => TPipeline<unknown, unknown>
+
 
 export type TPipeStepFunc = (args:TPipelineArgs, manager:TStateManager, input:any) => any|Promise<any>
 
@@ -37,7 +50,7 @@ export type TStateObj = {
 
 export type TPipelineArgs = TPipelineInit & {
   state: TStateObj
-  rewind: UnaryFunction<any, any>[]
+  rewind: TUnaryFunction<any, any>[]
 }
 
 export type TStateManager<S=TStateObj> = {

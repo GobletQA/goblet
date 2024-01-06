@@ -20,8 +20,8 @@
   },
   "scripts": {
     "ask": "node --enable-source-maps -r esbuild-register scripts/askAI.ts",
-    "build": "pnpm j:build && pnpm types",
-    "j:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm tsup-node --config ./configs/tsup.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -29,9 +29,8 @@
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "test": "jest --colors --config ./configs/jest.config.js",
+    "test": "echo \"No test specified\" && exit 0",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },
   "dependencies": {
@@ -43,10 +42,10 @@
   },
   "devDependencies": {
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/esdev": "0.2.1",
     "@types/debug": "4.1.9",
     "@types/express": "4.17.18",
     "@types/node": "20.9.3",
+    "tsup": "8.0.1",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0"
   }

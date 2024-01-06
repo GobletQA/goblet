@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import type { Express } from 'express'
-import { BEAuthBypassRoutes } from '@GBE/constants'
-import { getApp } from '@gobletqa/shared/api/express/app'
-import { backendConfig } from '@GBE/Configs/backend.config'
+import {
+  getApp,
+  setupJWT,
+  setupCors,
+  validateUser,
+  setupRateLimit,
+  setupLoggerReq,
+  setupLoggerErr,
+  setupServerListen,
+} from '@gobletqa/shared/api'
 import {
   setupServer,
   setupRouter,
   setupEndpoints,
   setupConductor,
 } from '@GBE/middleware'
-import {
-  setupJWT,
-  setupCors,
-  validateUser,
-  setupBlacklist,
-  setupLoggerReq,
-  setupLoggerErr,
-  setupServerListen,
-} from '@gobletqa/shared/api/middleware'
+import { backendConfig } from '@GBE/configs/backend.config'
+import { BEAuthBypassRoutes } from '@gobletqa/environment/constants'
 
 
 /**
@@ -31,7 +31,7 @@ export const initApi = async () => {
   const app = getApp(backendConfig) as Express
 
   setupLoggerReq(app)
-  setupBlacklist(app)
+  setupRateLimit(app)
   setupCors(app)
   setupJWT(app, BEAuthBypassRoutes)
   setupServer(app)

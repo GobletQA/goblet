@@ -1,8 +1,8 @@
 import type { TExamEvt, TExBuiltReporters } from "@GEX/types"
 
 import { Logger } from '@GEX/utils/logger'
-import { TestsToSocketEvtMap } from "@GEX/constants"
 import { EvtTag, ExamTag } from '@GEX/constants/tags'
+import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 
 const EvtReporterMap = {
 

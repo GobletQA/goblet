@@ -1,5 +1,5 @@
+import type { TStepDefs } from '@gobletqa/race'
 import type { TRepoState } from './reducer.types'
-import type { TStepDefs } from '@ltipton/parkin'
 import type { TCreateRepoOpts, TConnectRepo } from './repo.types'
 import type {
   TRepoMeta,
@@ -16,6 +16,7 @@ export type TStatusRoutes = Record<string, TProxyRoute>
 export type TValidateResp = {
   id:string
   jwt: string
+  userId?:string
   error?: string
   refresh: string
   username:string

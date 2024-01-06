@@ -76,7 +76,7 @@ export const signOutAuthUser = async (opts:TSignOutOpts=emptyObj) => {
     currentUser &&
       console.info(`[Auth State Info] Logging out of of Goblet-Admin`)
 
-  // Disconnect from the web-socket server
+  // Disconnect from the firebase auth
     try {
       await auth.signOut()
       // await account.deleteSession(`current`)

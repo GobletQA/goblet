@@ -6,25 +6,22 @@ import type {
   TOnChangeRunTestOpts,
 } from '@types'
 
-import { useState, useEffect } from 'react'
 import { ETestRunsSection } from '@types'
 import { PastTestRuns } from './PastTestRuns'
 import { TestRunGetUICfgEvt } from '@constants'
+import { useOnEvent } from '@gobletqa/components'
 import { RunTestOptions } from './RunTestOptions'
 import { TestRunsContainer } from './TestRuns.styled'
+import { useState, useEffect, useCallback } from 'react'
 import { useRepo, useSettings, useTestRuns } from '@store'
 import { TestRunsTabs } from './TestRunHelpers/TestRunsTabs'
 import { TestRunsHeader } from './TestRunHelpers/TestRunsHeader'
 import { buildTestRunCfg } from '@utils/browser/buildTestRunCfg'
 import { TestCfgUpdaters } from './RunTestOptions/TestCfgUpdaters'
 import { TestRunsReporter } from './TestReporter/TestRunsReporter'
+import {setTestRunActive} from '@actions/testRuns/setTestRunActive'
 import { useTestRunListen } from '@hooks/testRuns/useTestRunListen'
 
-import {
-  useInline,
-  useOnEvent,
-} from '@gobletqa/components'
-import {setTestRunActive} from '@actions/testRuns/setTestRunActive'
 
 const useTestRunOpts = (testRuns:TTestRunsState) => {
   const repo = useRepo()
@@ -60,12 +57,15 @@ export const TestRuns = () => {
     allTestsRunning,
   } = useTestRunListen()
 
-  const onBlurRunTestOpts = useInline<TOnBlurRunTestOpts>((evt, type) => {
+  const onBlurRunTestOpts = useCallback<TOnBlurRunTestOpts>((evt, type) => {
     const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onBlur?.(evt, testRunCfg)
     resp && setTestRunCfg({...testRunCfg, ...resp })
-  })
+  }, [
+    testRunCfg,
+    setTestRunCfg
+  ])
 
-  const onChangeRunTestOpts = useInline<TOnChangeRunTestOpts>((args:any[], type) => {
+  const onChangeRunTestOpts = useCallback<TOnChangeRunTestOpts>((args:any[], type) => {
     const [evt, value, reason, opt] = args
     const resp = TestCfgUpdaters[type as keyof typeof TestCfgUpdaters]?.onChange?.(
       evt,
@@ -76,13 +76,16 @@ export const TestRuns = () => {
     )
 
     resp && setTestRunCfg({...testRunCfg, ...resp })
-  })
+  }, [
+    testRunCfg,
+    setTestRunCfg
+  ])
 
   const [section, setSection] = useState<ETestRunsSection>(
     testRuns.allTestsRunning ? ETestRunsSection.reporter : ETestRunsSection.runOptions
   )
 
-  const onChangeSection = useInline((sec:ETestRunsSection) => {
+  const onChangeSection = useCallback((sec:ETestRunsSection) => {
     if(!sec || sec === section) return
 
     !testRuns.allTestsRunning
@@ -90,7 +93,7 @@ export const TestRuns = () => {
       && setTestRunActive(undefined)
 
     setSection(sec)
-  })
+  }, [testRuns.allTestsRunning, section])
 
   useOnEvent<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, cb => {
     setSection(ETestRunsSection.reporter)

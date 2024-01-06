@@ -1,6 +1,6 @@
 import { EAuthType } from '@types'
 
-import { account } from '@services/appwrite'
+// import { account } from '@services/appwrite'
 import { emptyObj, exists } from '@keg-hub/jsutils'
 import { onSuccessAuth } from '@actions/admin/provider/onSuccessAuth'
 import { 
@@ -19,18 +19,20 @@ import {
  * Attempts to get the user and session from the appwrite account
  */
 const getUserData = async ():Promise<Record<string, any>> => {
-  try {
-    const user = await account.get()
-    if(!user) return emptyObj
+  return emptyObj
 
-    const session = await account.getSession(`current`)
-    if(!session) return emptyObj
+  // try {
+  //   const user = await account.get()
+  //   if(!user) return emptyObj
 
-    return { user, session }
-  }
-  catch(err){
-    return emptyObj
-  }
+  //   const session = await account.getSession(`current`)
+  //   if(!session) return emptyObj
+
+  //   return { user, session }
+  // }
+  // catch(err){
+  //   return emptyObj
+  // }
 }
 
 /**
@@ -46,33 +48,33 @@ export const checkUrl = async () => {
 
   try {
 
-    // Try to get the user and session
-    const { user, session } = await getUserData()
+    // // Try to get the user and session
+    // const { user, session } = await getUserData()
 
-    /**
-     * If there's no user or session,
-     * then set the state to pending and return
-     * This happens when we are not authorized to check for a user
-     * Because they have not tried to log in yet
-     * But we also need to track that we have already done this check
-     * So we update the use with a pending state, and return
-     * That way future calls will never get here due to the auth state check above
-     */
-    if(!user || !session){
-      updateUrlQuery({ [GB_APPWRITE_AUTH_PARAM]: GB_APPWRITE_AUTH_PENDING }, true)
-      return undefined
-    }
+    // /**
+    //  * If there's no user or session,
+    //  * then set the state to pending and return
+    //  * This happens when we are not authorized to check for a user
+    //  * Because they have not tried to log in yet
+    //  * But we also need to track that we have already done this check
+    //  * So we update the use with a pending state, and return
+    //  * That way future calls will never get here due to the auth state check above
+    //  */
+    // if(!user || !session){
+    //   updateUrlQuery({ [GB_APPWRITE_AUTH_PARAM]: GB_APPWRITE_AUTH_PENDING }, true)
+    //   return undefined
+    // }
 
-    /**
-     * If we have a user and session, then log them in
-     */
-    const [error] = await onSuccessAuth({ user, session }, EAuthType.awGithub, true)
-    if(error) return console.error(error.message)
+    // /**
+    //  * If we have a user and session, then log them in
+    //  */
+    // const [error] = await onSuccessAuth({ user, session }, EAuthType.awGithub, true)
+    // if(error) return console.error(error.message)
    
-    /**
-     * Clean up the auth state param
-     */
-    removeFromQuery([GB_APPWRITE_AUTH_PARAM])
+    // /**
+    //  * Clean up the auth state param
+    //  */
+    // removeFromQuery([GB_APPWRITE_AUTH_PARAM])
 
   }
   catch(err){}

@@ -6,15 +6,18 @@ import type {
 } from '@types'
 
 import { useTestRuns } from '@store'
-import {useEffect, useRef, useState} from 'react'
 import { getEvents } from '@utils/testRuns/getEvents'
-
 import { upsertTestRun } from '@actions/testRuns/upsertTestRun'
 import { testRunFactory } from '@utils/testRuns/testRunFactory'
 import { setTestRunActive } from '@actions/testRuns/setTestRunActive'
 import { addEventsToTestRun } from '@utils/testRuns/addEventsToTestRun'
 import {
-  useInline,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
+import {
   useOnEvent,
   useForceUpdate,
 } from '@gobletqa/components'
@@ -39,10 +42,10 @@ export const useTestRunListen = () => {
   const [runId, setLocalRunId] = useState<string|undefined>(testRuns.active)
   const testRunsRef = useRef<TTestRuns>(testRuns.runs)
 
-  const setRunId = useInline((id?:string) => {
+  const setRunId = useCallback((id?:string) => {
     setTestRunActive(id)
     setLocalRunId(id)
-  })
+  }, [])
 
   useOnEvent<TTestRunExecEvt>(TestRunExecEvt, async (data) => {
     const evtRunId = data.runId

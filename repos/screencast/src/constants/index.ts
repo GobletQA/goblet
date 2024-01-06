@@ -1,1 +1,1 @@
-export * from '@gobletqa/environment/constants'
+export * from './html'

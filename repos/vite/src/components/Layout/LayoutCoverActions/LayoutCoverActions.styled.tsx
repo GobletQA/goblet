@@ -25,8 +25,8 @@ export const LayoutCoverActionsContainer = styled(Box)(({ theme }) => {
     align-items: center;
     justify-content: flex-end;
     padding: ${gutter.padding.qpx} ${gutter.padding.hpx};
-    background-color: ${getColor(colors.white00, colors.gray18, theme)};
-    border-top: 1px solid ${getColor(colors.gray00, colors.black14, theme)};
+    background-color: ${getColor(colors.white00, colors.black13, theme)};
+    border-top: 1px solid ${getColor(colors.gray00, colors.black13, theme)};
     height: ${dims.layout.actions.height}px;
     max-height: ${dims.layout.actions.height}px;
   `

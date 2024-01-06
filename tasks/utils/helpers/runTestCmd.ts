@@ -1,11 +1,11 @@
 import type { SpawnOptionsWithoutStdio } from 'child_process'
-import type { TTaskParams } from '../../types'
+import type { TTaskParams, TGetBrowsers } from '../../types'
 
-import { EBrowserType } from '../../types'
 import { runCmd } from '@keg-hub/cli-utils'
-import { runCommands } from '@GTasks/utils/helpers/runCommands'
-import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
-
+import { getBrowsers } from '@gobletqa/browser'
+import { runCommands } from '../helpers/runCommands'
+import { EBrowserType } from '@gobletqa/shared/enums'
+import { handleTestExit } from '../helpers/handleTestExit'
 
 export type TRunTestCmd = {
   cmdArgs: string[]
@@ -69,9 +69,10 @@ export const runTestCmd = async (args:TRunTestCmd) => {
     envsHelper,
   } = args
 
-
   // - TODO: --- FIX THIS -- For now just default to using chromium
-  // const { getBrowsers } = require('@gobletqa/browser')
+  // Playwright fails to create the browser, because the incorrect permissions are passed
+  // Because webkit and firefox can not take the same permissions as chrome
+  // For some reason, chrome permissions are always used
   // const browsers = getBrowsers(params as unknown as TGetBrowsers)
   const browsers = [EBrowserType.chromium]
 

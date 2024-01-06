@@ -1,10 +1,11 @@
 import type { TGobletConfig } from '@GSH/types'
 
 import path from 'path'
+import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
-import { ENVS } from '@gobletqa/environment/envs'
-import { EFileType, Latent } from '@gobletqa/latent'
+import { injectKeyValues } from '@gobletqa/logger'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { EFileType, Latent } from '@gobletqa/latent'
 import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 import {
   getRepoRef,
@@ -43,15 +44,14 @@ type TMapValues = {
 
 
 export class EnvironmentLoader {
-  latent:Latent
 
-  constructor(){
-    this.latent = new Latent()
-  }
+
+  constructor(){}
 
   #repoToken = (props:TTokenProps) => {
+    const latent = new Latent()
     return ENVS.GOBLET_TOKEN
-      || this.latent.getToken(getRepoRef(props))
+      || latent.getToken(getRepoRef(props))
   }
 
   /**
@@ -81,10 +81,11 @@ export class EnvironmentLoader {
     }
 
     const loc = location || path.join(environmentsDir, file)
-    this.latent = new Latent()
+    const latent = new Latent()
+
 
     if(type !== EFileType.secrets)
-      return this.latent.values.get({ location: loc })
+      return latent.values.get({ location: loc })
 
     if(ENVS.GB_REPO_NO_SECRETS) return {}
 
@@ -99,7 +100,10 @@ export class EnvironmentLoader {
       return {}
     }
     try {
-      return this.latent.secrets.get({ token, location: loc })
+      const loaded = latent.secrets.get({ token, location: loc })
+      loaded && injectKeyValues(loaded)
+
+      return loaded
     }
     catch(err){
       console.log(err.message)

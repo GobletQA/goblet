@@ -1,4 +1,4 @@
-import type { TFeatureAst } from '@ltipton/parkin'
+import type { TFeatureAst } from '@gobletqa/race'
 import type { TFileModel, TStartBrowserPlayOpts } from '@types'
 
 import { FileTypes } from '@constants'

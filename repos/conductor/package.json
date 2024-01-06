@@ -2,7 +2,7 @@
   "name": "@gobletqa/conductor",
   "version": "0.0.0",
   "description": "Goblet Conductor API",
-  "main": "dist",
+  "main": "index.js",
   "author": "Lance Tipton",
   "license": "MIT",
   "private": true,
@@ -18,22 +18,23 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:docker",
-    "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
-    "cd:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm tsup-node --config ./configs/tsup.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GCD/*,@gobletqa/conductor\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "types": "tsc --emitDeclarationOnly --outDir dist",
+    "types": "tsc --emitDeclarationOnly",
     "validate": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@gobletqa/configs": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
@@ -45,18 +46,13 @@
     "docker-events": "0.0.2"
   },
   "dependencies": {
-    "express": "4.18.2",
     "get-port-please": "3.1.1",
     "http-proxy-middleware": "2.0.6"
   },
   "devDependencies": {
-    "@ltipton/esdev": "0.2.1",
-    "@types/debug": "4.1.9",
     "@types/dockerode": "3.3.9",
     "@types/express": "4.17.18",
     "@types/node": "20.9.3",
-    "esbuild": "0.19.7",
-    "esbuild-register": "3.5.0",
-    "nodemon": "3.0.1"
+    "tsup": "8.0.1"
   }
 }

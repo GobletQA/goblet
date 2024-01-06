@@ -1,8 +1,8 @@
 import type {
   TScreenDims,
   TBrowserContextGeo,
-  TBrowserContextOpts,
   TBrowserContextVideo,
+  TBrowserContextOpts,
 } from '@GBB/types'
 
 import { ENVS } from '@gobletqa/environment'
@@ -10,10 +10,10 @@ import { isArr } from '@keg-hub/jsutils/isArr'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { isObj } from '@keg-hub/jsutils/isObj'
 import { exists } from '@keg-hub/jsutils/exists'
-import { ArtifactSaveOpts } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
-import { InternalPaths } from '@gobletqa/environment/constants'
+import { ArtifactSaveOpts, InternalPaths } from '@gobletqa/environment/constants'
+
 
 
 /**
@@ -37,7 +37,7 @@ export const getScreenDims = () => {
 
 /**
  * Check if video recording is active
- * This is a duplicate of `artifactSaveOption` from `gobletqa/test-utils/src/utils/artifactSaveOption`
+ * This is a duplicate of `artifactSaveOption` from `gobletqa/testify/src/utils/artifactSaveOption`
  * But we don't have access to that method here
  * It's only a few lines of code, but I would prefer to not duplicate it
  */

@@ -57,10 +57,12 @@ export type TContainerMeta = {
   state: EContainerState
 }
 
+export type TRouteMetaRoutes = Record<TContainerPort, TProxyRoute>
+
 export type TRouteMeta = {
   error?: string
   meta: TContainerMeta
-  routes: Record<TContainerPort, TProxyRoute>
+  routes: TRouteMetaRoutes
 }
 
 export type TPublicUrls = {

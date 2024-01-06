@@ -9,8 +9,8 @@ export const cliOpts = {
   bail:0,
   testRetry:0,
   suiteRetry:0,
+  exitOnFailed: false,
   skipAfterFailed: true,
-  exitAfterFailed: false,
   cache: true,
   workers: 1,
   concurrency: 1,
@@ -25,6 +25,7 @@ export const cliOpts = {
   testTimeout: 15000,
   // 1hr global test timeout
   suiteTimeout: 60000 * 60,
+  matchExtensions: false,
   extensions: [
     `.js`,  `.jsx`,
     `.cjs`, `.mjs`,

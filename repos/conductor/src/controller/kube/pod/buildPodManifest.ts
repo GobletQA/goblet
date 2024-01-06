@@ -1,4 +1,6 @@
-import type { TPodManifestOpts, TPodManifest } from '../../../types'
+import type { TPodManifest } from '@GCD/types'
+import type { TPodManifestOpts } from '@gobletqa/shared/types'
+
 import { buildMeta } from './buildMeta'
 import { buildSpec } from './buildSpec'
 

@@ -1,6 +1,7 @@
-import type { TValueGroup, TRepoApiObj } from '@types'
+import type { TValueGroup, TRepoApiObj, TBrowserDebuggerCfg } from '@types'
 
 import { HttpMethods } from '@constants'
+import {emptyObj} from '@keg-hub/jsutils'
 import { apiRequest } from '@utils/api/apiRequest'
 import { repoApiObj } from '@utils/repo/repoApiObj'
 
@@ -79,6 +80,14 @@ class ScreencastApi {
       params: actionOpts,
       method: HttpMethods.POST,
       url: `${this.browserPath}/action`,
+    })
+  }
+
+  debugger = async (debuggerOpts:TValueGroup=emptyObj) => {
+    return await apiRequest<TBrowserDebuggerCfg>({
+      params: debuggerOpts,
+      method: HttpMethods.GET,
+      url: `${this.browserPath}/debugger`,
     })
   }
 

@@ -1,0 +1,80 @@
+{
+  "parserOptions": {
+    "extraFileExtensions": ["json"]
+  },
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "noEmit": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "declarationMap": false,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "nodenext",
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+
+      "@GTU/Exam": ["repos/testify/dist/exam"],
+      "@GTU/Exam/*": ["repos/testify/dist/exam/*"],
+      "@GTU/Utils": ["repos/testify/dist/utils"],
+      "@GTU/Utils/*": ["repos/testify/dist/utils/*"],
+      "@GTU/Steps": ["repos/testify/dist/steps"],
+      "@GTU/Steps/*": ["repos/testify/dist/steps/*"],
+      "@GTU/Parkin": ["repos/testify/dist/parkin"],
+      "@GTU/Parkin/*": ["repos/testify/dist/parkin/*"],
+      "@GTU/Support": ["repos/testify/dist/support"],
+      "@GTU/Support/*": ["repos/testify/dist/support/*"],
+      "@GTU/Reports": ["repos/testify/dist/reports"],
+      "@GTU/Reports/*": ["repos/testify/dist/reports/*"],
+      "@GTU/Playwright": ["repos/testify/dist/playwright"],
+      "@GTU/Playwright/*": ["repos/testify/dist/playwright/*"],
+      "@GTU/PlaywrightEnv": ["repos/testify/dist/playwright/playwrightTestEnv"],
+      "@GTU/Constants": ["repos/testify/node_modules/@gobletqa/environment/constants"],
+      "@GTU": ["repos/testify/dist"],
+      "@GTU/*": ["repos/testify/dist/*"],
+      "@GEnvironment": ["repos/testify/node_modules/@gobletqa/shared/environment"],
+
+      "@GWF": ["repos/workflows"],
+      "@GWF/*": ["repos/workflows/*"],
+      "@GBB/scripts": ["repos/browser/scripts"],
+      "@GBB/scripts/*": ["repos/browser/scripts/*"],
+
+      "@GSC/scripts": ["repos/screencast/scripts"],
+      "@GSC/scripts/*": ["repos/screencast/scripts/*"],
+
+      "@gobletqa/testify": ["repos/testify/dist"],
+      "@gobletqa/testify/*": ["repos/testify/dist/*"],
+
+      "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
+      "@gobletqa/root": ["./*"]
+    }
+  },
+  "exclude": [
+    "tasks/goblet.ts",
+    "node_modules",
+    "bundle",
+    ".git",
+    ".husky",
+    ".firebase",
+    "goblet",
+    "certs",
+    "repos/**/dist",
+    "repos/**/build",
+    "repos/**/node_modules",
+    "**/.tsup",
+    "docs",
+    "logs",
+    "scripts",
+    "temp"
+  ]
+}

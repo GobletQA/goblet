@@ -101,45 +101,17 @@ firebaseApp &&
       : browserLocalPersistence
   )
 
+
 /**
  * Helper to get the current users token ID
  * @param {boolean} forceRefresh - Force invalidate the token, and generate a new one
  *
  * @return {string} - Current users token
  */
-export const getUserToken = async (forceRefresh = true) => {
-  return (
-    (await firebaseApp)
-      && firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
-  )
+export const getUserToken = async (forceRefresh=true, recall=0) => {
+  await firebaseAuth.authStateReady()
+  return await firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
 }
-
-/**
- * Sets up a timer to auto-refresh the users auth token
- * This ensures they are not auto logged out every hour
- */
-export const autoRefreshUserToken =<T extends Record<string, any>>(
-  cb:(params:T, refresh?:boolean) => Promise<any>,
-  params:T
-) => {
-
-  /**
-  * If this works, then can remove interval below
-  * Should be called after the user have validated
-  */
-  // @ts-ignore
-  //firebaseAuth?.currentUser?._startProactiveRefresh()
-
-  // Force refresh the user's auth token every 30min
-  return setInterval(async () => {
-    await cb?.(params, true)
-    // TODO: also need to callback end and re-validate then token
-    // So we can get a new JWT
-  }, 60000 * 30)
-
-}
-
-
 
 /**
  * Gets provider metadata for firebase modules

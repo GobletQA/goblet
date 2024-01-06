@@ -1,11 +1,11 @@
-import type { TImgConfig , TContainerLabels} from '@gobletqa/conductor/types'
+import type { TImgConfig , TContainerLabels} from '@gobletqa/shared/types'
 
 import { exists } from '@keg-hub/jsutils/exists'
 import {
   ConductorLabel,
   ContainerLabels,
   ConductorUserHashLabel,
-} from '../../../constants'
+} from '@GCD/constants'
 
 export const buildLabels = (image:TImgConfig, userHash:string):TContainerLabels => {
   return Object.entries(image?.container)

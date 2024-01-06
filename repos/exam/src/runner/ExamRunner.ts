@@ -10,7 +10,6 @@ import type {
 } from '@GEX/types'
 
 import { Logger } from '@GEX/utils/logger'
-import { RootSuiteId } from '@GEX/constants'
 import { Errors } from '@GEX/constants/errors'
 import { ExamEvents } from '@GEX/events/Events'
 import { exists } from '@keg-hub/jsutils/exists'
@@ -18,6 +17,7 @@ import { uniqArr } from '@keg-hub/jsutils/uniqArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { RootSuiteId } from '@gobletqa/environment/constants'
 import { ReportEventMapper } from '@GEX/reporter/ReportEventMapper'
 
 export type TRunnerBindEvts = {
@@ -54,7 +54,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
   suiteTimeout?:number
   exitOnFailed:boolean=false
   skipAfterFailed:boolean=true
-  
+
   environment:E
   canceled?:boolean
   isRunning?:boolean

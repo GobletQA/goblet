@@ -1,12 +1,12 @@
 import type { Docker } from '../docker'
 import type { ContainerCreateOptions } from 'dockerode'
-import {
+import type {
   TRunOpts,
   TPortsMap,
   TImgConfig,
   TPublicUrls,
   TCreatePortsObj,
-} from '@gobletqa/conductor/types'
+} from '@gobletqa/shared/types'
 
 import { buildLabels } from './buildLabels'
 import { buildContainerEnvs } from './buildEnvs'

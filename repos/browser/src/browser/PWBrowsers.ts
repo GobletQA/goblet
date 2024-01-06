@@ -1,32 +1,33 @@
 import type {
   TBrowser,
-  TGetPageCB,
   TPWBrowser,
-  TGetBrowser,
-  TBrowserConf,
   EBrowserType,
   EBrowserName,
+  TBrowserConf,
   TPWComponents,
-  TStartBrowser,
   TBrowserContext,
+} from '@gobletqa/shared/types'
+import type {
+  TGetPageCB,
+  TGetBrowser,
+  TStartBrowser,
   TPWBrowsersOpts,
   TCreateBrowserOpts,
 } from '@GBB/types'
 
 import playwright from 'playwright'
-import { inDocker } from '@keg-hub/cli-utils'
 import { logEnvMsg } from '@GBB/utils/logger'
-import { toBool } from '@keg-hub/jsutils/toBool'
-import { CreateBrowserRetry } from '@GBB/constants'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { buildStatus } from '@GBB/utils/buildStatus'
 import { socketActive } from '@GBB/utils/checkVncEnv'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { inDocker } from '@keg-hub/jsutils/node/inDocker'
 import { getBrowserOpts } from '@GBB/utils/getBrowserOpts'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
+import { CreateBrowserRetry } from '@gobletqa/environment/constants'
 import {
   EmptyBrowser,
   checkInternalPWContext
@@ -68,21 +69,6 @@ export class PWBrowsers {
   }
 
   /**
-  * Checks if the Browser should be created from a Websocket and the running browser server
-  */
-  #fromWebsocket = (
-    browserConf:TBrowserConf = emptyObj as TBrowserConf,
-    browserServer?:boolean
-  ):boolean => {
-    return !toBool(process.env.GOBLET_RUN_FROM_CI)
-      && (
-        browserServer
-          || browserConf?.ws
-          || socketActive()
-      )
-  }
-
-  /**
   * Starts new browser by connecting to an existing browser server websocket
   * @function
   */
@@ -93,11 +79,11 @@ export class PWBrowsers {
     // If so, then update the endpoint url to target the host machine
     const browserEndpoint =
       inDocker() && socketActive()
-        ? endpoint.replace('127.0.0.1', 'host.docker.internal')
+        ? endpoint.replace(`127.0.0.1`, `host.docker.internal`)
         : endpoint
 
     const browser = await playwright[type].connect(browserEndpoint)
-    logEnvMsg(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
+    logEnvMsg(`createWSBrowser - Browser ${type} was started from server websocket`)
 
     this.#setBrowser(browser, { type })
 
@@ -121,7 +107,12 @@ export class PWBrowsers {
 
     const opts = deepMerge(
       getBrowserOpts(browserConf, config, world),
-      getContextOpts({config, contextOpts: browserConf.context, world})
+      getContextOpts({
+        type,
+        world,
+        config,
+        contextOpts: browserConf.context,
+      })
     )
     logEnvMsg(`Browser-PersistentContext options`, `verbose`, opts)
     
@@ -265,20 +256,6 @@ export class PWBrowsers {
       * TODO: - At some point will need to rework this to figure out the best option
       * Need to setup params to toggle the browser type
       * Will need to enable the browser server running via supervisor
-
-        // If the websocket is active, then start a websocket browser
-        const fromWs = fromWebsocket(browserConf, browserServer)
-        const browserResp = fromWs
-          ? await createWSBrowser(type)
-          : await createBrowser(browserConf, type)
-        fromWs
-          ? logEnvMsg(`getBrowser - New Websocket Browser ${type} created`)
-          : logEnvMsg(`getBrowser - New Standalone Browser ${type} created`)
-
-      
-        await createWSBrowser(type)
-        logEnvMsg(`getBrowser - New Websocket Browser ${type} created`)
-
         const browserResp = await this.#createPersistentBrowser({
           type,
           browserConf,
@@ -286,20 +263,19 @@ export class PWBrowsers {
         logEnvMsg(`getBrowser - New Persistent Context Browser ${type} created`)
 
       ------------------------------------ */
+      const browserResp = browserConf.ws
+        ? await this.#createWSBrowser(type)
+        : await this.#createBrowser({
+            type,
+            world,
+            config,
+            browserConf,
+          })
 
+        logEnvMsg(`getBrowser - New ${browserConf.ws ? `Websocket` : `Standalone`} Browser ${type} created`)
 
-      // Default to creating a standalone browser
-      // Should be faster then going over a websocket
-      const browserResp = await this.#createBrowser({
-        type,
-        world,
-        config,
-        browserConf,
-      })
-      logEnvMsg(`getBrowser - New Standalone Browser ${type} created`)
-
-      this.#creatingBrowser = false
-      return browserResp
+        this.#creatingBrowser = false
+        return browserResp
 
     }
     catch(err){
@@ -396,6 +372,19 @@ export class PWBrowsers {
       throw err
     }
 
+  }
+
+  /**
+  * Starts browser by connecting to an already running Playwright browser over websocket
+  * See https://playwright.dev/docs/api/class-browsertype#browser-type-launch|Playwright Docs for more info
+  * @function
+  * @public
+  */
+  startWSBrowser = async (
+    args:TStartBrowser,
+    getPage:TGetPageCB
+  ) => {
+    return await this.startBrowser({...args, browserServer: true}, getPage)
   }
 
   /**

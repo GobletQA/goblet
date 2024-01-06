@@ -18,22 +18,21 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
 
-      "@GBE/Configs": ["repos/backend/configs"],
-      "@GBE/Configs/*": ["repos/backend/configs/*"],
+      "@GBE/configs": ["repos/backend/configs"],
+      "@GBE/configs/*": ["repos/backend/configs/*"],
       "@GBE/Templates": ["repos/backend/templates"],
       "@GBE/Templates/*": ["repos/backend/templates/*"],
       "@GBE": ["repos/backend/src"],
       "@GBE/*": ["repos/backend/src/*"],
       "@GBE/Root": ["repos/backend/"],
 
-      "@GBB/constants": ["repos/browser/src/constants"],
-      "@GBB/constants/*": ["repos/browser/src/constants/*"],
+
       "@GBB/scripts": ["repos/browser/scripts"],
       "@GBB/scripts/*": ["repos/browser/scripts/*"],
       "@GBB/types": ["repos/browser/src/types"],
@@ -43,8 +42,8 @@
       "@GBB": ["repos/browser/src"],
       "@GBB/*": ["repos/browser/src/*"],
 
-      "@GCD/Configs": ["repos/conductor/configs"],
-      "@GCD/Configs/*": ["repos/conductor/configs/*"],
+      "@GCD/configs": ["repos/conductor/configs"],
+      "@GCD/configs/*": ["repos/conductor/configs/*"],
       "@GCD": ["repos/conductor/src"],
       "@GCD/*": ["repos/conductor/src/*"],
 
@@ -67,9 +66,7 @@
       "@GEX/utils/*": ["repos/exam/src/utils/*"],
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
-      
-      "@GGT/constants": ["repos/git/src/constants"],
-      "@GGT/constants/*": ["repos/git/src/constants/*"],
+
       "@GGT/providers": ["repos/git/src/providers"],
       "@GGT/providers/*": ["repos/git/src/providers/*"],
       "@GGT/types": ["repos/git/src/types"],
@@ -91,6 +88,7 @@
       "@GJK/*": ["repos/joker/src/*"],
 
       "@GLT/cli/types": ["repos/latent/src/bin/cli.types.ts"],
+      "@GLT/services": ["repos/latent/src/services"],
       "@GLT/templates": ["repos/latent/src/templates"],
       "@GLT/libs": ["repos/latent/src/libs"],
       "@GLT/libs/*": ["repos/latent/src/libs/*"],
@@ -99,8 +97,7 @@
       "@GLT": ["repos/latent/src"],
       "@GLT/*": ["repos/latent/src/*"],
 
-      "@GRP/constants": ["repos/repo/src/constants"],
-      "@GRP/constants/*": ["repos/repo/src/constants/*"],
+
       "@GRP/types": ["repos/repo/src/types"],
       "@GRP/types/*": ["repos/repo/src/types/*"],
       "@GRP/utils": ["repos/repo/src/utils"],
@@ -108,18 +105,16 @@
       "@GRP": ["repos/repo/src"],
       "@GRP/*": ["repos/repo/src/*"],
 
-      
-
       "@GSH/libs": ["repos/shared/src/libs"],
       "@GSH/libs/*": ["repos/shared/src/libs/*"],
       "@GSH/templates": ["repos/shared/src/templates"],
       "@GSH": ["repos/shared/src"],
       "@GSH/*": ["repos/shared/src/*"],
 
-      "@GSC/Configs": ["repos/screencast/configs"],
-      "@GSC/Configs/*": ["repos/screencast/configs/*"],
-      "@GSC/Scripts": ["repos/screencast/scripts"],
-      "@GSC/Scripts/*": ["repos/screencast/scripts/*"],
+      "@GSC/configs": ["repos/screencast/configs"],
+      "@GSC/configs/*": ["repos/screencast/configs/*"],
+      "@GSC/scripts": ["repos/screencast/scripts"],
+      "@GSC/scripts/*": ["repos/screencast/scripts/*"],
       "@GSC/Templates": ["repos/screencast/templates"],
       "@GSC/Templates/*": ["repos/screencast/templates/*"],
       "@GSC/libs": ["repos/screencast/src/libs"],
@@ -129,28 +124,26 @@
       "@GSCRoot": ["repos/screencast/"],
       "@GSCRoot/*": ["repos/screencast/*"],
 
-      "@GTU/Constants": ["repos/testUtils/src/constants"],
-      "@GTU/Constants/*": ["repos/testUtils/src/constants/*"],
-      "@GTU/Jest": ["repos/testUtils/src/jest"],
-      "@GTU/Jest/*": ["repos/testUtils/src/jest/*"],
-      "@GTU/Exam": ["repos/testUtils/src/exam"],
-      "@GTU/Exam/*": ["repos/testUtils/src/exam/*"],
-      "@GTU/Utils": ["repos/testUtils/src/utils"],
-      "@GTU/Utils/*": ["repos/testUtils/src/utils/*"],
-      "@GTU/Steps": ["repos/testUtils/src/steps"],
-      "@GTU/Steps/*": ["repos/testUtils/src/steps/*"],
-      "@GTU/Parkin": ["repos/testUtils/src/parkin"],
-      "@GTU/Parkin/*": ["repos/testUtils/src/parkin/*"],
-      "@GTU/Support": ["repos/testUtils/src/support"],
-      "@GTU/Support/*": ["repos/testUtils/src/support/*"],
-      "@GTU/Reports": ["repos/testUtils/src/reports"],
-      "@GTU/Reports/*": ["repos/testUtils/src/reports/*"],
-      "@GTU/PlaywrightEnv": ["repos/testUtils/src/playwright/playwrightTestEnv"],
-      "@GTU/Playwright": ["repos/testUtils/src/playwright"],
-      "@GTU/Playwright/*": ["repos/testUtils/src/playwright/*"],
-      "@GTU/Types": ["repos/testUtils/src/types"],
-      "@GTU/Types/*": ["repos/testUtils/src/types/*"],
-      "@GTU": ["repos/testUtils/src"],
+      "@GTU/Jest": ["repos/testify/src/jest"],
+      "@GTU/Jest/*": ["repos/testify/src/jest/*"],
+      "@GTU/Exam": ["repos/testify/src/exam"],
+      "@GTU/Exam/*": ["repos/testify/src/exam/*"],
+      "@GTU/Utils": ["repos/testify/src/utils"],
+      "@GTU/Utils/*": ["repos/testify/src/utils/*"],
+      "@GTU/Steps": ["repos/testify/src/steps"],
+      "@GTU/Steps/*": ["repos/testify/src/steps/*"],
+      "@GTU/Parkin": ["repos/testify/src/parkin"],
+      "@GTU/Parkin/*": ["repos/testify/src/parkin/*"],
+      "@GTU/Support": ["repos/testify/src/support"],
+      "@GTU/Support/*": ["repos/testify/src/support/*"],
+      "@GTU/Reports": ["repos/testify/src/reports"],
+      "@GTU/Reports/*": ["repos/testify/src/reports/*"],
+      "@GTU/PlaywrightEnv": ["repos/testify/src/playwright/playwrightTestEnv"],
+      "@GTU/Playwright": ["repos/testify/src/playwright"],
+      "@GTU/Playwright/*": ["repos/testify/src/playwright/*"],
+      "@GTU/Types": ["repos/testify/src/types"],
+      "@GTU/Types/*": ["repos/testify/src/types/*"],
+      "@GTU": ["repos/testify/src"],
 
       "@GWF/git": [ "repos/workflows/src/git" ],
       "@GWF/goblet": ["repos/workflows/src/goblet"],
@@ -160,22 +153,16 @@
       "@GWF": ["repos/workflows/src"],
       "@GWF/*": ["repos/workflows/src/*"],
 
-      "@GLogs": ["logs"],
-      "@GLogs/*": ["logs/*"],
-      "@GTasks": ["tasks"],
-      "@GTasks/*": ["tasks/*"],
-      "@GConfigs": ["configs"],
-      "@GConfigs/*": ["configs/*"],
-      "@GException": ["repos/shared/src/exceptions/Exception"],
       "@GEnvironment": ["repos/shared/src/environment/environment"],
-      "@GEnvironment/values": ["repos/shared/src/environment/values"],
-      "@GEnvironment/secrets": ["repos/shared/src/environment/secrets"],
 
       "@gobletqa/backend": ["repos/backend/src"],
       "@gobletqa/backend/*": ["repos/backend/src/*"],
 
       "@gobletqa/browser": ["repos/browser/src"],
       "@gobletqa/browser/*": ["repos/browser/src/*"],
+
+      "@gobletqa/configs": ["configs"],
+      "@gobletqa/configs/*": ["configs/*"],
 
       "@gobletqa/components": ["repos/components/src"],
       "@gobletqa/components/*": ["repos/components/src/*"],
@@ -195,9 +182,6 @@
       "@gobletqa/git": ["repos/git/src"],
       "@gobletqa/git/*": ["repos/git/src/*"],
 
-      "@gobletqa/joker": ["repos/joker/src"],
-      "@gobletqa/joker/*": ["repos/joker/src/*"],
-
       "@gobletqa/latent": ["repos/latent/src"],
       "@gobletqa/latent/*": ["repos/latent/src/*"],
 
@@ -216,18 +200,17 @@
       "@gobletqa/screencast": [ "repos/screencast/src" ],
       "@gobletqa/screencast/*": [ "repos/screencast/src/*" ],
 
-      "@gobletqa/shared/utils/loadEnvs": ["repos/shared/src/utils/loadEnvs"],
-      "@gobletqa/shared/utils/getOrigin": ["repos/shared/src/utils/getOrigin"],
       "@gobletqa/shared": [ "repos/shared/src" ],
       "@gobletqa/shared/*": [ "repos/shared/src/*" ],
 
-      "@gobletqa/test-utils": [ "repos/testUtils/src" ],
-      "@gobletqa/test-utils/*": [ "repos/testUtils/src/*" ],
+      "@gobletqa/testify": [ "repos/testify/src" ],
+      "@gobletqa/testify/*": [ "repos/testify/src/*" ],
 
       "@gobletqa/workflows": ["repos/workflows/src"],
       "@gobletqa/workflows/*": ["repos/workflows/src/*"],
-      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
-      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
+
+      "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
+      "@gobletqa/root": ["./*"]
     }
   },
   "exclude": [
@@ -237,10 +220,12 @@
     ".git",
     ".husky",
     ".firebase",
+    "goblet",
     "certs",
     "repos/**/dist",
     "repos/**/build",
     "repos/**/node_modules",
+    "**/.tsup",
     "docs",
     "logs",
     "scripts",

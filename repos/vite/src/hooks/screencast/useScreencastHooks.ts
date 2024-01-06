@@ -32,6 +32,8 @@ export const useScreencastHooks = () => {
 
     Vnc.connect()
 
+    // TODO: investigate cleanup method here
+
   }, [screencastUrl])
 
   const delayFadeState = useDelayCallback(setIsLoaded)

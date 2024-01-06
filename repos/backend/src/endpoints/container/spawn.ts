@@ -1,8 +1,7 @@
 import type { Response } from 'express'
 import type { TBEDefReq, TSpawnOpts } from '@GBE/types'
 
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 type TBEParams = {
   imageRef:string

@@ -10,7 +10,6 @@ import { buildModel } from './buildModel'
  * @property {string} fileType - Type of test feature / jest / waypoint,
  * @property {string} mime - Mime file type relative to the file extension
  * @property {Object} [ast] - File parsed into an ast format. Different per file type
- * @property {number} lastModified - EPOCH time that the file was last modified
  * @property {string} uuid - Local id of the file created when the model is created
  */
 const Model = {
@@ -24,7 +23,6 @@ const Model = {
   worldFile: false,
   gobletFile: false,
   ast: {},
-  lastModified: 0,
   uuid: '',
 }
 

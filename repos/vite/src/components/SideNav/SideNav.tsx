@@ -7,13 +7,12 @@ import { ESideNav } from '@types'
 import { navItemNameToTitle } from '@utils'
 import { EE } from '@services/sharedService'
 import { NavGroups, TGroupItem } from '../Nav'
-import { useState, useEffect, useMemo } from 'react'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
 import { SideNav as SideNavItems } from '@constants/nav'
 import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import {
-  useInline,
   useClickAway,
   ResizeSideBarEvent,
 } from '@gobletqa/components'
@@ -44,14 +43,14 @@ export const SideNav = (props:TSideNavProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const [activeNav, setActiveNav] = useState<ESideNav|undefined>()
 
-  const toggleOpen = useInline((toggle:boolean, force?:boolean) => {
+  const toggleOpen = useCallback((toggle:boolean, force?:boolean) => {
     if(sidebarLocked && open && !force) return
 
     if(sidebarLocked && force)
       EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { toggle:true })
 
     setOpen(toggle)
-  })
+  }, [sidebarLocked, open])
 
   const toggleDrawer = useSideNavToggle(
     open,

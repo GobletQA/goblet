@@ -7,8 +7,8 @@ import type { Dispatch, SetStateAction } from 'react'
 import type { TOnAutoChange } from '@gobletqa/components'
 
 
+import { useCallback } from 'react'
 import { isStr, isUrl } from '@keg-hub/jsutils'
-import { useInline } from '@gobletqa/components'
 import { formatName } from '@utils/repo/formatName'
 import { CreateNewRepo, CreateNewBranch } from '@constants'
 
@@ -70,15 +70,15 @@ export const useRepoEvents = (props:THRepoEvts) => {
   } = props
 
   
-  const onChangeDescription = useInline<TRepoValueCB>((value) => {
+  const onChangeDescription = useCallback<TRepoValueCB>((value) => {
     description !== value && setDescription(value)
-  })
+  }, [description])
 
-  const onCreateRepo = useInline((evt, value:boolean) => {
+  const onCreateRepo = useCallback((evt:any, value:boolean) => {
    value !== createRepo && setCreateRepo(value)
-  })
+  }, [createRepo, setCreateRepo])
 
-  const onChangeNewRepo = useInline<TRepoValueCB>((value) => {
+  const onChangeNewRepo = useCallback<TRepoValueCB>((value) => {
     const formatted = formatName(value)
 
     if(apiRepos.filter(apiRepo => apiRepo?.name === formatted).length)
@@ -86,14 +86,17 @@ export const useRepoEvents = (props:THRepoEvts) => {
 
     formatted !== newRepo
       && setNewRepo(formatted)
-  })
+  }, [
+    newRepo,
+    apiRepos,
+  ])
 
-  const onChangeOwner = useInline<TOnAutoChange>((evt, value) => {
+  const onChangeOwner = useCallback<TOnAutoChange>((evt, value) => {
     const update = value as string
     update !== owner && setOwner(update)
-  })
+  }, [owner, setOwner])
 
-  const onChangeRepo = useInline<TOnAutoChange>((evt, value) => {
+  const onChangeRepo = useCallback<TOnAutoChange>((evt, value) => {
     const update = isStr(value)
       ? formatCustomUrl(value, userBranch)
       : value as TBuiltRepo
@@ -112,7 +115,10 @@ export const useRepoEvents = (props:THRepoEvts) => {
 
     setRepo(update as TBuiltRepo)
     setBranch(userBranch)
-  })
+  }, [
+    repo,
+    userBranch,
+  ])
 
   return {
     onCreateRepo,

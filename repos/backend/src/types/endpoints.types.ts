@@ -1,5 +1,5 @@
-import type { Conductor } from '@gobletqa/conductor/conductor'
-import type { Express, Response } from 'express'
+import type { Conductor } from '@gobletqa/conductor'
+import type { Response } from 'express'
 
 import type {
   TApp,

@@ -1,5 +1,4 @@
-import type { Repo } from '@GSH/types'
-import type { TStepCtx } from '@GTU/Types'
+import type { TStepCtx, Repo } from '@GSH/types'
 
 import { wait } from '@keg-hub/jsutils/wait'
 import { isFunc } from '@keg-hub/jsutils/isFunc'
@@ -8,16 +7,16 @@ import { isFunc } from '@keg-hub/jsutils/isFunc'
  * Helper method to validate the require request is for Parkin
  */
 export const parkinCheck = (request?:string) => (
-  request.startsWith(`@gobletqa/test-utils/parkin`) ||
+  request.startsWith(`@gobletqa/testify/parkin`) ||
   request.startsWith(`GobletParkin`) ||
   request.startsWith(`@GTU/Parkin`)
 )
 
 
 /**
- * This is a temp method that duplicates testUtils/src/parkin/stepFunctions
+ * This is a temp method that duplicates testify/src/parkin/stepFunctions
  * Need to find a better way to manage those dependencies
- * screen-cast most likely will need testUtils as a dependency
+ * screen-cast most likely will need testify as a dependency
  */
 const augmentCtx = async (ctx:TStepCtx) => {
   if(!ctx) return ctx

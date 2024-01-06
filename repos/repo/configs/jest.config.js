@@ -1,6 +1,6 @@
 const path = require('path')
 const rootDir = path.join(__dirname, `..`)
-const baseCfg = require('../../../configs/jest.base.config.js')
+const baseCfg = require('@gobletqa/configs/jest.base.config.js')
 
 module.exports = {
   ...baseCfg,
@@ -12,6 +12,5 @@ module.exports = {
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
   moduleNameMapper: {
     ...baseCfg.moduleNameMapper,
-    "^@GConfigs/(.*)$": path.join(__dirname, "../../../configs/$1")
   },
 }

@@ -4,10 +4,11 @@ import type { Request as JWTRequest } from 'express-jwt'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { resError } from '@GSH/api/express/resError'
 import { AppRouter } from '@GSH/api/express/appRouter'
+import { isBypassRoute } from '@GSH/utils/isBypassRoute'
 
 export type TMValidateUser = {
   route:string|RegExp,
-  bypassRoutes?: string[]
+  bypassRoutes?:Array<string|RegExp>
 }
 
 /**
@@ -24,7 +25,7 @@ export const validateUser = ({
 
     const isValid = Boolean(originalUrl.includes(`container/remove`) && body?.idleSignOut)
       || Boolean(auth && auth.userId && auth.token)
-      || bypassRoutes.includes(originalUrl)
+      || isBypassRoute(originalUrl, bypassRoutes)
 
     isValid
       ? next()

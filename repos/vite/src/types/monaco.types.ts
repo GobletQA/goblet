@@ -1,6 +1,10 @@
-import type Monaco from 'monaco-editor'
-import type { Range, TextEdit } from 'vscode-languageserver-types'
-import type { editor as Editor, languages as Languages } from 'monaco-editor'
+import type {
+  Range,
+  Monaco,
+  TextEdit,
+  Languages,
+  editor as Editor,
+} from '@gobletqa/monaco'
 
 export type IEditor = Editor.IStandaloneCodeEditor | null
 

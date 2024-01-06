@@ -1,5 +1,5 @@
 import type { V1PodSpec } from '@kubernetes/client-node'
-import type { TPodSpecOpts } from '../../../types'
+import type { TPodSpecOpts } from '@gobletqa/shared/types'
 
 import { addIfExists } from './helpers'
 import { buildContainers } from './buildContainers'

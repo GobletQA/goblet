@@ -1,13 +1,14 @@
 import type { Repo } from '@gobletqa/repo'
-import type * as core from "express-serve-static-core"
 import type { Response, Request } from 'express'
+import type { TParamsDictionary } from '@GSC/types'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+
+
 
 
 type TStatusQuery = {
@@ -45,7 +46,7 @@ type TStatusQuery = {
  *
  */
 export const browserStatus = async (
-  req:Request<core.ParamsDictionary, any, any, TStatusQuery>,
+  req:Request<TParamsDictionary, any, any, TStatusQuery>,
   res:Response
 ) => {
 

@@ -1,5 +1,5 @@
-import type { TGitOpts } from '@gobletqa/workflows/types'
-import { failResp } from '@gobletqa/workflows/goblet/response'
+import type { TGitOpts } from '@gobletqa/git'
+import { failResp } from '@GWF/goblet/response'
 
 
 /**

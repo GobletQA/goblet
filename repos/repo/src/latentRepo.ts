@@ -16,6 +16,7 @@ import { Logger } from '@GRP/utils/logger'
 import { env } from '@keg-hub/parse-config'
 import { ENVS } from '@gobletqa/environment'
 import { exists } from '@keg-hub/jsutils/exists'
+import { injectKeyValues } from '@gobletqa/logger'
 import { GobletConfigRef } from '@gobletqa/environment/constants'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
 
@@ -79,6 +80,8 @@ export class LatentRepo {
       token
     })
 
+    secrets && injectKeyValues(secrets)
+
     return secrets
   }
 
@@ -94,6 +97,7 @@ export class LatentRepo {
     })
 
     const type = getLatentType(location)
+    const isSecrets = type === EFileType.secrets
 
     const args = {
       type,
@@ -102,10 +106,15 @@ export class LatentRepo {
       format:ELoadFormat.string,
       environment: repo.environment
     }
+    
 
-    const content = type === EFileType.secrets
+    const content = isSecrets
       ? this.latent.secrets.get(args as TLTGetSecrets)
       : this.latent.values.get(args as TLTGet)
+      
+    isSecrets
+      && content
+      && injectKeyValues(content)
 
     return exists(content)
       ? [undefined, content]
@@ -142,6 +151,7 @@ export class LatentRepo {
       let saved:TFileSaveResp
       if(type === EFileType.secrets){
         Logger.debug(`Repo secrets are being updated...`)
+        data && injectKeyValues(data)
         saved = this.latent.secrets.save(args as TLTSave)
       }
       else {

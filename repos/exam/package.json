@@ -8,9 +8,10 @@
   "keywords": [],
   "private": true,
   "bin": {
-    "exam": ".bin/exam.js"
+    "exam": ".bin/index.js"
   },
   "files": [
+    ".bin",
     "dist",
     "test.js",
     "index.js",
@@ -35,13 +36,14 @@
   "scripts": {
     "build": "pnpm build:tsup",
     "build:tsup": "pnpm build:ex && pnpm build:cli",
-    "build:ex": "pnpm tsup --config ./configs/tsup.ex.config.ts",
-    "build:cli": "pnpm tsup --config ./configs/tsup.cli.config.ts",
+    "build:ex": "pnpm tsup-node --config ./configs/tsup.ex.config.ts",
+    "build:cli": "pnpm tsup-node --config ./configs/tsup.cli.config.ts",
     "ex:dev": "EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GEX/*,@gobletqa/exam\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,__mocks__/*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -50,24 +52,20 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/logger": "workspace:*",
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
+    "@gobletqa/logger": "workspace:*",
     "@keg-hub/args-parse": "10.0.1",
-    "@keg-hub/jsutils": "9.10.0",
-    "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "6.5.1",
+    "@keg-hub/jsutils": "10.0.0",
+    "@ltipton/parkin": "6.6.1",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",
-    "esbuild-plugin-path-alias": "1.0.7",
     "expect": "29.7.0",
     "glob": "10.3.10",
     "micromatch": "4.0.5",
-    "module-alias": "2.2.3",
-    "p-map-series": "3.0.0",
-    "p-pipe": "4.0.0"
+    "module-alias": "2.2.3"
   },
   "devDependencies": {
-    "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
     "tsup": "8.0.1"
   }

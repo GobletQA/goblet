@@ -21,19 +21,21 @@ reports/
 .github
 .husky
 
-# macOS
 .DS_Store
-.vscode
-tmp
-node_modules
-logs
+.vscode/
+tmp/
+node_modules/
+logs/
 **/.git
 **/.DS_Store
-temp
-.temp
+docs/
+temp/
+.temp/
+.firebase/
+.*/
 
 # Ignore DevSpace cache and log folder
-.devspace/ 
+.devspace/
 
 container/chart
 container/devspace.yaml
@@ -58,15 +60,23 @@ pids
 *.pid.lock*
 **/dist
 repos/**/dist
+repos/**/*.md
 dist
 certs
 bundle
 repos/components
 repos/monaco
-repos/resizer
+repos/joker
 repos/race
 repos/traceViewer
 repos/vite
+repos/inspector
 repos/**/node_modules
 release-please-config.json
 .release-please-manifest.json
+tsconfig.eslint.json
+**/tsconfig.eslint.json
+repos/**/tsconfig.eslint.json
+repos/devtools/public
+
+!.npmrc

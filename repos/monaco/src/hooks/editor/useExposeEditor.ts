@@ -66,8 +66,8 @@ export const useExposeEditor = (props:THExposeEditor) => {
     decoration,
     resizeSidebar,
     getSupportThemes: () => THEMES,
-    getAllValue: () => filesRef.current,
-    getValue: (path: string) => filesRef.current[path],
+    getEditorFiles: () => filesRef.current,
+    getFileContent: (path: string) => filesRef.current[path],
   } as TEditorRefHandle))
 
 }

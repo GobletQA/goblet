@@ -12,15 +12,16 @@ import {
 
 import { useModal } from '@store'
 import { EModalTypes } from '@types'
-import { noOpObj } from '@keg-hub/jsutils'
-import { Fadeout, useOnEvent } from '@gobletqa/components'
+import { ife } from '@keg-hub/jsutils/ife'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { WSSocketResetEvt } from '@constants/events'
 import { localStorage } from '@services/localStorage'
 import { useContainer, useUser, useRepo } from '@store'
+import { Fadeout, useOnEvent } from '@gobletqa/components'
 import { SocketService, WSService } from '@services/socketService'
 import { getWebsocketConfig } from '@utils/api/getWebsocketConfig'
-import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 import {useContainerCreating} from '@hooks/api/useContainerCreating'
-import {WSSocketResetEvt} from '@constants/events'
+import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 
 export type TSocketProvider = {
   children: ReactNode
@@ -92,7 +93,7 @@ const useWSHooks = () => {
     // Check if the web socket has been set, or for invalid state
     if(wsService?.socket || !isValidState(user, container, repo)) return
 
-    ;(async () => {
+    ife(async () => {
       const jwt = await localStorage.getJwt()
       // Once the container?.api is loaded, then init the websocket
       const wsConfig = getWebsocketConfig(container)
@@ -102,7 +103,9 @@ const useWSHooks = () => {
       // This way we don't initialize until the session container is running
       setWSService(WSService)
 
-    })()
+    })
+
+    // TODO: investigate cleanup method here
 
   }, [
     user?.id,

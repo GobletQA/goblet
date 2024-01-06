@@ -6,8 +6,8 @@ import type {
 } from '@GSC/types'
 
 import path from 'path'
-import { EE } from '@gobletqa/shared'
 import { Logger } from '@GSC/utils/logger'
+import { EE } from '@gobletqa/shared/utils'
 import { ENVS } from '@gobletqa/environment'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { TestFromUI } from '@GSC/libs/testsFromUI/TestFromUI'
@@ -17,7 +17,11 @@ import {
   KillTestRunUIProcEvt,
 } from '@gobletqa/environment/constants'
 
-const testConfig = path.join(InternalPaths.testUtilsDir, `src/exam/exam.feature.config.ts`)
+const cfgLoc = path.basename(__dirname).startsWith(`dist`)
+  ? `dist/exam/exam.feature.config.js`
+  : `src/exam/exam.feature.config.ts`
+
+const testConfig = path.join(InternalPaths.testifyDir, cfgLoc)
 
 const setupUIRun = async (args:TSocketEvtCBProps) => {
   const {
@@ -29,7 +33,11 @@ const setupUIRun = async (args:TSocketEvtCBProps) => {
 
   const { repo } = await loadRepoFromSocket({
     user,
-    repo: data?.repo,
+    repo: {
+      ...data?.repo,
+      username: data?.repo?.username ?? user.username,
+      repoName: data?.repo?.name ?? path.basename(data?.repo?.remote || ``)
+    },
   })
 
   const gobletToken = repo.latent.repoToken({

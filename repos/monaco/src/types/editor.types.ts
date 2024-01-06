@@ -1,7 +1,5 @@
 import type { CSSProperties, ReactNode, MutableRefObject, ComponentType } from 'react'
-
-import type Monaco from 'monaco-editor'
-import type { editor } from 'monaco-editor'
+import type { Monaco, editor } from './monaco.types'
 import type { TMonacoDefinition } from './gherkin.types'
 import type { TFilelist, TFileMeta } from './file.types'
 import type { TDecorationFns } from './decorations.types'
@@ -80,10 +78,10 @@ export type TEditorThemes = {
 export type TEditorRefHandle = {
   closeFile:TEditorCB
   decoration: TDecorationFns
-  getAllValue:() => TFilelist
+  getEditorFiles:() => TFilelist
   getSupportThemes:() => string[],
   resizeSidebar:(width:number) => void
-  getValue:(path:string) => string | null,
+  getFileContent:(path:string) => string | null,
   openFile: (loc:string, content?:string|null, opts?:TPathChangeOpts) => void,
   setTheme:(name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }

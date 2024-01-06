@@ -16,7 +16,7 @@ export const updateFeature = (
           feature: feat as TRaceFeature,
           options: {
             ...options,
-            replace: exists(options.replace) ? options.replace : true 
+            replace: exists(options.replace) ? options.replace : true
           },
         }
       )

@@ -1,26 +1,27 @@
 import '@GSC/utils/logger'
-import { onExit } from '@GSC/utils/onExit'
-import { initSocket } from '@GSC/libs/websocket'
-import { SCAuthBypassRoutes } from '@GSC/constants'
-import { setupRepo } from '@GSC/middleware/setupRepo'
-import { getApp } from '@gobletqa/shared/api/express/app'
-
-import { screencastConfig } from '@GSC/Configs/screencast.config'
+import {
+  getApp,
+  setupJWT,
+  setupCors,
+  validateUser,
+  setupLoggerReq,
+  setupLoggerErr,
+  setupRateLimit,
+  setupServerListen,
+} from '@gobletqa/shared/api'
 import {
   setupRouter,
   setupServer,
   setupBrowser,
+  setupOnReqEnd,
   setupEndpoints
 } from '@GSC/middleware'
-import {
-  setupJWT,
-  setupCors,
-  setupLoggerReq,
-  setupLoggerErr,
-  setupBlacklist,
-  setupServerListen,
-  validateUser,
-} from '@gobletqa/shared/api/middleware'
+import { onExit } from '@GSC/utils/onExit'
+import { initSocket } from '@GSC/libs/websocket'
+import { setupRepo } from '@GSC/middleware/setupRepo'
+import { screencastConfig } from '@GSC/configs/screencast.config'
+import { SCAuthBypassRoutes } from '@gobletqa/environment/constants'
+
 
 /**
  * Starts a express API server for screencast
@@ -37,13 +38,14 @@ const initApi = async () => {
   setupCors(app)
   setupJWT(app, SCAuthBypassRoutes)
   setupServer(app)
-  setupBlacklist(app)
+  setupRateLimit(app)
   setupRouter(app)
   validateUser({
     route: `/screencast\/*`,
     bypassRoutes: SCAuthBypassRoutes
   })
   setupRepo()
+  setupOnReqEnd()
   await setupEndpoints()
   setupLoggerErr(app)
 
@@ -60,7 +62,7 @@ const initApi = async () => {
 
   const socketConf = app?.locals?.config?.socket
   const server = secureServer || insecureServer
-  const socket = await initSocket(app, server, socketConf, 'tests')
+  const socket = await initSocket(app, server, socketConf)
 
   onExit(socket.Manager)
   app.locals.SocketManager = socket.Manager

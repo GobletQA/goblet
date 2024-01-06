@@ -2,7 +2,6 @@ import type { Repo } from '@GSH/types'
 
 import fs from 'fs'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { ApiLogger as Logger } from '@gobletqa/logger'
 
 export type TFeatureMeta = {
   location:string

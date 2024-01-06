@@ -1,6 +1,7 @@
 import type RFB from '@novnc/novnc/core/rfb'
 import type { TTestRunUICfg } from './test.types'
 import type { TTestRunId, TTestRunEvent, TPlayerResEvent } from './shared.types'
+import {EBrowserState} from './screencast.types'
 
 export type TGlobalCopyEvent = {
   text: string
@@ -34,4 +35,8 @@ export type TTestRunExecEndEvent = {
 export type TTestRunExecErrEvent = {
   runId:TTestRunId
   event?:TTestRunEvent
+}
+
+export type TBrowserStateEvt = {
+  browserState: EBrowserState
 }

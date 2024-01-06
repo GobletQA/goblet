@@ -3,11 +3,12 @@ import type { TWFCreateArgs } from '@GWF/types'
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
 import { setupGoblet } from './setupGoblet'
+import { ensureMounted } from '@gobletqa/repo'
 import { GithubApi } from '@GWF/providers/githubApi'
-import { ensureMounted } from '@gobletqa/repo/ensureMounted'
 import { configureGitOpts } from '@GWF/utils/configureGitOpts'
 import { validateCreateArgs } from '@GWF/utils/validateCreateArgs'
-import { ensureBranchExists } from '@gobletqa/repo/ensureBranchExists'
+import { ensureBranchExists } from '@GWF/utils/ensureBranchExists'
+
 
 const buildCreateUrl = (args:TWFCreateArgs) => {
   const { create } = args

@@ -1,7 +1,7 @@
-export * from './setupJWT'
 export * from './setupCors'
+export * from './setupJWT'
 export * from './setupLogger'
-export * from './setupBlacklist'
+export * from './setupRateLimit'
 export * from './setupServerListen'
 export * from './validateUser'
 

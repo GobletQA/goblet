@@ -10,7 +10,8 @@ import { dims, gutter, colors } from '@GBC/theme'
 import ListItemButton from '@mui/material/ListItemButton'
 
 export const PanelSidebar = styled(Box)`
-  background: var(--goblet-sideBarSectionHeader-background);
+  // background-color: var(--goblet-sideBarSectionHeader-background);
+  background-color: var(--goblet-sideBar-background);
   border-bottom: 1px solid transparent;
 
   &.open {

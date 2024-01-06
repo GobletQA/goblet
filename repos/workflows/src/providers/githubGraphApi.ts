@@ -2,8 +2,8 @@ import type {
   TRepoMeta,
   TGraphApiOpts,
   TGHRepoApiMeta,
-} from '@gobletqa/workflows/types'
-import type { TRepoGraphRepos } from '@gobletqa/workflows/types/shared.types'
+  TRepoGraphRepos,
+} from '@GWF/types'
 
 import { Rest } from '../constants/rest'
 import { Graph } from '../constants/graph'

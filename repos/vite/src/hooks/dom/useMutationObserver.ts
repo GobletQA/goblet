@@ -42,6 +42,8 @@ export const useMutationObserver = (props:TMutationObserver) => {
     const observer = new MutationObserver(callback)
     observer.observe(domNode, config)
 
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+    }
   }, [domNode])
 }

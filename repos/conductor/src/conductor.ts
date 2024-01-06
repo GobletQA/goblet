@@ -1,25 +1,27 @@
 import type { Request, Router, Express } from 'express'
+import type { TRemoveOpts } from '@GCD/types'
 import type {
   TImgRef,
   TUserHash,
   TSpawnOpts,
   TRouteMeta,
-  TRemoveOpts,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
-} from '@gobletqa/conductor/types'
+} from '@gobletqa/shared/types'
 
+
+import { getApp } from '@gobletqa/shared/api'
 import { buildConfig } from './utils/buildConfig'
 import { proxyUpgrade } from './utils/proxyUpgrade'
 import { Controller } from './controller/controller'
-import { getApp } from '@gobletqa/shared/api/express/app'
-import { EContainerState } from '@gobletqa/conductor/types'
+import { EContainerState } from '@gobletqa/shared/enums'
 import { getController } from './controller/controllerTypes'
 import {
   createWSProxy,
   createApiProxy,
   createVNCProxy,
+  createDebugProxy,
 } from './proxy'
 
 export class Conductor {
@@ -218,8 +220,14 @@ export class Conductor {
       ...app?.locals?.config?.wsProxy,
       proxyRouter,
     }, app)
+
     const vncProxy = createVNCProxy({
       ...app?.locals?.config?.vncProxy,
+      proxyRouter,
+    }, app)
+
+    const debugProxy = createDebugProxy({
+      ...app?.locals?.config?.debugProxy,
       proxyRouter,
     }, app)
 
@@ -227,6 +235,7 @@ export class Conductor {
       wsProxy,
       apiProxy,
       vncProxy,
+      debugProxy
     })
   }
 

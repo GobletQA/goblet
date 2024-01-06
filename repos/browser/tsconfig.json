@@ -2,13 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "moduleResolution": "node",
-    "typeRoots": [
-      "./src/types",
-      "../shared/src/types",
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ]
+    "moduleResolution": "nodenext"
   },
   "include": [
     "src",

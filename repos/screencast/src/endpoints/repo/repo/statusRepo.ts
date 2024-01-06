@@ -1,14 +1,12 @@
 import type { Response } from 'express'
-import type { TGitOpts } from '@gobletqa/workflows'
+import type { TGitOpts } from '@gobletqa/git'
 import type { Request as JWTRequest } from 'express-jwt'
 
-import { Workflows } from '@gobletqa/workflows'
+import { workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
 import { setBrowserDefaults } from '@gobletqa/browser'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { Exception } from '@gobletqa/shared/exceptions/Exception'
+import { apiRes, AppRouter, Exception } from '@gobletqa/shared/api'
 
 /**
  * Gets the status of a connected repo
@@ -20,7 +18,6 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
   const { token, username, provider } = req.auth
   const { config } = req.app.locals
 
-  const workflows = new Workflows()
   const { repo, status } = await workflows.status(config, {
     token,
     provider,
@@ -45,7 +42,7 @@ export const statusRepo = async (req:JWTRequest, res:Response) => {
     await setBrowserDefaults({
       url: false,
       repo: foundRepo,
-      browserConf: joinBrowserConf(foundRepo?.screencast?.browser)
+      browserConf: joinBrowserConf(foundRepo?.world?.$browser)
     })
   }
   catch(err){

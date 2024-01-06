@@ -1,8 +1,18 @@
 export * from '../../../exam/src/types'
 
-import type { TCmdExecOpts } from './socket.types'
-import type { TBuildTestArgs, TBuildBddEnvs } from './testUtils.types'
+import type { TBuildTestArgs, TBuildBddEnvs } from './testify.types'
 import type { TExamConfig, TInitExamOpts, TExTestEventMeta } from '../../../exam/src/types'
+
+export type TCmdExecOpts = {
+  cwd?: string
+  gid?: number,
+  uid?: number,
+  shell?: string,
+  detached?: boolean,
+  stdio?: string | string[],
+  env?:Record<string, string>,
+}
+
 
 export type TExamUIRunCallbacks = {
   onDone?: (code?:number) => void

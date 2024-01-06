@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "Sets up the environment for GobletQA repos",
   "main": "index.js",
-  "module": "index.mjs",
   "types": "build/esm/index.d.ts",
   "author": "Lance Tipton",
   "license": "ISC",
@@ -23,12 +22,13 @@
   "scripts": {
     "build": "pnpm build:tsup",
     "build:tsup": "pnpm build:envs && pnpm build:const",
-    "build:envs": "pnpm tsup --config ./configs/tsup.envs.config.ts",
-    "build:const": "pnpm tsup --config ./configs/tsup.const.config.ts",
+    "build:envs": "pnpm tsup-node --config ./configs/tsup.envs.config.ts",
+    "build:const": "pnpm tsup-node --config ./configs/tsup.const.config.ts",
     "clean": "pnpm clean:build; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GENV/*,@gobletqa/environment\" --ignore-patterns=build,dist,.*,coverage,temp,tmp,configs,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -37,10 +37,10 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@keg-hub/jsutils": "9.10.0"
+    "@gobletqa/configs": "workspace:*",
+    "@keg-hub/jsutils": "10.0.0"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.38.3",
     "tsup": "8.0.1"
   }
 }

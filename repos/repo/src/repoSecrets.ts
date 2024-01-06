@@ -1,6 +1,6 @@
-import type { TGitOpts } from '@GGT/types'
-import type { Repo } from '@gobletqa/repo'
-import type { TGobletConfig } from '@gobletqa/shared'
+import type { Repo } from '@GRP/repo'
+import type { TGitOpts } from '@gobletqa/git'
+import type { TGobletConfig } from '@GRP/types'
 
 import { Logger } from '@gobletqa/logger'
 import {decryptRepo} from './decryptRepo'

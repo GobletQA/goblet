@@ -65,13 +65,21 @@ export const BranchFrom = (props:TBranchFrom) => {
     }
     
     newBranch !== value && onChangeNewBranch?.(value)
-  }, [newBranch])
+  }, [
+    newBranch,
+    onInputError,
+    onChangeNewBranch
+  ])
 
   const onKeyDown = useCallback((evt:KeyboardEvent<HTMLInputElement>) => {
     inputError.newBranch
       && onInputError?.(`newBranch`, undefined)
 
-  }, [inputError.newBranch, newBranch])
+  }, [
+    newBranch,
+    onInputError,
+    inputError.newBranch,
+  ])
 
   useEffect(() => {
     inputRef.current

@@ -1,13 +1,13 @@
-import type { TWFArgs, TWFResp } from '@gobletqa/workflows/types'
+import type { TWFArgs, TWFResp } from '@GWF/types'
 
 import { git } from '@gobletqa/git'
 import { Logger } from '@gobletqa/logger'
 import { setupGoblet } from './setupGoblet'
+import { ensureMounted } from '@gobletqa/repo'
 import { getGitApi } from '@GWF/providers/getGitApi'
-import { ensureMounted } from '@gobletqa/repo/ensureMounted'
 import { validateInitArgs } from '@GWF/utils/validateInitArgs'
 import { configureGitOpts } from '@GWF/utils/configureGitOpts'
-import { ensureBranchExists } from '@gobletqa/repo/ensureBranchExists'
+import { ensureBranchExists } from '@GWF/utils/ensureBranchExists'
 
 /**
  * Workflow for initializing goblet within a git repo

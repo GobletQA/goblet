@@ -1,4 +1,5 @@
 import { colors } from '../colors'
+import { cmx } from '../helpers'
 
 export const lightTheme = {
   base: `vs`,
@@ -218,7 +219,7 @@ export const lightTheme = {
     [`editorGroupHeader.noTabsBackground`]: colors.purple01,
     
     [`sideBar.border`]: colors.gray00,
-    [`sideBar.background`]: colors.white,
+    [`sideBar.background`]: cmx(colors.purple00, 30),
     [`sideBarSectionHeader.border`]: colors.white01,
     [`sideBarSectionHeader.foreground`]: colors.gray07,
     [`sideBarSectionHeader.background`]: colors.white,

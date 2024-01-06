@@ -4,14 +4,12 @@ import type {
   TGFileTypes,
   TGBWorldCfg,
   TGobletPWConfig,
-  TGScreencastConfig,
-} from '../../../shared/src/types'
+} from './shared.types'
 
 export type TRecorderOpts = {
   locator: string
   [key:string]: any
 }
-
 
 export type TDefGobletConfig = {
   $ref?:string
@@ -21,6 +19,5 @@ export type TDefGobletConfig = {
   fileTypes: TGFileTypes
   recorder: TRecorderOpts
   playwright?:TGobletPWConfig
-  screencast: TGScreencastConfig
   testConfig?:Partial<TExamConfig>
 }

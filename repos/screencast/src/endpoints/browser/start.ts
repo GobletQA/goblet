@@ -3,10 +3,9 @@ import type { Response, Request } from 'express'
 
 import { GBrowser } from '@gobletqa/browser'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 import { loadRepoFromReq } from '@GSC/utils/loadRepoFromReq'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 /**

@@ -21,12 +21,13 @@
   "scripts": {
     "build": "pnpm build:tsup",
     "build:tsup": "pnpm build:log && pnpm build:stdio",
-    "build:log": "pnpm tsup --config ./configs/tsup.log.config.ts",
-    "build:stdio": "pnpm tsup --config ./configs/tsup.stdio.config.ts",
+    "build:log": "pnpm tsup-node --config ./configs/tsup.log.config.ts",
+    "build:stdio": "pnpm tsup-node --config ./configs/tsup.stdio.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GLG/*,@gobletqa/logger\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -36,13 +37,10 @@
   },
   "dependencies": {
     "@gobletqa/environment": "workspace:*",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "winston": "3.11.0"
   },
   "devDependencies": {
-    "@types/debug": "4.1.9",
-    "@types/node": "20.9.3",
-    "@microsoft/api-extractor": "7.38.3",
     "tsup": "8.0.1"
   }
 }

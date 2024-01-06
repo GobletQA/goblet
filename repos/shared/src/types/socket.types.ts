@@ -1,4 +1,4 @@
-import type { TGitData } from './repo.types'
+import type { TGitData } from './git.types'
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
 import type { TBrowserConf } from './pw.types'
@@ -6,9 +6,7 @@ import type {
   SocketManager,
   TWebSocketEvent,
   TWebSocketEvents,
-} from '@gobletqa/screencast/types/socket.types'
-
-
+} from '../../../screencast/src/types/socket.types'
 
 export type TSocketEvent = TWebSocketEvent
 
@@ -57,85 +55,6 @@ export type TSocketEvtCBProps<T extends Record<string, any>=Record<string, any>>
   data:TSocketData<T>
 }
 
-export type TProcConfig = {
-  root: string,
-  script: string,
-  debug: boolean,
-  exec: TCmdExecOpts,
-  command: Partial<TCmdConfig> & {
-    overrides: [],
-    default: string,
-  },
-}
-
-export type TCmdExecOpts = {
-  cwd?: string
-  gid?: number,
-  uid?: number,
-  shell?: string,
-  detached?: boolean,
-  stdio?: string | string[],
-  env?:Record<string, string>,
-}
-
-export type TCmdExecEvents = {
-  onError?:(error:string, pid:string) => any
-  onExit?:(code:number) => any
-  onStdOut?:(data:string, pid:string) => any
-  onStdErr?:(error:string, pid:string) => any
-}
-
-export type TCmdConfig = {
-  exec: boolean
-  script: string
-  cmd?:string,
-  command?: string
-  name:string,
-  id?:string,
-  group?:string
-}
-
-export type TCmdMessage = {
-  name:string
-  cmd:string
-  group:string
-  socketId?:string
-  afterArgs?:string[]
-  beforeArgs?:string[]
-  params?:string[]
-}
-
-export type TCmdsConfig = {
-  [k:string]: TCmdConfig
-}
-
-export type TCmdEnvGroup = {
-  [key in ESocketEnvironment]?: TCmdsConfig
-}
-
-export type TCmdGroup = {
-  filters: {},
-  commands: TCmdEnvGroup
-}
-
-export type TCmdGroups = {
-  default?: TCmdGroup
-  [k:string]:TCmdGroup
-}
-
-export type TFilterObj = {
-  all: string[]
-  [k:string]:  string[]
-} 
-
-export type TFilterArgs = {
-  filters:Record<any, string[]>
-  data: string
-  cmd: string
-  commands:Record<any, any>
-  group: string
-}
-
 export type TSocketMessageStr = string
 export type TSocketMessageObj = {
   id: string
@@ -174,17 +93,11 @@ export type TSocketServer = {
 
 export type TSocketConfig = TSocketAuthConfig & {
   socket:TSocketServer
-  groups: TCmdGroups
-  filters?: TFilterObj
   events?: TSocketEvents
-  commands?: TCmdsConfig
-  process: Partial<TProcConfig>
 }
 
 export type TSocketConfigOpts = {
   path?:string
   host?:string
   port?:string
-  groups: TCmdGroups
-  process: Partial<TProcConfig>
 }

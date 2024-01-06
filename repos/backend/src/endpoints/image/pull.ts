@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api'
 
 export const pull = async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor

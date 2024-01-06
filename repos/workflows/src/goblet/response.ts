@@ -1,7 +1,7 @@
 import type {
   TWFResp,
   TResArgs,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 import { Logger } from '@gobletqa/logger'
 
 /**

@@ -51,6 +51,8 @@
       "@types/*": [ "src/types/*" ],
       "@utils": [ "src/utils" ],
       "@utils/*": [ "src/utils/*" ],
+      "@workers": [ "src/workers" ],
+      "@workers/*": [ "src/workers/*" ],
       "@gobletqa/monaco": [ "../monaco/src" ],
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/race": [ "../race/src" ],
@@ -67,8 +69,8 @@
       "@gobletqa/environment/constants/frontend": ["../environment/src/constants/frontend"],
       "@gobletqa/environment/constants/websocket": ["../environment/src/constants/websocket"],
       "GobletRoot": ["../../"],
-      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
-      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/esm"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/esm/*"]
     }
   },
   "include": ["src"],

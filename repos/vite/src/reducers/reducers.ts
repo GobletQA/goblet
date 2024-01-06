@@ -12,7 +12,6 @@ import { filesState, filesReducer } from './files'
 import { settingsState, settingsReducer } from './settings'
 import { testRunsState, testRunsReducer } from './testRuns'
 import { containerState, containerReducer } from './container'
-import { screencastState, screencastReducer } from './screencast'
 import { definitionsState, definitionsReducer } from './definitions'
 
 export const preloadedState = {
@@ -26,7 +25,6 @@ export const preloadedState = {
   testRuns: testRunsState,
   settings: settingsState,
   container: containerState,
-  screencast: screencastState,
   definitions: definitionsState,
 }
 
@@ -41,6 +39,5 @@ export const reducer = combineReducers<TState>({
   testRuns: testRunsReducer,
   settings: settingsReducer,
   container: containerReducer,
-  screencast: screencastReducer,
   definitions: definitionsReducer,
 })

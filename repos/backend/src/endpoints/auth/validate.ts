@@ -5,9 +5,8 @@ import type { TValidateUser } from '@GBE/services/firebase'
 
 import {authService} from '@GBE/services/firebase'
 import { hashString } from '@keg-hub/jsutils/hashString'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 import { generateTokens } from '@GBE/utils/generateTokens'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
 
 
 export type TValidateReq = TBEBodyReq<TValidateUser>

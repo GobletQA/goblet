@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'tsup'
+import packcfg from '../package.json'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
 
@@ -13,16 +14,20 @@ export default defineConfig(async () => {
   
   return {
     clean: true,
-    splitting: false,
     sourcemap: true,
+    splitting: false,
     outDir: constOutdir,
-    experimentalDts: true,
-    format: [`cjs`, `esm`],
-    entry: [
-      constIn,
-    ],
+    format: [`cjs`],
+    entry: [constIn],
+    name: `environment/constants`,
+    esbuildOptions:(options, context) => {
+      options.external = [
+        ...(options?.external ?? []),
+        ...(Object.keys(packcfg.dependencies) ?? []),
+        ...(Object.keys(packcfg.devDependencies) ?? []),
+      ]
+    },
     async onSuccess() {
-      await fs.rm(path.join(constOutdir, `Users`), { recursive: true, force: true })
       console.log(`Module "@gobletqa/environment/constants" built successfully`)
     },
   }

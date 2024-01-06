@@ -3,10 +3,9 @@ import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
 import { Logger } from '@GSC/utils/logger'
-import { Workflows } from '@gobletqa/workflows'
+import { workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 
 export type TCreateBody = {
@@ -26,7 +25,6 @@ export const createRepo = async (
   res:Response
 ) => {
   let content:TRepoContent
-  const workflows = new Workflows()
 
   try {
 

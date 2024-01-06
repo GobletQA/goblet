@@ -2,14 +2,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext"
   },
   "include": [
     "src",
     "configs",
     "scripts",
-    "../shared",
-    "../testUtils",
-    "../workflows"
+    "../conductor"
   ]
 }

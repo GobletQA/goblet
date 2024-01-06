@@ -1,6 +1,8 @@
-import { TGitMeta } from '@GWF/types'
+import type { TGitMeta } from '@gobletqa/git'
+
 import { Logger } from '@gobletqa/logger'
 import { git, getRepoPath }from '@gobletqa/git'
+import { killWatcher } from '@gobletqa/git/auto'
 
 /**
  * Workflow to unmount a repo based on a users name
@@ -18,14 +20,17 @@ import { git, getRepoPath }from '@gobletqa/git'
 export const disconnectGoblet = async (args:TGitMeta) => {
 
   const mounted = await git.exists(args)
+  const mountPath = getRepoPath(args)
 
-  mounted
-    ? await git.remove(args)
-    : Logger.warn(`[ WARNING ] Repo is not mounted`)
+  if(mounted){
+    killWatcher(mountPath)
+    await git.remove(args)
+  }
+  else Logger.warn(`[ WARNING ] Repo is not mounted`)
 
   return {
+    mountPath,
     unmounted: true,
     user: args?.user?.gitUser,
-    mountPath: getRepoPath(args),
   }
 }

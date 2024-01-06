@@ -1,18 +1,19 @@
 import type { V1Pod, V1PodList } from '@kubernetes/client-node'
-
 import type {
-  TWatchRes,
-  TKubeError,
   TKubeConfig,
   TPodManifest,
   TEventWatchObj,
-  TKubeErrorBody,
   TKubeWatchEvents,
-} from '../../../types'
+} from '@GCD/types'
+import type {
+  TWatchRes,
+  TKubeError,
+  TKubeErrorBody
+} from '@gobletqa/shared/types'
 
 import { KubeError } from '../kubeError'
+import { Logger } from '@GCD/utils/logger'
 import { limbo } from '@keg-hub/jsutils/limbo'
-import { Logger } from '../../../utils/logger'
 import * as k8s from '@kubernetes/client-node'
 
 const throwError = (

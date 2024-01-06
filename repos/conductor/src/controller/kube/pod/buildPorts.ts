@@ -2,7 +2,7 @@ import type {
   TPortObj,
   TPortItem,
   TPodContainer,
-} from '../../../types'
+} from '@gobletqa/shared/types'
 import type { V1ContainerPort } from '@kubernetes/client-node'
 
 import { toNum } from '@keg-hub/jsutils/toNum'

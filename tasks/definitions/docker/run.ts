@@ -66,7 +66,7 @@ const runImg = async (args) => {
 }
 
 export const run = {
-  name: 'run',
+  name: `run`,
   action: runImg,
   alias: [`rn`, `rnu`],
   options: {
@@ -116,6 +116,12 @@ export const run = {
       alias: [`vol`, `vols`],
       example: `--volumes /local/1/path:/remote/1/path,/local/2/path:/remote/2/path`,
       description: `Volumes to mount to the running container separated by a comma`,
+    },
+    vnm: {
+      type: `bool`,
+      default: false,
+      alias: [`volume-node-modules`, `vol-node-modules`, `v-nm`, `vol-nm`],
+      description: `Include node_module paths in custom defined volumes`
     },
     mount: {
       alias: [`mt`],

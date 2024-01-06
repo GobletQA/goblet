@@ -1,5 +1,6 @@
 import type { TGitOpts } from '@gobletqa/git'
 import type { AxiosRequestConfig } from 'axios'
+import type { TGitCreateRepoOpts } from '@gobletqa/git'
 import type {
   TRepoData,
   TGitApiRes,
@@ -8,7 +9,6 @@ import type {
   TBuildApiUrl,
   IGitApiStatic,
   StaticImplements,
-  TGitCreateRepoOpts,
 } from '@GWF/types'
 
 import url from 'url'

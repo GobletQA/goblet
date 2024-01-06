@@ -1,6 +1,6 @@
-import { EExpParmType, Parkin, TStepDef } from '@ltipton/parkin'
-import { TRaceStep } from '@GBR/types/features.types'
 import type { TPartsMatch } from './shared.types'
+import type { TRaceStep } from '@GBR/types/features.types'
+import type { EExpParmType, Parkin, TStepDef } from '@ltipton/parkin'
 
 export type TMatchExpReq = {
   def:TStepDef

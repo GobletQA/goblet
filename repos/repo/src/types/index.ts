@@ -1,3 +1,2 @@
-export* from './shared.types'
-export* from './repo.types'
-
+export * from './shared.types'
+export * from './repo.types'

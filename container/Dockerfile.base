@@ -1,11 +1,11 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.0-focal
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.40.1-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 
 # ---- Setup Stage  ---- #
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-ARG GB_PNPM_VERSION=8.7.4
+ARG GB_PNPM_VERSION=8.12.1
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
 ENV PNPM_VERSION=$GB_PNPM_VERSION
 ENV PNPM_HOME="/root/.local/share/pnpm"
@@ -24,28 +24,29 @@ RUN npm uninstall -g yarn && \
     curl -fsSL https://get.pnpm.io/install.sh | bash - && \
     touch $GB_GIT_GLOBAL_IGNORE && \
     echo "goblet/**/**secrets**.env" >> $GB_GIT_GLOBAL_IGNORE && \
-    echo "goblet/**/**values**.env" >> $GB_GIT_GLOBAL_IGNORE
+    echo "goblet/**/**values**.env" >> $GB_GIT_GLOBAL_IGNORE && \
+    mkdir -p /goblet/app/temp && \
+    mkdir -p /goblet/app/.tmp
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
 ARG GB_SC_PORT=19011
 ARG GB_DD_DEPLOYMENT
 ARG GB_NO_VNC_PORT=26369
+ARG GB_DT_SERVER_PORT=8000
 ARG GB_DD_API_PROXY_PORT=2121
 ARG GB_DD_WS_PROXY_PORT=2122
 ARG GB_DD_VNC_PROXY_PORT=2123
 ARG GB_VNC_SERVER_PORT=26370
+ARG GB_DT_PROXY_PORT=19019
+ARG GB_DT_REMOTE_DEBUG_PORT=19020
 ARG PLAYWRIGHT_BROWSERS_VERSION
-ARG PW_DEBUG_FILE=/goblet/app/logs/pwlogs.log
-ARG DEBUG_FILE=$PW_DEBUG_FILE
 ENV HOME=/root \
     DISPLAY=:0.0 \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    DEBUG=pw:* \
     PWDEBUG=console \
-    DEBUG_FILE=$DEBUG_FILE \
     DEBIAN_FRONTEND=noninteractive \
     GB_GIT_GLOBAL_IGNORE=$GB_GIT_GLOBAL_IGNORE \
     GB_FE_PORT=$GB_FE_PORT \
@@ -62,42 +63,84 @@ EXPOSE $GB_FE_PORT
 EXPOSE $GB_BE_PORT
 EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT
+EXPOSE $GB_DT_SERVER_PORT
 EXPOSE $GB_VNC_SERVER_PORT
+EXPOSE $GB_DT_PROXY_PORT
+EXPOSE $GB_DT_REMOTE_DEBUG_PORT
+# ---- End Stage ---- #
 
+
+# ---- Build Stage  ---- #
+FROM goblet-setup as goblet-build
+WORKDIR /goblet/app
 COPY .npmrc pnpm-*.yaml ./
-RUN CI=1 pnpm fetch --no-optional --ignore-scripts
+RUN pnpm fetch --no-optional --ignore-scripts
+COPY . .
+RUN pnpm install --prefer-offline --no-optional --fix-lockfile --force
+RUN pnpm build:tsup
+RUN pnpm build:docker
+# ---- End Stage ---- #
+
+
+# ---- Run Stage  ---- #
+FROM goblet-setup as goblet-prod
+WORKDIR /goblet/app
 COPY . .
 RUN pnpm add --global jqn && \
-    rm -rf /goblet/app/repos/components && \
-    rm -rf /goblet/app/repos/monaco && \
-    rm -rf /goblet/app/repos/race && \
-    rm -rf /goblet/app/repos/vite && \
+    cd /goblet/app/repos/backend && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    echo "$(cat package.json | jqn 'delete $.optionalDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/browser && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/conductor && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    echo "$(cat package.json | jqn 'delete $.optionalDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/devtools && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/environment && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
-    cd /goblet/app/repos/goblet && \
-    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/exam && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/git && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/goblet && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/logger && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/latent && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    cd /goblet/app/repos/repo && \
+    echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/screencast && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/shared && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
-    cd /goblet/app/repos/testUtils && \
+    cd /goblet/app/repos/testify && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app/repos/workflows && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     cd /goblet/app && \
     echo "$(cat package.json | jqn 'delete $.devDependencies;JSON.stringify($, null, 2)')" > package.json && \
     echo "$(cat package.json | jqn 'delete $.optionalDependencies;JSON.stringify($, null, 2)')" > package.json && \
+    pnpm install --lockfile-only --no-optional && \
+    pnpm fetch --no-optional --ignore-scripts --no-optional && \
     CI=1 pnpm install --fix-lockfile --prod --prefer-offline && \
     pnpm remove --global jqn
+
+COPY --from=goblet-build /goblet/app/repos/conductor/dist repos/conductor/dist
+COPY --from=goblet-build /goblet/app/repos/logger/dist repos/logger/dist
+COPY --from=goblet-build /goblet/app/repos/latent/dist repos/latent/dist
+COPY --from=goblet-build /goblet/app/repos/goblet/dist repos/goblet/dist
+COPY --from=goblet-build /goblet/app/repos/git/dist repos/git/dist
+COPY --from=goblet-build /goblet/app/repos/repo/dist repos/repo/dist
+COPY --from=goblet-build /goblet/app/repos/exam/dist repos/exam/dist
+COPY --from=goblet-build /goblet/app/repos/workflows/dist repos/workflows/dist
+COPY --from=goblet-build /goblet/app/repos/backend/dist repos/backend/dist
+COPY --from=goblet-build /goblet/app/repos/screencast/dist repos/screencast/dist
+COPY --from=goblet-build /goblet/app/repos/shared/dist repos/shared/dist
+COPY --from=goblet-build /goblet/app/repos/browser/dist repos/browser/dist
+COPY --from=goblet-build /goblet/app/repos/testify/dist repos/testify/dist
+COPY --from=goblet-build /goblet/app/repos/environment/dist repos/environment/dist
+COPY --from=goblet-build /goblet/app/repos/devtools repos/devtools
 
 # ---- End Stage ---- #

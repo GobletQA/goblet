@@ -1,28 +1,30 @@
 import type {
-  TBrowser,
   TGetCtx,
   TGetPage,
   TGetPageCB,
-  TBrowserPage,
-  TBrowserConf,
-  EBrowserType,
   TBrowserOnly,
-  TPWComponents,
   TStartBrowser,
-  TBrowserContext,
   TGetPWComponents,
 } from '@GBB/types'
+import type {
+  TBrowser,
+  EBrowserType,
+  TBrowserPage,
+  TBrowserConf,
+  TPWComponents,
+  TBrowserContext,
+} from '@gobletqa/shared/types'
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
-import { EBrowserEvent } from '@GBB/types'
 import { logEnvMsg } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
-import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
+import { EBrowserName, EBrowserEvent } from '@gobletqa/shared/enums'
 import { checkInternalPWContext } from '@GBB/utils/checkInternalPWContext'
+import { GobletQAUrl, CreateBrowserRetry } from '@gobletqa/environment/constants'
 
 /**
  * Checks for existing contexts, and reuses one if found
@@ -158,6 +160,7 @@ export class Browser {
         config,
         overrides: overrides.context,
         contextOpts: browserConf.context,
+        type: browser.browserType().name() as EBrowserName,
       })
       
       logEnvMsg(`Context Options`, `verbose`, options)

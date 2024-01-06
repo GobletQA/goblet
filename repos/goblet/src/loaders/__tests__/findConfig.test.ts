@@ -2,7 +2,7 @@ import { findConfig } from '../findConfig'
 import { configFromFolder } from '../configFromFolder'
 
 jest.mock(`../loader`)
-jest.mock(`@GSH/constants`)
+jest.mock(`@gobletqa/environment/constants`)
 jest.mock(`../configFromFolder`)
 
 

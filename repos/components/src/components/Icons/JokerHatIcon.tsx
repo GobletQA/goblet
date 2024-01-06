@@ -1,7 +1,7 @@
+import type { TIconProps } from './Icon'
 
-
-import { TIconProps } from './Icon'
 import { useIcon } from '@GBC/hooks'
+import SvgIcon from '@mui/material/SvgIcon'
 
 export const JokerHatIcon = (props:TIconProps) => {
   const {
@@ -13,7 +13,7 @@ export const JokerHatIcon = (props:TIconProps) => {
   const fill = style?.fill ?? style?.color ?? svgStyle?.fill ?? svgStyle?.color
 
   return (
-    <svg
+    <SvgIcon
       style={svgStyle}
       viewBox="0 0 1024 1024"
       id="joker-hat-icon"
@@ -27,6 +27,7 @@ export const JokerHatIcon = (props:TIconProps) => {
         style={style}
         stroke="none"
         fill={fill}
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
           fill={fill}
@@ -38,7 +39,7 @@ export const JokerHatIcon = (props:TIconProps) => {
           fill={fill}
           d="M 339 776 L 649.5 776 L 650 776.5 L 650 834.5 L 645 849.5 L 636.5 859 L 627.5 864 L 620.5 866 L 367.5 866 L 355.5 861 L 349 855.5 L 344 848.5 L 340 838.5 L 340 829.5 L 339 828.5 L 339 776 Z " />
       </g>
-    </svg>
+    </SvgIcon>
 
 
   )

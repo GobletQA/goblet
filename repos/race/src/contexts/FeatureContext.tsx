@@ -1,11 +1,12 @@
 import type {TSetFeature, TRaceFeature } from '../types'
 
 import { exists } from '@keg-hub/jsutils'
-import { MemoChildren, useInline } from '@gobletqa/components'
+import { MemoChildren } from '@gobletqa/components'
 import {
   useMemo,
   useState,
   useContext,
+  useCallback,
   createContext,
   ComponentType,
 } from 'react'
@@ -41,12 +42,15 @@ export const FeatureProvider = (props:TFeatureProvider) => {
     setFeatureComponent
   ] = useState<ComponentType<any>|undefined>(props.FeatureComponent)
 
-  const overrideFeatureUI = useInline<TFeatureUIOverride>(({ Component, override }) => {
+  const overrideFeatureUI = useCallback<TFeatureUIOverride>(({ Component, override }) => {
     Component && setFeatureComponent(Component)
 
     const ov = exists<boolean>(override) ? override : !uiOverride
     setUIOverride(ov)
-  })
+  }, [
+    uiOverride,
+    FeatureComponent
+  ])
 
   const featureCtx:TFeatureCtx = useMemo(() => ({
     feature,

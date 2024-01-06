@@ -5,7 +5,7 @@ const setMox = jest.setMock.bind(jest)
 
 const defsMock = {}
 const loadDefinitionsMock = jest.fn(() => (defsMock))
-setMox('@gobletqa/shared/libs/definitions/definitions', {
+setMox('@gobletqa/shared/fs', {
   loadDefinitions: loadDefinitionsMock
 })
 

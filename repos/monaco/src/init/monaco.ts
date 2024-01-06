@@ -6,10 +6,6 @@ import { initLangs } from './initLangs'
 import { addGobletTypes } from './addGobletTypes'
 
 
-// import { initPrettier } from './initPrettier'
-// import { initGrammars } from './initGrammars'
-// import { wireTmGrammars } from 'monaco-editor-textmate'
-
 declare type monacoType = typeof import('monaco-editor')
 
 declare global {

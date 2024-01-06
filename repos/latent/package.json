@@ -7,9 +7,6 @@
   "license": "ISC",
   "keywords": [],
   "private": true,
-  "bin": {
-    "latent": ".bin/index.js"
-  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
@@ -22,34 +19,35 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm build:docker",
-    "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
-    "lt:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm build:lt",
+    "build:cli": "pnpm tsup-node --config ./configs/tsup.cli.config.ts",
+    "build:lt": "pnpm tsup-node --config ./configs/tsup.latent.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GLT/*,@gobletqa/latent\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lt:dev": "node --enable-source-maps -r esbuild-register .bin/index.js",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/logger": "workspace:*",
-    "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": "9.10.0",
+    "@gobletqa/configs": "workspace:*",
+    "@gobletqa/environment": "workspace:*",
+    "@keg-hub/jsutils": "10.0.0",
     "@keg-hub/parse-config": ">=2.1.0"
   },
   "devDependencies": {
+    "@keg-hub/cli-utils": "0.9.0",
     "@gobletqa/goblet": "workspace:*",
-    "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
     "esbuild": "0.19.7",
-    "esbuild-plugin-path-alias": "1.0.7",
-    "esbuild-register": "3.5.0"
+    "esbuild-register": "3.5.0",
+    "tsup": "8.0.1"
   }
 }

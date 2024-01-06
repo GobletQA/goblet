@@ -1,4 +1,3 @@
-import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { Dispatch, MutableRefObject } from 'react'
 import type { editor, IDisposable } from 'monaco-editor'
@@ -12,7 +11,6 @@ import type {
 import { useCallback } from 'react'
 import { isStr } from '@keg-hub/jsutils'
 import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
-// import { updateLinter, resetTimer } from '@GBM/utils/editor/linterListener'
 
 export type TUseRestoreModel = {
   editorRef: TCodeEditorRef
@@ -20,7 +18,6 @@ export type TUseRestoreModel = {
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   openedPathRef: MutableRefObject<string | null>
-  lintWorkerRef: MutableRefObject<TLinter>
   typesWorkerRef: MutableRefObject<TTypes>
   editorStatesRef:MutableRefObject<Map<any, any>>
   contentListenerRef: MutableRefObject<IDisposable | undefined>
@@ -41,7 +38,6 @@ const restoreContentListener = (
     filesRef,
     decoration,
     curValueRef,
-    lintWorkerRef,
     setOpenedFiles,
     onFileChangeRef,
     contentListenerRef,
@@ -73,8 +69,6 @@ const restoreContentListener = (
 
     onValueChangeRef.current
       && onValueChangeRef.current(content)
-    
-    // resetTimer(timer, loc, model, lintWorkerRef)
 
   })
 }
@@ -120,10 +114,9 @@ const modelRestore = (
   props:TUseRestoreModel
 ) => {
   const {
-    openedPathRef,
     filesRef,
     editorRef,
-    lintWorkerRef,
+    openedPathRef,
   } = props
   
   const content = filesRef.current[loc]
@@ -134,8 +127,6 @@ const modelRestore = (
   loc !== openedPathRef.current
     && locationRestore(loc, model, props)
 
-  // updateLinter(loc, model, lintWorkerRef)
-
   openedPathRef.current = loc
   return model
 }
@@ -143,7 +134,9 @@ const modelRestore = (
 export const useRestoreModel = (props:TUseRestoreModel) => {
   const {
     editorRef,
+    decoration,
     openedPathRef,
+    setOpenedFiles,
     editorStatesRef,
     contentListenerRef,
   } = props
@@ -162,5 +155,8 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
       ? modelRestore(loc, model, props)
       : false
 
-  }, [])
+  }, [
+    decoration,
+    setOpenedFiles,
+  ])
 }

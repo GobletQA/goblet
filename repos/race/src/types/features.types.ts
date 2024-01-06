@@ -35,7 +35,7 @@ export type TUpdateFeature = {
   options?:TUpdateFeatureOpts
 }
 
-export type TUpdateFeatureCB = (options:TUpdateFeature) => Promise<void>
+export type TUpdateFeatureCB = (options:TUpdateFeature) => Promise<TRaceFeature|undefined>
 
 export type TFeatureParent = {
   uuid: string

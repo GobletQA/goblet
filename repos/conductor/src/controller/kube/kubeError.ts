@@ -1,7 +1,7 @@
 import type {
   TKubeError,
-  TKubeErrorBody
-} from '../../types'
+  TKubeErrorBody,
+} from '@gobletqa/shared/types'
 
 export class KubeError extends Error {
   body:TKubeErrorBody

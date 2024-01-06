@@ -11,10 +11,10 @@ const onAppInit = async (
   new Promise((res, rej) => {
     timeout = setTimeout(() => rej(), 3000)
     return initApp()
-      .then(() => res(clearTimeout(timeout)))
-      .catch((err:any) => {
+      .then(() => res(true))
+      .catch((err:any) => rej(err))
+      .finally(() => {
         clearTimeout(timeout)
-        rej(err)
       })
   })
   .then(() => setStart(true))

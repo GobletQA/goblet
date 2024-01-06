@@ -12,9 +12,10 @@ import {
 import { getStore } from '@store'
 import { EBrowserState } from '@types'
 import { EE } from '@services/sharedService'
-import { getFileModel } from '@utils/files/getFileModel'
+
 import {runAllTests} from '@actions/testRuns/runAllTests'
 import { getActiveFile } from '@utils/editor/getActiveFile'
+import { getActiveFileMeta } from '@utils/files/getActiveFileMeta'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
@@ -49,7 +50,7 @@ export const KeyboardCfg:TKeyboard = {
     combo:[`shift`, `ctrl`], 
     action: async () => {
       const { location } = await getActiveFile()
-      if(!location) return console.log(`[Key-Cmd] - No active file not found`)
+      if(!location) return console.log(`[Key-Cmd] - Active file not found`)
 
       clearEditorDecorations(location)
     }
@@ -66,14 +67,13 @@ export const KeyboardCfg:TKeyboard = {
       if(app.testRunsView)
         return EE.emit<TTestRunGetUICfgEvt>(TestRunGetUICfgEvt, (cfg:TTestRunUICfg) => runAllTests(cfg))
 
-      const { location } = await getActiveFile()
-      if(!location) return console.log(`[Key-Cmd] - No active file not found`)
-        
-      const fileModel = getFileModel(location)
-      if(!fileModel) return console.log(`[Key-Cmd] - Missing file model for ${location}`)
+      const { location, model } = await getActiveFileMeta()
+
+      if(!location) return console.log(`[Key-Cmd] - Active file not found`)
+      if(!model) return console.log(`[Key-Cmd] - Missing file model for ${location}`)
 
       clearEditorDecorations(location)
-      startBrowserPlay(fileModel)
+      startBrowserPlay(model)
     }
   },
   c: {

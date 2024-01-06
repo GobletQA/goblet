@@ -1,5 +1,5 @@
 import { ApiLogger, setupLogger } from '@gobletqa/logger'
-import { backendConfig } from '@GBE/Configs/backend.config'
+import { backendConfig } from '@GBE/configs/backend.config'
 
 setupLogger({
   tag: `Goblet BE`,

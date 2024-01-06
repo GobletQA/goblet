@@ -1,21 +1,20 @@
 import type { Request } from 'express'
 import type { Conductor } from '../conductor'
+import type { TPodRef, TRemoveOpts } from '@GCD/types'
 import type {
   TImgRef,
-  TPodRef,
   TRunOpts,
   TPullOpts,
   TImgConfig,
   TRouteMeta,
   TImgsConfig,
-  TRemoveOpts,
   TContainerRef,
   TContainerMap,
   TContainerRoute,
   TControllerRoutes,
   TControllerConfig,
   TOnContainerRemove,
-} from '../types'
+} from '@gobletqa/shared/types'
 
 import { noOp } from '@keg-hub/jsutils/noOp'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'

@@ -1,19 +1,9 @@
-export * from '../../../shared/src/types'
 
-// TODO: fix this import path. Should ref an alias path, not a relative path
-import type { TFileTypes } from '../../../shared/src/types/files.types'
-import type { TExamConfig } from '../../../shared/src/types/exam.types'
-import type { TGBWorldCfg } from '../../../shared/src/types/parkin.types'
-import type { TGobletConfig } from '../../../shared/src/types/goblet.types'
-import type { TGobletPWConfig } from '../../../shared/src/types/configs.types'
-import type { TGScreencastConfig } from '../../../shared/src/types/screencast.types'
+export type { TExamConfig } from '../../../shared/src/types/exam.types'
+export type { TGBWorldCfg } from '../../../shared/src/types/parkin.types'
+export type { TGobletConfig } from '../../../shared/src/types/goblet.types'
+export type { TGobletPWConfig } from '../../../shared/src/types/configs.types'
+export type { TRootPaths, TFileTypes } from '../../../shared/src/types/files.types'
+export type { TFeatureFileModelList } from '../../../shared/src/types/features.types'
+export type { TDefinitionFileModelList } from '../../../shared/src/types/definitions.types'
 
-
-export {
-  TFileTypes,
-  TExamConfig,
-  TGBWorldCfg,
-  TGobletConfig,
-  TGobletPWConfig,
-  TGScreencastConfig
-}

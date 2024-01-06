@@ -1,16 +1,17 @@
+import type { TOnDrop } from '@gobletqa/components'
 import type {
   TRaceStep,
   TDndItemData,
   TRaceScenario,
   TRaceScenarioParent,
 } from '@GBR/types'
-import type { TOnDrop } from '@gobletqa/components'
 
+import { useCallback } from 'react'
 import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { DndScenario } from './DndScenario'
-import { Dnd, useInline } from '@gobletqa/components'
+import { Dnd } from '@gobletqa/components'
 import { useDropData } from '@GBR/hooks/editor/useDropData'
 import { moveScenario } from '@GBR/actions/general/moveScenario'
 import { updateScenarioPos } from '@GBR/actions/scenario/updateScenarioPos'
@@ -46,7 +47,7 @@ export const Scenarios = (props:TScenarios) => {
     parentType: parent.type,
   })
 
-  const onDropScenario = useInline<TOnDrop<TDndItemData>>((
+  const onDropScenario = useCallback<TOnDrop<TDndItemData>>((
     oldIdx,
     newIdx,
     pos,
@@ -61,7 +62,10 @@ export const Scenarios = (props:TScenarios) => {
           parentId: parent.uuid,
           parentType: parent.type,
         })
-  })
+  }, [
+    parent.uuid,
+    parent.type,
+  ])
 
   return (
     <Sections

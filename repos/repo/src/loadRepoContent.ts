@@ -9,10 +9,15 @@ import type {
 import { Logger } from '@gobletqa/logger'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
-import { loadFeatures } from '@gobletqa/shared/libs/features/features'
-import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
-import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
-import { fileModelArrayToObj } from '@gobletqa/shared/models/fileModelArrayToObj'
+import {
+  loadFeatures,
+  buildFileTree,
+  loadDefinitions,
+  fileModelArrayToObj,
+} from '@GRP/shared.export'
+
+
+
 
 /**
  * Loads all the needed content for a repo

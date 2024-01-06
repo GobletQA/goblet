@@ -1,20 +1,25 @@
+import type { TGitOpts } from '@gobletqa/git'
+import type { TRepoFromCreate, TRepoMountStatus } from '@gobletqa/repo'
 import type {
-  TGitOpts,
+  TWFStatusResp,
   TWFGobletConfig,
   TRepoGraphRepos,
-  TRepoFromCreate,
-  TRepoMountStatus,
   TRepoFromWorkflow,
 } from '@GWF/types'
 
 
-import { definitions } from '@gobletqa/shared'
+/**
+ * Todo: look into dynamically loading this, so it's only loaded on screencast repo, not backend repo
+ */
+
+import { tri } from '@keg-hub/jsutils/tri'
+import { Logger } from '@GWF/utils/logger'
+import { wfcache, WfCache } from './wfCache'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'
-
+import { removeCachedDefs } from '@gobletqa/shared/fs'
 import { Repo, resetCachedWorld } from '@gobletqa/repo'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
-
 import {
   createGoblet,
   statusGoblet,
@@ -24,6 +29,8 @@ import {
 
 
 export class Workflows {
+
+  cache:WfCache=wfcache
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -42,7 +49,7 @@ export class Workflows {
   }
 
 
-  create = async (args:TRepoFromCreate) => {
+  create = async (args:TRepoFromCreate):Promise<TWFStatusResp> => {
     const {
       name,
       token,
@@ -76,10 +83,16 @@ export class Workflows {
         `[ERROR] Could not create new repo ${name}.\n${status ? status.message : ''}`
       )
 
-    return {
-      repo: new Repo(repo),
+    const instance = new Repo(repo)
+    await instance.ensureParkinDefs()
+    const resp = {
+      repo: instance,
       status: status as TRepoMountStatus,
     }
+
+    this.cache.save(username, resp, resp?.repo?.paths?.repoRoot)
+
+    return resp
   }
 
   /**
@@ -88,20 +101,32 @@ export class Workflows {
   status = async (
     config:TWFGobletConfig,
     repoData:TGitOpts
-  ) => {
+  ):Promise<TWFStatusResp> => {
+    
+    const cached = this.cache.find(repoData.username)
+    if(cached) return cached
 
     const { repo, ...status } = await statusGoblet(config, repoData, false)
+    if(!repo || !status.mounted)
+      return { status }
 
-    return !repo || !status.mounted
-      ? { status }
-      : { status, repo: new Repo(repo) }
+    const instance = new Repo(repo)
+    await instance.ensureParkinDefs()
+    const resp = {
+      status,
+      repo: instance,
+      steps: instance.parkin.steps
+    }
+    this.cache.save(repoData.username, resp, resp?.repo?.paths?.repoRoot)
+
+    return resp
   }
 
 
   /**
    * Creates a Repo Class instance by connecting to an external git repo
    */
-  fromWorkflow = async (args:TRepoFromWorkflow) => {
+  fromWorkflow = async (args:TRepoFromWorkflow):Promise<TWFStatusResp> => {
     const {
       token,
       branch,
@@ -110,6 +135,9 @@ export class Workflows {
       newBranch,
       branchFrom,
     } = args
+
+    const cached = this.cache.find(username)
+    if(cached) return cached
 
     const url = new URL(repoUrl)
 
@@ -138,10 +166,16 @@ export class Workflows {
         `[ERROR] Could not mount repo ${repoUrl}.\n${status ? status.message : ''}`
       )
 
-    return {
-      repo: new Repo(repo),
+    const instance = new Repo(repo)
+    await instance.ensureParkinDefs()
+    const resp = {
+      repo: instance,
       status: status as TRepoMountStatus,
     }
+
+    this.cache.save(username, resp, resp?.repo?.paths?.repoRoot)
+
+    return resp
   }
 
 
@@ -149,17 +183,22 @@ export class Workflows {
    * Disconnects a previously connected repo
    */
   disconnect = async ({ username }:Record<`username`, string>) => {
+    
+    Logger.warn(`Disconnecting repo for user ${username}...`)
+    
     // Clear the existing loaded goblet config
-    resetGobletConfig()
-    resetCachedWorld(username)
-    resetInjectedLogs()
-    definitions?.removeGobletCacheDefs?.()
+    tri(resetGobletConfig)
+    tri(resetCachedWorld, username)
+    tri(resetInjectedLogs)
+    tri(removeCachedDefs)
+    tri(() => this.cache.remove(username))
 
-    return await disconnectGoblet({
-      user: {
-        gitUser: username,
-      },
-    })
+    Logger.log(`Disconnected repo for user ${username}`)
+
+    return tri(async () => await disconnectGoblet({user: {gitUser: username}}))
   }
 
 }
+
+
+export const workflows = new Workflows()

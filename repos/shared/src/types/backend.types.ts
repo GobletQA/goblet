@@ -32,10 +32,11 @@ export type TBEServerConfig = {
 }
 
 export type TBackendConfig = {
-  socket?: TSocketConfig
-  vncProxy?: TProxyOpts
-  wsProxy?: TProxyOpts
-  localDevMode?: boolean
+  socket?:TSocketConfig
+  vncProxy?:TProxyOpts
+  wsProxy?:TProxyOpts
+  debugProxy?:TProxyOpts
+  localDevMode?:boolean
   server: TBEServerConfig
   conductor: TConductorOpts
   screencast?: Partial<TScreencastServer>

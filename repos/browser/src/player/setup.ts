@@ -17,18 +17,18 @@ type TPTestCallback = (result:TRunResult) => any
 import expect from 'expect'
 import { Parkin } from '@ltipton/parkin'
 import { ENVS } from '@gobletqa/environment'
-import { WSPwConsole } from '@GBB/constants'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { unset } from '@keg-hub/jsutils/unset'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
+import { WSPwConsole } from '@gobletqa/environment/constants'
 
 import {
   SavedDataWorldPath,
   AutoSavedDataWorldPath,
   SavedLocatorWorldPath,
   AutoSavedLocatorWorldPath,
-} from '@GBB/constants'
+} from '@gobletqa/environment/constants'
 
 
 const emptyConsoleLoc = { url: ``, line: ``, column: ``}

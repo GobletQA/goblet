@@ -1,14 +1,13 @@
-import type { TTask, TTaskActionArgs } from '../../types'
-import type { TBuildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import type { TTask, TTaskActionArgs, TBuildTestArgs } from '../../types'
 
-import { ETestType } from '../../types'
 import constants from '../../constants'
+import { ETestType } from '@gobletqa/shared/enums'
 import { sharedOptions } from '@keg-hub/cli-utils'
-import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
-import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
-import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
-import { buildUnitEnvs } from '@GTasks/utils/envs/buildUnitEnvs'
-import { buildTestArgs } from '@gobletqa/test-utils/utils/buildTestArgs'
+import { runTestCmd } from '../../utils/helpers/runTestCmd'
+import { getTestConfig } from '../../utils/test/getTestConfig'
+import { filterTaskEnvs } from '../../utils/envs/filterTaskEnvs'
+import { buildUnitEnvs } from '../../utils/envs/buildUnitEnvs'
+import { buildTestArgs } from '@gobletqa/testify/utils/buildTestArgs'
 
 
 const { testTypes } = constants

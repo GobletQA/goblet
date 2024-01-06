@@ -1,8 +1,7 @@
-import type { UnaryFunction } from 'p-pipe'
-import type { TPipelineArgs, TStateManager } from '@GEX/types'
+import type { TPipelineArgs, TStateManager, TUnaryFunction } from '@GEX/types'
 
-import pPipe from 'p-pipe'
 import { isArr } from '@keg-hub/jsutils/isArr'
+import { promisePipe } from '@GEX/utils/promisePipe'
 
 export const rewindStep = () => {
   const rewindCB = async (args:TPipelineArgs, manager?:TStateManager) => {
@@ -13,7 +12,7 @@ export const rewindStep = () => {
 
     if(!isArr(rewind) || !rewind?.length) return results
 
-    const pipeline = pPipe(...rewind as UnaryFunction<any, unknown>[])
+    const pipeline = promisePipe(...rewind as TUnaryFunction<any, unknown>[])
     await pipeline()
 
     return results

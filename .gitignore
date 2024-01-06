@@ -123,7 +123,7 @@ browser-meta.json
 
 # repos to ignore
 !tests/**/.keep
-repos/testUtils/___*
+repos/testify/___*
 tests/bdd/features/*
 tests/bdd/steps/*
 tests/bdd/support/*
@@ -189,4 +189,4 @@ noAuthData.json
 
 tasks/index.js
 .pnpm-*
-repos/testUtils/exam/*
+repos/testify/exam/*

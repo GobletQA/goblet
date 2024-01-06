@@ -4,10 +4,14 @@ import type {
 } from '@GGT/types'
 
 import { Logger } from '@gobletqa/logger'
-import { error } from '@keg-hub/cli-utils'
 import chokidar, { FSWatcher } from 'chokidar'
 import { checkCall } from '@keg-hub/jsutils/checkCall'
 
+const throwError = (err:string|Error) => {
+  if(typeof err === `string`) throw new Error(err)
+  throw err
+}
+ 
 
 /**
  * Helper to handel a repoWatcher that already exists
@@ -110,7 +114,7 @@ export class RepoWatcher {
     const { onStop, onEvent, autoStart } = cfg
     this.options = options
     !this.options?.local
-      && error.throwError(`Can not create RepoWatcher, missing local path`)
+      && throwError(`Can not create RepoWatcher, missing local path`)
     
     if(onStop) this.onStop = onStop
     if(onEvent) this.onEvent = onEvent
@@ -129,7 +133,7 @@ export class RepoWatcher {
     }
 
     !this.options.local
-      && error.throwError(`Can not start RepoWatcher, missing local path`)
+      && throwError(`Can not start RepoWatcher, missing local path`)
     
     RepoWatcher.log(`Starting RepoWatcher for path ${this.options.local}...`)
 

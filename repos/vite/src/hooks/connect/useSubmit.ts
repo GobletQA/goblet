@@ -2,11 +2,9 @@ import type { TRepoInputError, TBuiltRepo } from '@types'
 import type { FormEvent } from 'react'
 import type { TCreateParams, TConnectParams } from '@hooks/api/useConnectRepo'
 
-import { useState } from 'react'
 import { useUser } from '@store'
-import { useInline } from '@gobletqa/components'
+import { useState, useCallback } from 'react'
 import { useConnectRepo } from '@hooks/api/useConnectRepo'
-
 
 export type THConnectSubmit = {
   owner:string
@@ -48,7 +46,7 @@ export const useSubmit = (props:THConnectSubmit) => {
     setFormError,
   })
 
-  const onSubmit = useInline(async (event:FormEvent<HTMLFormElement>) => {
+  const onSubmit = useCallback(async (event:FormEvent<HTMLFormElement>) => {
     event.stopPropagation()
     event.preventDefault()
 
@@ -76,7 +74,17 @@ export const useSubmit = (props:THConnectSubmit) => {
     await onConnectRepo(params)
 
     onConnect?.(params)
-  })
+  }, [
+    repo,
+    owner,
+    branch,
+    newRepo,
+    newBranch,
+    createRepo,
+    branchFrom,
+    description,
+    user.username,
+  ])
   
   return {
     onSubmit,

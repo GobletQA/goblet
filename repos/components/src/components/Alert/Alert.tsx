@@ -5,15 +5,16 @@ import type {
   ComponentProps,
 } from 'react'
 
-import { useState } from 'react'
+import { useOnEvent } from '@GBC/hooks'
 import Dialog from '@mui/material/Dialog'
+import { useState, useCallback } from 'react'
+import { exists } from '@keg-hub/jsutils/exists'
 import { Button } from '@GBC/components/Buttons'
-import { exists, emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { useOnEvent, useEventEmit, useInline } from '@GBC/hooks'
 import DialogContentText from '@mui/material/DialogContentText'
 import {
   OnAlertOpen,
@@ -40,19 +41,24 @@ export type TAlert = {
   textProps?:ComponentProps<typeof DialogContentText>
 }
 
-const styles = {
-  dialog: {
-    padding: `20px`,
-  }
-}
-
 export type THAlert = {
   props?:TAlertProps
   onCancel?:() => void
   onConfirm?:() => void
   onOpen?:(state:TOnAlertEvt) => void
   onClose?:(state:TOnAlertEvt) => void
-} 
+}
+
+const styles = {
+  dialog: {
+    padding: `20px`,
+  }
+}
+
+
+const closeAlert = () => EE.emit(OnAlertClose)
+const alertOpen = (props?:TAlertProps) => EE.emit<TAlertProps>(OnAlertOpen, props)
+const toggleAlert = (props:TAlertToggle) => EE.emit<TAlertToggle>(OnAlertToggle, props)
 
 export const useAlert = (props:THAlert) => {
 
@@ -72,11 +78,7 @@ export const useAlert = (props:THAlert) => {
     confirmed ? onConfirm?.() : onCancel?.()
   })
 
-  const closeAlert = useEventEmit(OnAlertClose)
-  const alertOpen = useEventEmit<TOnAlertOpen>(OnAlertOpen)
-  const openAlert = useInline(() => alertOpen(alertProps))
-
-  const toggleAlert = useEventEmit<TAlertToggle>(OnAlertToggle)
+  const openAlert = useCallback(() => alertOpen(alertProps), [alertProps])
 
   return {
     openAlert,
@@ -103,8 +105,8 @@ export const Alert = (props:TAlert) => {
   } = props
 
   const [open, setOpen] = useState<boolean>(false)
-  const onOpen = useInline(() => setOpen(true))
-  const onClose = useInline(() => setOpen(false))
+  const onOpen = useCallback(() => setOpen(true), [])
+  const onClose = useCallback(() => setOpen(false), [])
 
   const [alertProps, setAlertProps] = useState<TAlertProps>(emptyObj)
 
@@ -113,20 +115,20 @@ export const Alert = (props:TAlert) => {
     confirmed ? onConfirm?.() : onCancel?.()
   })
 
-  const onConfirmed = useInline(() => {
+  const onConfirmed = useCallback(() => {
     onClose()
     setAlertProps(emptyObj)
     EE.emit<TOnAlertEvt>(AlertWasClosed, { open, setOpen, confirmed: true })
-  })
+  }, [open, onClose])
 
-  const onCanceled = useInline(() => {
+  const onCanceled = useCallback(() => {
     onClose()
     setAlertProps(emptyObj)
     EE.emit<TOnAlertEvt>(AlertWasClosed, { open, setOpen, canceled: true })
-  })
+  }, [open, onClose])
 
   useOnEvent<TAlertToggle>(OnAlertToggle, ({ open:toggle, props:alProps }) => {
-    const updated = exists(toggle) ? toggle : !open
+    const updated = exists<boolean>(toggle) ? toggle : !open
     if(updated === open) return
     
     setOpen(updated)

@@ -3,7 +3,7 @@ import type { TFileModel, Repo } from '@GSH/types'
 import os from 'os'
 import path from 'path'
 import { promises } from 'node:fs'
-import { Exception } from '@GException'
+import { Exception } from '@GSH/exceptions/Exception'
 import { loadReport } from '@GSH/libs/fileSys/loadReport'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/models/buildFileModel'
@@ -13,7 +13,7 @@ import { getPathFromConfig, getRepoGobletDir } from '@gobletqa/goblet'
 import {
   AllowedWorldExtensions,
   DefinitionOverrideFolder
-} from '@GSH/constants'
+} from '@gobletqa/environment/constants'
 
 import { get } from '@keg-hub/jsutils/get'
 import { limbo } from '@keg-hub/jsutils/limbo'

@@ -5,7 +5,7 @@ import type {
   TBrowserContext,
   TSetBrowserDefaults,
   TBrowserContextOpts,
-} from '@GBB/types'
+} from '@gobletqa/shared/types'
 
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'

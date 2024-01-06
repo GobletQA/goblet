@@ -7,14 +7,14 @@ type TCheckTypes = {
   type:string,
   fileName:string,
   isFolder?:boolean,
-  typeMeta:TFileType
-  fileTypes:TFileTypes
+  typeMeta?:TFileType
+  fileTypes?:TFileTypes
   fileType:string|TFileType
 }
 
 type TCheckFileExt = {
   fileName:string,
-  typeMeta:TFileType
+  typeMeta?:TFileType
   fileType:string|TFileType,
 }
 
@@ -27,7 +27,7 @@ const getTypesMeta = (fileType:string|TFileType) => {
   
   return {
     fileTypes,
-    typeMeta: isObj<TFileType>(fileType) ? fileType : fileTypes[fileType]
+    typeMeta: isObj<TFileType>(fileType) ? fileType : fileTypes?.[fileType]
   }
 }
 
@@ -85,7 +85,7 @@ const checkFileExt = ({
   fileType,
 }:TCheckFileExt) => {
 
-  const ext = typeMeta.ext
+  const ext = typeMeta?.ext
   if (!fileName.includes('.')) return { file: `${fileName}.${ext}`, typeMeta }
 
   const last = fileName.split('.').pop()

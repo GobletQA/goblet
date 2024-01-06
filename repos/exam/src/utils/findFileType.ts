@@ -9,18 +9,17 @@ export const findFileType = (
   const { ext, fileType } = file
 
   const typeMap = { ...FileTypeMap, ...extMap }
-  
   if(fileType && typeMap[fileType]) return typeMap[fileType]
 
   const fileExt = ext || path.extname(file.location).replace(/^\./, ``)
-  if(fileExt && typeMap[fileExt]) return typeMap[fileType]
+  if(fileExt && typeMap[fileExt]) return typeMap[fileExt]
 
   const last = file.location.split(`/`).pop().trim()
 
   return typeMap[last]
 }
 
-    // const fileExt = file.ext || path.extname(file.location).replace(/^\./, ``)
-    // const override = opts.override
-    //   || this.baseTransformExt.includes(fileExt) && fallback
-    //   || typeClassFromLoc<IExTransform>(file, this.transformTypes)
+// const fileExt = file.ext || path.extname(file.location).replace(/^\./, ``)
+// const override = opts.override
+//   || this.baseTransformExt.includes(fileExt) && fallback
+//   || typeClassFromLoc<IExTransform>(file, this.transformTypes)

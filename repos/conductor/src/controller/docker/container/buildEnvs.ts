@@ -1,4 +1,4 @@
-import type { TImgConfig } from '@gobletqa/conductor/types'
+import type { TImgConfig } from '@gobletqa/shared/types'
 
 import { get } from '@keg-hub/jsutils/get'
 import { exists } from '@keg-hub/jsutils/exists'

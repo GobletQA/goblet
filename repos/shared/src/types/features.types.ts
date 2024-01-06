@@ -7,11 +7,6 @@ import type {
   TBackgroundAst
 } from '@ltipton/parkin'
 
-export enum EStepVariant {
-  regex = 'regex',
-  expression = 'expression'
-}
-
 export type TStepToken = {
   [key:string]: any
 }

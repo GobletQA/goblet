@@ -1,6 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import '../../configs/aliases'
+import '@gobletqa/configs/aliases'
 
 let fileLoc:string
 // @ts-ignore

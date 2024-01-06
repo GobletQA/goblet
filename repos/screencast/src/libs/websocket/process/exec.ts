@@ -1,13 +1,24 @@
-import type {
-  TProcConfig,
-  TCmdExecOpts,
-  TCmdExecEvents,
-} from '@GSC/types'
-
 import { spawn } from 'child_process'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+
+export type TCmdExecOpts = {
+  cwd?: string
+  gid?: number,
+  uid?: number,
+  shell?: string,
+  detached?: boolean,
+  stdio?: string | string[],
+  env?:Record<string, string>,
+}
+
+export type TCmdExecEvents = {
+  onError?:(error:string, pid:string) => any
+  onExit?:(code:number) => any
+  onStdOut?:(data:string, pid:string) => any
+  onStdErr?:(error:string, pid:string) => any
+}
 
 /**
  * Default options when executing a command
@@ -27,7 +38,6 @@ const defOpts:TCmdExecOpts = {
  * @export
  */
 export const exec = async (
-  config:TProcConfig = noOpObj as TProcConfig,
   cmd:string,
   args:string[] = noPropArr as string[],
   opts:TCmdExecOpts = noOpObj as TCmdExecOpts,

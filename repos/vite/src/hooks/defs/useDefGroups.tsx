@@ -1,4 +1,4 @@
-import type { TStepDef } from '@ltipton/parkin'
+import type { TStepDef } from '@gobletqa/race'
 import type {
   TDefGroup,
   TDefLookupMap,
@@ -9,14 +9,18 @@ import type {
   TDefGroupTypes,
 } from '@types'
 
+
 import { useMemo } from 'react'
-import { useInline } from '../useInline'
 import { useDefs, useRepo } from '@store'
 import { EE } from '@services/sharedService'
 import { capitalize } from '@keg-hub/jsutils'
 import { OpenEditorFileEvt } from '@constants'
-import { FileOpenIcon, AddCircleIcon } from '@gobletqa/components'
 import { addStepFromDefinition } from '@actions/features/local'
+import {
+  useInline,
+  FileOpenIcon,
+  AddCircleIcon,
+} from '@gobletqa/components'
 
 type TOnClose = (event:MouseEvent | TouchEvent) => void
 export type THDefGroups = {

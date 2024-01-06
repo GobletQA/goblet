@@ -4,11 +4,17 @@ import type { TNavItem, TSideNavToggleProps } from '@types'
 import { ESideNav } from '@types'
 import { useCallback } from 'react'
 import { navItemNameToTitle } from '@utils'
+import { EE } from '@services/sharedService'
 import { isFunc, exists } from '@keg-hub/jsutils'
+import { useOnEvent } from '@gobletqa/components'
 import { SideNav as SideNavItems } from '@constants/nav'
-import { useOnEvent, useEventEmit } from '@gobletqa/components'
 import { ToggleSideNavEvt, SideNavToggledEvt } from '@constants/events'
 import { navToggleTestRunsView } from '@actions/testRuns/navToggleTestRunsView'
+
+const sideNavToggled = (params:TSideNavToggleProps) => EE.emit<TSideNavToggleProps>(
+  SideNavToggledEvt,
+  params
+)
 
 export const findNavItemName = (element:HTMLElement):ESideNav|undefined => {
   const navItem = element?.dataset?.navItem as ESideNav
@@ -39,8 +45,6 @@ export const useSideNavToggle = (
   setActive:Dispatch<SetStateAction<ESideNav | undefined>>
 ) => {
 
-  const sideNavToggled = useEventEmit(SideNavToggledEvt)
-
   useOnEvent<TSideNavToggleProps>(ToggleSideNavEvt, ({ open, name, force }) => {
     const nextOpen = exists(open) ? open as boolean : true
     setOpen(nextOpen, force)
@@ -70,7 +74,7 @@ export const useSideNavToggle = (
     else {
       setOpen(true, true)
       setActive(name)
-      sideNavToggled({ open: true, active: name })
+      sideNavToggled({ open: true, name })
     }
 
   }, [open, active])

@@ -6,10 +6,11 @@
 
 const path = require('path')
 const { readdirSync } = require('fs')
-const { GobletRoot } = require('../gobletRoot')
+const { GobletRoot } = require('./gobletRoot')
 const { snakeCase } = require('@keg-hub/jsutils/snakeCase')
 const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
 const reposDir = path.join(GobletRoot, 'repos')
+
 
 /**
  * Finds all sub-repo paths from the <goblet-root>/repos directory
@@ -18,7 +19,7 @@ const reposDir = path.join(GobletRoot, 'repos')
  */
 const getDirectories = (source, existing) => {
   return readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
+    .filter(dirent => dirent.isDirectory() || dirent.isSymbolicLink())
     .map(dirent => dirent.name)
     .reduce(
       (values, name) => {

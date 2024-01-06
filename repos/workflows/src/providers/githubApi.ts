@@ -1,5 +1,6 @@
 import type { TGitOpts } from '@gobletqa/git'
 import type { AxiosRequestConfig } from 'axios'
+import type { TGitCreateRepoOpts } from '@gobletqa/git'
 import type {
   TApiConf,
   TRepoData,
@@ -8,8 +9,7 @@ import type {
   TBranchData,
   TBranchResp,
   TGHBranchMeta,
-  TGitCreateRepoOpts,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import { Rest } from '../constants'
 import axios, { AxiosError, } from 'axios'

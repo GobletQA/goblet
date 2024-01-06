@@ -5,14 +5,13 @@ import type { TModalRef, TModalComponent } from '@gobletqa/components'
 import { ERaceModal } from '@GBR/types'
 import { useWorld } from '@GBR/contexts'
 import { deepMerge } from '@keg-hub/jsutils'
-import { useState, useEffect } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { useState, useEffect, useCallback } from 'react'
 import { OnWorldEditorModalClose } from '@GBR/constants'
 import { WorldEditor } from '@GBR/components/WorldEditor'
 import {
   Loading,
   WorldIcon,
-  useInline,
   useOnEvent
 } from '@gobletqa/components'
 
@@ -24,10 +23,10 @@ export const WorldEditorModal:TModalRef = (props:TModalComponent) => {
     !copy && setWorld(deepMerge<TWorldConfig>(world))
   }, [])
 
-  const onUpdate = useInline<TOnWorldChange>((props) => {
+  const onUpdate = useCallback<TOnWorldChange>((props) => {
     const { world } = props
     world && setWorld(world)
-  })
+  }, [])
 
   useOnEvent(OnWorldEditorModalClose, () => {
     copy && updateWorld({ world: copy, replace: true })

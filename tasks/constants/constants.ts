@@ -1,7 +1,7 @@
 
 import path from 'path'
-import { ETestType } from '../types'
-import { testUtilsDir } from '../paths'
+import { testifyDir } from '../paths'
+import { ETestType } from '@gobletqa/shared/enums'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
 import { FullBrowserNames } from '@gobletqa/browser'
 
@@ -30,11 +30,14 @@ export const Browsers = {
   webkit: `--webkit`,
 }
 
-export const TestConfigMap = {
-  [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.feature.config.ts`),
+const cfgOpts = process.env.GOBLET_TESTS_ACTION
+  ? {dir:`dist`, ext:`js`}
+  : {dir:`src`, ext: `ts`}
 
-  [ETestType.unit]: path.join(testUtilsDir, `src/exam/exam.unit.config.js`),
-  [ETestType.waypoint]: path.join(testUtilsDir, `src/exam/exam.waypoint.config.js`),
+export const TestConfigMap = {
+  [ETestType.feature]: path.join(testifyDir, `${cfgOpts.dir}/exam/exam.feature.config.${cfgOpts.ext}`),
+  [ETestType.unit]: path.join(testifyDir, `${cfgOpts.dir}/exam/exam.unit.config.${cfgOpts.ext}`),
+  [ETestType.waypoint]: path.join(testifyDir, `${cfgOpts.dir}/exam/exam.waypoint.config.${cfgOpts.ext}`),
 }
 
 export const TestTypes = {

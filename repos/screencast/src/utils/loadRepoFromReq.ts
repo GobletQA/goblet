@@ -1,10 +1,10 @@
-import type { TGitOpts } from '@GSC/types'
+import type { TGitOpts } from '@gobletqa/git'
 import type { Request as EXRequest } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TWFGobletConfig } from '@gobletqa/workflows'
 
 
-import { Workflows } from '@gobletqa/workflows'
+import { workflows } from '@gobletqa/workflows'
 import { pickKeys } from '@keg-hub/jsutils/pickKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
@@ -36,7 +36,6 @@ export const loadRepoFromReq = async (
     throw new Error(`Endpoint requires a locally mounted path, I.E. /repos/:repo-name/*`)
 
   const { iat, exp, ...user } = (req as JWTRequest).auth
-  const workflows = new Workflows()
   const { repo } = await workflows.status(config, { ...repoGit, ...user } as TGitOpts)
 
   if (!repo) throw new Error(`Requested repo does not exist`)

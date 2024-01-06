@@ -4,8 +4,7 @@ import type { Request as JWTRequest } from 'express-jwt'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { updateToken } from '@GBE/utils/updateToken'
 import { authService } from '@GBE/services/firebase'
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 
 /**

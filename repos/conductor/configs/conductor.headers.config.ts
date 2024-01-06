@@ -1,10 +1,11 @@
+import { ENVS } from '@gobletqa/environment'
 const {
   GB_CD_FORWARD_HOST_HEADER,
   GB_CD_FORWARD_PORT_HEADER,
   GB_CD_FORWARD_PROTO_HEADER,
   GB_CD_FORWARD_ROUTE_HEADER,
   GB_CD_FORWARD_SUBDOMAIN_HEADER,
-} = process.env
+} = ENVS
 
 export const conductorHeaders = {
   hostHeader: GB_CD_FORWARD_HOST_HEADER,

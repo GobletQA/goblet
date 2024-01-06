@@ -1,6 +1,6 @@
 import type { TBEParamReq } from '@GBE/types'
 import { Response } from 'express'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api'
 
 type TReq = {
   containerRef:string

@@ -3,12 +3,16 @@ import type { TExamConfig } from '@GEX/types'
 import { getCPUCount } from '@GEX/utils/getCPUCount'
 import { printTooManyWorkers } from '@GEX/debug/messages'
 
-/** */
+/**
+ * Gets the number of works the can be used based on the CPU count
+ * Attempts to be 1 less then the total number of CPUs available
+ * If more then 1 CPU is available
+ */
 const getWorkerNum = (workers?:number, locationsAmt:number=1) => {
   const oneLessCpus = getCPUCount()
 
   let amount = workers > 0 ? workers : oneLessCpus > 0 ? oneLessCpus : 1
-  
+
   if(amount > oneLessCpus){
     printTooManyWorkers(amount, oneLessCpus)
     amount = amount > oneLessCpus ? oneLessCpus : amount
@@ -40,13 +44,21 @@ const getWAndC = (exam:TExamConfig, locationsAmt:number) => {
 /**
  * Split an array of items up into separate chunks
  */
-const chunkify = <T=any>(arr:T[], size=1) => {
+const chunkify = <T=any>(arr:T[], workers=1, concurrency=1) => {
+  if(workers < 1) workers = 1
+  if(concurrency < 1) concurrency = 1
+
   const chunks:Record<string|number, T[]> = {}
   let ref = 0
-  if(size < 1) size = 1
+  
+  if(workers === 1){
+    chunks[ref] = arr.slice()
+    return chunks
+  }
+  
 
-  for (let i = 0; i < arr.length; i += size){
-    chunks[ref] = arr.slice(i, i + size)
+  for (let i = 0; i < arr.length; i += concurrency){
+    chunks[ref] = arr.slice(i, i + concurrency)
     ref++
   }
 
@@ -69,8 +81,8 @@ export const splitWork = (exam:TExamConfig & { file?:string }, locations:string[
 
   const chunks = exam.runInBand
     ? {[0]: locations}
-    : chunkify<string>([...locations], concurrency)
-    
+    : chunkify<string>([...locations], workers, concurrency)
+
   return {
     total,
     chunks,

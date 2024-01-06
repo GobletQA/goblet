@@ -1,13 +1,12 @@
 import type { TRawAuthUser } from '@types'
 
+import { EAuthType } from '@types'
 import { authApi } from '@services/authApi'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { Exception } from '@services/sharedService'
-import { EAuthType, EContainerState } from '@types'
 import { signOutAuthUser } from './signOutAuthUser'
 import { formatUser } from '@utils/admin/formatUser'
-import { waitForRunning } from '@actions/container/api/waitForRunning'
-import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
+import { updateContainerState } from '@actions/container/api/updateContainerState'
 
 /**
  * Called when a user is authorized to access Goblet-Admin
@@ -20,7 +19,6 @@ export const onSuccessAuth = async (
   type:EAuthType,
   appwriteCheck?:boolean
 ) => {
-  let statusCodeNum
 
   try {
     const userData = await formatUser(authData, type)
@@ -29,12 +27,9 @@ export const onSuccessAuth = async (
 
     const status = await authApi.validate(userData)
 
-    status?.meta?.state === EContainerState.Creating
-      && waitForRunning()
-
     // Wrap container and repos so if they throw, the login auth is still valid
     try {
-      await setContainerRoutes(status)
+      return await updateContainerState(status)
     }
     catch(err:any){
       if(appwriteCheck) return [err as Error]

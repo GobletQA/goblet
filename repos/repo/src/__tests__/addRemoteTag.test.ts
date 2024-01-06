@@ -1,9 +1,6 @@
 
-import {EProvider} from '../../../workflows/src/types/index'
-import {
-  hashIO,
-  gitOpts
-} from '../../../workflows/src/git/gitCmd/__mocks__'
+import {EProvider} from '@gobletqa/shared/enums'
+
 
 describe(`gitTag`, () => {
 

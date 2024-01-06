@@ -1,7 +1,6 @@
 import type { Response, Request } from 'express'
 
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 export const apiRoot = async (req:Request, res:Response) => {
   const config = req.app.locals.config

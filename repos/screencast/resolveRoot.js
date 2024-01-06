@@ -1,4 +1,4 @@
-require('../../configs/aliases')
+require('@gobletqa/configs/aliases')
 
 // import path from 'path'
 // import { fileURLToPath } from 'url'

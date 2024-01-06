@@ -1,11 +1,11 @@
-import type { TGitData } from '@GWF/types'
+import type { TGitData } from '@gobletqa/git'
 
 import path from 'path'
 import { existsSync } from 'fs'
 import { Logger } from '@gobletqa/logger'
 import { copyContent } from './copyContent'
 import { wait } from '@keg-hub/jsutils/wait'
-import { aliases } from '@GConfigs/aliases.config'
+import { aliases } from '@gobletqa/configs/aliases.config'
 import { replaceGobletConfigRef, configFromFolder } from '@gobletqa/goblet'
 
 
@@ -32,8 +32,7 @@ const checkGobletExists = (gitData:TGitData, template:string) => {
 
   if(!config) return false
 
-  Logger.info(`Found existing goblet config at ${gitData.local}`)
-  console.log(config?.config)
+  Logger.info(`Found existing goblet config at ${config?.location}`)
 
   return true
 

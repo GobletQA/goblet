@@ -1,1 +1,1 @@
-export * from '@GBB/constants'
+export * from '@gobletqa/environment/constants'

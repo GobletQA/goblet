@@ -1,8 +1,9 @@
 import type { MouseEventHandler } from 'react'
-import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
+import type { TRaceFeature } from '@GBR/types'
 
 import { Desire } from './Desire'
 import { Reason } from './Reason'
+import { useCallback } from 'react'
 import { Section } from '../Section'
 import { Perspective } from './Perspective'
 import { removeStory } from '@GBR/actions/story'
@@ -10,7 +11,6 @@ import { ESectionExt, ESectionType } from '@GBR/types'
 import {
   gutter,
   TrashIcon,
-  useInline,
   stopEvent,
 } from '@gobletqa/components'
 
@@ -38,10 +38,10 @@ export const Story = (props:TMeta) => {
   
   const hasStory = Boolean(desire || reason || perspective)
   
-  const onRemove = useInline<MouseEventHandler<HTMLButtonElement>>((evt) => {
+  const onRemove = useCallback<MouseEventHandler<HTMLButtonElement>>((evt) => {
     stopEvent(evt)
     removeStory()
-  })
+  }, [])
 
   return (
     <Section

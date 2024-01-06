@@ -1,5 +1,4 @@
 import type { MutableRefObject } from 'react'
-import type { TStepDef } from '@ltipton/parkin'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
   TFileTree,
@@ -11,11 +10,12 @@ import { ESideNav } from '@types'
 import { useFiles, useRepo } from '@store'
 import { useMemo, useCallback } from 'react'
 import { EE } from '@services/sharedService'
-import { useEventEmit } from '@gobletqa/components'
+import { set } from '@keg-hub/jsutils/set'
+import { exists } from '@keg-hub/jsutils/exists'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { confirmModal } from '@actions/modals/modals'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { toggleModal } from '@actions/modals/toggleModal'
-import { exists, set, emptyObj } from '@keg-hub/jsutils'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { useDecorations } from '@hooks/monaco/useDecorations'
 import { useMonacoConfig } from '@hooks/monaco/useMonacoConfig'
@@ -37,6 +37,16 @@ import {
   useOnDeleteFile,
   useOnPathChange,
 } from '../files'
+
+
+const onBeforeAddFile = (props:TSideNavToggleProps) => EE.emit<TSideNavToggleProps>(
+  ToggleSideNavEvt,
+  {
+    open: true,
+    name: ESideNav.Files,
+    ...props
+  }
+)
 
 
 const emptyFileTree = emptyObj as TFileTree
@@ -86,18 +96,14 @@ export const useMonacoHooks = (
   const onDeleteFile = useOnDeleteFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
   const onRenameFile = useOnRenameFile(files, rootPrefix)
-  const onBeforeAddFile = useEventEmit<TSideNavToggleProps>(
-    ToggleSideNavEvt,
-    { open: true, name: ESideNav.Files }
-  )
 
   const config = useMonacoConfig()
   const { theme, ...options } = useSettingValues<TMonacoSettingValues>(`monaco`)
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useOpenMonacoFile({ editorRef, rootPrefix, })
-  useDecorations({ editorRef, repo, rootPrefix })
+  useOpenMonacoFile({editorRef, rootPrefix})
+  useDecorations({editorRef, repo, rootPrefix})
 
   return {
     config,

@@ -86,6 +86,9 @@ export type TExamCfg = TLoaderCfg
      */
     bail?:number|boolean
 
+    // Exit test execution after the first failed test
+    exitOnFailed?:boolean
+
     // Custom reporter options
     reporter?:TExReporterCfg
 

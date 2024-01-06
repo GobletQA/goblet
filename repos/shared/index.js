@@ -1,2 +1,2 @@
-require('../../configs/aliases.config').registerAliases()
-module.exports = require('./src')
+require('@gobletqa/configs/aliases.config').registerAliases()
+module.exports = require('./dist')

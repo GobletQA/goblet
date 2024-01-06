@@ -2,20 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext"
   },
   "include": [
     "src",
     "configs",
-    "scripts",
-    "tasks/tasks.ts",
-    "src/vnc.ts",
-    "../shared",
-    "../testUtils",
-    "../workflows",
-    "src/bs.ts",
-    "../shared",
-    "../testUtils",
-    "../workflows"
+    "scripts"
   ]
 }

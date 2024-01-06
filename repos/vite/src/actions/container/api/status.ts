@@ -1,20 +1,15 @@
 import type { TRouteMeta } from '@types'
 
-import { EContainerState } from '@types'
 import { addToast } from '@actions/toasts'
 import { emptyObj } from '@keg-hub/jsutils'
 import { Exception } from '@services/sharedService'
 import { containerApi } from '@services/containerApi'
-import { connectModal } from '@actions/modals/modals'
-import { removeRepo } from '@actions/repo/local/removeRepo'
-import {clearContainerRoutes} from '../local/clearContainerRoutes'
-import { waitForRunning } from '@actions/container/api/waitForRunning'
-import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
-
+import { updateContainerState } from './updateContainerState'
 
 export type TStatusContainer = {
   fromIdle?:boolean
   params?:Record<any, any>
+  status?:TRouteMeta
 }
 
 /**
@@ -23,37 +18,27 @@ export type TStatusContainer = {
 export const statusContainer = async (
   props:TStatusContainer=emptyObj
 ):Promise<TRouteMeta | Error | string | void> => {
-  
-  const {
-    params,
-  } = props
-  
+
   addToast({
-    type: 'info',
+    type: `info`,
     message: `Getting Session status...`,
   })
 
-  const {
-    data,
-    error,
-    success,
-    statusCode,
-  } = await containerApi.status(params)
+  let status = props.status
+  if(!status){
+    const {
+      data,
+      error,
+      success,
+      statusCode,
+    } = await containerApi.status(props.params)
 
-  if(!success || error)
-    return new Exception(error || `Container status request failed`, statusCode)
+    status = data
 
-  const containerState = data?.meta?.state
-
-  if(containerState === EContainerState.Creating){
-    clearContainerRoutes() 
-    removeRepo()
-    connectModal()
+    if(!success || error)
+      return new Exception(error || `Container status request failed`, statusCode)
   }
+  
+  return await updateContainerState(status)
 
-  await setContainerRoutes(data)
-
-  return containerState !== EContainerState.Running
-    ? await waitForRunning()
-    : data
 }

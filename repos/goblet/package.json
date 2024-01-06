@@ -19,12 +19,13 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "pnpm l:build && pnpm types",
-    "l:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm tsup-node --config ./configs/tsup.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GGB/*,@gobletqa/goblet\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "format": "pnpm lint && pnpm pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -34,16 +35,14 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/configs": "workspace:*",
     "@gobletqa/environment": "workspace:*",
     "@gobletqa/logger": "workspace:*",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "glob": "10.3.10"
   },
   "devDependencies": {
-    "@types/debug": "4.1.9",
     "@types/node": "20.9.3",
-    "esbuild": "0.19.7",
-    "esbuild-register": "3.5.0",
-    "esbuild-plugin-path-alias": "1.0.7"
+    "tsup": "8.0.1"
   }
 }

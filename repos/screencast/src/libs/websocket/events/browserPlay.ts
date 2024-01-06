@@ -6,7 +6,6 @@ import type {
 
 import { Logger } from '@GSC/utils/logger'
 import { withRepo } from '@GSC/utils/withRepo'
-import { getDefinitions } from '@gobletqa/repo'
 import { playBrowser, WSPwConsole } from '@gobletqa/browser'
 import { joinBrowserConf } from '@GSC/utils/joinBrowserConf'
 import { formatTestEvt } from '@GSC/libs/websocket/utils/formatTestEvt'
@@ -21,7 +20,6 @@ export const browserPlay = (app:Express) => withRepo<TSocketEvtCBProps>(async ({
 
   const { action, browser, forwardLogs } = data
   const browserConf = joinBrowserConf(browser, app)
-  await getDefinitions(repo, false)
 
   const player = await playBrowser({
     repo,

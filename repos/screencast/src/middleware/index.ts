@@ -1,4 +1,5 @@
 export * from './setupRouter'
 export * from './setupServer'
 export * from './setupBrowser'
+export * from './setupOnReqEnd'
 export * from './setupEndpoints'

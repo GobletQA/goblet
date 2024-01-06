@@ -1,5 +1,7 @@
+import type { Express, Request } from 'express'
+
 import { expressjwt as jwt } from 'express-jwt'
-import { Express } from 'express'
+import { isBypassRoute } from '@GSH/utils/isBypassRoute'
 
 export const setupJWT = (app:Express, bypassRoutes:(string|RegExp)[]) => {
   const config = app.locals.config.server
@@ -13,6 +15,6 @@ export const setupJWT = (app:Express, bypassRoutes:(string|RegExp)[]) => {
         algorithms,
         credentialsRequired
       })
-      .unless({path: bypassRoutes})
+      .unless((req:Request) => isBypassRoute(req.originalUrl, bypassRoutes))
     )
 }

@@ -5,7 +5,6 @@ import type {
   TRunOpts,
   TRouteMeta,
   TImgConfig,
-  TImgsConfig,
   TDockerEvent,
   TUserHashMap,
   TContainerRef,
@@ -14,7 +13,7 @@ import type {
   TContainerInfo,
   TContainerMeta,
   TContainerInspect
-} from '@gobletqa/conductor/types'
+} from '@gobletqa/shared/types'
 
 import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
@@ -28,9 +27,9 @@ import { waitRetry } from '@GCD/utils/waitRetry'
 import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
 import { resolveHost } from './container/resolveHost'
+import { EContainerState } from '@gobletqa/shared/enums'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { isEmptyColl } from '@keg-hub/jsutils/isEmptyColl'
-import { EContainerState } from '@gobletqa/conductor/types'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
 import { buildContainerMap } from './container/buildContainerMap'

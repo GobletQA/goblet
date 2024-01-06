@@ -19,16 +19,7 @@ import { getDeployments } from '../../utils/devspace/getDeployments'
  */
 const renderAct = async ({ task, params }:TTaskActionArgs) => {
   setDeploymentEnvs(params.env)
-    /**
-   * Check the context and skip arrays for which apps to deploy
-   */
-  const deployments = getDeployments(params.context, params.skip, params.env)
-  const cmdArgs = [
-    `render`,
-    `--debug`
-  ]
-  deployments && deployments.length && cmdArgs.push(`--deployments`, deployments)
-
+  const cmdArgs = [`render`, `--debug`]
   getNpmToken()
   return await devspace(cmdArgs, params)
 }

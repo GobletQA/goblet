@@ -1,0 +1,62 @@
+{
+  "name": "@gobletqa/testify",
+  "version": "0.0.0",
+  "description": "Utility methods to help writing tests on with GobletQA",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "url": "git+https://github.com/GobletQA/goblet.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/GobletQA/goblet/issues"
+  },
+  "author": "Lance Tipton",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "pnpm build:tsup",
+    "build:tsup": "pnpm build:tf",
+    "build:tf": "tsup --config ./configs/tsup.config.ts",
+    "build:steps": "tsup --config ./configs/tsup.steps.config.ts",
+    "build:exam": "node -r esbuild-register configs/exam.cfg.build.ts",
+    "clean": "pnpm clean:dist; pnpm clean:nm",
+    "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
+    "clean:full": "pnpm clean; pnpm install",
+    "clean:nm": "rm -rf node_modules",
+    "depcheck": "depcheck --ignores=\"@GTU/*,@gobletqa/testify\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
+    "format": "pnpm lint && pnpm pretty",
+    "test:html": "node  -r esbuild-register src/exam/reporters/html/__tests__/generateHtml.ts",
+    "ex:dev": "GOBLET_CONFIG_BASE=$(pwd)/src/exam/__tests__ EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register ../exam/src/bin/exam.ts --config ../exam.config.ts --root $(pwd)/src/exam/__tests__",
+    "exam": "NODE_OPTIONS=\"-r esbuild-register --enable-source-maps\" exam --root $(pwd)/src/exam/__tests__ --config ../../../dist/exam/exam.config.js",
+    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
+    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
+  },
+  "dependencies": {
+    "@gobletqa/configs": "workspace:*",
+    "@gobletqa/browser": "workspace:*",
+    "@gobletqa/exam": "workspace:*",
+    "@gobletqa/environment": "workspace:*",
+    "@gobletqa/goblet": "workspace:*",
+    "@gobletqa/logger": "workspace:*",
+    "@gobletqa/repo": "workspace:*",
+    "@gobletqa/shared": "workspace:*",
+    "@keg-hub/jsutils": "10.0.0",
+    "@keg-hub/cli-utils": "0.9.0",
+    "@ltipton/parkin": "6.6.1",
+    "esbuild": "0.19.7",
+    "esbuild-register": "3.5.0",
+    "expect": "29.7.0",
+    "glob": "10.3.10",
+    "module-alias": "2.2.3",
+    "playwright": "1.40.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.9.3",
+    "esbuild-plugin-path-alias": "1.0.7",
+    "tsup": "8.0.1"
+  }
+}

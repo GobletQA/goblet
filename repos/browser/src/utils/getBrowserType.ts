@@ -1,9 +1,9 @@
-import type { EBrowserType, EBrowserName } from '@GBB/types'
+import type { EBrowserType, EBrowserName } from '@gobletqa/shared/enums'
 
 import { Logger } from '@GBB/utils/logger'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isEmpty } from '@keg-hub/jsutils/isEmpty'
-import { DefaultBrowser, BrowserMap } from '@GBB/constants'
+import { DefaultBrowser, BrowserMap } from '@gobletqa/environment/constants'
 
 /**
  * Checks the passed in browserType to ensure it the correct name

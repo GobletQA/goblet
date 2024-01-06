@@ -3,10 +3,10 @@ import type {
   TBrowserProps,
 } from '@types'
 
-import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 import { noOpObj } from '@keg-hub/jsutils'
-
+import { useCallback, useEffect } from 'react'
+import { useEffectOnce } from '@gobletqa/components'
 
 export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
   const {
@@ -42,7 +42,7 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
     _onCredentialsRequired,
   } = ext
 
-  return useCallback(() => {
+  const onRfbCfg = useCallback(() => {
     try {
 
       // URL is required, so don't build RFB any until the url exists
@@ -55,7 +55,8 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
         && disconnectRef?.current?.()
 
       if (!screen.current)
-        return connected.current && console.warn(`Error loading browser. Dom Element could not be found.`)
+        return connected.current
+          && console.warn(`Error loading browser. Dom Element could not be found.`)
 
       screen.current.innerHTML = ''
 
@@ -85,13 +86,14 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
       eventListeners.current.credentialsrequired = _onCredentialsRequired
       eventListeners.current.securityfailure = onSecurityFailure
 
-      Object.keys(eventListeners.current).forEach((evt:string) => {
-        const event = evt as keyof typeof eventListeners.current
-        eventListeners.current[event]
-          && _rfb.addEventListener(event, eventListeners.current[event] as any)
-      })
+      Object.keys(eventListeners.current)
+        .forEach((evt:string) => {
+          const event = evt as keyof typeof eventListeners.current
+          eventListeners.current[event]
+            && _rfb.addEventListener(event, eventListeners.current[event] as any)
+        })
 
-      onKeyDown && screen.current.addEventListener("keydown", onKeyDown, true)
+      onKeyDown && screen.current.addEventListener(`keydown`, onKeyDown, true)
       connected.current = true
 
     }
@@ -116,7 +118,23 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
     onCapabilities,
     compressionLevel,
     onSecurityFailure,
+    _onConnect,
+    _onDisconnect,
+    _onDesktopName,
+    _onCredentialsRequired,
   ])
+
+  useEffectOnce(() => {
+    
+    return () => {
+      if(screen.current && onKeyDown)
+        screen.current.removeEventListener(`keydown`, onKeyDown, true)
+
+      disconnectRef?.current?.()
+    }
+  })
+
+  return onRfbCfg
 
 }
 

@@ -10,8 +10,8 @@ import type {
 import { Logger } from "@GEX/utils/logger"
 import { filterErrMessage, spaceFromId } from "@GEX/utils/filterErrMessage"
 
-import { TestsResultStatus, TestsToSocketEvtMap } from "@GEX/constants"
 import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
+import { TestsResultStatus, TestsToSocketEvtMap } from '@gobletqa/environment/constants'
 
 const spaceMap = {
   file: `  `,

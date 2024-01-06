@@ -1,8 +1,8 @@
 import type { Response } from 'express'
 import type { TBEParamReq } from '@GBE/types'
 
-import { ForwardSubdomainHeader } from '@GCD/constants'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
+import { AppRouter } from '@gobletqa/shared/api'
+import { ForwardSubdomainHeader } from '@gobletqa/conductor'
 
 export const remove = async (req:TBEParamReq, res:Response) => {
   const conductor = req.app.locals.conductor

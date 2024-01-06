@@ -18,13 +18,15 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "repos/*"
+    "repos/*",
+    "!repos/joker"
   ],
   "scripts": {
     "bai": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildActionImgs.sh",
     "bdi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildDevImgs.sh",
     "bgi": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/buildGobletImgs.sh",
     "build": "pnpm -r build",
+    "build:tsup": "pnpm -r build:tsup",
     "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r ./configs/aliases.js tasks/entry.ts deploy build -- frontend=true",
     "bundle": "node scripts/bundle.js",
@@ -39,6 +41,8 @@
     "doc": "node -r ./configs/aliases.js tasks/entry.ts docker",
     "dep": "node -r ./configs/aliases.js tasks/entry.ts deploy",
     "dprod": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/deployToProd.sh",
+    "depcheck": "pnpm -r depcheck",
+    "doc:tscfg": "node -r ./configs/aliases.js scripts/js/dockerTSCfg.ts",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:all": "pnpm format && pnpm -r format",
     "format:lint": "pnpm lint .",
@@ -68,7 +72,10 @@
     "overrides": {
       "@emotion/react": "11.11.1",
       "@keg-hub/args-parse": "10.0.1",
-      "@keg-hub/cli-utils": "0.9.0"
+      "@keg-hub/cli-utils": "0.9.0",
+      "has": "npm:@nolyfill/has@latest",
+      "isarray": "npm:@nolyfill/isarray@latest",
+      "side-channel": "npm:@nolyfill/side-channel@latest"
     },
     "peerDependencyRules": {
       "onlyBuiltDependencies": [
@@ -101,20 +108,16 @@
   },
   "dependencies": {
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": "9.10.0",
+    "@keg-hub/jsutils": "10.0.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "esbuild": "0.19.7",
     "esbuild-register": "3.5.0",
     "module-alias": "2.2.3"
   },
   "devDependencies": {
-    "@ltipton/esdev": "0.2.1",
-    "@ltipton/parkin": "6.5.1",
     "@types/jest": "29.5.5",
     "esbuild-jest": "0.5.0",
-    "jest": "29.7.0",
-    "playwright": "1.40.0",
-    "typescript": "5.2.2"
+    "jest": "29.7.0"
   },
   "optionalDependencies": {
     "@commitlint/cli": "16.1.0",

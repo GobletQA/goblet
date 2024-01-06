@@ -113,7 +113,7 @@ module.exports = {
           '!/repos/logger',
           '!/repos/browser',
           '!/repos/workflows',
-          '!/repos/testUtils',
+          '!/repos/testify',
           '!/repos/environment',
           // Ignore the dist folders so local bundles are not synced
           '/repos/logger/dist',
@@ -125,7 +125,7 @@ module.exports = {
           '/repos/shared/dist',
           '/repos/repo/dist',
           '/repos/workflows/dist',
-          '/repos/testUtils/dist',
+          '/repos/testify/dist',
           '/repos/environment/dist',
         ]
       },
@@ -148,6 +148,7 @@ module.exports = {
       portForward: {
         ports: [
           `GB_BE_PORT`,
+          `GB_DT_SERVER_PORT`,
         ]
       },
       sync: {
@@ -156,6 +157,7 @@ module.exports = {
           '!/tsconfig.json',
           '!/repos/backend',
           '!/repos/conductor',
+          '!/repos/devtools',
           '!/repos/environment',
           '!/repos/goblet',
           '!/repos/git',
@@ -165,14 +167,15 @@ module.exports = {
           '!/repos/shared',
           '!/repos/workflows',
           // Ignore the dist folders so local bundles are not synced
+          '/repos/git',
           '/repos/repo/dist',
           '/repos/goblet/dist',
-          '/repos/git',
           '/repos/logger/dist',
           '/repos/shared/dist',
           '/repos/backend/dist',
           '/repos/workflows/dist',
           '/repos/conductor/dist',
+          '/repos/devtools/public',
           '/repos/environment/dist',
         ]
       },
@@ -196,6 +199,7 @@ module.exports = {
           `DISPLAY`,
           `PLAYWRIGHT_*`,
           `GOBLET_KIND_*`,
+          `GB_DT_REMOTE_*`,
           `GB_SC_ACTIVE`,
           `GB_LOG_LEVEL`,
           `GB_KUBE_CONTEXT`,
@@ -203,9 +207,12 @@ module.exports = {
           `GB_SERVER_ORIGINS`,
           `GB_LOCAL_DEV_MODE`,
           `GB_GIT_REMOTE_REF`,
+          `GB_DT_SERVER_PORT`,
           `GB_LT_TOKEN_SECRET`,
           `GB_GIT_PROVIDER_DATA`,
           `GB_GIT_GLOBAL_IGNORE`,
+          `GB_DT_REMOTE_DEBUG_PORT`,
+          `GB_DT_REMOTE_BROWSER_ORIGINS`,
         ],
         /**
         * ENVs to not include in the backend
@@ -280,6 +287,12 @@ module.exports = {
     },
     screencast: {
       contexts: [`screencast`, `sc`],
+      portForward: {
+        ports: [
+          `GB_DT_PROXY_PORT`,
+          `GB_DT_REMOTE_DEBUG_PORT`,
+        ]
+      },
       sync: {
         excludePaths: [
           '**',
@@ -293,7 +306,7 @@ module.exports = {
           '!/repos/joker',
           '!/repos/shared',
           '!/repos/browser',
-          '!/repos/testUtils',
+          '!/repos/testify',
           '!/repos/workflows',
           '!/repos/screencast',
           '!/repos/environment',
@@ -302,11 +315,12 @@ module.exports = {
           '/repos/exam/dist',
           '/repos/repo/dist',
           '/repos/git/dist',
+          '/repos/latent/dist',
           '/repos/logger/dist',
           '/repos/goblet/dist',
           '/repos/shared/dist',
           '/repos/browser/dist',
-          '/repos/testUtils/dist',
+          '/repos/testify/dist',
           '/repos/workflows/dist',
           '/repos/screencast/dist',
           '/repos/environment/dist',

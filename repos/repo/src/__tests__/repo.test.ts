@@ -2,7 +2,7 @@ import { getClientWorld } from '../getClientWorld'
 import { Parkin } from '@ltipton/parkin'
 import { getFileTypes } from '@gobletqa/goblet'
 import {
-  Workflows,
+  workflows,
   createGoblet,
   statusGoblet,
   GitlabGraphApi,
@@ -166,7 +166,6 @@ describe('Repo', () => {
   it('should call the static disconnect method and return the result', async () => {
     const username = 'testuser'
     const expectedDisconnectResult = undefined
-    const workflows = new Workflows()
     const result = await workflows.disconnect({ username })
 
     // @ts-ignore
@@ -187,7 +186,6 @@ describe('Repo', () => {
     const description = 'Test repo'
     const organization = 'testorg'
     const expectedCreateResult = { /* mock create result */ }
-    const workflows = new Workflows()
     const result = await workflows.create({
       name,
       token,
@@ -230,7 +228,6 @@ describe('Repo', () => {
     mockUrl = { host: 'github.com', pathname: '/testuser/testrepo.git' }
     // @ts-ignore
     URL.mockImplementation(() => mockUrl)
-    const workflows = new Workflows()
     const result = await workflows.fromWorkflow({
       token,
       branch,

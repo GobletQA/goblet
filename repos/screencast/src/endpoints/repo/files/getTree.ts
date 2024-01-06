@@ -1,8 +1,7 @@
 import type { Response, Request } from 'express'
 
-import { apiRes } from '@gobletqa/shared/api/express/apiRes'
-import { AppRouter } from '@gobletqa/shared/api/express/appRouter'
-import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
+import { buildFileTree } from '@gobletqa/shared/fs'
+import { apiRes, AppRouter } from '@gobletqa/shared/api'
 
 /**
  * Iterates through the docker mounted volume of the test root folder

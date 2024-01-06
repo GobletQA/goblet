@@ -1,3 +1,4 @@
+import packcfg from '../package.json'
 import { register } from 'esbuild-register/dist/node'
 register()
 
@@ -14,15 +15,21 @@ export default defineConfig(async () => {
   await fs.rm(examOutdir, { recursive: true, force: true })
   
   return {
-    dts:true,
     clean: true,
+    name: `exam`,
     sourcemap: true,
     splitting: false,
     entry: [examIn],
     outDir: examOutdir,
-    format: [`cjs`, `esm`],
+    format: [`cjs`],
+    esbuildOptions:(options, context) => {
+      options.external = [
+        ...(options?.external ?? []),
+        ...(Object.keys(packcfg.dependencies) ?? []),
+        ...(Object.keys(packcfg.devDependencies) ?? []),
+      ]
+    },
     async onSuccess() {
-      await fs.rm(path.join(examOutdir, `Users`), { recursive: true, force: true })
       console.log(`Module "@gobletqa/exam" built successfully`)
     },
   }

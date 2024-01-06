@@ -1,11 +1,11 @@
-import type { TRunnerCls, TPipelineArgs, TStateObj, IExamRunner } from "@GEX/types"
+import type { TRunnerCls, TPipelineArgs, IExamRunner } from "@GEX/types"
 
 import { promises } from 'fs'
-import pMapSeries from 'p-map-series'
+import {toFileModel} from '@GEX/utils/toFileModel'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
-import {toFileModel} from "@GEX/utils/toFileModel"
-import {ensureArr} from "@keg-hub/jsutils/ensureArr"
-import {typeClassFromLoc} from "@GEX/utils/typeClassFromLoc"
+import {ensureArr} from '@keg-hub/jsutils/ensureArr'
+import { promiseSeries } from '@GEX/utils/promiseSeries'
+import {typeClassFromLoc} from '@GEX/utils/typeClassFromLoc'
 
 const { readFile } = promises
 
@@ -42,7 +42,7 @@ export const loadRunnerTask = async (args:TPipelineArgs) => {
 
   const looper = getTestRunner(args, {...state?.passthrough?.runner}, CacheRunners)
 
-  const withRunners = await pMapSeries(ensureArr(testMatch), looper)
+  const withRunners = await promiseSeries(ensureArr(testMatch), looper)
   // Clear the cache after loading all runners
   CacheRunners = {}
 

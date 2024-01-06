@@ -1,5 +1,6 @@
+import type { TImgConfig, TCreatePortsObj } from '@gobletqa/shared/types'
 import { getPort } from 'get-port-please'
-import { TImgConfig, TCreatePortsObj } from '@gobletqa/conductor/types'
+
 
 /**
  * Finds a free port on the host machine

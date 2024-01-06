@@ -10,11 +10,8 @@ import type {
 
 import { useEditor } from '@GBR/contexts'
 import { useCallback, useState } from 'react'
+import { stopEvent } from '@gobletqa/components'
 import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
-import {
-  useInline,
-  stopEvent,
-} from '@gobletqa/components'
 import {
   removeTab,
   featureToTab,
@@ -81,7 +78,7 @@ export const useEditorActions = (props:THEditorActions) => {
       && setEditingName(loc)
   }, [editingName])
 
-  const onTabClose = useInline<TTabAction>((tab, evt) => {
+  const onTabClose = useCallback<TTabAction>((tab, evt) => {
     evt && stopEvent(evt)
 
     const { tabs, active } = removeTab(openedTabs, tab)
@@ -93,9 +90,18 @@ export const useEditorActions = (props:THEditorActions) => {
     onFeatureClose?.(feat)
 
     setFeature(nextFeat)
-  })
+  }, [
+    openedTabs,
+    setFeature,
+    featureGroups,
+    setOpenedTabs,
+    onFeatureClose,
+  ])
 
-  const onDeleteFeature = useInline<TOnDeleteFeature>((__, loc) => deleteFeature?.(loc))
+  const onDeleteFeature = useCallback<TOnDeleteFeature>(
+    (__, loc) => deleteFeature?.(loc),
+    [deleteFeature]
+  )
 
   /**
    * General hook for both sidebar and tab clicks on a feature
