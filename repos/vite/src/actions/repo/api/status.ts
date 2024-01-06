@@ -7,9 +7,9 @@ import type {
 
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
+import { repoApi } from '@services/repoApi'
 import { connectModal } from '@actions/modals'
 import { removeRepo } from '../local/removeRepo'
-import { apiRequest } from '@utils/api/apiRequest'
 import { Exception } from '@services/sharedService'
 import { StatusTypes, AuthActive } from '@constants'
 import { localStorage } from '@services/localStorage'
@@ -38,7 +38,7 @@ const setNoLocalMountState = async (status:TRepoStatus) => {
   }
 
   addToast({
-    type: 'warn',
+    type: `warn`,
     message: status.message,
   })
   await removeRepo()
@@ -57,7 +57,7 @@ const setNoLocalMountState = async (status:TRepoStatus) => {
  */
 const setNoRepoStatus = (status:TRepoStatus) => {
   addToast({
-    type: 'error',
+    type: `error`,
     message: `Repo status could not be determined`,
   })
 
@@ -88,9 +88,7 @@ export const statusRepo = async ({
     error,
     success,
     statusCode
-  } = await apiRequest<TApiRepoResp>({
-    method: 'GET',
-    url: `/repo/status`,
+  } = await repoApi.repoStatus<TApiRepoResp>({
     params: {...savedRepo?.git},
     headers: routes?.[ScreencastPort]?.headers,
   })

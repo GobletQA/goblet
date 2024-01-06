@@ -1,4 +1,4 @@
-import { Logger } from '../../../utils/logger'
+import { EContainerState } from '@gobletqa/shared/enums'
 
 export const shouldHydrate = (
   state:string,
@@ -6,20 +6,29 @@ export const shouldHydrate = (
   deletionTimestamp:string|Date,
 ) => {
 
-  if(state === `Failed`){
-    Logger.info(`Can not hydrate failed pod!`)
-    return false
-  }
+  if(state === `Failed`)
+    return {
+      hydrate: false,
+      reason: EContainerState.Error,
+      message: `Can not hydrate failed pod!`
+    }
 
-  if(eventType === `MODIFIED` && deletionTimestamp){
-    Logger.info(`Skipping pod hydrate, pod scheduled for termination`)
-    return false
-  }
+  if(deletionTimestamp)
+    return {
+      hydrate: false,
+      reason: EContainerState.Terminated,
+      message: `Skipping pod hydrate, pod scheduled for termination`
+    }
 
-  if(state === `Pending`){
-    Logger.info(`Can not hydrate pending pod, waiting for ready state...`)
-    return false
-  }
+  if(state === `Pending`)
+    return {
+      hydrate: false,
+      reason: EContainerState.Creating,
+      message: `Can not hydrate pending pod, waiting for ready state...`
+    }
 
-  return true
+  return {
+    hydrate: true,
+    reason: EContainerState.Running,
+  }
 }
