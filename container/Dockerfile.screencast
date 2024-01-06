@@ -67,12 +67,7 @@ RUN rm -rf tasks/definitions/index.ts && \
     rm -rf tsconfig.json && \
     rm -rf configs/node_modules && \
     rm -rf configs/app.pm2.config.js && \
-    rm -rf configs/commit-types.json && \
-    rm -rf configs/commitlint.config.js && \
-    rm -rf configs/eslintrc.config.js && \
-    rm -rf configs/lint-staged.config.js && \
     rm -rf configs/pm2.config.js && \
-    rm -rf configs/prettier.config.js && \
     rm -rf /goblet/app/repos && \
     rm -rf /goblet/app/node_modules
 COPY repos/screencast/tsconfig.docker.json tsconfig.json
