@@ -49,7 +49,7 @@ export default defineConfig(async () => {
       },
     },
     plugins: [
-      million.vite({ auto: true }),
+      million.vite({ auto: true, mute: true }),
       react(),
       comlink(),
       monacoEditor({

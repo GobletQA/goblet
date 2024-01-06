@@ -134,6 +134,7 @@ COPY --from=goblet-build /goblet/app/repos/goblet/dist repos/goblet/dist
 COPY --from=goblet-build /goblet/app/repos/git/dist repos/git/dist
 COPY --from=goblet-build /goblet/app/repos/repo/dist repos/repo/dist
 COPY --from=goblet-build /goblet/app/repos/exam/dist repos/exam/dist
+COPY --from=goblet-build /goblet/app/repos/exam/.bin repos/exam/.bin
 COPY --from=goblet-build /goblet/app/repos/workflows/dist repos/workflows/dist
 COPY --from=goblet-build /goblet/app/repos/backend/dist repos/backend/dist
 COPY --from=goblet-build /goblet/app/repos/screencast/dist repos/screencast/dist

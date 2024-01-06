@@ -873,6 +873,9 @@ importers:
       '@keg-hub/jsutils':
         specifier: 10.0.0
         version: 10.0.0
+      '@ltipton/parkin':
+        specifier: 6.6.1
+        version: 6.6.1
       '@monaco-editor/react':
         specifier: 4.6.0
         version: 4.6.0(monaco-editor@0.45.0)(react-dom@18.2.0)(react@18.2.0)

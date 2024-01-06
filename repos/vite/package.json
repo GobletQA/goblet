@@ -21,6 +21,7 @@
     "@gobletqa/shared": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": "10.0.0",
+    "@ltipton/parkin": "6.6.1",
     "@monaco-editor/react": "4.6.0",
     "@mui/icons-material": "5.14.18",
     "@mui/material": "5.14.18",
