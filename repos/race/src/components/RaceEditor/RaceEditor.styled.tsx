@@ -25,6 +25,7 @@ export const Container = styled(Box)`
   justify-content: flex-start;
   color: var(--goblet-editor-foreground);
   border-right: 1px solid var(--goblet-editor-border);
+  background-color: var(--goblet-editor-raceBackground);
 `
 
 export const Divider = styled(Box)`

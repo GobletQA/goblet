@@ -4,6 +4,7 @@ import {
   H4,
   gutter,
   colors,
+  getColor,
 } from '@gobletqa/components'
 
 export const TestRunOverviewContainer = styled(Box)`
@@ -17,12 +18,14 @@ export const TestRunOverviewSections = styled(Box)`
   padding-right: ${gutter.padding.px};
 `
 
-export const TestRunOverviewSection = styled(Box)`
-  flex: 1;
-  margin-right: ${gutter.margin.px};
-  padding: ${gutter.padding.hpx};
-  background-color: ${colors.white00};
-`
+export const TestRunOverviewSection = styled(Box)(({ theme }) => {
+  return `
+    flex: 1;
+    padding: ${gutter.padding.hpx};
+    margin-right: ${gutter.margin.px};
+    background-color: ${getColor(colors.white00, colors.black13, theme)};
+  `
+})
 
 export const TestRunOverviewSectionTitle = styled(H4)`
   margin: 0px;
