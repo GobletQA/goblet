@@ -33,8 +33,9 @@ const loadDebugUrl = async () => {
 
   const url = new URL(data.webSocketDebuggerUrl)
   const { api } = getDebugUrl(url)
+  const proto = window.location.protocol.startsWith(`https`) ? `wss` : `ws`
 
-  return { url:`ws=${api}`, error }
+  return { url:`${proto}=${api}`, error }
 }
 
 export type TUpdateDebugUrl = {

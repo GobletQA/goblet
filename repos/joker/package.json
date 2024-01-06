@@ -26,9 +26,6 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "format": "pnpm lint && pnpm pretty",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "echo \"No test specified\" && exit 0",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
     "validate": "tsc --noEmit"

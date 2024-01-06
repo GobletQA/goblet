@@ -44,9 +44,6 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GEX/*,@gobletqa/exam\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,__mocks__/*",
-    "format": "pnpm lint && pnpm pretty",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
     "validate": "tsc --noEmit"

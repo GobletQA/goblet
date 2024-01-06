@@ -25,10 +25,7 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GBE/*,@gobletqa/backend,esbuild*,express*\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
-    "format": "pnpm lint && pnpm pretty",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
+    "depcheck": "depcheck --ignores=\"@GBE/*,@gobletqa/backend,esbuild*,express*,@gobletqa/goblet,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "serve": "DEBUG=\"http-proxy-middleware*\" node --enable-source-maps -r esbuild-register dist/index.js",
     "dist": "node --enable-source-maps -r esbuild-register dist/index.js",
     "validate": "tsc --noEmit"

@@ -16,8 +16,7 @@ import { updateContainerState } from '@actions/container/api/updateContainerStat
  */
 export const onSuccessAuth = async (
   authData:TRawAuthUser,
-  type:EAuthType,
-  appwriteCheck?:boolean
+  type:EAuthType
 ) => {
 
   try {
@@ -32,15 +31,12 @@ export const onSuccessAuth = async (
       return await updateContainerState(status)
     }
     catch(err:any){
-      if(appwriteCheck) return [err as Error]
 
       console.warn(`[Auth State Error] Error setting Container or Repos status.`)
       console.error(err.message)
     }
   }
   catch (err:any) {
-    if(appwriteCheck) return [err as Error]
-
     toNum(err.status || err.statusCode) === 401
       && await signOutAuthUser()
   }

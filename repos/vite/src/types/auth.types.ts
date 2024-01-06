@@ -4,15 +4,6 @@ import type {
   OAuthCredential as TGithubAuthCredential,
   } from 'firebase/auth'
 
-// import type {
-//   Models
-// } from 'appwrite'
-
-
-// export type TAWUserRaw = {
-//   user: Models.User<any>
-//   session: Models.Session
-// }
 
 export type TAWUserRaw = {
   user: any

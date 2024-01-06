@@ -27,13 +27,10 @@
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
-    "depcheck": "depcheck --ignores=\"@GTU/*,@gobletqa/testify\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
-    "format": "pnpm lint && pnpm pretty",
+    "depcheck": "depcheck --ignores=\"@GTU/*,@gobletqa/testify,module-alias\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
     "test:html": "node  -r esbuild-register src/exam/reporters/html/__tests__/generateHtml.ts",
     "ex:dev": "GOBLET_CONFIG_BASE=$(pwd)/src/exam/__tests__ EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register ../exam/src/bin/exam.ts --config ../exam.config.ts --root $(pwd)/src/exam/__tests__",
-    "exam": "NODE_OPTIONS=\"-r esbuild-register --enable-source-maps\" exam --root $(pwd)/src/exam/__tests__ --config ../../../dist/exam/exam.config.js",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
+    "exam": "NODE_OPTIONS=\"-r esbuild-register --enable-source-maps\" exam --root $(pwd)/src/exam/__tests__ --config ../../../dist/exam/exam.config.js"
   },
   "dependencies": {
     "@gobletqa/configs": "workspace:*",
@@ -56,7 +53,6 @@
   },
   "devDependencies": {
     "@types/node": "20.9.3",
-    "esbuild-plugin-path-alias": "1.0.7",
     "tsup": "8.0.1"
   }
 }

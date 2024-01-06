@@ -16,7 +16,9 @@ ARG GB_DT_REMOTE_DEBUG_PORT=19020
 ARG DEBUG_FILE=/goblet/logs/pwlogs.log
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
 
-ENV GB_SUB_REPO=screencast \
+ENV PWDEBUG=console \
+    PW_CODEGEN_NO_INSPECTOR=1 \
+    GB_SUB_REPO=screencast \
     GB_SC_PORT=$GB_SC_PORT \
     PATH="${PATH}:${PNPM_HOME}" \
     PNPM_VERSION=$GB_PNPM_VERSION \
@@ -65,12 +67,7 @@ RUN rm -rf tasks/definitions/index.ts && \
     rm -rf tsconfig.json && \
     rm -rf configs/node_modules && \
     rm -rf configs/app.pm2.config.js && \
-    rm -rf configs/commit-types.json && \
-    rm -rf configs/commitlint.config.js && \
-    rm -rf configs/eslintrc.config.js && \
-    rm -rf configs/lint-staged.config.js && \
     rm -rf configs/pm2.config.js && \
-    rm -rf configs/prettier.config.js && \
     rm -rf /goblet/app/repos && \
     rm -rf /goblet/app/node_modules
 COPY repos/screencast/tsconfig.docker.json tsconfig.json

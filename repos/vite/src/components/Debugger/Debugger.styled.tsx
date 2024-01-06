@@ -24,6 +24,7 @@ export const DebuggerContainer = styled(Box)(({ theme }) => `
 
 export const DebuggerHeaderContainer = styled(Box)(({ theme }) => `
   right: 0px;
+  z-index: 10;
   width: 62px;
   height: 25px;
   position: absolute;

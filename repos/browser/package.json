@@ -26,9 +26,6 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GBB/*,@gobletqa/browser\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*",
-    "format": "pnpm lint && pnpm pretty",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
     "validate": "tsc --noEmit"
@@ -41,7 +38,6 @@
     "@keg-hub/jsutils": "10.0.0",
     "@ltipton/parkin": "6.6.1",
     "expect": "29.7.0",
-    "pending-promise-recycler": "0.2.3",
     "playwright": "1.40.1"
   },
   "devDependencies": {

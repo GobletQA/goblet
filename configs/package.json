@@ -2,7 +2,7 @@
   "name": "@gobletqa/configs",
   "version": "0.0.0",
   "scripts": {
-    "depcheck": "depcheck --ignores=\"@gobletqa/configs\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*"
+    "depcheck": "depcheck --ignores=\"@gobletqa/configs,@gobletqa/root\" --ignore-patterns=build,dist,.*,coverage,temp,*jest*"
   },
   "dependencies": {
     "@keg-hub/jsutils": "9.10.0",
