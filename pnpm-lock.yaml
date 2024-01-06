@@ -57,6 +57,9 @@ importers:
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@18.15.13)
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
 
   configs:
     dependencies:
@@ -145,7 +148,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/browser:
     dependencies:
@@ -179,7 +182,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/components:
     dependencies:
@@ -237,7 +240,7 @@ importers:
         version: 1.0.1(react@18.2.0)(vite@5.0.2)
       vite-tsconfig-paths:
         specifier: 4.2.1
-        version: 4.2.1(vite@5.0.2)
+        version: 4.2.1(typescript@5.3.3)(vite@5.0.2)
 
   repos/conductor:
     dependencies:
@@ -290,7 +293,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/devtools:
     dependencies:
@@ -312,7 +315,7 @@ importers:
     devDependencies:
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/exam:
     dependencies:
@@ -358,7 +361,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/git:
     dependencies:
@@ -386,7 +389,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/goblet:
     dependencies:
@@ -411,7 +414,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/latent:
     dependencies:
@@ -445,7 +448,7 @@ importers:
         version: 3.5.0(esbuild@0.19.7)
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/logger:
     dependencies:
@@ -461,7 +464,7 @@ importers:
     devDependencies:
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/monaco:
     dependencies:
@@ -531,7 +534,7 @@ importers:
         version: 1.0.1(react@18.2.0)(vite@5.0.2)
       vite-tsconfig-paths:
         specifier: 4.2.1
-        version: 4.2.1(vite@5.0.2)
+        version: 4.2.1(typescript@5.3.3)(vite@5.0.2)
 
   repos/race:
     dependencies:
@@ -589,7 +592,7 @@ importers:
         version: 1.0.1(react@18.2.0)(vite@5.0.2)
       vite-tsconfig-paths:
         specifier: 4.2.1
-        version: 4.2.1(vite@5.0.2)
+        version: 4.2.1(typescript@5.3.3)(vite@5.0.2)
 
   repos/repo:
     dependencies:
@@ -623,7 +626,7 @@ importers:
     devDependencies:
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/screencast:
     dependencies:
@@ -696,7 +699,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/shared:
     dependencies:
@@ -763,7 +766,7 @@ importers:
         version: 4.7.2
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/testify:
     dependencies:
@@ -824,7 +827,7 @@ importers:
         version: 20.9.3
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
   repos/vite:
     dependencies:
@@ -948,7 +951,7 @@ importers:
         version: 1.0.1(react@18.2.0)(vite@5.0.2)
       vite-tsconfig-paths:
         specifier: 4.2.1
-        version: 4.2.1(vite@5.0.2)
+        version: 4.2.1(typescript@5.3.3)(vite@5.0.2)
 
   repos/workflows:
     dependencies:
@@ -994,7 +997,7 @@ importers:
         version: 3.5.0(esbuild@0.19.7)
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.3.3)
 
 packages:
 
@@ -9858,7 +9861,7 @@ packages:
     dev: false
     optional: true
 
-  /tsconfck@2.1.1:
+  /tsconfck@2.1.1(typescript@5.3.3):
     resolution: {integrity: sha512-ZPCkJBKASZBmBUNqGHmRhdhM8pJYDdOXp4nRgj/O0JwUwsMq50lCDRQP/M5GBNAA0elPrq4gAeu4dkaVCuKWww==}
     engines: {node: ^14.13.1 || ^16 || >=18}
     hasBin: true
@@ -9867,6 +9870,8 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+    dependencies:
+      typescript: 5.3.3
     dev: true
 
   /tslib@2.5.0:
@@ -9874,7 +9879,7 @@ packages:
     requiresBuild: true
     dev: false
 
-  /tsup@8.0.1:
+  /tsup@8.0.1(typescript@5.3.3):
     resolution: {integrity: sha512-hvW7gUSG96j53ZTSlT4j/KL0q1Q2l6TqGBFc6/mu/L46IoNWqLLUzLRLP1R8Q7xrJTmkDxxDoojV5uCVs1sVOg==}
     engines: {node: '>=18'}
     hasBin: true
@@ -9907,6 +9912,7 @@ packages:
       source-map: 0.8.0-beta.0
       sucrase: 3.34.0
       tree-kill: 1.2.2
+      typescript: 5.3.3
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -9956,6 +9962,12 @@ packages:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
     dependencies:
       is-typedarray: 1.0.0
+
+  /typescript@5.3.3:
+    resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
 
   /uc.micro@1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
@@ -10179,7 +10191,7 @@ packages:
       - supports-color
     dev: true
 
-  /vite-tsconfig-paths@4.2.1(vite@5.0.2):
+  /vite-tsconfig-paths@4.2.1(typescript@5.3.3)(vite@5.0.2):
     resolution: {integrity: sha512-GNUI6ZgPqT3oervkvzU+qtys83+75N/OuDaQl7HmOqFTb0pjZsuARrRipsyJhJ3enqV8beI1xhGbToR4o78nSQ==}
     peerDependencies:
       vite: '*'
@@ -10189,7 +10201,7 @@ packages:
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
-      tsconfck: 2.1.1
+      tsconfck: 2.1.1(typescript@5.3.3)
       vite: 5.0.2(@types/node@18.15.13)
     transitivePeerDependencies:
       - supports-color
