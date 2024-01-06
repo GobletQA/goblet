@@ -54,7 +54,9 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
       - name: Run dependency check
-        run: pnpm depcheck
+        run: |
+          pnpm add -g depcheck
+          pnpm depcheck
 
       #  --- TODO: Placeholders for now
       # - name: Run formatting check
