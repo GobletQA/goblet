@@ -200,9 +200,6 @@ importers:
       expect:
         specifier: 29.7.0
         version: 29.7.0
-      pending-promise-recycler:
-        specifier: 0.2.3
-        version: 0.2.3
       playwright:
         specifier: 1.40.1
         version: 1.40.1
@@ -256,9 +253,6 @@ importers:
       esbuild-register:
         specifier: 3.5.0
         version: 3.5.0(esbuild@0.19.7)
-      million:
-        specifier: 2.6.4
-        version: 2.6.4
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -550,9 +544,6 @@ importers:
       esbuild-register:
         specifier: 3.5.0
         version: 3.5.0(esbuild@0.19.7)
-      million:
-        specifier: 2.6.4
-        version: 2.6.4
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -611,9 +602,6 @@ importers:
       esbuild-register:
         specifier: 3.5.0
         version: 3.5.0(esbuild@0.19.7)
-      million:
-        specifier: 2.6.4
-        version: 2.6.4
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -681,6 +669,9 @@ importers:
       '@gobletqa/exam':
         specifier: workspace:*
         version: link:../exam
+      '@gobletqa/git':
+        specifier: workspace:*
+        version: link:../git
       '@gobletqa/logger':
         specifier: workspace:*
         version: link:../logger
@@ -705,9 +696,6 @@ importers:
       esbuild:
         specifier: 0.19.7
         version: 0.19.7
-      esbuild-plugin-path-alias:
-        specifier: 1.0.7
-        version: 1.0.7(esbuild@0.19.7)
       esbuild-register:
         specifier: 3.5.0
         version: 3.5.0(esbuild@0.19.7)
@@ -730,9 +718,6 @@ importers:
         specifier: 4.7.2
         version: 4.7.2
     devDependencies:
-      '@ltipton/esdev':
-        specifier: 0.2.1
-        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7)
       '@types/express':
         specifier: 4.17.18
         version: 4.17.18
@@ -867,9 +852,6 @@ importers:
       '@types/node':
         specifier: 20.9.3
         version: 20.9.3
-      esbuild-plugin-path-alias:
-        specifier: 1.0.7
-        version: 1.0.7(esbuild@0.19.7)
       tsup:
         specifier: 8.0.1
         version: 8.0.1(ts-node@10.9.1)(typescript@5.2.2)
@@ -3253,6 +3235,7 @@ packages:
 
   /@keg-hub/jsutils@9.10.0:
     resolution: {integrity: sha512-HJmQDk91aDq1mtMNDhAqg+mJT1vyGZDANZuEVFbfVhXYpzUG+Ar1rbWn59tCHb+ZiRAYx3qDAqBrFqjKMLFtSg==}
+    dev: false
 
   /@keg-hub/parse-config@2.1.0:
     resolution: {integrity: sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==}
@@ -3305,21 +3288,6 @@ packages:
   /@ltipton/chrome-devtools@0.0.1:
     resolution: {integrity: sha512-2Yh2IyfmAKcgynLM6LGKLJw43eFadi8KHQsXlc53txCrZo2RiJQTcjyy1XTkxfgyLe3karBVx+QIc3t+mLdPRA==}
     dev: false
-
-  /@ltipton/esdev@0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.5.0)(esbuild@0.19.7):
-    resolution: {integrity: sha512-+FtpcoTYc8uhgZbQ1R44kp2KFxycIlkIrxi/j7BE1Thr8kYdk9R/0ERKpEZTYPkt6/5b8/5wYQTAppiy1/1QCA==}
-    peerDependencies:
-      esbuild: '*'
-      esbuild-plugin-path-alias: 1.0.7
-      esbuild-register: '*'
-    dependencies:
-      '@keg-hub/jsutils': 9.10.0
-      esbuild: 0.19.7
-      esbuild-plugin-path-alias: 1.0.7(esbuild@0.19.7)
-      esbuild-register: 3.5.0(esbuild@0.19.7)
-    optionalDependencies:
-      nodemon: 3.0.1
-    dev: true
 
   /@ltipton/parkin@6.6.1:
     resolution: {integrity: sha512-cSigHEfp0l94ijNAChVEtGy8uj0pVeJ0DB2Hik0RAi0vHDA+ixZPZsDTYB6ygSiICtH0tDmm0ZY5QOmawmep0Q==}
@@ -4566,6 +4534,7 @@ packages:
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     requiresBuild: true
+    dev: false
     optional: true
 
   /abort-controller@3.0.0:
@@ -4603,6 +4572,7 @@ packages:
     resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+    dev: false
 
   /acorn@8.8.2:
     resolution: {integrity: sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==}
@@ -5972,6 +5942,7 @@ packages:
     dependencies:
       ms: 2.1.3
       supports-color: 5.5.0
+    dev: false
     optional: true
 
   /debug@4.3.4(supports-color@9.3.1):
@@ -6327,13 +6298,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /esbuild-plugin-path-alias@1.0.7(esbuild@0.19.7):
-    resolution: {integrity: sha512-0Be2FjvykTNc8kWrpNmZEopdbGLG+K1jKRwQ9HtBZCQb004C3P7p5HcYxciet+VXtblpeIWL7UFyogz/iMq/cw==}
-    peerDependencies:
-      esbuild: '*'
-    dependencies:
-      esbuild: 0.19.7
 
   /esbuild-register@3.4.2(esbuild@0.17.6):
     resolution: {integrity: sha512-kG/XyTDyz6+YDuyfB9ZoSIOOmgyFCH+xPRtsCa8W85HLRV5Csp+o3jWVbOSHgSLfyLc5DmP+KFDNwty4mEjC+Q==}
@@ -7710,6 +7674,7 @@ packages:
   /ignore-by-default@1.0.1:
     resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
     requiresBuild: true
+    dev: false
     optional: true
 
   /ignore@5.2.4:
@@ -8904,6 +8869,7 @@ packages:
   /kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
+    dev: false
 
   /kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
@@ -9380,6 +9346,7 @@ packages:
       unplugin: 1.6.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /mime-db@1.33.0:
     resolution: {integrity: sha512-BHJ/EKruNIqJf/QahvxwQZXKygOQ256myeN/Ew+THcAa5q+PjyTTMMeNQC4DZw5AwfvelsUrA6B67NKMqXDbzQ==}
@@ -9546,6 +9513,7 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     requiresBuild: true
+    dev: false
 
   /mute-stream@0.0.7:
     resolution: {integrity: sha512-r65nCZhrbXXb6dXOACihYApHw2Q6pV0M3V0PSxd74N0+D8nzAdEAITq2oAjA1jVnKI+tGvEBUpqiMh0+rW6zDQ==}
@@ -9643,6 +9611,7 @@ packages:
       supports-color: 5.5.0
       touch: 3.1.0
       undefsafe: 2.0.5
+    dev: false
     optional: true
 
   /nopt@1.0.10:
@@ -9651,6 +9620,7 @@ packages:
     requiresBuild: true
     dependencies:
       abbrev: 1.1.1
+    dev: false
     optional: true
 
   /normalize-package-data@2.5.0:
@@ -10031,11 +10001,6 @@ packages:
     engines: {node: '>=8'}
     requiresBuild: true
 
-  /pending-promise-recycler@0.2.3:
-    resolution: {integrity: sha512-KPOLG6MeD47why4hBkwdFo1PJ7mSzWvuxpgOleVGRYv4LQxaH+ToqgTEeLCsWXNjKKodzpHdseA8Eqe3VmDnlA==}
-    engines: {node: '>=12'}
-    dev: false
-
   /performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
     dev: false
@@ -10259,6 +10224,7 @@ packages:
   /pstree.remy@1.1.8:
     resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
     requiresBuild: true
+    dev: false
     optional: true
 
   /pump@3.0.0:
@@ -10760,6 +10726,7 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.3
+    dev: false
 
   /rollup@4.5.1:
     resolution: {integrity: sha512-0EQribZoPKpb5z1NW/QYm3XSR//Xr8BeEXU49Lc/mQmpmVVG5jPUVrpc2iptup/0WMrY9mzas0fxH+TjYvG2CA==}
@@ -11029,6 +10996,7 @@ packages:
     requiresBuild: true
     dependencies:
       semver: 7.5.4
+    dev: false
     optional: true
 
   /sisteransi@1.0.5:
@@ -11710,6 +11678,7 @@ packages:
     requiresBuild: true
     dependencies:
       nopt: 1.0.10
+    dev: false
     optional: true
 
   /tough-cookie@2.5.0:
@@ -12040,6 +12009,7 @@ packages:
   /undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
     requiresBuild: true
+    dev: false
     optional: true
 
   /underscore@1.13.6:
@@ -12088,6 +12058,7 @@ packages:
       chokidar: 3.5.3
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.6.1
+    dev: false
 
   /unset-value@1.0.0:
     resolution: {integrity: sha512-PcA2tsuGSF9cnySLHTLSh2qrQiJ70mn+r+Glzxv2TWZblxsxCC52BDlZoPCsz7STd9pN7EZetkWZBAvk4cgZdQ==}
@@ -12383,9 +12354,11 @@ packages:
   /webpack-sources@3.2.3:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
     engines: {node: '>=10.13.0'}
+    dev: false
 
   /webpack-virtual-modules@0.6.1:
     resolution: {integrity: sha512-poXpCylU7ExuvZK8z+On3kX+S8o/2dQ/SVYueKA0D4WEMXROXgY8Ez50/bQEUmvoSMMrWcrJqCHuhAbsiwg7Dg==}
+    dev: false
 
   /websocket-driver@0.7.4:
     resolution: {integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==}

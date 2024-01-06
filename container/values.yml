@@ -335,10 +335,6 @@ env:
   GITHUB_API_URL: api.github.com
   GITHUB_GRAPH_URL: https://api.github.com/graphql
 
-  # Appwrite ENVs
-  GB_APPWRITE_PROJECT: goblet-dev
-  GB_APPWRITE_URL: https://cloud.appwrite.io/v1
-
 
   # --- WORKFLOW ENVs --- #
   GB_GIT_REMOTE_REF: goblet-ref

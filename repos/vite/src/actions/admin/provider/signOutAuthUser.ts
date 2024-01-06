@@ -1,6 +1,5 @@
 import { AuthActive } from '@constants'
 import { GitUser } from '@services/gitUser'
-// import { account } from '@services/appwrite'
 import { authApi } from '@services/authApi'
 import { emptyObj } from '@keg-hub/jsutils'
 

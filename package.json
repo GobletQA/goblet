@@ -87,7 +87,6 @@
       ],
       "allowAny": [
         "esbuild-register",
-        "@ltipton/esdev",
         "dockerode",
         "docker-events",
         "esbuild",

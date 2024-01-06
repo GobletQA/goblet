@@ -6,8 +6,6 @@ import { useCallback } from 'react'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
 import { colors } from '@gobletqa/components/theme'
-// import { account } from '@services/appwrite'
-// import { generateAuthUrls } from '@utils/admin/generateAuthUrls'
 import {
   signInWithPopup,
   GithubAuthProvider
@@ -41,10 +39,6 @@ export const GithubSignIn = (props:TSignInButton) => {
   } = props
 
   const onBtnPress = useCallback(async (evt:any) => {
-    // const { success, failed } = generateAuthUrls()
-
-    // account.createOAuth2Session('github', success, failed, ['repo'])
-
     onSigningIn?.(true)
 
     signInWithPopup(auth, provider)
