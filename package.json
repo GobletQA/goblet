@@ -43,10 +43,6 @@
     "dprod": "GB_ROOT_DIR=$(pwd) /bin/bash scripts/shell/deployToProd.sh",
     "depcheck": "pnpm -r depcheck",
     "doc:tscfg": "node -r ./configs/aliases.js scripts/js/dockerTSCfg.ts",
-    "format": "pnpm format:pretty && pnpm format:lint",
-    "format:all": "pnpm format && pnpm -r format",
-    "format:lint": "pnpm lint .",
-    "format:pretty": "pnpm pretty .",
     "imgs": "node -r ./configs/aliases.js tasks/entry.ts docker images",
     "kube": "node -r ./configs/aliases.js tasks/entry.ts kube",
     "local": "pnpm install && pnpm cp:tracer && pnpm local:kube",
@@ -119,30 +115,9 @@
     "jest": "29.7.0"
   },
   "optionalDependencies": {
-    "@commitlint/cli": "16.1.0",
-    "@commitlint/config-conventional": "16.0.0",
     "@types/node": "18.15.13",
-    "@typescript-eslint/eslint-plugin": "5.28.0",
-    "@typescript-eslint/parser": "5.28.0",
-    "commitizen": "4.2.4",
-    "cz-conventional-changelog": "3.3.0",
-    "eslint": "8.7.0",
-    "husky": "7.0.4",
-    "lint-staged": "12.3.4",
     "nodemon": "3.0.1",
-    "prettier": "2.5.1",
     "semver": "7.3.7",
     "syncpack": "11.2.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "lint-staged": {
-    "**/*": [
-      "pnpm pretty",
-      "pnpm lint"
-    ]
   }
 }

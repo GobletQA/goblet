@@ -28,10 +28,7 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GLT/*,@gobletqa/latent\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*",
-    "format": "pnpm lint && pnpm pretty",
     "lt:dev": "node --enable-source-maps -r esbuild-register .bin/index.js",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
     "validate": "tsc --noEmit"

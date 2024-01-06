@@ -32,10 +32,7 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GSH/*,@gobletqa/shared\" --ignore-patterns=build,dist,.*,coverage,temp,configs,*jest*,*__tests__*",
-    "types:fix": "node -r esbuild-register scripts/fixTypes.ts",
-    "format": "pnpm lint && pnpm pretty",
-    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
+    "types:fix": "node -r esbuild-register scripts/fixTypes.ts"
   },
   "dependencies": {
     "@gobletqa/configs": "workspace:*",

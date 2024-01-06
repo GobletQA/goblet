@@ -10,11 +10,6 @@
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "depcheck": "depcheck --ignores=\"@GBR/*,@gobletqa/race\" --ignore-patterns=build,dist,.*,coverage,temp,tmp,*jest*",
-    "format": "pnpm format:pretty && pnpm format:lint",
-    "format:lint": "pnpm lint .",
-    "format:pretty": "pnpm pretty .",
-    "lint": "eslint --color --cache --fix --ignore-path .eslintignore --config ./configs/eslintrc.config.js",
-    "pretty": "prettier --ignore-path .prettierignore --config ./configs/prettier.config.js --write",
     "test": "echo \"No test specified\" && exit 0",
     "validate": "tsc --noEmit"
   },
