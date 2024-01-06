@@ -65,6 +65,9 @@ const getGobletDefs = async (
 ) => {
   if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs
 
+  // import { aliases } from '@gobletqa/configs/aliases.config'
+  // TODO: update this to pull from the aliases, something like this
+  // cwd: path.join(aliases[`@gobletqa/testify`], `steps`)
   const definitionFiles = await glob(GlobJSFiles, {
     ...GlobOnlyFiles,
     cwd: path.join(InternalPaths.testifyDir, `src/steps`)

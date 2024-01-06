@@ -23,6 +23,35 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
+      "@GTU/Exam": ["repos/screencast/node_modules/@gobletqa/testify/dist/exam"],
+      "@GTU/Exam/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/exam/*"],
+      "@GTU/Utils": ["repos/screencast/node_modules/@gobletqa/testify/dist/utils"],
+      "@GTU/Utils/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/utils/*"],
+      "@GTU/Steps": ["repos/screencast/node_modules/@gobletqa/testify/dist/steps"],
+      "@GTU/Steps/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/steps/*"],
+      "@GTU/Parkin": ["repos/screencast/node_modules/@gobletqa/testify/dist/parkin"],
+      "@GTU/Parkin/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/parkin/*"],
+      "@GTU/Support": ["repos/screencast/node_modules/@gobletqa/testify/dist/support"],
+      "@GTU/Support/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/support/*"],
+      "@GTU/Reports": ["repos/screencast/node_modules/@gobletqa/testify/dist/reports"],
+      "@GTU/Reports/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/reports/*"],
+      "@GTU/Playwright": ["repos/screencast/node_modules/@gobletqa/testify/dist/playwright"],
+      "@GTU/Playwright/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/playwright/*"],
+      "@GTU/PlaywrightEnv": ["repos/screencast/node_modules/@gobletqa/testify/dist/playwright/playwrightTestEnv"],
+      "@GTU/Constants": ["repos/screencast/node_modules/@gobletqa/environment/constants"],
+      "@GTU": ["repos/screencast/node_modules/@gobletqa/testify/dist"],
+      "@GTU/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/*"],
+      "@GEnvironment": ["repos/screencast/node_modules/@gobletqa/shared/environment"],
+
+      "@GBB/scripts": ["repos/browser/scripts"],
+      "@GBB/scripts/*": ["repos/browser/scripts/*"],
+
+      "@GSC/scripts": ["repos/screencast/scripts"],
+      "@GSC/scripts/*": ["repos/screencast/scripts/*"],
+
+      "@gobletqa/testify": ["repos/screencast/node_modules/@gobletqa/testify/dist"],
+      "@gobletqa/testify/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/*"],
+
       "@gobletqa/root/gobletRoot": ["gobletRoot.js"],
       "@gobletqa/root": ["./*"]
     }

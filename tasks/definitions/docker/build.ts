@@ -125,6 +125,11 @@ export const build:TTask = {
       default: true,
       description: `User docker cache when building the image`,
     },
+    arm: {
+      type: `boolean`,
+      default: false,
+      description: `Sets the build platform to be arm64 only`,
+    },
     platforms: {
       type: `array`,
       default: [`linux/amd64`, `linux/arm64`],

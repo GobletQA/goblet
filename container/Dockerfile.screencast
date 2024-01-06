@@ -50,7 +50,7 @@ RUN npm uninstall -g yarn && \
 FROM $GB_BASE_IMAGE_FROM as goblet-clean
 WORKDIR /goblet/app
 COPY tasks tasks
-# COPY .nvmrc .nvmrc
+
 RUN rm -rf tasks/definitions/index.ts && \
     rm -rf tasks/definitions/kube && \
     rm -rf tasks/definitions/deploy && \
@@ -73,7 +73,7 @@ RUN rm -rf tasks/definitions/index.ts && \
     rm -rf configs/prettier.config.js && \
     rm -rf /goblet/app/repos && \
     rm -rf /goblet/app/node_modules
-COPY container/tsconfig.docker.json tsconfig.json
+COPY repos/screencast/tsconfig.docker.json tsconfig.json
 # ---- End Stage ---- #
 
 
@@ -98,7 +98,7 @@ RUN pnpm --filter=@gobletqa/screencast --prod deploy /goblet/runner/repos/screen
     rm -rf logger/src && \
     rm -rf repo/src && \
     rm -rf shared/src
-    
+
 # There's an odd bug where the latent dist folder is not being included in the screencast deploy folder
 # This is a workaround to manually include it.
 # It can be removed if the bug is ever resolved
@@ -113,11 +113,13 @@ WORKDIR /goblet/app
 COPY --from=goblet-clean /goblet/app/ .
 COPY --from=goblet-screencast /goblet/runner .
 
-RUN ln -s /ms-playwright /root/.cache/ms-playwright && \
+RUN mkdir -p /root/.cache && \
+    ln -s /ms-playwright /root/.cache/ms-playwright && \
     ln -s /goblet/app/repos/screencast/node_modules /goblet/app/node_modules && \
     ln -s /goblet/app/repos/screencast/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/repos/screencast/node_modules /goblet/node_modules && \
-    ln -s /goblet/app/repos/screencast/node_modules/@gobletqa/testify /goblet/app/repos/testify
+    ln -s /goblet/app/repos/screencast/node_modules/@gobletqa/testify/dist /goblet/app/repos/testify/dist && \
+    ln -s /goblet/app/repos/screencast/node_modules/@gobletqa/testify/src /goblet/app/repos/testify/src
 
 WORKDIR /goblet/app/repos/screencast
 

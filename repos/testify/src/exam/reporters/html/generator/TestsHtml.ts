@@ -2,12 +2,9 @@ import type { TExEventData } from "@gobletqa/exam"
 import type { TReporterOpts } from '../HtmlReporter'
 
 import { IconsHtml } from './IconsHtml'
+import { stripAnsi } from '@GTU/Utils/stripAnsi'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
-import {
-  colors,
-  margin,
-  padding,
-} from './theme'
+
 
 const stepKeys = [
   `step`,
@@ -75,7 +72,7 @@ const TitleHtml = (text:string, type:string=``, state:string=``) => {
   `
 }
 
-const FailedList = (test: TExEventData, opts:TReporterOpts) => {
+const FailedList = (test:TExEventData, opts:TReporterOpts) => {
   return test.failedExpectations.map((expectation: any) => {
     return `
       <li class="list-item failed-item step-failed failed">
@@ -84,7 +81,7 @@ const FailedList = (test: TExEventData, opts:TReporterOpts) => {
             Step - failed
           </div>
           <div class="failed-description-text" >
-            ${expectation.description}
+            ${stripAnsi(expectation.description || ``)}
           </div>
           ${opts?.onRenderError?.(test, opts) || ``}
         </div>

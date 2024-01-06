@@ -32,8 +32,7 @@ const checkGobletExists = (gitData:TGitData, template:string) => {
 
   if(!config) return false
 
-  Logger.info(`Found existing goblet config at ${gitData.local}`)
-  console.log(config?.config)
+  Logger.info(`Found existing goblet config at ${config?.location}`)
 
   return true
 

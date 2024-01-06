@@ -13,6 +13,7 @@ import path from 'path'
 import { writeFile } from 'fs/promises'
 import { Logger } from "@gobletqa/logger"
 import { getStats } from './utils/getStats'
+import { ENVS } from '@gobletqa/environment'
 import { ImgHtml } from './generator/ImgHtml'
 import { HeadHtml } from './generator/HeadHtml'
 import { BodyHtml } from './generator/BodyHtml'
@@ -111,8 +112,10 @@ export class HtmlReporter implements IExamReporter {
   #screenshots: Record<string, Record<string, string>>={}
 
   #title?:string
+  #logSplit?:string=``
   #combineAllTests?:boolean
   #htmlPartials:THtmlPartials={}
+  #logScreenshots?:boolean=false
 
   constructor(
     examCfg:TExamConfig,
@@ -148,8 +151,28 @@ export class HtmlReporter implements IExamReporter {
     this.#combineAllTests = cfg?.combineAllTests || false
     this.#title = cfg?.reportTitle || gobletCfg?.$ref || `Goblet Test Report`
 
-    
+    if(cfg.logScreenshots){
+      this.#logScreenshots = cfg.logScreenshots
+      this.#logSplit = cfg?.logSplit || ENVS.EXAM_EVENT_LOG_SPLIT_KEY
+    }
 
+  }
+
+  /**
+   * TODO: This is a hack to log screenshots event in a way that screencast child_process can pick them up
+   * Screenshots should be updated to work the same as trace and video reports
+   * Once done this can be removed
+   */
+  #logScreenshot = (resp:{id?:string|number, uri?:string}, location:string) => {
+    Logger.stdout(`${this.#logSplit}${JSON.stringify({
+      location,
+      metaData:{},
+      error: false,
+      type: `test`,
+      action: `screenshot`,
+      name:`SCREENSHOT`,
+      data:{...resp, location}
+    })}${this.#logSplit}`)
   }
 
   /**
@@ -258,6 +281,9 @@ export class HtmlReporter implements IExamReporter {
 
       this.#screenshots[location] = this.#screenshots[location] || {}
       this.#screenshots[location][resp.id] = resp.uri
+
+      this.#logScreenshots
+        && this.#logScreenshot(resp, location)
     }
     catch(err){
       console.error(err)

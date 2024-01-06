@@ -38,7 +38,11 @@ const buildX = (
   options:Record<string, any>=emptyObj,
   params:TTaskParams=emptyObj as TTaskParams
 ) => {
-  const { push, builder=DockerBuildxBuilder } = params
+  const {
+    arm,
+    push,
+    builder=DockerBuildxBuilder
+  } = params
 
   // Add the build platform for the image
   const platformOpts = !push
@@ -49,7 +53,9 @@ const buildX = (
         builder,
         `--push`,
         ...addPlatforms(
-          [ ...(params?.platforms || emptyArr), ...(options?.platforms || emptyArr) ],
+          arm
+            ? [`linux/arm64`]
+            : [ ...(params?.platforms || emptyArr), ...(options?.platforms || emptyArr) ],
           push
         )
       ]
