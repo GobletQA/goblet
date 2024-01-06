@@ -6,6 +6,11 @@ on:
   workflow_dispatch:
   release:
     types: [published]
+  workflow_run:
+    workflows: [build-docker-images]
+    branches: [main]
+    types: 
+      - completed
 
 jobs:
   pull-images:

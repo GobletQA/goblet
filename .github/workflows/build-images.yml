@@ -120,11 +120,10 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           build-args: |
-            BUILDKIT_INLINE_CACHE=1
             NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
-          cache-from: gcr.io/gobletqa/goblet-base:latest
-          cache-to: type=inline,mode=all
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           file: container/Dockerfile.base
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -244,7 +243,7 @@ jobs:
             NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
           cache-from: type=gha,scope=${{ matrix.service }}
-          cache-to: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,scope=${{ matrix.service }},mode=max
           file: ${{ matrix.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
