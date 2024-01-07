@@ -2,8 +2,7 @@ import type { TApiConnectReq, TApiRepoResp } from '@types'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
 import { repoApi } from '@services/repoApi'
-
-
+import { removeRepo } from '../local/removeRepo'
 
 /**
  * Calls Backend API to connect a git repo
@@ -15,6 +14,9 @@ export const connectRepo = async (params:TApiConnectReq) => {
     type: 'info',
     message: `Connecting to repo ...`,
   })
+
+  // Clear the local cache before connecting a new repo
+  await removeRepo()
 
   const {
     data,

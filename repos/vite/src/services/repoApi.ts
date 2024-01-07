@@ -1,6 +1,7 @@
 import type { TRequest } from '@services/axios.types'
 import type {
   TFileTree,
+  TApiRepoResp,
   TApiDefinitionsResp,
   TFeatureFileModelList
 } from '@types'
@@ -50,6 +51,12 @@ class RepoApi {
     method: `GET`,
     url: `/repo/all`,
   } as TRequest<R>)
+
+  repoStatus = async <T=TApiRecord,R=TApiRecord>(params:TRParams<R>) => await this._req<T, R>({
+    ...params,
+    method: `GET`,
+    url: `/repo/status`,
+  })
 
 }
 

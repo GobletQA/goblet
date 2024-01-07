@@ -4,10 +4,9 @@ import type { TContainerMap } from '@gobletqa/shared/types'
 import { generateRoutes } from './generators'
 import { ConductorUserHashLabel } from '../constants'
 
-
 const routesFromContainer = (
   controller:Controller,
-  container:TContainerMap,
+  container:TContainerMap
 ) => {
   const userHash = container.labels[ConductorUserHashLabel]
   if(!userHash) return
@@ -28,7 +27,7 @@ const routesFromContainer = (
 
 export const hydrateRoutes = (
   controller:Controller,
-  containers:Record<string, TContainerMap>
+  containers:Record<string, TContainerMap>,
 ) => {
   return Object.entries(containers)
     .map(([key, container]) => routesFromContainer(controller, container))

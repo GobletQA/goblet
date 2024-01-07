@@ -76,6 +76,7 @@ export class Kube extends Controller {
 
     const hash = opts.userHash || mapped.labels[ConductorUserHashLabel]
     if(this.routes[hash]) delete this.routes[hash]
+
   }
 
   /**
@@ -177,15 +178,24 @@ export class Kube extends Controller {
           userHash: annotations.userHash
         })
 
-    const doHydrate = shouldHydrate(
+    const { hydrate, reason, message } = shouldHydrate(
       mapped.state,
       watchObj.type,
       pod?.metadata?.deletionTimestamp
     )
 
-    if(!doHydrate) return
+    const isTerminated = !hydrate && reason === EContainerState.Terminated
 
-    Logger.info(`Hydrating pod ${annotations.name} from watch event: '${watchObj.type}'`)
+    if(!hydrate && !isTerminated) return Logger.info(message)
+
+    else if(isTerminated){
+      Logger.info(`Found terminated pod ${mapped.name}, adding to termination cache...`)
+      mapped.state = EContainerState.Terminated
+    }
+
+    else Logger.info(`Hydrating pod ${annotations.name} from watch event: '${watchObj.type}'`)
+
+
     const id = pod.metadata.name
     this.containerMaps[id] = mapped
     hydrateRoutes(this, { [id]: mapped })

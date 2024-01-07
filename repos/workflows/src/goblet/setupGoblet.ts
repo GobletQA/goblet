@@ -4,7 +4,6 @@ import type { TGitOpts, TGitData } from '@gobletqa/git'
 import type { TGobletCfgLoaderResp } from '@gobletqa/goblet'
 
 import { Logger } from '@gobletqa/logger'
-import { wait } from '@keg-hub/jsutils/wait'
 import { repoSecrets } from '@gobletqa/repo'
 import { gobletLoader } from '@gobletqa/goblet'
 import { git, getRepoName } from '@gobletqa/git'
@@ -26,8 +25,6 @@ const setupWatcher = async (gitOpts:TGitOpts) => {
     ? Logger.log(`Found existing watcher at path ${gitOpts.local}`)
     : await autoWatch(gitOpts)
 
-  Logger.log(`Waiting 1 second for watcher to initialize...`)
-  await wait(1000)
 }
 
 
@@ -122,7 +119,7 @@ export const setupGoblet = async (
   } as TGobletConfig
 
   try {
-    await repoSecrets(gitOpts, namedGobletCfg)
+    repoSecrets(gitOpts, namedGobletCfg)
 
     return successResp(
       { setup: true },

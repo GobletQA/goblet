@@ -20,6 +20,8 @@ export enum EContainerState {
   Creating = `Creating`,
   Succeeded = `Succeeded`,
   SUCCEEDED = `Succeeded`,
+  Terminated=`Terminated`,
+  TERMINATED=`Terminated`
 }
 
 

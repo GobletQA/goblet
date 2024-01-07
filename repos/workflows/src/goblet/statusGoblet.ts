@@ -71,7 +71,7 @@ const statusForLocal = async (config:TWFGobletConfig, opts:TGitOpts) => {
     : emptyLoaderResp
 
   try {
-    await repoSecrets(opts, gobletConfig)
+    repoSecrets(opts, gobletConfig)
   }
   catch(err){
     return failResp({ setup: false }, err.message)
@@ -155,7 +155,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
     name: getRepoName(remote),
   } as TRepoOpts
 
-  // const secretsFail = await repoSecrets(opts, repo, true)
+  // const secretsFail = await repoSecrets(opts, repo)
   // if(secretsFail) return secretsFail
 
   Logger.log(`Checking for repo watcher at path ${opts.local}...`)

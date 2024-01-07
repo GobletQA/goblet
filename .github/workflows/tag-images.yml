@@ -9,7 +9,7 @@ on:
   workflow_run:
     workflows: [build-docker-images]
     branches: [main]
-    types: 
+    types:
       - completed
 
 jobs:

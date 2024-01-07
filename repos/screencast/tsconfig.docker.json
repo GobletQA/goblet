@@ -41,6 +41,7 @@
       "@GTU/Constants": ["repos/screencast/node_modules/@gobletqa/environment/constants"],
       "@GTU": ["repos/screencast/node_modules/@gobletqa/testify/dist"],
       "@GTU/*": ["repos/screencast/node_modules/@gobletqa/testify/dist/*"],
+
       "@GEnvironment": ["repos/screencast/node_modules/@gobletqa/shared/environment"],
 
       "@GBB/scripts": ["repos/browser/scripts"],

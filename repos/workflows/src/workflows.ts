@@ -7,14 +7,9 @@ import type {
   TRepoFromWorkflow,
 } from '@GWF/types'
 
-
-/**
- * Todo: look into dynamically loading this, so it's only loaded on screencast repo, not backend repo
- */
-
-import { tri } from '@keg-hub/jsutils/tri'
 import { Logger } from '@GWF/utils/logger'
 import { wfcache, WfCache } from './wfCache'
+import { getRepoPath }from '@gobletqa/git'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'
 import { removeCachedDefs } from '@gobletqa/shared/fs'
@@ -26,6 +21,16 @@ import {
   initializeGoblet,
   disconnectGoblet,
 } from '@GWF/goblet'
+
+const tryMethod = (name:string, cb:(...args:any[]) => any, ...rest:any[]) => {
+  try {
+    return cb(...rest)
+  }
+  catch(err){
+    Logger.error(`Cache Clear method "${name}" failed`)
+    Logger.error(err)
+  }
+}
 
 
 export class Workflows {
@@ -179,23 +184,30 @@ export class Workflows {
   }
 
 
+  resetCache = (username:string) => {
+    Logger.warn(`Resetting repo cache ...`)
+
+    const repoLoc = getRepoPath({ user:{ username } })
+
+    // Clear the existing loaded goblet config
+    tryMethod(`resetGobletConfig`, resetGobletConfig, repoLoc)
+    tryMethod(`resetCachedWorld`, resetCachedWorld, username)
+    tryMethod(`resetInjectedLogs`, resetInjectedLogs)
+    tryMethod(`removeCachedDefs`, removeCachedDefs)
+    tryMethod(`wfCache.remove`, () => this.cache.remove(username))
+  }
+
+
   /**
    * Disconnects a previously connected repo
    */
   disconnect = async ({ username }:Record<`username`, string>) => {
-    
+
+    this.resetCache(username)
+
     Logger.warn(`Disconnecting repo for user ${username}...`)
-    
-    // Clear the existing loaded goblet config
-    tri(resetGobletConfig)
-    tri(resetCachedWorld, username)
-    tri(resetInjectedLogs)
-    tri(removeCachedDefs)
-    tri(() => this.cache.remove(username))
 
-    Logger.log(`Disconnected repo for user ${username}`)
-
-    return tri(async () => await disconnectGoblet({user: {gitUser: username}}))
+    return tryMethod(`disconnectGoblet`, async () => await disconnectGoblet({user: {gitUser: username}}))
   }
 
 }

@@ -124,6 +124,7 @@
       "@GSCRoot": ["repos/screencast/"],
       "@GSCRoot/*": ["repos/screencast/*"],
 
+      "@GTU/Constants": ["repos/screencast/node_modules/@gobletqa/environment/constants"],
       "@GTU/Jest": ["repos/testify/src/jest"],
       "@GTU/Jest/*": ["repos/testify/src/jest/*"],
       "@GTU/Exam": ["repos/testify/src/exam"],

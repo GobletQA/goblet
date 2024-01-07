@@ -40,7 +40,7 @@ const getSpawnFile = () => {
 }
 
 export const autoWatch = async (opts:TAutoWatchOpts=emptyObj) => {
-  return new Promise((res, rej) => {
+  return await new Promise((res, rej) => {
     
     validateWatchArgs(opts)
 

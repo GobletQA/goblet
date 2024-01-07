@@ -28,6 +28,23 @@ export default defineConfig(async () => {
       port,
     },
     optimizeDeps: {
+      force: true,
+      includes: [
+        `@gobletqa/components`,
+        `@gobletqa/configs`,
+        `@gobletqa/shared`,
+        `@gobletqa/race`,
+        `@gobletqa/monaco`,
+        `@mui/material`,
+        `@mui/icons-material`,
+        `@ltipton/parkin`,
+        `@keg-hub/jsutils`,
+        `@emotion/react`,
+        `@emotion/styled`,
+        `monaco-editor`,
+        `monaco-textmate`,
+        `onigasm`,
+      ],
       esbuildOptions: {
         target: `esnext`,
         jsx: `automatic`,

@@ -117,10 +117,6 @@ git.clone = async (
   // Add the git remote for reference
   await git.remote.add(gitOpts, { url: options.remote })
 
-  // Must come after the remote add, so the remote exists
-  Logger.log(`Fetching repo tags...`)
-  await git.tag.fetch({...gitOpts, auth: true}, cmdOpts)
-
   // Ensure the user is configured for future git operations after pulling
   await git.setUser(gitOpts, cmdOpts)
 

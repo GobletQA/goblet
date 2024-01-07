@@ -11,6 +11,7 @@ import type {
 
 import path from 'path'
 import { globSync } from 'glob'
+import { Logger } from '@gobletqa/logger'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { ensureGobletCfg } from '../utils/ensureGobletCfg'
@@ -67,7 +68,6 @@ const buildRequire = <T extends TCfgMerge>(basePath:string, opts:TBuildReqOpts) 
 
       const data = relativeRequire(fullLoc) as T
       return data ? { data, location: fullLoc } : undefined
-
     }
     catch(err){
       if(safe || inlineSafe) return undefined
@@ -144,7 +144,16 @@ const loopLoadArray = <T extends TCfgMerge>(params:TLoopLoad<T>):TLoadedFunResp<
       const { data: loadedData, location } = resp
 
       const dataByType = loadFromType(loadedData)
-      if(!dataByType) continue;
+      if(!dataByType){
+
+        if(loadedData){
+          Logger.error(`Data was loaded for "loopLoadArray", but no data is being returned`)
+          Logger.info(`Data:`, loadedData)
+          Logger.info(`Load From Type:`, dataByType)
+        }
+
+        continue;
+      }
 
       const loadedMerge = merge ? loadWithMerge<T>(dataByType, params) : dataByType
 
@@ -168,7 +177,7 @@ const loopLoadArray = <T extends TCfgMerge>(params:TLoopLoad<T>):TLoadedFunResp<
  * Then search's for a matching file by name
  * Is loaded file has a $merge array property, will try to load all paths from it
  */
-export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
+export const repoWorldLoader = <T extends TCfgMerge>(params:TSearchFile):T => {
 
   const {
     file,
@@ -180,7 +189,7 @@ export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
   } = params
 
   let data:T
-  if(clearCache) resetRequire()
+  if(clearCache) resetRequire(path.dirname(basePath))
 
   const requireFunc = buildRequire<T>(basePath, { safe })
 
@@ -201,9 +210,17 @@ export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile):T => {
     if(resp) data = resp?.data as T
   }
 
-  return data
+  const loadedData = data
     ? loadWithMerge(data, { basePath, requireFunc })
     : undefined
+  
+  if(!loadedData && data){
+    Logger.error(`Data was loaded for "repoWorldLoader", but no data is being returned`)
+    Logger.info(`Data:`, data)
+    Logger.info(`LoadedData:`, loadedData)
+  }
+
+  return loadedData
 }
 
 
@@ -224,9 +241,9 @@ export const gobletLoader = (params:TGobletLoader):TGobletCfgLoaderResp|undefine
   ...loadArgs
 } = params
 
-  if(clearCache) resetRequire()
+  if(clearCache) resetRequire(basePath)
 
-  const resp = loopLoadArray<TGobletConfig>({
+  const loadArrArgs = {
     safe,
     first,
     basePath,
@@ -235,9 +252,9 @@ export const gobletLoader = (params:TGobletLoader):TGobletCfgLoaderResp|undefine
     requireFunc: buildRequire(params.basePath, { safe }),
     // enforce not loading multiple goblet configs
     merge: false,
-  })
+  }
 
-  if(!resp || !resp?.length) return undefined
+  const resp = loopLoadArray<TGobletConfig>(loadArrArgs as TLoopLoad<TGobletConfig>)
 
   const { data: config, location } = resp.pop()
 

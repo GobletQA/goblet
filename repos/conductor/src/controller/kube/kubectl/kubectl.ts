@@ -69,9 +69,10 @@ export class Kubectl {
   /**
    * Delete a pod based on a reference
    */
-  deletePod = async (selector:string) => {
+  deletePod = async (selector:string, gracePeriod:number=0) => {
     const [err, res] = await limbo<Record<'body', any>, TKubeError>(
-      this.client.deleteNamespacedPod(selector, this.config.namespace)
+      // name: string, namespace: string, pretty?: string, dryRun?: string, gracePeriodSeconds?: number
+      this.client.deleteNamespacedPod(selector, this.config.namespace, undefined, undefined, gracePeriod)
     )
 
     return err
