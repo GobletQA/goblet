@@ -1,10 +1,8 @@
 import type { TStorageSetting, TStorageSettings } from '@types'
 
 import { emptyObj } from '@keg-hub/jsutils'
-import { noAuthService } from './noAuthService'
 import { StorageKeys, LocalStorage } from '@gobletqa/components'
 import {
-  AuthActive,
   Environment,
   LastOpenedFilesAmount
 } from '@constants/environment'
@@ -18,11 +16,6 @@ const missingGroup = (setting:string, data:TStorageSetting) => {
 }
 
 class Storage extends LocalStorage {
-
-  devData = async () => {
-    await noAuthService.init()
-    Object.assign(this, noAuthService)
-  }
 
   /**
    * Logs a message to the console when not in production
@@ -184,5 +177,3 @@ class Storage extends LocalStorage {
 }
 
 export const localStorage = new Storage()
-
-!AuthActive && (async () => await localStorage.devData())()
