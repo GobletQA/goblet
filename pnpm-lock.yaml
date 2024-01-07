@@ -614,6 +614,9 @@ importers:
       '@gobletqa/logger':
         specifier: workspace:*
         version: link:../logger
+      '@gobletqa/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@keg-hub/jsutils':
         specifier: 10.0.0
         version: 10.0.0

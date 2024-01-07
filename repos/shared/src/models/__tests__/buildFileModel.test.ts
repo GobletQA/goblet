@@ -1,6 +1,4 @@
-import fs from 'fs'
 import path from 'path'
-import { Repo } from '@gobletqa/repo'
 import { buildFileModel } from '../buildFileModel'
 
 jest.mock('fs')
@@ -15,7 +13,7 @@ describe('buildFileModel', () => {
     paths: {
       repoRoot: '/path/to/repo',
     },
-  } as unknown as Repo
+  } as unknown as any
 
   it('should build a fileModel for a file', async () => {
     const data = {

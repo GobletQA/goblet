@@ -14,8 +14,7 @@ import {
   buildFileTree,
   loadDefinitions,
   fileModelArrayToObj,
-} from '@GRP/shared.export'
-
+} from '@gobletqa/shared/fs'
 
 
 

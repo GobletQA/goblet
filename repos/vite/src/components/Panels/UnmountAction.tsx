@@ -38,30 +38,32 @@ const UnmountBtn = (props:TUnmountBtn) => {
   const onClickAlert = useCallback((e:any) => {
     e?.preventDefault?.()
     e?.stopPropagation?.()
+    disconnectRepo()
+    
 
-    const name = repo?.git?.repoName || repo?.name || `the mounted repo`
-    Alert({
-      title: `Unmount Repo`,
-      okText: `Yes`,
-      onOk: () => {
-        disconnectRepo()
-      },
-      cancelText: `No`,
-      onCancel: () => {},
-      content: (
-        <ModalContainer>
-          <ModalTitle>
-            Are you sure your want to unmount {name}?
-          </ModalTitle>
-          <ModalSubText>
-            All files and content will be permanently removed.
-          </ModalSubText>
-          <ModalSubText>
-            Unsaved work can not be recovered.
-          </ModalSubText>
-        </ModalContainer>
-      ),
-    })
+    // const name = repo?.git?.repoName || repo?.name || `the mounted repo`
+    // Alert({
+    //   title: `Unmount Repo`,
+    //   okText: `Yes`,
+    //   onOk: () => {
+    //     restartContainer()
+    //   },
+    //   cancelText: `No`,
+    //   onCancel: () => {},
+    //   content: (
+    //     <ModalContainer>
+    //       <ModalTitle>
+    //         Are you sure your want to unmount {name}?
+    //       </ModalTitle>
+    //       <ModalSubText>
+    //         All files and content will be permanently removed.
+    //       </ModalSubText>
+    //       <ModalSubText>
+    //         Unsaved work can not be recovered.
+    //       </ModalSubText>
+    //     </ModalContainer>
+    //   ),
+    // })
   }, [repo])
 
   return (

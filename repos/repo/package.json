@@ -38,6 +38,7 @@
     "@gobletqa/git": "workspace:*",
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/logger": "workspace:*",
+    "@gobletqa/shared": "workspace:*",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/jsutils": "10.0.0",
     "@ltipton/parkin": "6.6.1"

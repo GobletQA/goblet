@@ -1,56 +1,96 @@
 import { Logger } from '@GWF/utils/logger'
 
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+
+export type TCacheRef = string
+export type TCacheName = string
+export type TNameORRef = TCacheName|TCacheRef
+
 export class WfCache {
 
   #cache:Record<string, any>={}
   #refMap:Record<string, string>={}
 
-  find = (name:string) => {
-    const found = this.#cache[name] || this.#cache[this.#refMap[name]]
-    found && Logger.info(`[Workflows Cache Hit] - ${name}`)
+  #getRefs = (ref:string) => {
+    const name = this.#refMap[ref]
+
+    return Object.entries(this.#refMap)
+      .reduce((acc, [key, val]) => {
+        val === name && acc.push(key)
+        return acc
+      }, [])
+  }
+
+  #addRefs = (refs:string|string[], name:string) => {
+    ensureArr(refs).forEach(ref => this.#refMap[ref] = name)
+  }
+
+  #findRefCache = (ref:TCacheRef) => {
+    const name = this.#refMap[ref]
+    return this.#cache[name]
+  }
+
+  #remove = (name:TCacheName) => {
+    if(this.#cache[name]){
+      this.#cache[name] = undefined
+      delete this.#cache[name]
+    }
+  }
+
+  cache = () => {
+    return this.#cache
+  }
+
+  find = (name:TNameORRef) => {
+    const found = this.#cache[name] || this.#findRefCache(name)
+    found && Logger.info(`[WF Cache Hit] - ${name}`)
 
     return found
   }
   
-  save = (name:string, data:any, ref?:string) => {
+  save = (name:TCacheName, data:any, ref?:TCacheRef|TCacheRef[]) => {
+    const refArr = ref ? ensureArr<TCacheRef>(ref) : []
     this.#cache[name] = data
-    ref && this.ref(ref, name)
-    const msg = ref ? ` | Ref: ${ref}` : ``
-    Logger.info(`[Workflows Cache Save] - Name: ${name}${msg}`)
+
+    let msg = ``
+
+    if(refArr?.length){
+      this.#addRefs(refArr, name)
+      msg = ` | Refs: ${refArr.join(`, `)}`
+    }
+
+    Logger.info(`[WF Cache Save] - Name: ${name}${msg}`)
   }
 
-  ref = (ref:string, name:string) => {
-    this.#refMap[ref] = name
-    if(ref) this.#refMap[name] = ref
-  }
+  remove = (name:TNameORRef) => {
+ 
+    const refCache = this.#findRefCache(name)
 
-  remove = (name:string) => {
-    const nameCache = this.#cache[name]
-
-    const ref = this.#refMap[name]
-    const refCache = this.#cache[ref]
-
-    if(!nameCache && !refCache){
-      Logger.warn(`[Workflows Cache WARN] - No cache found for "${name}"`)
+    if(!this.#cache[name] && !refCache){
+      Logger.warn(`[WF Cache WARN] - No cache found for "${name}"`)
       Logger.log(`Cache:`, this.#cache)
       Logger.log(`RefMap:`, this.#refMap)
       return
     }
 
-    this.#cache[name] = undefined
-    delete this.#cache[name]
+    this.#remove(name)
 
-    if(!ref){
-      return Logger.info(`[Workflows Cache Cleared] - ${name} cache removed successfully`)
-    }
+    Logger.info(`[WF Cache Cleared] - ${name} cache removed successfully`)
+    if(!refCache)
+      return Logger.info(`[WF Cache Cleared] - No refs found, skipping ref remove`)
 
-    this.#cache[ref] = undefined
-    delete this.#cache[ref]
+    const refs = this.#getRefs(name)
 
-    delete this.#refMap[name]
-    delete this.#refMap[ref]
+    refs?.length
+     && refs.forEach((ref) => {
+        const match = this.#refMap[ref]
+        this.#remove(match)
 
-    Logger.info(`[Workflows Cache Cleared] - ${name} & ${ref} cache removed successfully`)
+        delete this.#refMap[ref]
+
+        Logger.info(`[WF Cache Cleared] - Ref:${ref} (${name}) cache removed successfully`)
+      })
+
   }
 
 }

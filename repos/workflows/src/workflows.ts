@@ -8,8 +8,9 @@ import type {
 } from '@GWF/types'
 
 import { Logger } from '@GWF/utils/logger'
-import { wfcache, WfCache } from './wfCache'
 import { getRepoPath }from '@gobletqa/git'
+import { wait } from '@keg-hub/jsutils/wait'
+import { wfcache, WfCache } from './wfCache'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'
 import { removeCachedDefs } from '@gobletqa/shared/fs'
@@ -24,6 +25,7 @@ import {
 
 const tryMethod = (name:string, cb:(...args:any[]) => any, ...rest:any[]) => {
   try {
+    Logger.info(`Calling cache clear method "${name}"...`)
     return cb(...rest)
   }
   catch(err){
@@ -117,16 +119,29 @@ export class Workflows {
 
     const instance = new Repo(repo)
     await instance.ensureParkinDefs()
-    const resp = {
-      status,
-      repo: instance,
-      steps: instance.parkin.steps
-    }
+    const resp = {status, repo: instance}
     this.#cache.save(repoData.username, resp, resp?.repo?.paths?.repoRoot)
 
     return resp
   }
 
+  initGobletRetry = async (args:TRepoFromWorkflow, retries:number=0):Promise<TWFStatusResp> => {
+    try {
+      return this.fromWorkflow(args)
+    }
+    catch(err){
+      if(retries >= 2){
+        throw err
+      }
+
+      Logger.error(`Initializing repo failed! Retry attempt #${retries+1} of 3 in 1 second`)
+      Logger.log(err.stack)
+
+      await wait(1000)
+      this.resetCache(args.username)
+      return this.initGobletRetry(args, retries + 1)
+    }
+  }
 
   /**
    * Creates a Repo Class instance by connecting to an external git repo

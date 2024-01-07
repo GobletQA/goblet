@@ -4,6 +4,7 @@ import type {
   TPort,
   TPortsMap,
   TUserHash,
+  TRouteMeta,
   TContainerMap,
   TContainerMeta,
 } from '@gobletqa/shared/types'
@@ -62,3 +63,6 @@ export type TKubeConfig = {
   namespace?: string
   events?: TKubeWatchEvents
 }
+
+
+export type TValidateRouteCB = (route:TRouteMeta) => Promise<boolean>

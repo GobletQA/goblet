@@ -1,5 +1,5 @@
 import type { Repo } from '@GRP/types'
-import { loadDefinitions } from './shared.export'
+import { loadDefinitions } from '@gobletqa/shared/fs'
 
 /**
  * Loads the definitions, then splits them based on their type

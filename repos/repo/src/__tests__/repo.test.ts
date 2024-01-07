@@ -27,7 +27,7 @@ const getClientWorldMock = jest.fn(() => {
     $alias: {},
   }
 })
-setMox('../getClientWorld', {getClientWorld: getClientWorldMock,})
+setMox('../getClientWorld', {getClientWorld: getClientWorldMock})
 
 const mockConfig = {
   name: ``,
@@ -48,7 +48,6 @@ const mockConfig = {
   },
 }
 
-jest.mock('../world')
 jest.mock('@gobletqa/goblet')
 jest.mock('@gobletqa/workflows')
 

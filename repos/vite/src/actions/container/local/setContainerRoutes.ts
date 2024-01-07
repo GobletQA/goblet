@@ -2,6 +2,7 @@ import type { TRouteMeta, TProxyRoute, TRouteMetaRoutes, TContainerMeta } from '
 
 import { containerDispatch } from '@store'
 import { noOpObj, toStr } from '@keg-hub/jsutils'
+import { Exception } from '@services/sharedService'
 import { localStorage } from '@services/localStorage'
 import { ScreencastPort } from '@constants/screencast'
 
@@ -19,7 +20,7 @@ const throwRoutesError = (status:TRouteMeta, type:string, error?:string) => {
     : error && console.error(error)
 
   console.log(`Routes:`, status)
-  throw new Error(`Error setting container routes`)
+  throw new Exception(`Error setting container routes`)
 }
 
 export const setContainerRoutes = async (status:TRouteMeta) => {

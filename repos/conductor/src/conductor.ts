@@ -1,5 +1,5 @@
 import type { Request, Router, Express } from 'express'
-import type { TRemoveOpts } from '@GCD/types'
+import type { TValidateRouteCB, TRemoveOpts } from '@GCD/types'
 import type {
   TImgRef,
   TUserHash,
@@ -112,7 +112,11 @@ export class Conductor {
    * Gets the status of a user based on the userHash
    * Route is derived from the user and a hash so it's always the same
    */
-  async status(req:Partial<Request>, userHash:string){
+  async status(
+    req:Partial<Request>,
+    userHash:string,
+    validate?:TValidateRouteCB
+  ){
     if(!userHash)
       throw new Error(`[Conductor] Status Error: User hash is required to check container status.`)
 
@@ -121,7 +125,13 @@ export class Conductor {
 
     const route = this.controller.routes?.[userHash]
 
-    if(route) return route
+    if(route){
+      route?.meta?.state === EContainerState.Running
+        && validate
+        && await validate?.(route)
+
+      return route
+    }
 
     if(!ensure || !imageRef)
       throw new Error([
@@ -148,7 +158,19 @@ export class Conductor {
   }
 
   /**
-   * Removes a container be reference name
+   * Restarts a container by first calling remove, then calling status
+   */
+  async restart(params:{
+    status: [req:Partial<Request>, userHash:string, validate?:TValidateRouteCB]
+    remove: [containerRef:TContainerRef, opts:TRemoveOpts]
+  }){
+    const {status, remove} = params
+    await this.remove(...remove)
+    return await this.status(...status)
+  }
+
+  /**
+   * Removes a container by reference name
    */
   async remove(
     containerRef:TContainerRef,

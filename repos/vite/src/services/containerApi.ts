@@ -32,6 +32,16 @@ export class ContainerApi {
     })
   }
 
+  restart = async (params:Record<any, any>=emptyObj) => {
+    const containerId = params?.id || getContainerData()?.meta?.id
+
+    return await apiRequest<TRouteMeta>({
+      params,
+      method: HttpMethods.POST,
+      url: `${this.containerPath}/restart/${containerId}`,
+    })
+  }
+
 
   remove = async (params:TContainerRemove=emptyObj) => {
     const containerId = params?.id || getContainerData()?.meta?.id

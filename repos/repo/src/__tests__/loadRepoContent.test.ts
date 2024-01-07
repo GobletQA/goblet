@@ -9,7 +9,7 @@ import { loadRepoContent } from '../loadRepoContent'
 jest.mock('@GSH/libs/features/features')
 jest.mock('@GSH/libs/fileSys/fileTree')
 jest.mock('@GSH/libs/definitions/definitions')
-jest.mock('@GSH/utils/fileModelArrayToObj')
+jest.mock('@GSH/models/fileModelArrayToObj')
 jest.mock('@keg-hub/cli-utils')
 
 describe('loadRepoContent', () => {
