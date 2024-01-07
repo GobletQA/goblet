@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
+import type { EProvider } from '@gobletqa/shared/enums'
 import type { TGitCreateRepoOpts } from '@gobletqa/git'
 import type { TRepoData, TBranchData } from './restapi.types'
 import type { GitlabApi } from '@GWF/providers/gitlabApi'
@@ -55,7 +56,7 @@ export interface IGitApi {
 
 export interface IGitApiStatic {
   new (...args: any[]): IGitApi
-  buildAPIUrl: (args:TBuildApiUrl) => string
+  buildAPIUrl: (args:TBuildApiUrl, provider:EProvider) => string
   error:(message:string, ...args:any[]) => void
   createRepo:(args:TGitCreateRepoOpts) => Promise<TRepoData>
 }

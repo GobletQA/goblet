@@ -6,7 +6,7 @@ describe(`Git Providers`, () => {
 
     it(`builds the correct api url`, () => {
       const apiUrl = GitlabApi.buildAPIUrl({
-        remote: `https://gitlab.com/foo/bar/boo`
+        remote: `https://fomo.com/foo/bar/boo`
       })
       expect(apiUrl).toBe(`https://gitlab.com/foo/bar/boo`)
     })

@@ -16,6 +16,7 @@ import path from 'path'
 import { Rest } from '../constants'
 import { AxiosError, } from 'axios'
 import { gitBaseUrl } from '../utils/gitBaseUrl'
+import { EProvider } from '@gobletqa/shared/enums'
 import { buildHeaders } from '../utils/buildHeaders'
 import { throwGitError } from '../utils/throwGitError'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
@@ -29,7 +30,7 @@ const throwOverrideErr = (message?:string) => {
 }
 
 export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseRestApi> {
-  
+
   // This is the URL of the active repo, Which is NOT the same as the Provider URL (url)
   // The Provider URL (url) is used for making API calls
   // It is generated from the baseUrl in the buildAPIUrl method
@@ -59,7 +60,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     return undefined
   }
 
-  static buildAPIUrl = (args:TBuildApiUrl) => {
+  static buildAPIUrl = (args:TBuildApiUrl, provider:EProvider) => {
     const {
       host,
       remote,
@@ -68,8 +69,12 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
       pathExt=emptyArr,
     } = args
 
+
     const repoUrl = new url.URL(remote)
-    repoUrl.host = host || repoUrl.host
+
+    repoUrl.host = host
+      || (provider === EProvider.Github ? Rest.Github.Url : Rest.Gitlab.Url)
+
     repoUrl.pathname = path.join(prePath, repoUrl.pathname, postPath, ...pathExt)
 
     return repoUrl.toString()

@@ -1,6 +1,6 @@
 import type { Repo } from '@GRP/types'
 
-import { loadFeatures } from './shared.export'
+import { loadFeatures } from '@gobletqa/shared/fs'
 import { getDefinitions } from '@GRP/getDefinitions'
 
 export const getFeatures = async (repo:Repo) => {

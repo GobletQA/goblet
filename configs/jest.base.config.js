@@ -1,4 +1,5 @@
 const path  = require('path')
+const rootDir = path.join(__dirname, `..`)
 const { jestAliases } = require('./aliases.config')
 
 module.exports = {
@@ -41,6 +42,11 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     ...jestAliases,
-    [`^@keg-hub/jsutils/(.*)`]: path.join(__dirname, `..`, `node_modules/@keg-hub/jsutils/build/esm/$1`),
+    [`^@keg-hub/jsutils/node`]: `${rootDir}/node_modules/@keg-hub/jsutils/build/esm/node/index.js`,
+    [`^@keg-hub/jsutils/node/(.*)`]: `${rootDir}/node_modules/@keg-hub/jsutils/build/esm/node/$1`,
+    [`^@keg-hub/jsutils/src/node`]: `${rootDir}/node_modules/@keg-hub/jsutils/build/esm/node/index.js`,
+    [`^@keg-hub/jsutils/src/node/(.*)`]: `${rootDir}/node_modules/@keg-hub/jsutils/build/esm/node/$1`,
+    [`^@keg-hub/jsutils`]: `${rootDir}/node_modules/@keg-hub/jsutils/build/esm/index.js`,
+    [`^@keg-hub/jsutils/(.*)`]: `${rootDir}/node_modules/@keg-hub/jsutils/build/esm/$1`,
   }
 }

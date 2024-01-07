@@ -8,6 +8,7 @@ import type {
   TGitApiRes,
   TBranchData,
   TBranchResp,
+  TBuildApiUrl,
   TGHBranchMeta,
 } from '@GWF/types'
 
@@ -18,11 +19,11 @@ import { BaseRestApi } from './baseRestApi'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { EProvider } from '@gobletqa/shared/enums'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { buildHeaders } from '../utils/buildHeaders'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
-
 
 
 const createOpts = {
@@ -80,6 +81,10 @@ export class GithubApi extends BaseRestApi {
 
     Logger.success(`Successfully created repo ${args.name}`)
     return resp?.data as TRepoData
+  }
+
+  static buildAPIUrl = (args:TBuildApiUrl) => {
+    return BaseRestApi.buildAPIUrl(args, EProvider.Github)
   }
 
   constructor(gitOpts:TGitOpts){

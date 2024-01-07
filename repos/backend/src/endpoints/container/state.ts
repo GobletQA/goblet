@@ -1,7 +1,7 @@
 import type { Response } from 'express'
 import type { TBEDefReq } from '@GBE/types'
 
-import { apiRes, AppRouter } from '@gobletqa/shared/api'
+import { AppRouter } from '@gobletqa/shared/api'
 
 
 type TBEReqParams ={
@@ -19,16 +19,16 @@ export const stateContainer = async (req:TBEDefReq<TBEReqParams>, res:Response) 
 
   // Does not includes the imageRef or ensure arguments
   // This way it only gets the status, and does not try to create the container
-  const status = await conductor.status({
-    query: { ...req?.query },
-    body: { ...req?.body },
-    params: { ...req?.params, imageRef },
-  }, req?.auth?.subdomain || res?.locals?.subdomain)
+  const status = await conductor.status(
+    {
+      query: { ...req?.query },
+      body: { ...req?.body },
+      params: { ...req?.params, imageRef },
+    },
+    req?.auth?.subdomain || res?.locals?.subdomain,
+  )
 
-  // TODO: update here to make an API call to session container
-  // To ensure its running
-
-  return apiRes(res, status)
+  return res.status(200).json(status)
 }
 
 AppRouter.get(`/container/state`, stateContainer)

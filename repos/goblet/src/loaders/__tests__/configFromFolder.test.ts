@@ -2,7 +2,18 @@ import { gobletLoader } from '../../loaders/loader'
 import { configFromFolder } from '../../loaders/configFromFolder'
 
 jest.mock(`../loader`)
-jest.mock(`@gobletqa/environment/constants`)
+jest.mock(`@gobletqa/environment/constants`, () => {
+  return {
+    GobletConfigFileLocations: [
+      ``,
+      `./config`,
+      `./configs`,
+      `./goblet`,
+      `./test`,
+      `./tests`
+    ]
+  }
+})
 
 describe(`configFromFolder`, () => {
   beforeEach(() => {

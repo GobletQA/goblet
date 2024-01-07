@@ -256,7 +256,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
           GB_SC_IDLE_THRESHOLD: containerEnvs.GB_SC_IDLE_THRESHOLD || `2`,
           GB_SC_IDLE_WAIT_TO_START: containerEnvs.GB_SC_IDLE_WAIT_TO_START || `120`,
           GB_SC_IDLE_CONNECTION_THRESHOLD: containerEnvs.GB_SC_IDLE_CONNECTION_THRESHOLD || `2`,
-          GB_SC_IDLE_TIMEOUT_ACTIVE: containerEnvs.GB_SC_IDLE_TIMEOUT_ACTIVE || NODE_ENV !== `local`,
+          GB_SC_IDLE_TIMEOUT_ACTIVE: containerEnvs.GB_SC_IDLE_TIMEOUT_ACTIVE || NODE_ENV !== `local`
         },
         runtimeEnvs: {}
       }

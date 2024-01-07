@@ -28,6 +28,7 @@ const DefWorld = {
   $merge: [],
   $alias: {},
   $context: {},
+  $browser: {},
 }
 
 
@@ -114,7 +115,7 @@ describe('loadClientWorld', () => {
     expect(getRepoGobletDirMock).toHaveBeenCalledWith(mockConfig)
     expect(repoWorldLoaderMock).toHaveBeenCalledWith({
       basePath: getRepoGobletDirMock(),
-      clearCache: true,
+      clearCache: false,
       file: 'world.json',
       location: '/path/to/world.json',
     })
@@ -137,7 +138,7 @@ describe('loadClientWorld', () => {
     expect(getRepoGobletDirMock).toHaveBeenCalledWith(mockConfig)
     expect(repoWorldLoaderMock).toHaveBeenCalledWith({
       basePath: getRepoGobletDirMock(),
-      clearCache: true,
+      clearCache: false,
       file: 'world.json',
       location: '/path/to/world.json',
     })

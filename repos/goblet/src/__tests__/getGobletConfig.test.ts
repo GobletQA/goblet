@@ -7,14 +7,13 @@ import { getGobletCfg, resetGobletConfig } from '../loaders/configCache'
 
 jest.mock('@gobletqa/logger')
 jest.mock('../loaders/configCache')
-jest.mock('../getDefaultGobletConfig')
 jest.mock('../utils/addConfigFileTypes')
 jest.mock('../loaders/loadConfigFromBase')
 
 describe('getGobletConfig', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    resetGobletConfig()
+    resetGobletConfig(`/test`)
   })
 
   it('should return the cached config if it exists and EXAM_ENV is not set', () => {

@@ -1,18 +1,20 @@
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 
-import { loadFeatures } from '@GSH/libs/features/features'
-import { buildFileTree } from '@GSH/libs/fileSys/fileTree'
-import { loadDefinitions } from '@GSH/libs/definitions/definitions'
-import { fileModelArrayToObj } from '@GSH/models/fileModelArrayToObj'
+import {
+  loadFeatures,
+  buildFileTree,
+  loadDefinitions,
+  fileModelArrayToObj,
+} from '@gobletqa/shared/fs'
+
 import { loadRepoContent } from '../loadRepoContent'
 
-jest.mock('@GSH/libs/features/features')
-jest.mock('@GSH/libs/fileSys/fileTree')
-jest.mock('@GSH/libs/definitions/definitions')
-jest.mock('@GSH/utils/fileModelArrayToObj')
+jest.mock('@gobletqa/logger')
 jest.mock('@keg-hub/cli-utils')
+jest.mock('@gobletqa/shared/fs')
 
 describe('loadRepoContent', () => {
+  let mockWorld: any
   let mockRepo: any
   let mockConfig: any
   let mockStatus: any
@@ -22,14 +24,24 @@ describe('loadRepoContent', () => {
   let mockFileTree: any
 
   beforeEach(() => {
-    // @ts-ignore
-    mockRepo = { /* mock repo object */ }
-    mockConfig = { /* mock goblet config */ }
-    mockStatus = { /* mock repo mount status */ }
-    mockContent = { /* mock repo content object */ }
-    mockFeatures = { /* mock features object */ }
-    mockDefinitions = { /* mock definitions object */ }
-    mockFileTree = { /* mock file tree object */ }
+    jest.resetAllMocks()
+    jest.resetModules()
+
+    mockWorld = {}
+    mockConfig = {}
+    mockStatus = {}
+    mockFeatures = {}
+    mockFileTree = {}
+    mockDefinitions = {}
+    mockRepo = { world: mockWorld }
+
+    mockContent = {
+      repo: mockRepo,
+      status: mockStatus,
+      features: mockFeatures,
+      fileTree: mockFileTree,
+      definitions: mockDefinitions,
+    }
     // @ts-ignore
     loadFeatures.mockResolvedValue(mockFeatures)
     // @ts-ignore
@@ -38,10 +50,11 @@ describe('loadRepoContent', () => {
     loadDefinitions.mockResolvedValue(mockDefinitions)
     // @ts-ignore
     fileModelArrayToObj.mockImplementation((fileModels) => fileModels)
+    // @ts-ignore
     Logger.warn.mockImplementation(() => {})
+    // @ts-ignore
     Logger.error.mockImplementation(() => {})
-    jest.resetAllMocks()
-    jest.resetModules()
+
   })
 
   it('should load repo content successfully', async () => {
@@ -50,7 +63,7 @@ describe('loadRepoContent', () => {
     expect(result).toEqual(mockContent)
     expect(loadFeatures).toHaveBeenCalledWith(mockRepo)
     expect(buildFileTree).toHaveBeenCalledWith(mockRepo)
-    expect(loadDefinitions).toHaveBeenCalledWith(mockRepo, mockConfig)
+    expect(loadDefinitions).toHaveBeenCalledWith(mockRepo)
     expect(fileModelArrayToObj).toHaveBeenCalledWith(mockFeatures)
     expect(fileModelArrayToObj).toHaveBeenCalledWith(mockDefinitions)
     expect(Logger.warn).not.toHaveBeenCalled()

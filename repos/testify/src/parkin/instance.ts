@@ -7,8 +7,7 @@ import type { Repo } from '@gobletqa/repo'
 import { Parkin } from '@ltipton/parkin'
 import { getClientWorld } from '@gobletqa/repo'
 
-let __ParkinInstance
-
+let __ParkinInstance:Parkin
 
 export const getParkinInstance = (repo?:Repo) => {
   __ParkinInstance = __ParkinInstance || new Parkin(getClientWorld(repo || global?.__goblet?.config))

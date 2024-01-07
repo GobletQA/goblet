@@ -14,8 +14,7 @@ import {
   buildFileTree,
   loadDefinitions,
   fileModelArrayToObj,
-} from '@GRP/shared.export'
-
+} from '@gobletqa/shared/fs'
 
 
 
@@ -41,7 +40,6 @@ export const loadRepoContent = async (
 
     content.fileTree = await buildFileTree(repo)
     const definitions = await loadDefinitions(repo)
-
     const features = await loadFeatures(repo)
     content.features = fileModelArrayToObj<TFeatureFileModelList>(features)
     content.definitions = fileModelArrayToObj<TDefinitionFileModelList>(definitions)

@@ -16,6 +16,7 @@ import {
   Settings,
   DesignIcon,
   LogoutIcon,
+  RestartIcon,
   FileTreeIcon,
   SettingsIcon,
   CloudOffIcon,
@@ -25,6 +26,7 @@ import {
 } from '@gobletqa/components'
 import { settingsModal } from '@actions/modals'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
+import { restartContainer } from '@actions/container/api/restart'
 import { signOutManually } from '@actions/admin/user/signOutManually'
 import { toggleTestRunsView } from '@actions/testRuns/toggleTestRunsView'
 
@@ -48,6 +50,11 @@ export const HeaderNav = [
     label: `Unmount Repo`,
     Icon: CloudOffIcon,
     onClick: () => disconnectRepo()
+  },
+  {
+    Icon: RestartIcon,
+    label: `Restart Session`,
+    onClick: () => restartContainer({})
   },
   {
     divider: true,
