@@ -7,8 +7,9 @@ import type {
   TGitApiRes,
   TBranchData,
   TBranchResp,
-  TGLRepoApiMeta,
+  TBuildApiUrl,
   TGLBranchMeta,
+  TGLRepoApiMeta,
 } from '@GWF/types'
 
 
@@ -19,6 +20,7 @@ import { BaseRestApi } from './baseRestApi'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { limbo } from '@keg-hub/jsutils/limbo'
+import { EProvider } from '@gobletqa/shared/enums'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
@@ -47,6 +49,10 @@ export class GitlabApi extends BaseRestApi {
    */
   static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoData> => {
     return undefined
+  }
+
+  static buildAPIUrl = (args:TBuildApiUrl) => {
+    return BaseRestApi.buildAPIUrl(args, EProvider.Gitlab)
   }
 
   constructor(gitOpts:TGitOpts){

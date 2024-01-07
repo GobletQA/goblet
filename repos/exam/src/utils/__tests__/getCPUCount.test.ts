@@ -1,4 +1,3 @@
-
 jest.resetModules()
 jest.clearAllMocks()
 
@@ -6,8 +5,12 @@ import os from 'os'
 import { getCPUCount, resetCPUCount } from '../getCPUCount'
 import { toNum } from '@keg-hub/jsutils/toNum'
 
-jest.mock(`@keg-hub/jsutils/toNum`, () => {
-  return { toNum: jest.fn(val => parseInt(val ?? 10)) }
+
+jest.mock(`@keg-hub/jsutils`, () => {
+  return {
+    toNum: jest.fn(val => parseInt(val ?? 10)),
+    exists: jest.fn(val => val !== undefined && val !== null),
+  }
 })
 
 

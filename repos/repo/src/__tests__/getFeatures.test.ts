@@ -26,16 +26,15 @@ const mockRepo:any = {
     }
   }
 }
-const mockConfig = {} 
 
 const { getFeatures } = require('../getFeatures')
 
-describe('getFeatures', () => {
+describe(`getFeatures`, () => {
 
-  it('should call getDefinitions and loadFeatures with the provided repo and config', async () => {
+  it(`should call getDefinitions and loadFeatures with the provided repo and config`, async () => {
     const result = await getFeatures(mockRepo)
     expect(result).toEqual({ features: featuresMock, definitions: definitionsMock })
-    expect(getDefinitionsMock).toHaveBeenCalledWith(mockRepo, mockConfig)
+    expect(getDefinitionsMock).toHaveBeenCalledWith(mockRepo)
     expect(loadFeaturesMock).toHaveBeenCalledWith(mockRepo)
   })
 })

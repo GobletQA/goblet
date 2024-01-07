@@ -462,6 +462,9 @@ importers:
         specifier: 3.11.0
         version: 3.11.0
     devDependencies:
+      '@gobletqa/configs':
+        specifier: workspace:*
+        version: link:../../configs
       tsup:
         specifier: 8.0.1
         version: 8.0.1(typescript@5.3.3)

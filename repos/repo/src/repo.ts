@@ -10,7 +10,6 @@ import type {
   TGobletPWConfig,
 } from '@GRP/types'
 
-
 import { Parkin } from '@ltipton/parkin'
 import { LatentRepo } from './latentRepo'
 import { ENVS } from '@gobletqa/environment'
@@ -147,8 +146,10 @@ export class Repo {
    */
   setEnvironment = (environment?:string, refreshWld:boolean=true) => {
     this.environment = environment || ENVS.GOBLET_ENV
-    if(!ENVS.GOBLET_ENV && this.environment) ENVS.GOBLET_ENV = this.environment
-    
+
+    if(this.environment && this.environment !== ENVS.GOBLET_ENV)
+      ENVS.GOBLET_ENV = this.environment
+
     // Pass false to ensure we don't get into an infinite loop
     refreshWld && this.refreshWorld({
       refreshEnv: false,

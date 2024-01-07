@@ -1,3 +1,7 @@
+jest.resetModules()
+jest.clearAllMocks()
+
+
 jest.mock('@gobletqa/logger')
 
 const { wfcache } = require('../wfCache')
@@ -94,8 +98,8 @@ describe(`WF Cache`, () => {
     const data = { some: `data` }
     
     // Remove by cache name
-    wfcache.remove(cacheName)
     wfcache.save(cacheName, data, [cacheRef, cacheRef2])
+    wfcache.remove(cacheName)
     expect(wfcache.find(cacheName)).toBe(undefined)
     expect(wfcache.find(cacheRef)).toBe(undefined)
     expect(wfcache.find(cacheRef2)).toBe(undefined)
