@@ -25,11 +25,21 @@ export class WfCache {
   }
 
   remove = (name:string) => {
+    const nameCache = this.#cache[name]
+
+    const ref = this.#refMap[name]
+    const refCache = this.#cache[ref]
+
+    if(!nameCache && !refCache){
+      Logger.warn(`[Workflows Cache WARN] - No cache found for "${name}"`)
+      Logger.log(`Cache:`, this.#cache)
+      Logger.log(`RefMap:`, this.#refMap)
+      return
+    }
 
     this.#cache[name] = undefined
     delete this.#cache[name]
 
-    const ref = this.#refMap[name]
     if(!ref){
       return Logger.info(`[Workflows Cache Cleared] - ${name} cache removed successfully`)
     }

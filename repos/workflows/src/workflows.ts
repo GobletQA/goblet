@@ -35,7 +35,7 @@ const tryMethod = (name:string, cb:(...args:any[]) => any, ...rest:any[]) => {
 
 export class Workflows {
 
-  cache:WfCache=wfcache
+  #cache:WfCache=wfcache
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -95,7 +95,7 @@ export class Workflows {
       status: status as TRepoMountStatus,
     }
 
-    this.cache.save(username, resp, resp?.repo?.paths?.repoRoot)
+    this.#cache.save(username, resp, resp?.repo?.paths?.repoRoot)
 
     return resp
   }
@@ -108,7 +108,7 @@ export class Workflows {
     repoData:TGitOpts
   ):Promise<TWFStatusResp> => {
     
-    const cached = this.cache.find(repoData.username)
+    const cached = this.#cache.find(repoData.username)
     if(cached) return cached
 
     const { repo, ...status } = await statusGoblet(config, repoData, false)
@@ -122,7 +122,7 @@ export class Workflows {
       repo: instance,
       steps: instance.parkin.steps
     }
-    this.cache.save(repoData.username, resp, resp?.repo?.paths?.repoRoot)
+    this.#cache.save(repoData.username, resp, resp?.repo?.paths?.repoRoot)
 
     return resp
   }
@@ -141,7 +141,7 @@ export class Workflows {
       branchFrom,
     } = args
 
-    const cached = this.cache.find(username)
+    const cached = this.#cache.find(username)
     if(cached) return cached
 
     const url = new URL(repoUrl)
@@ -178,7 +178,7 @@ export class Workflows {
       status: status as TRepoMountStatus,
     }
 
-    this.cache.save(username, resp, resp?.repo?.paths?.repoRoot)
+    this.#cache.save(username, resp, resp?.repo?.paths?.repoRoot)
 
     return resp
   }
@@ -194,7 +194,7 @@ export class Workflows {
     tryMethod(`resetCachedWorld`, resetCachedWorld, username)
     tryMethod(`resetInjectedLogs`, resetInjectedLogs)
     tryMethod(`removeCachedDefs`, removeCachedDefs)
-    tryMethod(`wfCache.remove`, () => this.cache.remove(username))
+    tryMethod(`wfCache.remove`, () => this.#cache.remove(username))
   }
 
 
