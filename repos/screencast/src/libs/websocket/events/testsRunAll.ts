@@ -115,6 +115,8 @@ const onExamRun = async (args:TSocketEvtCBProps) => {
      * This allows the websocket events to be decoupled yet still communicate
      */
     let off = EE.on<TKillTestRunUIRunEvtOpts>(KillTestRunUIProcEvt, ({ procId }) => {
+      Logger.info(`Aborting test run...`)
+      
       /**
        * If we ever want to allow more then 1 run of exam from ui
        * We can use this and force passing in the pid

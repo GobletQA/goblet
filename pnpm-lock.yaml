@@ -837,6 +837,12 @@ importers:
       '@emotion/styled':
         specifier: 11.11.0
         version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.38)(react@18.2.0)
+      '@gobletqa/monaco':
+        specifier: workspace:*
+        version: link:../monaco
+      '@gobletqa/race':
+        specifier: workspace:*
+        version: link:../race
       '@gobletqa/shared':
         specifier: workspace:*
         version: link:../shared

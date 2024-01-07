@@ -93,7 +93,8 @@ const getRepoDefinitions = async (
   cache:boolean=true
 ) => {
   
-  if(cache && __CachedRepoDefs?.length) return __CachedRepoDefs
+  if(cache && __CachedRepoDefs?.length)
+    return __CachedRepoDefs
 
   const { stepsDir } = repo.paths
   if(!stepsDir) return []
@@ -133,7 +134,7 @@ export const loadDefinitions = async (
   cache:boolean=true
 ) => {
 
-  if(cache && __CachedRepoDefs && __CachedGobletDefs)
+  if(cache && __CachedRepoDefs?.length && __CachedGobletDefs?.length)
     return __CachedGobletDefs.concat(__CachedRepoDefs)
 
   // Clear out any steps that were already loaded

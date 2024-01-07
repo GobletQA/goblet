@@ -6,19 +6,32 @@ import type {
   TGobletConfig,
 } from '@GRP/types'
 
+import { getRepoPath }from '@gobletqa/git'
 import { ENVS } from '@gobletqa/environment'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { DefWorld } from '@gobletqa/environment/constants'
 
 import {
-  loaderSearch,
+  repoWorldLoader,
   getGobletConfig,
   getRepoGobletDir,
   resetGobletRequire,
 } from '@gobletqa/goblet'
 
 let __CACHED_WORLD:Record<string, TGBWorldCfg>={}
+
+const __CACHED_GOBLET_ENVS = {
+  GOBLET_ENV: ENVS.GOBLET_ENV,
+  GOBLET_CONFIG_BASE: ENVS.GOBLET_CONFIG_BASE,
+  GB_GIT_REPO_REMOTE: ENVS.GB_GIT_REPO_REMOTE,
+  GB_REPO_CONFIG_REF: ENVS.GB_REPO_CONFIG_REF,
+}
+
+const resetGobletEnvs = () => {
+  Object.entries(__CACHED_GOBLET_ENVS).forEach(([key, value]) => ENVS[key] = value)
+}
+
 export const getCachedWorld = (username:string) => {
   return username ? __CACHED_WORLD[username] : undefined
 }
@@ -31,17 +44,20 @@ export const setCachedWorld = (username:string, world:TGBWorldCfg) => {
   __CACHED_WORLD[username] = world
   return __CACHED_WORLD[username]
 }
-export const resetCachedWorld = (username?:string) => {
+export const resetCachedWorld = (username:string) => {
+
+  resetGobletEnvs()
+
   if(username && __CACHED_WORLD[username]){
     __CACHED_WORLD[username] = undefined
-    resetGobletRequire()
+    resetGobletRequire(getRepoPath({ user:{username} }))
     return
   }
 
   const entries = Object.entries(__CACHED_WORLD)
   if(entries.length <= 1){
     __CACHED_WORLD = {}
-    resetGobletRequire()
+    resetGobletRequire(getRepoPath({ user:{username} }))
   }
 }
 
@@ -99,7 +115,7 @@ export const loadClientWorld = (
 
     const basePath = getRepoGobletDir(config)
 
-    worldJson = loaderSearch({
+    worldJson = repoWorldLoader({
       basePath,
       clearCache: false,
       file: `world.json`,

@@ -10,8 +10,8 @@ import { buildRefFromRemote, getRepoRef } from './utils/getRepoRef'
 import { configFromFolder } from './loaders/configFromFolder'
 import {  resetRequire, resetGobletConfig } from './loaders/configCache'
 import {
-  loaderSearch,
-  gobletLoader
+  gobletLoader,
+  repoWorldLoader,
 } from './loaders/loader'
 
 import { getGobletConfig } from './getGobletConfig'
@@ -19,8 +19,8 @@ import { getGobletConfig } from './getGobletConfig'
 export {
   getRepoRef,
   gobletLoader,
-  loaderSearch,
   getFileTypes,
+  repoWorldLoader,
   getPathFromBase,
   getGobletConfig,
   getRepoGobletDir,

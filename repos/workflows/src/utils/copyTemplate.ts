@@ -20,19 +20,22 @@ const copyTemplateContent = async (gitData:TGitData, template:string) => {
     .then(() => true)
     .catch(err => {
       Logger.error(`Creating goblet from template failed`)
-      Logger.log(err.stack)
+      Logger.log(err)
       return false
     })
 }
 
-const checkGobletExists = (gitData:TGitData, template:string) => {
+const checkGobletExists = (gitData:TGitData) => {
   Logger.info(`Searching for goblet config...`)
   const config = configFromFolder(gitData.local, { remote: gitData.remote, clearCache: true })
-  Logger.info(`goblet config | configFromFolder`, config)
 
-  if(!config) return false
+  if(!config){
+    Logger.log(`Failed to find config with gitData`, gitData)
 
-  Logger.info(`Found existing goblet config at ${config?.location}`)
+    return false
+  }
+
+  Logger.info(`Found existing goblet config at ${config?.location}`, config)
 
   return true
 
@@ -49,7 +52,7 @@ const checkGobletFolder = (gitData:TGitData) => existsSync(path.join(gitData.loc
  * After the second check fails, then we try to copy the goblet template over
  */
 export const copyTemplate = async (gitData:TGitData, template:string, reCheck:boolean=true) => {
-  const gobletConfig = checkGobletExists(gitData, template)
+  const gobletConfig = checkGobletExists(gitData)
   if(gobletConfig) return true
 
   if(!checkGobletFolder(gitData) || reCheck === false)

@@ -16,9 +16,9 @@ import { generateFolderName } from './generateFolderName'
  * @returns {string} - Path to the mounted repo
  */
 export const getRepoPath = (args:TGitMeta=emptyObj) => {
-  const { user, repo } = args
+  const { user } = args
 
-  const folderName = generateFolderName(user, repo)
+  const folderName = generateFolderName(user)
   if (folderName) return path.join(ENVS.GOBLET_MOUNT_ROOT, folderName)
 
   throw new Error(`A user name is required generate a repo path`)

@@ -22,7 +22,7 @@ export type TLoadShared = {
   first?: boolean
   basePath:string
   clearCache?:boolean
-  merge?: string[] | false | null | undefined
+  merge?: string[]|boolean|null|undefined
 }
 
 export type TSearchFile = TLoadShared & {

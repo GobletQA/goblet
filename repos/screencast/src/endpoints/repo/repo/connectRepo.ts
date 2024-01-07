@@ -2,6 +2,7 @@ import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
+import { Logger } from '@GSC/utils/logger'
 import { workflows } from '@gobletqa/workflows'
 import { loadRepoContent } from '@gobletqa/repo'
 import { apiRes, AppRouter } from '@gobletqa/shared/api'
@@ -30,6 +31,10 @@ export const connectRepo = async (
 
     const body = req.body as TConnectBody
     const { token, username } = req.auth
+
+    // Ensure all cache is cleared for the user
+    workflows.resetCache(username)
+
     const resp = await workflows.fromWorkflow({
       token,
       username,
@@ -43,17 +48,9 @@ export const connectRepo = async (
   }
   catch(err){
 
-    console.log(`------- ERROR CONNECTING REPO -------`)
-    console.log(`------- error -------`)
-    console.log(err)
-    console.log(``)
-    console.log(`------- repo -------`)
-    console.log(repo)
-    console.log(``)
-    console.log(`------- status -------`)
-    console.log(status)
-    console.log(``)
-    console.log(`------- ERROR CONNECTING REPO -------`)
+    Logger.error(err)
+    Logger.log(`Repo:`, repo)
+    Logger.log(`status:`, status)
 
     // If the repo mounting fails for some reason
     // Call disconnect incase it throws after the repo was mounted

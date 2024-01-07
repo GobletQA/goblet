@@ -38,14 +38,14 @@ export const disconnectRepo = async (username?:string, openModel:boolean=true) =
     message: `Disconnecting repo...`,
   })
 
-  // If no user exists, then disconnect the user
+  // Then remove the repo locally
+  // Disconnect the repo on the backend base on username
   username = username || GitUser.getUser()?.username
 
-  // First disconnect the repo on the backend
-  username && await callDisconnectApi(username)
-
-  // Then remove the repo locally
-  await removeRepo()
+  Promise.all([
+    removeRepo(),
+    username && await callDisconnectApi(username),
+  ])
 
   if(!openModel) return
 

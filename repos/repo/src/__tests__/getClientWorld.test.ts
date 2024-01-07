@@ -12,13 +12,13 @@ const worldMock = {
   $context: {},
 }
 
-const loaderSearchMock = jest.fn(() => (worldMock))
+const repoWorldLoaderMock = jest.fn(() => (worldMock))
 const getGobletConfigMock = jest.fn()
 const getRepoGobletDirMock = jest.fn(() => `/test-repo`)
 
 setMox('@gobletqa/goblet', {
   getGobletConfig: getGobletConfigMock,
-  loaderSearch: loaderSearchMock,
+  repoWorldLoader: repoWorldLoaderMock,
   getRepoGobletDir: getRepoGobletDirMock,
 })
 
@@ -93,7 +93,7 @@ describe('loadClientWorld', () => {
         world: '/path/to/world.json',
       },
     }
-    loaderSearchMock.mockClear()
+    repoWorldLoaderMock.mockClear()
     getGobletConfigMock.mockClear()
     getRepoGobletDirMock.mockClear()
   })
@@ -112,7 +112,7 @@ describe('loadClientWorld', () => {
 
     expect(result).toEqual({...DefWorld, ...worldMock})
     expect(getRepoGobletDirMock).toHaveBeenCalledWith(mockConfig)
-    expect(loaderSearchMock).toHaveBeenCalledWith({
+    expect(repoWorldLoaderMock).toHaveBeenCalledWith({
       basePath: getRepoGobletDirMock(),
       clearCache: true,
       file: 'world.json',
@@ -127,7 +127,7 @@ describe('loadClientWorld', () => {
     console.warn = jest.fn()
     
     // @ts-ignore
-    loaderSearchMock.mockImplementation(() => {
+    repoWorldLoaderMock.mockImplementation(() => {
       throw new Error('Failed to load world file')
     })
 
@@ -135,7 +135,7 @@ describe('loadClientWorld', () => {
 
     expect(result).toEqual({...DefWorld, ...worldMock})
     expect(getRepoGobletDirMock).toHaveBeenCalledWith(mockConfig)
-    expect(loaderSearchMock).toHaveBeenCalledWith({
+    expect(repoWorldLoaderMock).toHaveBeenCalledWith({
       basePath: getRepoGobletDirMock(),
       clearCache: true,
       file: 'world.json',
@@ -154,8 +154,8 @@ describe('getClientWorld', () => {
   beforeEach(() => {
     getGobletConfigMock.mockClear()
     getRepoGobletDirMock.mockClear()
-    loaderSearchMock.mockClear()
-    loaderSearchMock.mockImplementation(() => (worldMock))
+    repoWorldLoaderMock.mockClear()
+    repoWorldLoaderMock.mockImplementation(() => (worldMock))
   })
 
   it('should call loadClientWorld with the default goblet config', () => {
@@ -169,3 +169,6 @@ describe('getClientWorld', () => {
     expect(result).toEqual({...DefWorld, ...worldMock})
   })
 })
+
+
+export {}
