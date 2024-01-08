@@ -9,7 +9,7 @@ GB_VNC_SERVER_PORT=${GB_VNC_SERVER_PORT:-26370}
 GB_SC_IDLE_INTERVAL=${GB_SC_IDLE_INTERVAL:-20}
 GB_SC_IDLE_THRESHOLD=${GB_SC_IDLE_THRESHOLD:-4}
 GB_SC_IDLE_WAIT_TO_START=${GB_SC_IDLE_WAIT_TO_START:-180}
-GB_SC_IDLE_CONNECTION_THRESHOLD=${GB_SC_IDLE_CONNECTION_THRESHOLD:-1}
+GB_SC_IDLE_CONNECTION_THRESHOLD=${GB_SC_IDLE_CONNECTION_THRESHOLD:-2}
 GB_APP_TEMP_PATH=${GB_APP_TEMP_PATH:-"temp"}
 GB_APP_MOUNT_PATH=${GB_APP_MOUNT_PATH:-"/goblet/app"}
 GB_SC_RESET_CONNECTION_FILE=${GB_SC_RESET_CONNECTION_FILE:-"reset-connection-check"}
@@ -17,6 +17,9 @@ GB_RESET_CONNECTION_PATH="$GB_APP_MOUNT_PATH/$GB_APP_TEMP_PATH/$GB_SC_RESET_CONN
 
 [[ "$NODE_ENV" == "local" ]] && SupCfgLoc=supervisord.local.conf || SupCfgLoc=supervisord.conf
 [[ "$GB_LOCAL_DEV_MODE" == "false" ]] && SupCfgLoc=supervisord.conf
+
+# Ensure the idle connection threshold is at least 2
+[[ $GB_SC_IDLE_CONNECTION_THRESHOLD -le 2 ]] && GB_SC_IDLE_CONNECTION_THRESHOLD=2
 
 # Prints an error message to the terminal in the color white
 gb_log(){
@@ -82,12 +85,14 @@ loopConnectionsCheck(){
   # Start looping forever
   while true; do
 
+  
+    gb_log ""
     gb_log "Checking active connections..."
     local EstablishedCons=$(netstat -an | grep ESTABLISHED | grep -v $GB_VNC_SERVER_PORT | wc -l)
 
     gb_log "Total Active Connections: $EstablishedCons"
     gb_log "Idle Connection Threshold:  $GB_SC_IDLE_CONNECTION_THRESHOLD"
-    gb_log ""
+    gb_log "Idle counter is: $IdleCounter"
     
     gb_log "Check Reset File: \"$GB_RESET_CONNECTION_PATH\""
 
@@ -123,6 +128,8 @@ loopConnectionsCheck(){
 
     else
 
+      # TODO: this does not work properly and cause the container status to be reset
+      # Fix this
       if [[ $IdleCounter -ge $halfTotal ]]; then 
         callSCServer "$IdleCounter" "$EstablishedCons" "active"
       fi
