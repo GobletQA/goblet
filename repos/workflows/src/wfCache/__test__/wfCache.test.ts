@@ -98,7 +98,6 @@ describe(`WF Cache`, () => {
     expect(cache).toBe(data)
   })
 
-
   it(`should find saved cache from a string ref`, () => {
     expect(wfcache.cache()).toEqual({})
 
@@ -108,7 +107,6 @@ describe(`WF Cache`, () => {
     expect(wfcache.find(cacheRef)).toBe(data)
 
   })
-
 
   it(`should find saved cache from an of string refs`, () => {
     expect(wfcache.cache()).toEqual({})
@@ -210,10 +208,10 @@ describe(`WF Cache`, () => {
 
     const cache1 = wfcache.find(cacheName)
     const cache2 = wfcache.find(cacheName2)
-    expect(cache1).toEqual(cache2)
+    expect(cache1).toBe(cache2)
     expect(cache1).not.toEqual(data)
-    expect(cache1).toEqual(data2)
-    expect(cache2).toEqual(data2)
+    expect(cache1).toBe(data2)
+    expect(cache2).toBe(data2)
 
   })
 
@@ -258,6 +256,20 @@ describe(`WF Cache`, () => {
 
     expect(wfcache.cache()).toEqual({[cacheName2]: data2})
     expect(wfcache.refs()).toEqual({[cacheRef2]: cacheName2})
+  })
+
+  it(`should not allow using an exiting ref for a new cache`, () => {
+    expect(wfcache.cache()).toEqual({})
+    expect(wfcache.refs()).toEqual({})
+
+    const data = { some: `data` }
+    const data2 = { some: `data2` }
+    wfcache.save(cacheName, data, [cacheRef])
+    wfcache.save(cacheName2, data2, [cacheRef])
+
+    expect(wfcache.find(cacheRef)).toBe(data)
+    expect(wfcache.find(cacheName)).toBe(data)
+    expect(wfcache.find(cacheName2)).toBe(data2)
   })
 
 })
