@@ -33,7 +33,7 @@ const initApi = async () => {
 
   const app = getApp(screencastConfig)
 
-  await setupBrowser(app)
+  setupBrowser(app)
   setupLoggerReq(app)
   setupCors(app)
   setupJWT(app, SCAuthBypassRoutes)
@@ -46,7 +46,7 @@ const initApi = async () => {
   })
   setupRepo()
   setupOnReqEnd()
-  await setupEndpoints()
+  setupEndpoints()
   setupLoggerErr(app)
 
   const {
