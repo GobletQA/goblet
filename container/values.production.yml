@@ -43,4 +43,4 @@ env:
   # Time in seconds to wait before starting to check for active connections, i.e. 180 === 3min
   GB_SC_IDLE_WAIT_TO_START: 3600
   # Max number of connections that can exist to consider the container to be idle
-  GB_SC_IDLE_CONNECTION_THRESHOLD: 1
+  GB_SC_IDLE_CONNECTION_THRESHOLD: 2

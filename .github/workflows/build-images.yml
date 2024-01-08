@@ -148,7 +148,7 @@ jobs:
             platforms: linux/arm64
           - service: screencast
             dockerfile: container/Dockerfile.screencast
-            platforms: linux/amd64
+            platforms: linux/amd64,linux/arm64
           - service: backend
             dockerfile: container/Dockerfile.backend
             platforms: linux/amd64

@@ -1,8 +1,8 @@
 import type { TIdleConnection } from "@types"
 
-import { useApp } from "@store"
 import { useCallback } from 'react'
-import { EAppStatus } from "@types"
+import { useApp, useModal } from "@store"
+import { EAppStatus, EModalTypes } from '@types'
 import {setStatus} from "@actions/app/setStatus"
 import {idleModal} from "@actions/modals/modals"
 import { useOnEvent } from "@gobletqa/components"
@@ -14,13 +14,37 @@ import { SCIdleConnectionsEvt } from "@constants/events"
 export const useIdleTimeout = () => {
 
   const { status } = useApp()
+  const { type, visible } = useModal()
 
   const onPrompt = useCallback((data?:TIdleConnection) => {
-    if(status === EAppStatus.Idle) return
+
+    if(data?.state && status !== data?.state)
+      setStatus(data?.state)
+
+    if(data?.state === EAppStatus.Active){
+      type === EModalTypes.Idle
+        && visible
+        && idleModal({ visible: false })
+
+      return
+    }
+
+    else if(data?.state === EAppStatus.Shutdown){
+      status !== EAppStatus.Shutdown
+        && setStatus(EAppStatus.Shutdown)
+      
+      idleModal({ visible: false })
+      idleModal({ visible: true })
+
+      return
+    }
+
+    // If already set to idle, then check for shutdown status
+    else if(status === EAppStatus.Idle) return
 
     setStatus(EAppStatus.Idle)
     idleModal({ visible: true })
-  }, [status])
+  }, [status, type, visible])
 
   useOnEvent<TIdleConnection>(SCIdleConnectionsEvt, onPrompt)
 

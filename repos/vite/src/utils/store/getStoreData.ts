@@ -1,4 +1,4 @@
-import type { TAppState, TRepoState, TContainerState } from '@types'
+import type { TModalState, TAppState, TRepoState, TContainerState } from '@types'
 
 import { getStore } from '@store'
 import { noOpObj } from '@keg-hub/jsutils'
@@ -22,4 +22,9 @@ export const getContainerData = () => {
 export const getAppData = () => {
   const storeItems = getStore()?.getState()
   return (storeItems?.app || noOpObj) as TAppState
+}
+
+export const getModalData = () => {
+  const storeItems = getStore()?.getState()
+  return (storeItems?.modal || noOpObj) as TModalState
 }

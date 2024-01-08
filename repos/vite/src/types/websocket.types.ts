@@ -1,3 +1,4 @@
+import type { EAppStatus } from './app.types'
 import type { TFeatureAst } from '@ltipton/parkin'
 import type { TAutomateElementEvent } from './shared.types'
 
@@ -23,7 +24,7 @@ export type TIdleConnection = {
   idle?:boolean
   counter?:number
   connections?:number
-  state?:`active`|`idle`
+  state?:EAppStatus
 }
 
 

@@ -46,13 +46,17 @@ export const setupCors = (app:Express, extraHeaders:string[]=[]) => {
   app.use((req, res, next) => {
     const origin = getOrigin(req)
 
-    // If in a deployed env, then validate the origin
-    // Otherwise allow the origin in development envs
-    const foundOrigin = config.environment !== `local`
-      ? config.origins.includes(`*`) || config.origins.includes(origin)
+    const foundOrigin = config.origins.includes(`*`) || config.origins.includes(origin)
         ? origin
         : undefined
-      : origin
+
+    // If in a deployed env, then validate the origin
+    // Otherwise allow the origin in development envs
+    // const foundOrigin = config.environment !== `local`
+    //   ? config.origins.includes(`*`) || config.origins.includes(origin)
+    //     ? origin
+    //     : undefined
+    //   : origin
 
     // If no origin, then end the request as Unauthorized
     if(!foundOrigin) return res.status(401).send(`Unauthorized`)

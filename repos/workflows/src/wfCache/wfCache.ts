@@ -11,23 +11,48 @@ export class WfCache {
   #cache:Record<string, any>={}
   #refMap:Record<string, string>={}
 
-  #getRefs = (ref:string) => {
-    const name = this.#refMap[ref]
+  #getRefs = (ref:TNameORRef) => {
+    const name = this.#refMap[ref] || ref
 
-    return Object.entries(this.#refMap)
+    let match:string
+
+    const refs = Object.entries(this.#refMap)
       .reduce((acc, [key, val]) => {
-        val === name && acc.push(key)
+        if(key === ref || val === name){
+          acc.push(key)
+          match = val
+        }
         return acc
       }, [])
+    
+    return {refs, match}
+  }
+
+  #clearRefs = (name:string) => {
+    const {refs, match} = this.#getRefs(name)
+    match && this.#remove(match)
+
+    refs?.length
+     && refs.forEach((ref) => {
+        delete this.#refMap[ref]
+        Logger.info(`[WF Cache] - Ref:${ref} (${name}) cache removed successfully`)
+      })
+
   }
 
   #addRefs = (refs:string|string[], name:string) => {
-    ensureArr(refs).forEach(ref => this.#refMap[ref] = name)
+    ensureArr(refs).forEach(ref => {
+      const existing = this.#refMap[ref]
+      if(existing && existing !== name)
+        return Logger.warn(`[WF Cache] - Ref "${ref}" already exist as a ref for "${existing}"`)
+
+      this.#refMap[ref] = name
+    })
   }
 
   #findRefCache = (ref:TCacheRef) => {
-    const name = this.#refMap[ref]
-    return this.#cache[name]
+    const {match} = this.#getRefs(ref)
+    return this.#cache[match]
   }
 
   #remove = (name:TCacheName) => {
@@ -41,6 +66,23 @@ export class WfCache {
     return this.#cache
   }
 
+  refs = () => {
+    return this.#refMap
+  }
+  
+  clearCache = ()=> {
+    this.#cache = {}
+  }
+
+  clearRefs = ()=> {
+    this.#refMap = {}
+  }
+
+  clearAll = ()=> {
+    this.#cache = {}
+    this.#refMap = {}
+  }
+
   find = (name:TNameORRef) => {
     const found = this.#cache[name] || this.#findRefCache(name)
     found && Logger.info(`[WF Cache Hit] - ${name}`)
@@ -48,7 +90,12 @@ export class WfCache {
     return found
   }
   
-  save = (name:TCacheName, data:any, ref?:TCacheRef|TCacheRef[]) => {
+  save = (cacheName:TNameORRef, data:any, ref?:TCacheRef|TCacheRef[]) => {
+    // Check if the name is already used as a ref, and if so use it's ref name
+    const link = this.#refMap[cacheName]
+    const name = link ?? cacheName
+    link && Logger.warn(`[WF Cache] - "${cacheName}" is a ref for "${name}"; updating "${name}" cache`)
+
     const refArr = ref ? ensureArr<TCacheRef>(ref) : []
     this.#cache[name] = data
 
@@ -59,38 +106,13 @@ export class WfCache {
       msg = ` | Refs: ${refArr.join(`, `)}`
     }
 
-    Logger.info(`[WF Cache Save] - Name: ${name}${msg}`)
+    Logger.info(`[WF Cache] - Saved cache (Name: ${name}${msg})`)
   }
 
   remove = (name:TNameORRef) => {
- 
-    const refCache = this.#findRefCache(name)
-
-    if(!this.#cache[name] && !refCache){
-      Logger.warn(`[WF Cache WARN] - No cache found for "${name}"`)
-      Logger.log(`Cache:`, this.#cache)
-      Logger.log(`RefMap:`, this.#refMap)
-      return
-    }
-
+    this.#clearRefs(name)
     this.#remove(name)
-
-    Logger.info(`[WF Cache Cleared] - ${name} cache removed successfully`)
-    if(!refCache)
-      return Logger.info(`[WF Cache Cleared] - No refs found, skipping ref remove`)
-
-    const refs = this.#getRefs(name)
-
-    refs?.length
-     && refs.forEach((ref) => {
-        const match = this.#refMap[ref]
-        this.#remove(match)
-
-        delete this.#refMap[ref]
-
-        Logger.info(`[WF Cache Cleared] - Ref:${ref} (${name}) cache removed successfully`)
-      })
-
+    Logger.info(`[WF Cache] - Cache "${name}" removed successfully`)
   }
 
 }

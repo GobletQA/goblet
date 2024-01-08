@@ -18,7 +18,7 @@ export const useUpdate = <T=any, E=Record<any, any>>(
   path?:string,
 ) => {
   return useCallback((data:E) => {
-    const updated = get<T>(data as Record<any, any>, path || ``, data)
+    const updated = get<T>(data as Record<any, any>, path || ``, data as unknown as T)
     setVal(updated)
   }, [path, val, setVal])
 }

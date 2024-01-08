@@ -76,7 +76,7 @@ env:
 
 # ---- Goblet Shared ENVs ---- #
   GB_SH_LOCAL_MOUNT: goblet-local
-  GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
+  GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app,http://0.0.0.0'
 
   GB_WS_TRANSPORTS: websocket
 

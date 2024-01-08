@@ -1,6 +1,7 @@
 
 export const setupEndpoints = async () => {
   try {
+    // @ts-ignore
     await import('../endpoints')
   }
   catch(err){

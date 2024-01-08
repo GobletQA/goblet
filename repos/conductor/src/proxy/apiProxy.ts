@@ -36,7 +36,7 @@ const ensureHeaders = (headers:Record<string, string>) => {
  * @returns {Object} - Contains the port and host ip address to proxy the request to
  */
 export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
-  const { target, proxyRouter, headers, proxy } = config
+  const { target, proxyRouter, headers, proxy, onClose } = config
   const addHeaders = ensureHeaders({ ...headers, ...proxy?.headers })
 
   const proxyHandler = createProxy({
@@ -46,6 +46,7 @@ export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
     logLevel: 'error',
     onError: onProxyError,
     target,
+    onClose,
     ...proxy,
     headers: addHeaders,
     router: (req:Request) => {

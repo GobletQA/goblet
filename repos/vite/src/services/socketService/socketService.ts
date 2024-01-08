@@ -24,7 +24,6 @@ import {
 } from '@keg-hub/jsutils'
 import { repoApiObj } from '@utils/repo/repoApiObj'
 import {getAppData} from '@utils/store/getStoreData'
-import {signOutManually} from '@actions/admin/user/signOutManually'
 
 const {
   WSPwConsole,
@@ -53,8 +52,30 @@ export class SocketService {
   token?:string
   logDebug:boolean=false
   socket:Socket|null=null
+  reconTimer?:NodeJS.Timeout
   commands:TSockCmds=noOpObj as TSockCmds
   config:TSocketService=noOpObj as TSocketService
+
+  #clearReconTimer = () => {
+    this.reconTimer && clearTimeout(this.reconTimer)
+    this.reconTimer = undefined
+  }
+
+
+  #setReconTimer = () => {
+    this.reconTimer = setTimeout(() => {
+      const { status } = getAppData()
+
+      // If we failed to reconnect and in idle status
+      // Then just log out, because we can't do anything anyways
+      status !== EAppStatus.Idle
+        && status !== EAppStatus.Shutdown
+        && EE.emit(WSSocketResetEvt, {})
+
+    }, 2000)
+  }
+
+
 
   /**
    * Helper to log data when logDebug is true
@@ -167,21 +188,16 @@ export class SocketService {
   }
 
   onReconnectFailed(){
-    const { status } = getAppData()
-
-    // If we failed to reconnect and in idle status
-    // Then just log out, because we can't do anything anyways
-    status === EAppStatus.Idle
-      ? signOutManually()
-      : EE.emit(WSSocketResetEvt, {})
+    this.#clearReconTimer()
+    this.#setReconTimer()
   }
 
   // TODO: handle errors and reconnect errors for main web-socket
   // When the user is idle, or the container is killed,
   // Need to stop calling backend api web-socket 
   onError(type:string, err:any) {
-    // console.log(`------- err -------`)
-    // console.log(type, [err])
+    this.#clearReconTimer()
+    this.#setReconTimer()
   }
 
   /**
