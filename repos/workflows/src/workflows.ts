@@ -13,8 +13,8 @@ import { wait } from '@keg-hub/jsutils/wait'
 import { wfcache, WfCache } from './wfCache'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { resetInjectedLogs } from '@gobletqa/logger'
-import { removeCachedDefs } from '@gobletqa/shared/fs'
 import { Repo, resetCachedWorld } from '@gobletqa/repo'
+import { removeRepoCacheDefs } from '@gobletqa/shared/fs'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 import {
   createGoblet,
@@ -38,6 +38,16 @@ const tryMethod = (name:string, cb:(...args:any[]) => any, ...rest:any[]) => {
 export class Workflows {
 
   #cache:WfCache=wfcache
+
+  /**
+   * Updates the cache manually
+   * Used when a step def is edited, and must be reloaded
+   * Once reloaded into the repo, this method is called to update the cache
+   */
+  updateCache = (username:string, data:{repo?:Repo, status?:TRepoMountStatus}) => {
+    const cached = this.#cache.find(username)
+    this.#cache.save(username, {...cached, data}, data?.repo?.paths?.repoRoot)
+  }
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -111,7 +121,11 @@ export class Workflows {
   ):Promise<TWFStatusResp> => {
     
     const cached = this.#cache.find(repoData.username)
-    if(cached) return cached
+    if(cached){
+      cached.repo?.refreshWorld?.()
+      await cached?.repo?.ensureParkinDefs?.()
+      return cached
+    }
 
     const { repo, ...status } = await statusGoblet(config, repoData, false)
     if(!repo || !status.mounted)
@@ -157,7 +171,11 @@ export class Workflows {
     } = args
 
     const cached = this.#cache.find(username)
-    if(cached) return cached
+    if(cached){
+      cached.repo?.refreshWorld?.()
+      await cached?.repo?.ensureParkinDefs?.()
+      return cached
+    }
 
     const url = new URL(repoUrl)
 
@@ -208,7 +226,7 @@ export class Workflows {
     tryMethod(`resetGobletConfig`, resetGobletConfig, repoLoc)
     tryMethod(`resetCachedWorld`, resetCachedWorld, username)
     tryMethod(`resetInjectedLogs`, resetInjectedLogs)
-    tryMethod(`removeCachedDefs`, removeCachedDefs)
+    tryMethod(`removeRepoCacheDefs`, removeRepoCacheDefs)
     tryMethod(`wfCache.remove`, () => this.#cache.remove(username))
   }
 

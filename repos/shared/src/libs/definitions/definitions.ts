@@ -4,6 +4,7 @@ import path from 'path'
 import { glob } from 'glob'
 import { getSupportFiles } from './supportFiles'
 import { getPathFromBase } from '@gobletqa/goblet'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 import { DefinitionsParser } from './definitionsParser'
 import { InternalPaths } from '@gobletqa/environment/constants'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
@@ -15,17 +16,9 @@ import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 let __CachedGobletDefs:TDefinitionFileModel[]
 let __CachedRepoDefs:TDefinitionFileModel[]
 
-const removeGobletCacheDefs = () => {
-  __CachedGobletDefs = undefined
-}
-
 export const removeRepoCacheDefs = () => {
+  Logger.info(`Removing cached repo defs...`)
   __CachedRepoDefs = undefined
-}
-
-export const removeCachedDefs = () => {
-  removeRepoCacheDefs()
-  removeGobletCacheDefs()
 }
 
 /**
@@ -63,7 +56,12 @@ const getGobletDefs = async (
   overrideParkin:(...args:any) => any,
   cache:boolean=true
 ) => {
-  if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs
+
+  if(cache && __CachedGobletDefs?.length){
+    injectStepsIntoParkin(repo, __CachedGobletDefs)
+
+    return __CachedGobletDefs
+  }
 
   // import { aliases } from '@gobletqa/configs/aliases.config'
   // TODO: update this to pull from the aliases, something like this
@@ -93,8 +91,11 @@ const getRepoDefinitions = async (
   cache:boolean=true
 ) => {
   
-  if(cache && __CachedRepoDefs?.length)
+  if(cache && __CachedRepoDefs?.length){
+    injectStepsIntoParkin(repo, __CachedRepoDefs)
+
     return __CachedRepoDefs
+  }
 
   const { stepsDir } = repo.paths
   if(!stepsDir) return []
@@ -126,6 +127,29 @@ const loadDefinition = async (
   return fileModel
 }
 
+
+/**
+ * Injects that cache steps into the repo parkin instance
+ */
+const injectStepsIntoParkin = (repo:Repo, defFiles:TDefinitionFileModel[]) => {
+  const existing = repo.parkin.steps.list()
+
+  defFiles.forEach((defFile) => {
+    defFile.ast.definitions.forEach(def => {
+      if(!def.type) return
+
+      const internalType = `_${def.type}`
+
+      const validDef = existing.reduce(
+        (validated, def) => (!validated || def.uuid === validated.uuid) ? false : validated,
+        def
+      )
+
+      validDef && repo.parkin.steps?.[internalType]?.push(validDef)
+    })
+  })
+}
+
 /**
  * Loads the definitions file from the passed in repo instance
  */
@@ -134,8 +158,12 @@ export const loadDefinitions = async (
   cache:boolean=true
 ) => {
 
-  if(cache && __CachedRepoDefs?.length && __CachedGobletDefs?.length)
-    return __CachedGobletDefs.concat(__CachedRepoDefs)
+  if(cache && __CachedRepoDefs?.length && __CachedGobletDefs?.length){
+    const joined = __CachedGobletDefs.concat(__CachedRepoDefs)
+    injectStepsIntoParkin(repo, joined)
+
+    return joined
+  }
 
   // Clear out any steps that were already loaded
   DefinitionsParser.clear(repo)

@@ -48,7 +48,5 @@ export const loadRepoFromSocket = async (args:TLoadRepoFromSocket) => {
 
   if (!repo) throw new Error(`Requested repo could not be initialized`)
 
-  repo.refreshWorld()
-
   return { repo }
 }
