@@ -9,7 +9,7 @@ import { WSIdleStatus } from '@gobletqa/environment/constants'
 type TIdleSCParams = {
   counter?:string
   connections?:string
-  state?:`idle`|`active`
+  state?:`idle`|`active`|`shutdown`
 }
 
 type TSCReq = TAppOvReq<TApp<{ SocketManager:SocketManager }>, TIdleSCParams>

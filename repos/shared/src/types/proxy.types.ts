@@ -7,6 +7,7 @@ export type TProxyConfig = {
   port?: TPort
   target: string
   proxy?: Options
+  onClose?:Options[`onClose`]
   headers?: Record<string, string>
   proxyRouter?:(req:Request) => Record<any, any>|string
 }

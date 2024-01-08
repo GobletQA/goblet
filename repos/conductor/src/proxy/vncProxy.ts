@@ -17,6 +17,7 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
     path,
     host,
     target,
+    onClose,
     protocol,
     proxyRouter,
     changeOrigin,
@@ -29,6 +30,7 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
   const pxTarget = target || `${protocol}://${url}`
 
   const vncProxy = createProxy(path, {
+    onClose,
     ws: true,
     xfwd:true,
     toProxy: true,

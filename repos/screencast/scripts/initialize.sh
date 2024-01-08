@@ -49,6 +49,10 @@ stopSup(){
   exit 0
 }
 
+# Calls the screencast server to let it know the container is going idle
+# This allows it to send a message to the frontend about going idle
+# Call looks something like this
+# /usr/bin/node -e "fetch('http://0.0.0.0:$GB_SC_PORT/idle-check?counter=1&connections=20&state=idle')"
 callSCServer(){
   local PATH="idle-check"
   local HOST="http://0.0.0.0:$GB_SC_PORT"
@@ -101,6 +105,7 @@ loopConnectionsCheck(){
         gb_log "Container is considered idle due to conscutive connection checks, sutting down..."
         # First shutdown supervisor gracefully
         # In production this should kill the container
+        callSCServer "$IdleCounter" "$EstablishedCons" "shutdown"
         stopSup
 
         break

@@ -9,7 +9,8 @@ export enum EEditorType {
 }
 
 export enum EAppStatus {
-  Idle=`Idle`,
-  Active=`Active`,
-  Prompted=`Prompted`
+  Idle=`idle`,
+  Active=`active`,
+  Prompted=`prompted`,
+  Shutdown=`shutdown`
 }
