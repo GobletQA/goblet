@@ -141,7 +141,9 @@ const injectStepsIntoParkin = (repo:Repo, defFiles:TDefinitionFileModel[]) => {
       const internalType = `_${def.type}`
 
       const validDef = existing.reduce(
-        (validated, def) => (!validated || def.uuid === validated.uuid) ? false : validated,
+        (validated, def) => (!validated || def.name === validated.name || def.uuid === validated.uuid)
+          ? false
+          : validated,
         def
       )
 

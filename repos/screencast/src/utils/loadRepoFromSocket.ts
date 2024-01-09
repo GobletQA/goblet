@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-import type { TGitData } from '@gobletqa/git'
+import type { TGitData, TGitOpts } from '@gobletqa/git'
 
 import type {
   TTokenUser,
@@ -33,18 +33,23 @@ export const loadRepoFromSocket = async (args:TLoadRepoFromSocket) => {
   if(!user || !user.token || !user.provider)
     throw new Error(`User not authenticated, request can not be completed`)
 
-    const { repo } = await workflows.status(app.locals.config, {
-      ...pickKeys(gitData, [
-        `name`,
-        `local`,
-        `remote`,
-        `repoId`,
-        `branch`,
-        `repoName`,
-        `username`,
-      ]),
-      ...pickKeys(user, [`token`, `provider`]),
-    })
+  const opts = {
+    ...pickKeys<Partial<TGitOpts>>(gitData, [
+      `name`,
+      `local`,
+      `remote`,
+      `repoId`,
+      `branch`,
+      `repoName`,
+      `username`,
+    ]),
+    ...pickKeys<Partial<TGitOpts>>(user, [`token`, `provider`, `username`]),
+  } as TGitOpts
+
+  if(!opts.username)
+    opts.username = user.username || gitData.username
+
+  const { repo } = await workflows.status(app.locals.config, opts)
 
   if (!repo) throw new Error(`Requested repo could not be initialized`)
 

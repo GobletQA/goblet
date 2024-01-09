@@ -46,7 +46,8 @@ export class Workflows {
    */
   updateCache = (username:string, data:{repo?:Repo, status?:TRepoMountStatus}) => {
     const cached = this.#cache.find(username)
-    this.#cache.save(username, {...cached, data}, data?.repo?.paths?.repoRoot)
+    cached
+      && this.#cache.save(username, {...cached, data}, data?.repo?.paths?.repoRoot)
   }
 
   /**
