@@ -138,6 +138,7 @@ git.clone = async (
    * ```
    * Need to investigate
  */
+  await git.gc(local)
 
   // Return the pull response so it can be handled by the mountRepo method
   return [pullErr, pullResp]
