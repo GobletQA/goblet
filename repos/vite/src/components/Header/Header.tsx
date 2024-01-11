@@ -14,8 +14,6 @@ import {
   ToggleThemeAction,
 } from './Header.styled'
 import {
-  gutter,
-  IconButton,
   EThemeMode,
   useThemeType,
   DarkModeIcon,

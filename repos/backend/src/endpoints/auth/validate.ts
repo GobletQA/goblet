@@ -5,17 +5,18 @@ import type { TValidateUser } from '@GBE/services/firebase'
 
 import {authService} from '@GBE/services/firebase'
 import { hashString } from '@keg-hub/jsutils/hashString'
-import { apiRes, AppRouter } from '@gobletqa/shared/api'
 import { generateTokens } from '@GBE/utils/generateTokens'
-
+import { apiRes, resError, AppRouter } from '@gobletqa/shared/api'
+import { checkForAuthHeader } from '@GBE/utils/checkForAuthHeader'
 
 export type TValidateReq = TBEBodyReq<TValidateUser>
 export type TValidateResp = {
-  id: string;
-  jwt: string;
-  refresh: string;
-  username: string;
-  provider: string;
+  id: string
+  jwt: string
+  hasPAT?:boolean
+  refresh: string
+  username: string
+  provider: string
   status:TRouteMeta
 }
 
@@ -23,23 +24,31 @@ export type TValidateResp = {
  * Validates the required authentication information exists
  */
 export const validate = async (req:TValidateReq, res:TBEResp<TValidateResp>) => {
-  const { conductor } = req.app.locals
+
+  const { conductor, config } = req.app.locals
+  
+  const authData = checkForAuthHeader(
+    req.headers[`authorization`],
+    config?.server?.jwt?.secret
+  )
 
   const {
     id,
     token,
+    hasPAT,
     provider,
     username,
-  } = await authService.validate(req.body)
+  } = authData
+    ? await authService.validate({...req.body, ...authData})
+    : await authService.validate(req.body)
 
   const imageRef = Object.keys(conductor.config.images)[0]
 
   if(!imageRef) throw new Error(`Conductor config missing Image Reference`)
 
   if (!id || !username || !token || !provider)
-    throw new Error(`Provider metadata is unknown. Please sign in again`)
+    resError(`Provider metadata is unknown. Please sign in again`, 401)
 
-  const config = req.app.locals.config
   res.locals.subdomain = hashString(`${username}-${config?.conductor?.hashKey}`)
 
   // Containers are based on the subdomain generated from username
@@ -58,17 +67,18 @@ export const validate = async (req:TValidateReq, res:TBEResp<TValidateResp>) => 
   // First generate tokens for accessing conductor form the frontend
   const jwtTokens = generateTokens(config.server.jwt, {
     token,
+    hasPAT,
     status,
+    username,
+    provider,
     userId: id,
-    provider: provider,
-    username: username,
     subdomain: res.locals.subdomain,
   })
 
 
   return apiRes<TValidateResp>(
     res,
-    {...jwtTokens, id, username, provider, status },
+    {...jwtTokens, id, username, hasPAT, provider, status },
     200
   )
 }

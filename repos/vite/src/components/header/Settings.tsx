@@ -1,12 +1,12 @@
-import type { TSettingNavItem, TAnyCB } from '@types'
+import type { TUserState, TSettingNavItem, TAnyCB } from '@types'
 
 import { useUser } from '@store'
-import { useCallback, useMemo } from 'react'
-import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import { Menu } from './Header.styled'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
+import { RemovePatId } from '@constants/nav'
+import { useCallback, useMemo } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { Tooltip } from '@gobletqa/components'
 import IconButton from '@mui/material/IconButton'
@@ -75,8 +75,9 @@ const SettingItem = (props:TSettingItem) => {
   )
 }
 
-const SettingMenu = (props:TSettings) => {
+const SettingMenu = (props:TSettings & { user:TUserState }) => {
   const {
+    user,
     anchorEl,
     settings,
     onCloseSettings,
@@ -101,13 +102,15 @@ const SettingMenu = (props:TSettings) => {
       onClose={onCloseSettings}
     >
       {settings.map((setting) => {
-        return (
-          <SettingItem
-            onClose={onCloseSettings}
-            key={setting.label || setting.path}
-            {...setting}
-          />
-        )
+        return setting.id === RemovePatId && !user.hasPAT
+            ? null
+            : (
+                <SettingItem
+                  onClose={onCloseSettings}
+                  key={setting.label || setting.path}
+                  {...setting}
+                />
+              )
       })}
     </Menu>
   )
@@ -131,8 +134,9 @@ const getUserInitials = (displayName?:string, username?:string) => {
     return { children: `${username[0]}${username[1]}`.trim().toUpperCase()}
 }
 
-const useAvatar = () => {
-  const user = useUser()
+const useAvatar = (user:TUserState) => {
+  
+  
   return useMemo(() => {
     return user.photoUrl
       ? {
@@ -151,7 +155,8 @@ const useAvatar = () => {
 
 export const Settings = (props:TSettings) => {
   const { onOpenSettings } = props
-  const avatarProps = useAvatar()
+  const user = useUser()
+  const avatarProps = useAvatar(user)
 
   return (
     <SettingsContainer>
@@ -160,7 +165,7 @@ export const Settings = (props:TSettings) => {
           <Avatar {...avatarProps} />
         </IconButton>
       </Tooltip>
-      <SettingMenu {...props} />
+      <SettingMenu {...props} user={user} />
     </SettingsContainer>
   )
 }

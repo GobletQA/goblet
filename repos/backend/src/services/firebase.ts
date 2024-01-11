@@ -27,6 +27,7 @@ export type TValidateUser = TCustomClaims & {
   idToken:string
   provider:string
   username:string
+  hasPAT?:boolean
 }
 
 export type TAddClaims = {
@@ -55,21 +56,21 @@ export class FBService {
     return (json ? user.toJSON() : user) as T
   }
 
-  getUserByEmail = async <T=UserRecord|TFBUser>(email:string, json:boolean) => {
+  #getUserByEmail = async <T=UserRecord|TFBUser>(email:string, json:boolean) => {
     const [err, user] = await limbo<UserRecord>(this.auth.getUserByEmail(email))
     if(err) throw err
 
     return (json ? user.toJSON() : user) as T
   }
 
-  createUser = async <T=UserRecord|TFBUser>(data:TFBUser, json?:boolean) => {
+  #createUser = async <T=UserRecord|TFBUser>(data:TFBUser, json?:boolean) => {
     const [err, user] = await limbo<UserRecord>(this.auth.createUser(data))
     if(err) throw err
 
     return (json ? user.toJSON() : user) as T
   }
 
-  updateUser = async (data:Omit<Partial<TFBUser>, `uid`> & { uid:string }, json?:boolean) => {
+  #updateUser = async (data:Omit<Partial<TFBUser>, `uid`> & { uid:string }, json?:boolean) => {
     const { uid, ...rest } = data
     const [err, user] = await limbo<UserRecord>(this.auth.updateUser(uid, rest))
     if(err) throw err
@@ -104,7 +105,9 @@ export class FBService {
     */
     const token = claims[provider]
 
-    return token ? {...data, token } : data
+    return token
+      ? {...data, token, hasPAT: true}
+      : data
   }
 
   addClaims = async (data:TAddClaims, merge?:boolean) => {

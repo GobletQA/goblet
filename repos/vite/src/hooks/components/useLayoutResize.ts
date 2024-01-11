@@ -1,10 +1,11 @@
 import type RFB from '@novnc/novnc/core/rfb'
 import type { MutableRefObject } from 'react'
-import type { TBrowserIsLoadedEvent, TVncConnected } from '@types'
+import type { TGobletSettings, TBrowserIsLoadedEvent, TVncConnected } from '@types'
 
 import { useRef, useCallback } from 'react'
 import { EE } from '@services/sharedService'
 import { useOnEvent } from '@gobletqa/components'
+import {useSettingValues} from '@hooks/settings/useSettingValues'
 import {resizeBrowser} from '@actions/screencast/api/resizeBrowser'
 import {
   VNCConnectedEvt,
@@ -42,8 +43,12 @@ const resizeFromRfb = async (rfbRef:MutableRefObject<RFB | null>, retry=0) => {
 export const useLayoutResize = () => {
 
   const rfbRef = useRef<RFB|null>(null)
+  const { browserInBrowser } = useSettingValues<TGobletSettings>(`goblet`)
 
-  const onBrowserResize = useCallback(async () => resizeFromRfb(rfbRef), [])
+  const onBrowserResize = useCallback(
+    async () => browserInBrowser && resizeFromRfb(rfbRef),
+    [browserInBrowser]
+  )
 
   useOnEvent(WindowResizeEvt, () => onBrowserResize())
 

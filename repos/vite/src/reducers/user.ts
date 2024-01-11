@@ -6,16 +6,17 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TUserEmptyState = {
   id?:string
-  username?: string
-  provider?: string
-  email?: string
-  photoUrl?: string
-  displayName?: string
+  email?:string
+  hasPAT?:boolean
+  photoUrl?:string
+  username?:string
+  provider?:string
+  displayName?:string
 }
 export type TUser = Omit<TUserEmptyState, `id`|`username`|`provider`> & {
   id:string
-  username: string
-  provider: string
+  username:string
+  provider:string
 }
 
 export type TUserState = TUserEmptyState | TUser

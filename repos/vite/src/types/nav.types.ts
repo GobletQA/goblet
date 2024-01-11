@@ -61,6 +61,7 @@ export type TSideNav = {
 }
 
 export type TSettingNavItem = {
+  id?:string
   Icon?: any
   path?: string
   label: string

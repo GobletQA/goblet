@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { Logger } from './logger'
 import { generateTokens } from './generateTokens'
 
 /**
@@ -16,25 +17,43 @@ export const validateRefreshToken = (
   refreshToken:string
 ) => {
   const { refreshSecret } = config
+  let decoded:any
 
   try {
-    const decoded = jwt.verify(refreshToken, refreshSecret) as any
+    Logger.verbose(`Attempting to decoded refresh token...`)
+    decoded = jwt.verify(refreshToken, refreshSecret) as any
+    Logger.verbose(`Decoded refresh token successfully`)
+  }
+  catch(decodeErr){
+    Logger.error(`Error validating refreshToken...`)
+    !refreshToken && Logger.warn(`Refresh token missing`)
+    !refreshSecret && Logger.warn(`Refresh secret missing`)
 
+    Logger.error(decodeErr)
+
+    return false
+  }
+
+
+  try {
+
+    Logger.verbose(`Attempting to generate new token...`)
     const generated = decoded.userId === user.userId
       && decoded.username === user.username
       && decoded.provider === user.provider
       && generateTokens(config, user)
+    Logger.verbose(`New token generated successfully`)
 
     return {
       ...generated,
-      ...decoded
+      ...decoded,
     }
 
   }
   catch(err){
-    console.log(`Error in refresh...`)
-    console.log(err)
-    
+    Logger.error(`Error generating new token...`)
+    Logger.error(err)
+
     return false
   }
 }
