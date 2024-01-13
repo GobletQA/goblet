@@ -17,7 +17,6 @@ helm repo update
 helm install certs --namespace gb-production --values container/values.certs.yaml certs/certs
 
 helm upgrade certs /Users/lancetipton/goblet/repos/certs/certs --namespace gb-production --values container/values.certs.yaml --install --force --reset-values
-  
 
 helm uninstall certs --namespace gb-production
-
+helm repo remove certs --namespace gb-production
