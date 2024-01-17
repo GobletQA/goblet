@@ -10,6 +10,8 @@ import { InternalPaths } from '@gobletqa/environment/constants'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
+let __DefCacheEnabled = false
+
 /**
  * Cache holder for internal goblet definitions, so they don't have to be reloaded each time
  */
@@ -57,7 +59,7 @@ const getGobletDefs = async (
   cache:boolean=true
 ) => {
 
-  if(cache && __CachedGobletDefs?.length){
+  if(__DefCacheEnabled && cache && __CachedGobletDefs?.length){
     injectStepsIntoParkin(repo, __CachedGobletDefs)
 
     return __CachedGobletDefs
@@ -72,9 +74,9 @@ const getGobletDefs = async (
   })
 
   const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin)
-  __CachedGobletDefs = loadedDefs
+  if(__DefCacheEnabled) __CachedGobletDefs = loadedDefs
 
-  return __CachedGobletDefs
+  return loadedDefs
 }
 
 
@@ -91,7 +93,7 @@ const getRepoDefinitions = async (
   cache:boolean=true
 ) => {
   
-  if(cache && __CachedRepoDefs?.length){
+  if(__DefCacheEnabled && cache && __CachedRepoDefs?.length){
     injectStepsIntoParkin(repo, __CachedRepoDefs)
 
     return __CachedRepoDefs
@@ -106,7 +108,7 @@ const getRepoDefinitions = async (
   })
 
   const repoDefs = await parseDefinitions(repo, definitionFiles, overrideParkin) || []
-  __CachedRepoDefs = repoDefs
+  if(__DefCacheEnabled) __CachedRepoDefs = repoDefs
 
   return repoDefs
 }
@@ -160,7 +162,7 @@ export const loadDefinitions = async (
   cache:boolean=true
 ) => {
 
-  if(cache && __CachedRepoDefs?.length && __CachedGobletDefs?.length){
+  if(__DefCacheEnabled && cache && __CachedRepoDefs?.length && __CachedGobletDefs?.length){
     const joined = __CachedGobletDefs.concat(__CachedRepoDefs)
     injectStepsIntoParkin(repo, joined)
 
