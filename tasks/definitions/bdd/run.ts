@@ -129,6 +129,7 @@ export const run:TTask = {
       `video`,
       `storageState`,
       `timezone`,
+      `htmlCombine`,
       `debugBrowser`,
       `suiteTimeout`,
       `artifactsDebug`,

@@ -1,5 +1,6 @@
-import type { TGobletTestOpts } from '../types'
 import type { TExamConfig } from '@gobletqa/exam'
+
+import { ENVS } from '@gobletqa/environment'
 
 export type TGetTimeouts = {
   examConfig?:TExamConfig
@@ -17,7 +18,11 @@ export const getExamTimeouts = (opts:TGetTimeouts) => {
   } = opts
 
   return {
-    suiteTimeout: examConfig?.suiteTimeout || defs?.suiteTimeout,
-    testTimeout: examConfig?.testTimeout || defs?.testTimeout,
+    suiteTimeout: ENVS.GOBLET_SUITE_TIMEOUT
+      ?? examConfig?.suiteTimeout
+      ?? defs?.suiteTimeout,
+    testTimeout: ENVS.GOBLET_TEST_TIMEOUT
+      ?? examConfig?.testTimeout
+      ?? defs?.testTimeout,
   }
 }

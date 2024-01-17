@@ -7,6 +7,7 @@ import type {
 
 import path from 'path'
 import { Logger } from "@gobletqa/logger"
+import { set } from '@keg-hub/jsutils/set'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { shouldSaveArtifact } from '@GTU/Utils/artifactSaveOption'
 import { TestsToSocketEvtMap } from '@gobletqa/environment/constants'
@@ -27,6 +28,8 @@ export class TraceRecorder {
   constructor(context?:TBrowserContext){
     this.context = context || global.context
     this.disabled = Boolean(!global?.__goblet?.options?.tracing)
+    if(this.disabled) return this
+
     this.register()
   }
 
@@ -115,7 +118,7 @@ export class TraceRecorder {
     } = (global?.__goblet?.options ?? emptyObj) as TGobletTestOpts
 
     if(!shouldSaveArtifact(saveTrace, status)){
-      context.__contextGoblet.tracing = false
+      set(context, [`__contextGoblet`, `tracing`], false)
       return
     }
 
@@ -127,7 +130,7 @@ export class TraceRecorder {
     } = getGeneratedName({ location, timestamp })
 
     if(!testLoc){
-      context.__contextGoblet.tracing = false
+      set(context, [`__contextGoblet`, `tracing`], false)
       return false
     }
 
@@ -140,7 +143,7 @@ export class TraceRecorder {
     await context.tracing.stopChunk({ path: traceLoc })
 
     const saveDir = await ensureRepoArtifactDir(repoTracesDir, dir)
-    context.__contextGoblet.tracing = false
+    set(context, [`__contextGoblet`, `tracing`], false)
 
     const savedLoc = await copyArtifactToRepo(saveDir, nameTimestamp, traceLoc)
     Logger.log(Logger.colors.gray(` - Trace Report saved for failed test`))
@@ -155,7 +158,7 @@ export class TraceRecorder {
     catch(err){}
     this.evtHandlers = []
 
-    context && (context.__contextGoblet.tracing = false)
+    context && (set(context, [`__contextGoblet`, `tracing`], false))
     this.context = undefined
   }
 

@@ -5,12 +5,12 @@ import type {
 } from '@GTU/Types'
 
 import { Logger } from '@gobletqa/logger'
-import { get } from '@keg-hub/jsutils/get'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
   getPage,
   closePage,
+  closePages,
   setupBrowser,
 } from '@GTU/Playwright/browserContext'
 
@@ -53,7 +53,7 @@ const initErrCloseAll = async () => {
  * Shutdown the page and context if not configured to be reused per test
  * Browser is not shutdown in this method so it can be reused in other tests
  */
-export const cleanupPageAndContext = async (force?:boolean) => {
+export const cleanupPageAndContext = async (force?:boolean, allPages?:boolean) => {
 
   const {
     reusePage,
@@ -61,7 +61,11 @@ export const cleanupPageAndContext = async (force?:boolean) => {
   } = global?.__goblet?.options ?? emptyObj
 
   if(!reusePage || force){
-    await limbo(closePage(undefined, 3))
+    allPages
+      ? await limbo(closePages())
+      : await limbo(closePage(undefined, 3))
+
+    global.page = undefined
     delete global.page
   }
 

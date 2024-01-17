@@ -26,6 +26,7 @@ export type TGobletTestOpts = {
   reuseContext?:boolean
   testType?:string|false
   browserDisabled?:boolean
+  htmlCombineAllTests?:boolean
   tracing?:TGobletTestTracingOpts
   saveVideo?:TGobletTestArtifactOption
   saveTrace?:TGobletTestArtifactOption
@@ -73,6 +74,7 @@ export type TBuildPWEnvs = {
   screenshot?:boolean
   testDebug?:boolean
   debugBrowser?:string
+  htmlCombine?:boolean
   reuseContext?:boolean
   browserTimeout?:number
   devices?:string|string[]

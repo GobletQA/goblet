@@ -52,8 +52,9 @@ AfterAll(async () => {
   const video = page?.__pageGoblet?.video
 
   // Don't pass force because we don't want to force close the context
+  // Do pass in close all pages, so that we don't reuse pages from previous tests
   // In the event reusePage || reuseContext is `true`
-  await cleanupPageAndContext()
+  await cleanupPageAndContext(undefined, true)
   if(!video) return
 
   // The video is not available until after the page closes
