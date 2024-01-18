@@ -162,7 +162,9 @@ export class Kube extends Controller {
    * @member Kube
    */
   hydrateSingle = async (pod:TPod, watchObj:TEventWatchObj) => {
-    if(this.devRouterActive) return
+    // If no annotations we can't handle the pod, so just ignore it
+    // Pods can only be managed by conductor if they container the conductor annotations
+    if(this.devRouterActive || !pod?.metadata?.annotations) return
 
     const annotations = getPodAnnotations(pod)
     if(!annotations.userHash)  return

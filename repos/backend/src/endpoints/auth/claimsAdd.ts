@@ -15,7 +15,7 @@ export const claimsAdd = async (req:JWTRequest, res:Response) => {
   const id = req.auth.userId
   const provider = req.auth.provider
 
-  await authService.addClaims({ id, ...claims}, true)
+  await authService.addClaims({id, ...claims}, true)
 
   /**
    * If the PAT was updated

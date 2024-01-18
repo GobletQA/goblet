@@ -1,10 +1,6 @@
-/**
- * **IMPORTANT** - This is not currently being used
- * Seems to cause an infinite loop when loaded. Need to investigate
- */
-
 import { signOutAuthUser } from './signOutAuthUser'
 import { getProviderMetadata } from '@services/providers'
+import { upsertUser } from '@actions/admin/user/upsertUser'
 
 const { auth } = getProviderMetadata()
 
@@ -19,9 +15,27 @@ const { auth } = getProviderMetadata()
  * @return {Void}
  */
 export const authStateChange = async (rawUser:any) => {
-  if (rawUser) return
 
-  console.warn(`[Auth State Change] Auth User no longer exists.`)
+  if (rawUser){
+    const {
+      email,
+      photoURL,
+      displayName,
+    } = rawUser
+
+    const hasPAT = Boolean(
+      rawUser?.reloadUserInfo?.customAttributes && rawUser.reloadUserInfo.customAttributes !== `{}`
+    )
+
+     return upsertUser({
+      email,
+      hasPAT,
+      displayName,
+      photoUrl: photoURL,
+     })
+  }
+
+  console.warn(`[Auth State Change] Auth User no longer exists.`, auth.currentUser)
   auth.currentUser && await signOutAuthUser()
 }
 

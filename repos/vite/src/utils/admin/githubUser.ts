@@ -30,12 +30,11 @@ export const githubUser = (data:TGithubUserRaw):TFormattedUser => {
     'screenName',
   ])
 
-
   const { accessToken } = pickKeys<TGithubAuthCredential>(data.credential, [
     'accessToken',
     'providerId',
   ])
-  
+
   const photoUrl = fineUserAvatarUrl(data)
 
   return {

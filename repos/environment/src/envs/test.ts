@@ -2,6 +2,7 @@ import type { TGenEnv } from "../types"
 
 import { asNum } from "../utils/asNum"
 import { asBool } from "../utils/asBool"
+import { exists } from '@keg-hub/jsutils/exists'
 import { ExamJsonReporterEvtSplit } from '../constants/exam'
 
 const test = (general:TGenEnv) => {
@@ -17,6 +18,7 @@ const test = (general:TGenEnv) => {
     GOBLET_RUN_FROM_CI,
 
     GOBLET_TEST_TIMEOUT,
+    GOBLET_SUITE_TIMEOUT,
 
     GOBLET_TEST_TYPE,
     GOBLET_TEST_RETRY,
@@ -30,6 +32,7 @@ const test = (general:TGenEnv) => {
     GOBLET_TEST_TRACING_SOURCES,
     GOBLET_TEST_TRACING_SNAPSHOTS,
     GOBLET_TEST_TRACING_SCREENSHOTS,
+    GOBLET_TEST_HTML_COMBINE_REPORT,
     PARKIN_FEATURE_NAME,
     PARKIN_FEATURE_TAGS,
     GOBLET_FEATURE_TAGS=PARKIN_FEATURE_TAGS,
@@ -78,18 +81,22 @@ const test = (general:TGenEnv) => {
     GOBLET_TEST_VIDEO_RECORD,
 
     GOBLET_PAGE_REUSE: asBool(GOBLET_PAGE_REUSE),
-    GOBLET_TEST_TIMEOUT: asNum(GOBLET_TEST_TIMEOUT),
     GOBLET_CONTEXT_REUSE: asBool(GOBLET_CONTEXT_REUSE),
     GOBLET_TEST_SCREENSHOT: asBool(GOBLET_TEST_SCREENSHOT ?? true),
     GOBLET_TEST_RETRY: asNum(GOBLET_TEST_RETRY, { default: 1, exists: true }),
     GOBLET_TEST_TRACING_SOURCES: asBool(GOBLET_TEST_TRACING_SOURCES ?? true),
     GOBLET_TEST_TRACING_SNAPSHOTS: asBool(GOBLET_TEST_TRACING_SNAPSHOTS ?? true),
     GOBLET_TEST_TRACING_SCREENSHOTS: asBool(GOBLET_TEST_TRACING_SCREENSHOTS ?? true),
+    GOBLET_TEST_TIMEOUT: asNum(GOBLET_TEST_TIMEOUT, { exists: true, default: undefined }),
+    GOBLET_SUITE_TIMEOUT: asNum(GOBLET_SUITE_TIMEOUT, { exists: true, default: undefined }),
 
     GOBLET_CUSTOM_REPORTS_DIR,
     GOBLET_TEST_CLI_REPORTER_OPTS,
     GOBLET_TEST_JSON_REPORTER_OPTS,
     GOBLET_TEST_HTML_REPORTER_OPTS,
+    GOBLET_TEST_HTML_COMBINE_REPORT: exists(GOBLET_TEST_HTML_COMBINE_REPORT)
+      ? asBool(GOBLET_TEST_HTML_COMBINE_REPORT)
+      : undefined,
   }
 
 }

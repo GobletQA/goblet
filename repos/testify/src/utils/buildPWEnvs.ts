@@ -64,6 +64,8 @@ export const buildPWEnvs = (
   addEnv(env, `GOBLET_TEST_VIDEO_RECORD`, params.video)
   addEnv(env, `GOBLET_TEST_SCREENSHOT`, params.screenshot)
   addEnv(env, `GOBLET_TEST_DEBUG`, params.testDebug)
+  addEnv(env, `GOBLET_TEST_HTML_COMBINE_REPORT`, params.htmlCombine)
+  
 
   addEnv(env, `NODE_ENV`, params.nodeEnv)
 

@@ -50,6 +50,7 @@ export const getReporters = (
   const htmlReporterOpts:TExReporterCfg = {
     ...html,
     reportsDir: html?.reportsDir ?? gobletOpts.reportsDir,
+    combineAllTests: html?.combineAllTests ?? gobletOpts.htmlCombineAllTests,
     saveReport: artifactSaveOption(html?.saveReport ?? gobletOpts.saveReport),
     saveScreenshot: artifactSaveOption(html?.saveScreenshot ?? gobletOpts.saveScreenshot),
   }

@@ -157,6 +157,13 @@ const taskOptions = {
       example: `--skipAfterFailed`,
       description: `When a test fails, skip all future tests within in the same suite`,
     },
+    htmlCombine: {
+      default: false,
+      type: `boolean`,
+      alias: [`combine`],
+      example: `--htmlCombine`,
+      env: `GOBLET_TEST_HTML_COMBINE_REPORT`,
+    }
   },
   docker: {
     container: {
@@ -361,7 +368,7 @@ const taskOptions = {
     video: {
       default: `failed`,
       allowed: artifactSaveOpts,
-      example: `--record failed`,
+      example: `--video failed`,
       env: `GOBLET_TEST_VIDEO_RECORD`,
       description: `Records a video of browser interactions based on a condition. Saves to config#artifactsDir/videos`
     },

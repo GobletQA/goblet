@@ -1,5 +1,7 @@
 import type { TFormattedUser, TRouteMeta, TUserState, TValidateResp } from '@types'
 
+import '@actions/admin/provider/authState'
+
 import * as ComLink from 'comlink'
 import { AppWorker } from '@workers'
 import { HttpMethods } from '@constants'
@@ -10,6 +12,7 @@ import { Exception } from '@services/sharedService'
 import { localStorage } from '@services/localStorage'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { validateResp } from '@utils/api/validateResp'
+import { signOutManually } from '@actions/admin/user/signOutManually'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 export type TAddClaimsRep = {
@@ -140,9 +143,7 @@ export class AuthApi {
       throw new Exception(resp.error || `User claims update failed`, resp.statusCode)
 
     // Force token refresh, so the custom claims will be up to date
-    await getUserToken(true)
-
-    return resp.data
+    signOutManually()
   }
 
 }

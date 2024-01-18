@@ -50,6 +50,7 @@ export class GitUser {
 
 
   id?:string
+  hasPAT?:boolean
   username?:string
   provider?: string
 

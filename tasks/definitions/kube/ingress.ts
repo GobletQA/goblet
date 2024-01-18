@@ -1,8 +1,9 @@
 import type { TTask } from '../../types'
 
+import path from 'path'
 import { helm } from '../../utils/helm/helm'
 import { Logger } from '@keg-hub/cli-utils'
-
+import { containerDir } from '../../paths'
 
 /**
  * Create the ingress using the helm upgrade commend
@@ -16,12 +17,15 @@ const createIngress = async (params:Record<any, any>) => {
     ingress,
     `--repo`,
     repo,
-    `--install`
+    `--values`,
+    path.join(containerDir, `./values.ingress.yaml`),
+    `--install`,
+    `--force`
   ]
 
   createNamespace && cmdArgs.push(`--create-namespace`)
 
-  return await helm.upgrade(cmdArgs, params)
+  return await helm.upgrade(cmdArgs, params as any)
 }
 
 
@@ -62,7 +66,7 @@ const ingressAct = async (args:Record<any, any>) => {
 }
 
 export const ingress:TTask = {
-  name: 'ingress',
+  name: `ingress`,
   action: ingressAct,
   alias: [ `ing`, `in`],
   options: {

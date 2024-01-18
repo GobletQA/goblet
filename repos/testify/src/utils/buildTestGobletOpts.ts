@@ -86,6 +86,7 @@ export const buildTestGobletOpts = (
   const options:TGobletTestOpts = {
     reusePage: ENVS.GOBLET_PAGE_REUSE,
     reuseContext: ENVS.GOBLET_CONTEXT_REUSE,
+    htmlCombineAllTests: ENVS.GOBLET_TEST_HTML_COMBINE_REPORT,
     saveTrace: artifactSaveOption(ENVS.GOBLET_TEST_TRACING),
     saveReport: artifactSaveOption(ENVS.GOBLET_TEST_REPORT),
     saveScreenshot: artifactSaveOption(ENVS.GOBLET_TEST_SCREENSHOT),
