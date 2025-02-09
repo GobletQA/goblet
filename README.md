@@ -9,4 +9,4 @@
  * Feature files can use pre-defined step definitions, enabling non-developers to write tests
   
 ## Documentation
-* See [https://goblet-docs.vercel.app/](Goblet Docs) website
+* See [Goblet Docs](https://goblet-docs.vercel.app) website
